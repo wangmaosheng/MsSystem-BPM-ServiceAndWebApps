@@ -1,0 +1,125 @@
+.searchbar-result{
+    margin-top: 0;
+    font-size: 12px;
+}
+.searchbar-result:before{
+    display: none;
+}
+.weui-cell{
+    padding: 12px 15px 12px 35px;
+}
+
+.weui-search-bar {
+  position: relative;
+  padding: 4px 6px;
+  display: flex;
+  box-sizing: border-box;
+  background-color: #EFEFF4;
+  border-top: 1rpx solid #D7D6DC;
+  border-bottom: 1rpx solid #D7D6DC;
+}
+
+.weui-icon-search {
+  margin-right: 6px;
+}
+
+.weui-icon-search_in-box {
+  position: absolute;
+  left: 10px;
+  top: 7px;
+}
+.weui-search-bar__text {
+  display: inline-block;
+  font-size: 12px;
+  vertical-align: middle;
+}
+.weui-search-bar__form {
+  position: relative;
+  flex: auto;
+  border-radius: 20px;
+  background: #FFFFFF;
+  border: 1rpx solid #E6E6EA;
+}
+.weui-search-bar__box {
+  position: relative;
+  padding-left: 30px;
+  padding-right: 30px;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1;
+}
+.weui-search-bar__input {
+  height: 18px;
+  line-height: 20px;
+  font-size: 12px;
+}
+.weui-icon-clear {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 7px 8px;
+  font-size: 0;
+}
+.weui-search-bar__label {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  border-radius: 25px;
+  text-align: center;
+  color: #9B9B9B;
+  background: #FFFFFF;
+  line-height: 20px;
+}
+.weui-search-bar__cancel-btn {
+  margin-left: 10px;
+  line-height: 22px;
+  color: #09BB07;
+  white-space: nowrap;
+}
+
+
+.grid{
+  border-top: 1rpx solid #D9D9D9;
+  border-left: 1rpx solid #D9D9D9;
+}
+
+.itemgrid{
+  position: relative;
+  float: left;
+  padding: 40rpx 20rpx;
+  width: 33.3333333333%;   /*宽度分成三格*/
+  box-sizing: border-box;
+  border-right: 1rpx solid #D9D9D9;/*很巧妙的布局*/
+  border-bottom: 1rpx solid #D9D9D9;
+  /*每个小格子的右边和下边加边框，整体的左边和上边加边框就刚刚好*/
+}
+
+.itemgrid_active{
+  /* //按钮点击后的一个状态 */
+  background-color: #ECECEC
+}
+
+.itemgrid_icon{
+  display: block;
+  width: 56rpx;
+  height: 56rpx;
+  margin: 0 auto;
+}
+
+.itemgrid_label{
+  margin-top: 10rpx;
+  display: block;
+  text-align: center;
+  color: #000000;
+  font-size: 28rpx;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.slide-image{
+  width: 100%;
+  height: 100%;
+}

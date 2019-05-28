@@ -1,0 +1,31 @@
+<wxc-tab
+  bind:tabchange="onClick"
+  default-index="{{0}}"
+  component-id="c1"
+  text-color="light"
+  active-text-color="#0e9aef"
+  active-line-color="#0e9aef"
+  animate="{{true}}"
+>
+  <wxc-tab-panel
+    wx:for="{{tabs}}"
+    wx:for-item="tab"
+    wx:key="{{tab.type}}"
+    tab-index="{{index}}"
+    component-id="c1"
+    label="{{tab.title}}"
+  >
+  </wxc-tab-panel>
+</wxc-tab>
+
+<view class="container">
+    <canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" bindtouchstart="touchHandler"></canvas>
+    <view class="button-wrap">
+      <wxc-button size="normal" btnStyle="margin:5px;background: {{background_color}};border-radius: 66rpx;color: #fff;" type="primary" bindclick="updateData">
+        <wxc-icon style='margin-right:5rpx;' color="#fff" type="rate"></wxc-icon>手动刷新
+      </wxc-button>
+      <wxc-button size="normal" btnStyle="margin:5px;border-radius: 66rpx;color: #fff;" type="danger" bindclick="stopUpdate">
+        <wxc-icon style='margin-right:5rpx;' color="#fff" type="clear"></wxc-icon>暂停
+      </wxc-button>
+    </view>
+</view>

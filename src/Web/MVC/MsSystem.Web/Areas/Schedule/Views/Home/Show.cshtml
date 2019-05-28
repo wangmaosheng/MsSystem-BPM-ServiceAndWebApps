@@ -1,0 +1,149 @@
+﻿@model ScheduleDto
+@{
+    ViewData["Title"] = "任务调度";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section scripts{
+    <script src="/ui/js/plugins/layer/laydate/laydate.js"></script>
+    <script>
+        $(function () {
+            //日期范围限制
+            var start = {
+                elem: '#BeginTime',
+                format: 'YYYY/MM/DD hh:mm:ss',
+                istime: true,
+                istoday: false,
+                choose: function (datas) {
+                    end.min = datas; //开始日选好后，重置结束日的最小日期
+                    end.start = datas //将结束日的初始值设定为开始日
+                }
+            };
+            var end = {
+                elem: '#EndTime',
+                format: 'YYYY/MM/DD hh:mm:ss',
+                istime: true,
+                istoday: false,
+                choose: function (datas) {
+                    start.max = datas; //结束日选好后，重置开始日的最大日期
+                }
+            };
+            laydate(start);
+            laydate(end);
+            $("#form-schedule").validate();
+            $('#formSave').click(function () {
+                if ($("#form-schedule").valid()) {
+                    var data = $.formCollection('#form-schedule');
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'JSON',
+                        data: { data: data },
+                        url: '/Schedule/Home/SaveAsync',
+                        success: function (data) {
+                            if (data) {
+                                layer.msg('操作成功！', { icon: 1, time: 2000 }, function () {
+                                    var index = parent.layer.getFrameIndex(window.name);
+                                    parent.layer.close(index);
+                                    parent.reload();
+                                });
+                            } else {
+                                layer.msg('操作失败！', { icon: 2 });
+                            }
+                        }
+                    });
+                }
+            });
+            $('#getcron').click(function () {
+                layer.open({
+                    type: 2,
+                    title: '定时任务参数设置',
+                    maxmin: true,
+                    area: ['700px', '550px'],
+                    content: '/Schedule/Home/Cron',
+                });
+            });
+        });
+    </script>
+}
+<div class="show-content">
+    <div class="row p5">
+        @await Component.InvokeAsync("Menu", true)
+    </div>
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="tabs-container">
+                    <div class="tab-content">
+                        <form class="form-horizontal m-t" id="form-schedule">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">任务名称</label>
+                                <div class="col-sm-8">
+                                    <input asp-for="JobId" type="hidden">
+                                    <input asp-for="JobName" type="text" class="form-control" placeholder="请输入任务名称" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">任务组</label>
+                                <div class="col-sm-8">
+                                    <input asp-for="JobGroup" type="text" class="form-control" placeholder="请输入任务组" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">执行周期</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <input asp-for="Cron" type="text" class="form-control" placeholder="执行周期Cron表达式" required>
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-primary" id="getcron"><i class="fa fa-search"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">开始时间</label>
+                                <div class="col-sm-8">
+                                    <input asp-for="BeginTime" type="text" class="form-control layer-date" autocomplete="off" placeholder="开始时间">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">结束时间</label>
+                                <div class="col-sm-8">
+                                    <input asp-for="EndTime" type="text" class="form-control layer-date" autocomplete="off" placeholder="结束时间">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">执行次数</label>
+                                <div class="col-sm-8">
+                                    <input asp-for="RunTimes" type="text" class="form-control" placeholder="执行次数">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">执行间隔</label>
+                                <div class="col-sm-8">
+                                    <input asp-for="IntervalSecond" type="text" class="form-control" placeholder="执行间隔">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">程序集</label>
+                                <div class="col-sm-8">
+                                    <input asp-for="AssemblyName" type="text" class="form-control" placeholder="程序集" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">IJob实现类</label>
+                                <div class="col-sm-8">
+                                    <input asp-for="ClassName" type="text" class="form-control" placeholder="IJob实现类" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">任务描述</label>
+                                <div class="col-sm-8">
+                                    <textarea asp-for="Remark" class="form-control" placeholder="任务描述" required></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

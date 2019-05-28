@@ -1,0 +1,22 @@
+﻿@model OaMessageMyListDetail
+@{
+    ViewData["Title"] = "消息查看";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+<div class="show-content">
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="tabs-container">
+                    <div class="tab-content">
+                        <h3 class="text-center">@Model.Title</h3>
+                        <div class="row">
+                            @Model.Content
+                        </div>
+                        <div class="row p20 text-right">发布时间: @Model.CreateTime.ToDateTime().ToString("yyyy-MM-dd hh:mm:ss")</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

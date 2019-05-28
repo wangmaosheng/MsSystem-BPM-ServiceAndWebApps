@@ -1,0 +1,626 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile></DocumentationFile>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\Common\**" />
+    <Compile Remove="Areas\Schedule\**" />
+    <Compile Remove="Areas\Sys\Controllers\**" />
+    <Compile Remove="Logs\**" />
+    <Compile Remove="wwwroot\ui\js\plugins\ueditor\net\**" />
+    <Content Remove="Areas\Common\**" />
+    <Content Remove="Areas\Schedule\**" />
+    <Content Remove="Areas\Sys\Controllers\**" />
+    <Content Remove="Logs\**" />
+    <Content Remove="wwwroot\ui\js\plugins\ueditor\net\**" />
+    <EmbeddedResource Remove="Areas\Common\**" />
+    <EmbeddedResource Remove="Areas\Schedule\**" />
+    <EmbeddedResource Remove="Areas\Sys\Controllers\**" />
+    <EmbeddedResource Remove="Logs\**" />
+    <EmbeddedResource Remove="wwwroot\ui\js\plugins\ueditor\net\**" />
+    <None Remove="Areas\Common\**" />
+    <None Remove="Areas\Schedule\**" />
+    <None Remove="Areas\Sys\Controllers\**" />
+    <None Remove="Logs\**" />
+    <None Remove="wwwroot\ui\js\plugins\ueditor\net\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="start.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.1" />
+    <PackageReference Include="IdentityModel" Version="3.10.6" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="MySql.Data" Version="8.0.13" />
+    <PackageReference Include="NLog" Version="4.5.11" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.1" />
+    <PackageReference Include="Polly.Extensions.Http" Version="2.0.1" />
+    <PackageReference Include="WebMarkupMin.AspNetCore2" Version="2.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\layui\lay\modules\mobile\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Areas\OA\Views\Leave\Index.cshtml" />
+    <None Include="Areas\OA\Views\Shared\_Layout.cshtml" />
+    <None Include="Areas\OA\_ViewImports.cshtml" />
+    <None Include="Areas\Weixin\Views\Menu\Index.cshtml" />
+    <None Include="Areas\Weixin\Views\Menu\Show.cshtml" />
+    <None Include="Areas\Weixin\Views\Rule\Index.cshtml" />
+    <None Include="Areas\Weixin\Views\Rule\Show.cshtml" />
+    <None Include="Areas\Weixin\_ViewImports.cshtml" />
+    <None Include="Areas\WF\Views\Category\Index.cshtml" />
+    <None Include="Areas\WF\Views\Category\Show.cshtml" />
+    <None Include="Areas\WF\Views\Form\Index.cshtml" />
+    <None Include="Areas\WF\Views\Form\Show.cshtml" />
+    <None Include="Areas\WF\Views\WorkFlowInstance\MyApprovalHistory.cshtml" />
+    <None Include="Areas\WF\Views\WorkFlowInstance\MyFlow.cshtml" />
+    <None Include="Areas\WF\Views\WorkFlowInstance\Process.cshtml" />
+    <None Include="Areas\WF\Views\WorkFlowInstance\Start.cshtml" />
+    <None Include="Areas\WF\Views\WorkFlowInstance\TodoList.cshtml" />
+    <None Include="Areas\WF\Views\WorkFlow\Index.cshtml" />
+    <None Include="Areas\WF\Views\WorkFlow\Show.cshtml" />
+    <None Include="Areas\WF\_ViewImports.cshtml" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.svg" />
+    <None Include="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\npm.js" />
+    <None Include="wwwroot\lib\bootstrap\LICENSE" />
+    <None Include="wwwroot\lib\flow\config.js" />
+    <None Include="wwwroot\lib\flow\fonts\iconflow.svg" />
+    <None Include="wwwroot\lib\flow\fonts\iconfont.js" />
+    <None Include="wwwroot\lib\flow\GooFlow.export.js" />
+    <None Include="wwwroot\lib\flow\GooFlow.js" />
+    <None Include="wwwroot\lib\flow\GooFlow.print.js" />
+    <None Include="wwwroot\lib\flow\GooFunc.js" />
+    <None Include="wwwroot\lib\font-awesome\font\fontawesome-webfont.svg" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    <None Include="wwwroot\lib\layui\font\iconfont.svg" />
+    <None Include="wwwroot\lib\layui\layui.all.js" />
+    <None Include="wwwroot\lib\layui\layui.js" />
+    <None Include="wwwroot\lib\layui\lay\dest\layui.all.js" />
+    <None Include="wwwroot\lib\layui\lay\modules\carousel.js" />
+    <None Include="wwwroot\lib\layui\lay\modules\code.js" />
+    <None Include="wwwroot\lib\layui\lay\modules\element.js" />
+    <None Include="wwwroot\lib\layui\lay\modules\flow.js" />
+    <None Include="wwwroot\lib\layui\lay\modules\form.js" />
+    <None Include="wwwroot\lib\layui\lay\modules\jquery.js" />
+    <None Include="wwwroot\lib\layui\lay\modules\laydate.js" />
+    <None Include="wwwroot\lib\layui\lay\modules\layedit.js" />
+    <None Include="wwwroot\lib\layui\lay\modules\layer.js" />
+    <None Include="wwwroot\lib\layui\lay\modules\layim.js" />
+    <None Include="wwwroot\lib\layui\lay\modules\laypage.js" />
+    <None Include="wwwroot\lib\layui\lay\modules\laytpl.js" />
+    <None Include="wwwroot\lib\layui\lay\modules\mobile.js" />
+    <None Include="wwwroot\lib\layui\lay\modules\table.js" />
+    <None Include="wwwroot\lib\layui\lay\modules\tree.js" />
+    <None Include="wwwroot\lib\layui\lay\modules\upload.js" />
+    <None Include="wwwroot\lib\layui\lay\modules\util.js" />
+    <None Include="wwwroot\lib\nprogress\nprogress.js" />
+    <None Include="wwwroot\ui\js\gooflow\fonts\iconflow.js" />
+    <None Include="wwwroot\ui\js\gooflow\fonts\iconflow.svg" />
+    <None Include="wwwroot\ui\js\layui\font\iconfont.svg" />
+    <None Include="wwwroot\ui\js\layui\layui.all.js" />
+    <None Include="wwwroot\ui\js\layui\layui.js" />
+    <None Include="wwwroot\ui\js\layui\lay\modules\carousel.js" />
+    <None Include="wwwroot\ui\js\layui\lay\modules\code.js" />
+    <None Include="wwwroot\ui\js\layui\lay\modules\colorpicker.js" />
+    <None Include="wwwroot\ui\js\layui\lay\modules\element.js" />
+    <None Include="wwwroot\ui\js\layui\lay\modules\flow.js" />
+    <None Include="wwwroot\ui\js\layui\lay\modules\form.js" />
+    <None Include="wwwroot\ui\js\layui\lay\modules\jquery.js" />
+    <None Include="wwwroot\ui\js\layui\lay\modules\laydate.js" />
+    <None Include="wwwroot\ui\js\layui\lay\modules\layedit.js" />
+    <None Include="wwwroot\ui\js\layui\lay\modules\layer.js" />
+    <None Include="wwwroot\ui\js\layui\lay\modules\laypage.js" />
+    <None Include="wwwroot\ui\js\layui\lay\modules\laytpl.js" />
+    <None Include="wwwroot\ui\js\layui\lay\modules\mobile.js" />
+    <None Include="wwwroot\ui\js\layui\lay\modules\rate.js" />
+    <None Include="wwwroot\ui\js\layui\lay\modules\slider.js" />
+    <None Include="wwwroot\ui\js\layui\lay\modules\table.js" />
+    <None Include="wwwroot\ui\js\layui\lay\modules\tree.js" />
+    <None Include="wwwroot\ui\js\layui\lay\modules\upload.js" />
+    <None Include="wwwroot\ui\js\layui\lay\modules\util.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\editor\mxDefaultKeyHandler.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\editor\mxDefaultPopupMenu.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\editor\mxDefaultToolbar.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\editor\mxEditor.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\handler\mxCellHighlight.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\handler\mxCellMarker.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\handler\mxCellTracker.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\handler\mxConnectionHandler.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\handler\mxConstraintHandler.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\handler\mxEdgeHandler.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\handler\mxEdgeSegmentHandler.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\handler\mxElbowEdgeHandler.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\handler\mxGraphHandler.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\handler\mxHandle.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\handler\mxKeyHandler.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\handler\mxPanningHandler.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\handler\mxPopupMenuHandler.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\handler\mxRubberband.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\handler\mxSelectionCellsHandler.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\handler\mxTooltipHandler.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\handler\mxVertexHandler.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\io\mxCellCodec.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\io\mxChildChangeCodec.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\io\mxCodec.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\io\mxCodecRegistry.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\io\mxDefaultKeyHandlerCodec.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\io\mxDefaultPopupMenuCodec.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\io\mxDefaultToolbarCodec.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\io\mxEditorCodec.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\io\mxGenericChangeCodec.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\io\mxGraphCodec.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\io\mxGraphViewCodec.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\io\mxModelCodec.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\io\mxObjectCodec.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\io\mxRootChangeCodec.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\io\mxStylesheetCodec.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\io\mxTerminalChangeCodec.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\hierarchical\model\mxGraphAbstractHierarchyCell.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\hierarchical\model\mxGraphHierarchyEdge.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\hierarchical\model\mxGraphHierarchyModel.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\hierarchical\model\mxGraphHierarchyNode.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\hierarchical\model\mxSwimlaneModel.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\hierarchical\mxHierarchicalLayout.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\hierarchical\mxSwimlaneLayout.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\hierarchical\stage\mxCoordinateAssignment.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\hierarchical\stage\mxHierarchicalLayoutStage.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\hierarchical\stage\mxMedianHybridCrossingReduction.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\hierarchical\stage\mxMinimumCycleRemover.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\hierarchical\stage\mxSwimlaneOrdering.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\mxCircleLayout.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\mxCompactTreeLayout.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\mxCompositeLayout.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\mxEdgeLabelLayout.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\mxFastOrganicLayout.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\mxGraphLayout.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\mxParallelEdgeLayout.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\mxPartitionLayout.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\mxRadialTreeLayout.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\layout\mxStackLayout.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\model\mxCell.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\model\mxCellPath.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\model\mxGeometry.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\model\mxGraphModel.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\mxClient.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxActor.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxArrow.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxArrowConnector.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxCloud.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxConnector.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxCylinder.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxDoubleEllipse.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxEllipse.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxHexagon.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxImageShape.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxLabel.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxLine.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxMarker.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxPolyline.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxRectangleShape.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxRhombus.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxShape.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxStencil.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxStencilRegistry.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxSwimlane.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxText.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\shape\mxTriangle.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxAbstractCanvas2D.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxAnimation.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxAutoSaveManager.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxClipboard.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxConstants.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxDictionary.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxDivResizer.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxDragSource.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxEffects.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxEvent.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxEventObject.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxEventSource.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxForm.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxGuide.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxImage.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxImageBundle.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxImageExport.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxLog.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxMorphing.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxMouseEvent.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxObjectIdentity.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxPanningManager.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxPoint.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxPopupMenu.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxRectangle.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxResources.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxSvgCanvas2D.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxToolbar.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxUndoableEdit.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxUndoManager.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxUrlConverter.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxUtils.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxVmlCanvas2D.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxWindow.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxXmlCanvas2D.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\util\mxXmlRequest.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\view\mxCellEditor.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\view\mxCellOverlay.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\view\mxCellRenderer.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\view\mxCellState.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\view\mxCellStatePreview.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\view\mxConnectionConstraint.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\view\mxEdgeStyle.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\view\mxGraph.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\view\mxGraphSelectionModel.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\view\mxGraphView.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\view\mxLayoutManager.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\view\mxMultiplicity.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\view\mxOutline.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\view\mxPerimeter.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\view\mxPrintPreview.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\view\mxStyleRegistry.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\view\mxStylesheet.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\view\mxSwimlaneManager.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\js\view\mxTemporaryCellStates.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\mxClient.js" />
+    <None Include="wwwroot\ui\js\mxGraph\src\mxClient.min.js" />
+    <None Include="wwwroot\src\sys\codebuilder\index.js" />
+    <None Include="wwwroot\src\js\config.js" />
+    <None Include="wwwroot\src\sys\default\index.js" />
+    <None Include="wwwroot\src\js\home.js" />
+    <None Include="wwwroot\src\sys\log\js\index.js" />
+    <None Include="wwwroot\src\sys\plugin\js\user.js" />
+    <None Include="wwwroot\src\sys\resource\js\index.js" />
+    <None Include="wwwroot\src\sys\resource\js\show.js" />
+    <None Include="wwwroot\src\sys\role\js\index.js" />
+    <None Include="wwwroot\src\sys\role\js\show.js" />
+    <None Include="wwwroot\src\sys\role\js\user.js" />
+    <None Include="wwwroot\src\sys\system\js\index.js" />
+    <None Include="wwwroot\src\sys\system\js\show.js" />
+    <None Include="wwwroot\src\sys\user\js\index.js" />
+    <None Include="wwwroot\src\sys\user\js\show.js" />
+    <None Include="wwwroot\ui\css\plugins\blueimp\img\error.svg" />
+    <None Include="wwwroot\ui\css\plugins\blueimp\img\play-pause.svg" />
+    <None Include="wwwroot\ui\css\plugins\blueimp\img\video-play.svg" />
+    <None Include="wwwroot\ui\css\plugins\footable\fonts\footable.svg" />
+    <None Include="wwwroot\ui\css\plugins\plyr\sprite.svg" />
+    <None Include="wwwroot\ui\css\plugins\ztree\awesomeStyle\awesome.less" />
+    <None Include="wwwroot\ui\css\plugins\ztree\awesomeStyle\fa.less" />
+    <None Include="wwwroot\ui\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\ui\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\ui\fonts\glyphicons-halflings-regular.svg" />
+    <None Include="wwwroot\ui\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="wwwroot\ui\img\icons.psd" />
+    <None Include="wwwroot\ui\js\axios.js" />
+    <None Include="wwwroot\ui\js\axios.min.js" />
+    <None Include="wwwroot\ui\js\bootstrap.min.js" />
+    <None Include="wwwroot\ui\js\contabs.js" />
+    <None Include="wwwroot\ui\js\contabs.min.js" />
+    <None Include="wwwroot\ui\js\content.js" />
+    <None Include="wwwroot\ui\js\content.min.js" />
+    <None Include="wwwroot\ui\js\demo\bootstrap-table-demo.js" />
+    <None Include="wwwroot\ui\js\demo\bootstrap-table-demo.min.js" />
+    <None Include="wwwroot\ui\js\demo\echarts-demo.js" />
+    <None Include="wwwroot\ui\js\demo\echarts-demo.min.js" />
+    <None Include="wwwroot\ui\js\demo\flot-demo.js" />
+    <None Include="wwwroot\ui\js\demo\flot-demo.min.js" />
+    <None Include="wwwroot\ui\js\demo\form-advanced-demo.js" />
+    <None Include="wwwroot\ui\js\demo\form-advanced-demo.min.js" />
+    <None Include="wwwroot\ui\js\demo\form-validate-demo.js" />
+    <None Include="wwwroot\ui\js\demo\form-validate-demo.min.js" />
+    <None Include="wwwroot\ui\js\demo\layer-demo.js" />
+    <None Include="wwwroot\ui\js\demo\layer-demo.min.js" />
+    <None Include="wwwroot\ui\js\demo\morris-demo.js" />
+    <None Include="wwwroot\ui\js\demo\morris-demo.min.js" />
+    <None Include="wwwroot\ui\js\demo\peity-demo.js" />
+    <None Include="wwwroot\ui\js\demo\peity-demo.min.js" />
+    <None Include="wwwroot\ui\js\demo\rickshaw-demo.js" />
+    <None Include="wwwroot\ui\js\demo\rickshaw-demo.min.js" />
+    <None Include="wwwroot\ui\js\demo\sparkline-demo.js" />
+    <None Include="wwwroot\ui\js\demo\sparkline-demo.min.js" />
+    <None Include="wwwroot\ui\js\demo\treeview-demo.js" />
+    <None Include="wwwroot\ui\js\demo\treeview-demo.min.js" />
+    <None Include="wwwroot\ui\js\demo\webuploader-demo.js" />
+    <None Include="wwwroot\ui\js\demo\webuploader-demo.min.js" />
+    <None Include="wwwroot\ui\js\element\css\fonts\element-icons.svg" />
+    <None Include="wwwroot\ui\js\element\js\elementui.js" />
+    <None Include="wwwroot\ui\js\fullavatareditor\scripts\fullAvatarEditor.js" />
+    <None Include="wwwroot\ui\js\fullavatareditor\scripts\jQuery.Cookie.js" />
+    <None Include="wwwroot\ui\js\fullavatareditor\scripts\swfobject.js" />
+    <None Include="wwwroot\ui\js\fullavatareditor\scripts\test.js" />
+    <None Include="wwwroot\ui\js\hplus.js" />
+    <None Include="wwwroot\ui\js\hplus.min.js" />
+    <None Include="wwwroot\ui\js\jquery-extension.js" />
+    <None Include="wwwroot\ui\js\jquery-ui-1.10.4.min.js" />
+    <None Include="wwwroot\ui\js\jquery-ui.custom.min.js" />
+    <None Include="wwwroot\ui\js\jquery.min.js" />
+    <None Include="wwwroot\ui\js\jquery.pager.js" />
+    <None Include="wwwroot\ui\js\jquery.pager.min.js" />
+    <None Include="wwwroot\ui\js\jquery.permission.js" />
+    <None Include="wwwroot\ui\js\mssystem\sysuser.js" />
+    <None Include="wwwroot\ui\js\plugins\beautifyhtml\beautifyhtml.js" />
+    <None Include="wwwroot\ui\js\plugins\blueimp\jquery.blueimp-gallery.min.js" />
+    <None Include="wwwroot\ui\js\plugins\bootstrap-table\bootstrap-table-mobile.min.js" />
+    <None Include="wwwroot\ui\js\plugins\bootstrap-table\bootstrap-table.min.js" />
+    <None Include="wwwroot\ui\js\plugins\bootstrap-table\locale\bootstrap-table-zh-CN.min.js" />
+    <None Include="wwwroot\ui\js\plugins\chartJs\Chart.min.js" />
+    <None Include="wwwroot\ui\js\plugins\chosen\chosen.jquery.js" />
+    <None Include="wwwroot\ui\js\plugins\clockpicker\clockpicker.js" />
+    <None Include="wwwroot\ui\js\plugins\codemirror\codemirror.js" />
+    <None Include="wwwroot\ui\js\plugins\codemirror\mode\javascript\javascript.js" />
+    <None Include="wwwroot\ui\js\plugins\colorpicker\bootstrap-colorpicker.min.js" />
+    <None Include="wwwroot\ui\js\plugins\cron\js\cron.js" />
+    <None Include="wwwroot\ui\js\plugins\cron\js\jquery.easyui.min.js" />
+    <None Include="wwwroot\ui\js\plugins\cropper\cropper.min.js" />
+    <None Include="wwwroot\ui\js\plugins\datapicker\bootstrap-datepicker.js" />
+    <None Include="wwwroot\ui\js\plugins\dataTables\dataTables.bootstrap.js" />
+    <None Include="wwwroot\ui\js\plugins\dataTables\jquery.dataTables.js" />
+    <None Include="wwwroot\ui\js\plugins\diff_match_patch\diff_match_patch.js" />
+    <None Include="wwwroot\ui\js\plugins\dropzone\dropzone.js" />
+    <None Include="wwwroot\ui\js\plugins\easypiechart\jquery.easypiechart.js" />
+    <None Include="wwwroot\ui\js\plugins\echarts\echarts-all.js" />
+    <None Include="wwwroot\ui\js\plugins\fancybox\jquery.fancybox.js" />
+    <None Include="wwwroot\ui\js\plugins\flot\curvedLines.js" />
+    <None Include="wwwroot\ui\js\plugins\flot\jquery.flot.js" />
+    <None Include="wwwroot\ui\js\plugins\flot\jquery.flot.pie.js" />
+    <None Include="wwwroot\ui\js\plugins\flot\jquery.flot.resize.js" />
+    <None Include="wwwroot\ui\js\plugins\flot\jquery.flot.spline.js" />
+    <None Include="wwwroot\ui\js\plugins\flot\jquery.flot.symbol.js" />
+    <None Include="wwwroot\ui\js\plugins\flot\jquery.flot.tooltip.min.js" />
+    <None Include="wwwroot\ui\js\plugins\footable\footable.all.min.js" />
+    <None Include="wwwroot\ui\js\plugins\fullcalendar\fullcalendar.min.js" />
+    <None Include="wwwroot\ui\js\plugins\gritter\jquery.gritter.min.js" />
+    <None Include="wwwroot\ui\js\plugins\iCheck\icheck.min.js" />
+    <None Include="wwwroot\ui\js\plugins\ionRangeSlider\ion.rangeSlider.min.js" />
+    <None Include="wwwroot\ui\js\plugins\jasny\jasny-bootstrap.min.js" />
+    <None Include="wwwroot\ui\js\plugins\jeditable\jquery.jeditable.js" />
+    <None Include="wwwroot\ui\js\plugins\jqgrid\i18n\grid.locale-cnffe4.js" />
+    <None Include="wwwroot\ui\js\plugins\jqgrid\jquery.jqGrid.minffe4.js" />
+    <None Include="wwwroot\ui\js\plugins\jquery-ui\jquery-ui.min.js" />
+    <None Include="wwwroot\ui\js\plugins\jsKnob\jquery.knob.js" />
+    <None Include="wwwroot\ui\js\plugins\jsTree\jstree.js" />
+    <None Include="wwwroot\ui\js\plugins\jsTree\jstree.min.js" />
+    <None Include="wwwroot\ui\js\plugins\jvectormap\jquery-jvectormap-1.2.2.min.js" />
+    <None Include="wwwroot\ui\js\plugins\jvectormap\jquery-jvectormap-world-mill-en.js" />
+    <None Include="wwwroot\ui\js\plugins\laydate\laydate.js" />
+    <None Include="wwwroot\ui\js\plugins\laydate\theme\default\font\iconfont.svg" />
+    <None Include="wwwroot\ui\js\plugins\layer\extend\layer.ext.js" />
+    <None Include="wwwroot\ui\js\plugins\layer\laydate-v1.1\laydate\laydate.js" />
+    <None Include="wwwroot\ui\js\plugins\layer\laydate\laydate.js" />
+    <None Include="wwwroot\ui\js\plugins\layer\layer.min.js" />
+    <None Include="wwwroot\ui\js\plugins\layer\layim\layim.js" />
+    <None Include="wwwroot\ui\js\plugins\markdown\bootstrap-markdown.js" />
+    <None Include="wwwroot\ui\js\plugins\markdown\bootstrap-markdown.zh.js" />
+    <None Include="wwwroot\ui\js\plugins\markdown\markdown.js" />
+    <None Include="wwwroot\ui\js\plugins\markdown\to-markdown.js" />
+    <None Include="wwwroot\ui\js\plugins\metisMenu\jquery.metisMenu.js" />
+    <None Include="wwwroot\ui\js\plugins\morris\morris.js" />
+    <None Include="wwwroot\ui\js\plugins\morris\raphael-2.1.0.min.js" />
+    <None Include="wwwroot\ui\js\plugins\nestable\jquery.nestable.js" />
+    <None Include="wwwroot\ui\js\plugins\nouslider\jquery.nouislider.min.js" />
+    <None Include="wwwroot\ui\js\plugins\pace\pace.min.js" />
+    <None Include="wwwroot\ui\js\plugins\peity\jquery.peity.min.js" />
+    <None Include="wwwroot\ui\js\plugins\plyr\plyr.js" />
+    <None Include="wwwroot\ui\js\plugins\polyfill\polyfill.js" />
+    <None Include="wwwroot\ui\js\plugins\polyfill\polyfill.min.js" />
+    <None Include="wwwroot\ui\js\plugins\preetyTextDiff\jquery.pretty-text-diff.min.js" />
+    <None Include="wwwroot\ui\js\plugins\prettyfile\bootstrap-prettyfile.js" />
+    <None Include="wwwroot\ui\js\plugins\rickshaw\rickshaw.min.js" />
+    <None Include="wwwroot\ui\js\plugins\rickshaw\vendor\d3.v3.js" />
+    <None Include="wwwroot\ui\js\plugins\simditor\hotkeys.js" />
+    <None Include="wwwroot\ui\js\plugins\simditor\module.js" />
+    <None Include="wwwroot\ui\js\plugins\simditor\simditor.js" />
+    <None Include="wwwroot\ui\js\plugins\simditor\uploader.js" />
+    <None Include="wwwroot\ui\js\plugins\slimscroll\jquery.slimscroll.min.js" />
+    <None Include="wwwroot\ui\js\plugins\sparkline\jquery.sparkline.min.js" />
+    <None Include="wwwroot\ui\js\plugins\staps\jquery.steps.min.js" />
+    <None Include="wwwroot\ui\js\plugins\suggest\bootstrap-suggest.min.js" />
+    <None Include="wwwroot\ui\js\plugins\summernote\summernote-zh-CN.js" />
+    <None Include="wwwroot\ui\js\plugins\summernote\summernote.min.js" />
+    <None Include="wwwroot\ui\js\plugins\sweetalert\sweetalert.min.js" />
+    <None Include="wwwroot\ui\js\plugins\switchery\switchery.js" />
+    <None Include="wwwroot\ui\js\plugins\toastr\toastr.min.js" />
+    <None Include="wwwroot\ui\js\plugins\treegrid\js\jquery.treegrid.bootstrap2.js" />
+    <None Include="wwwroot\ui\js\plugins\treegrid\js\jquery.treegrid.bootstrap3.js" />
+    <None Include="wwwroot\ui\js\plugins\treegrid\js\jquery.treegrid.js" />
+    <None Include="wwwroot\ui\js\plugins\treegrid\js\jquery.treegrid.min.js" />
+    <None Include="wwwroot\ui\js\plugins\treeview\bootstrap-treeview.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\attachment\attachment.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\background\background.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\charts\chart.config.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\charts\charts.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\emotion\emotion.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\help\help.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\image\image.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\internal.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\music\music.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\scrawl\scrawl.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\searchreplace\searchreplace.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\spechars\spechars.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\table\edittable.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\template\config.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\template\template.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\video\video.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\wordimage\fClipboard_ueditor.swf" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\wordimage\imageUploader.swf" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\wordimage\tangram.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\dialogs\wordimage\wordimage.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\lang\en\en.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\lang\zh-cn\zh-cn.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\common.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\compule.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\attribute.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\button.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\checkbox.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\datetime.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\delete.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\dictionary.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\events.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\files.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\getdictchilds.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\getsqljson.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\grid.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\hidden.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\html.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\label.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\open.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\open_list1.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\org.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\publish.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\radio.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\save.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\saveas.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\select.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\subtable.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\subtableset.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\text.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\dialogs\textarea.aspx" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\plugins\plugins.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\codemirror\codemirror.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\adapters\mootools-adapter.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\adapters\mootools-adapter.src.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\adapters\prototype-adapter.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\adapters\prototype-adapter.src.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\adapters\standalone-framework.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\adapters\standalone-framework.src.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\highcharts-more.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\highcharts-more.src.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\highcharts.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\highcharts.src.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\modules\annotations.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\modules\annotations.src.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\modules\canvas-tools.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\modules\canvas-tools.src.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\modules\data.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\modules\data.src.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\modules\drilldown.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\modules\drilldown.src.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\modules\exporting.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\modules\exporting.src.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\modules\funnel.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\modules\funnel.src.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\modules\heatmap.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\modules\heatmap.src.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\modules\map.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\modules\map.src.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\modules\no-data-to-display.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\modules\no-data-to-display.src.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\themes\dark-blue.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\themes\dark-green.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\themes\gray.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\themes\grid.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\highcharts\themes\skies.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\jquery-1.10.2.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\jquery-1.10.2.min.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\jquery-1.10.2.min.map" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\snapscreen\UEditorSnapscreen.exe" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\SyntaxHighlighter\shCore.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\video-js\font\vjs.svg" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\video-js\video-js.swf" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\video-js\video.dev.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\video-js\video.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\webuploader\Uploader.swf" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\webuploader\webuploader.custom.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\webuploader\webuploader.custom.min.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\webuploader\webuploader.flashonly.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\webuploader\webuploader.flashonly.min.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\webuploader\webuploader.html5only.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\webuploader\webuploader.html5only.min.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\webuploader\webuploader.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\webuploader\webuploader.min.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\webuploader\webuploader.withoutimage.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\webuploader\webuploader.withoutimage.min.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\zeroclipboard\ZeroClipboard.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\zeroclipboard\ZeroClipboard.min.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\third-party\zeroclipboard\ZeroClipboard.swf" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\ueditor.all.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\ueditor.all.min.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\ueditor.config.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\ueditor.parse.js" />
+    <None Include="wwwroot\ui\js\plugins\ueditor\ueditor.parse.min.js" />
+    <None Include="wwwroot\ui\js\plugins\validate\jquery.validate.min.js" />
+    <None Include="wwwroot\ui\js\plugins\webuploader\webuploader.min.js" />
+    <None Include="wwwroot\ui\js\plugins\ztree\jquery.ztree.all.js" />
+    <None Include="wwwroot\ui\js\plugins\ztree\jquery.ztree.all.min.js" />
+    <None Include="wwwroot\ui\js\plugins\ztree\jquery.ztree.core.js" />
+    <None Include="wwwroot\ui\js\plugins\ztree\jquery.ztree.core.min.js" />
+    <None Include="wwwroot\ui\js\plugins\ztree\jquery.ztree.excheck.js" />
+    <None Include="wwwroot\ui\js\plugins\ztree\jquery.ztree.excheck.min.js" />
+    <None Include="wwwroot\ui\js\plugins\ztree\jquery.ztree.exedit.js" />
+    <None Include="wwwroot\ui\js\plugins\ztree\jquery.ztree.exedit.min.js" />
+    <None Include="wwwroot\ui\js\plugins\ztree\jquery.ztree.exhide.js" />
+    <None Include="wwwroot\ui\js\plugins\ztree\jquery.ztree.exhide.min.js" />
+    <None Include="wwwroot\ui\js\seajs\sea.js" />
+    <None Include="wwwroot\ui\js\utils.js" />
+    <None Include="wwwroot\ui\js\vue\vue-filters.js" />
+    <None Include="wwwroot\ui\js\vue\vue-resource.js" />
+    <None Include="wwwroot\ui\js\vue\vue-router.js" />
+    <None Include="wwwroot\ui\js\vue\vue.js" />
+    <None Include="wwwroot\ui\js\vue\vuex.js" />
+    <None Include="wwwroot\ui\js\welcome.js" />
+    <None Include="wwwroot\ui\js\welcome.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Controllers\MsSystem.Web.Areas.OA\MsSystem.Web.Areas.OA.csproj" />
+    <ProjectReference Include="..\Controllers\MsSystem.Web.Areas.Sys\MsSystem.Web.Areas.Sys.csproj" />
+    <ProjectReference Include="..\Controllers\MsSystem.Web.Areas.Weixin\MsSystem.Web.Areas.Weixin.csproj" />
+    <ProjectReference Include="..\Controllers\MsSystem.Web.Areas.WF\MsSystem.Web.Areas.WF.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Areas\Sys\Views\User\Image.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="NLog.Development.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Views\Shared\_LayoutJQ.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+
+</Project>

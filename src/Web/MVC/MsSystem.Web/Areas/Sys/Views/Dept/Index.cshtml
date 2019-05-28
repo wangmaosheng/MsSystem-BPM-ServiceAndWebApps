@@ -1,0 +1,50 @@
+﻿@model DeptIndexViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutContent.cshtml";
+}
+@section css{
+    <style>
+        .treegrid-indent {
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+            position: relative;
+        }
+    </style>
+}
+@section scripts{
+    <script> seajs.use("@Url.Content("/src/sys/dept/index.js")");</script>
+}
+<div class="wrapper-content">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title">
+                <div class="row text-right">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right">
+                        @await Component.InvokeAsync("Menu")
+                    </div>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="full-height-scroll">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered tree">
+                            <thead>
+                                <tr>
+                                    <th class="w50"><input type="checkbox" id="ms_checkall" class="i-checks" /></th>
+                                    <th>部门名称</th>
+                                    <th class="w100">部门编码</th>
+                                    <th>备注</th>
+                                    <th class="w100 text-center">部门状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @Html.Raw(Model.DeptTree.ToDepts())
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

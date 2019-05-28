@@ -1,0 +1,264 @@
+﻿@model WorkFlowDetailDto
+@{
+    ViewData["Title"] = "流程展示";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section css{
+    <link href="/ui/css/plugins/ztree/metroStyle/metroStyle.css" asp-append-version="true" rel="stylesheet" />
+    <link href="/ui/js/gooflow/fonts/iconflow.css" asp-append-version="true" rel="stylesheet" />
+    <link href="/ui/js/gooflow/GooFlow.css" asp-append-version="true" rel="stylesheet" />
+}
+@section scripts{
+    <script src="/ui/js/plugins/ztree/jquery.ztree.all.js"></script>
+    <script src="/ui/js/gooflow/GooFunc.js" asp-append-version="true"></script>
+    <script src="/ui/js/gooflow/GooFlow.js" asp-append-version="true"></script>
+    <script src="/ui/js/gooflow/GooFlow_color.js" asp-append-version="true"></script>
+    <script src="/src/wf/workflow.js" asp-append-version="true"></script>
+}
+
+<div class="show-content">
+    <div class="row m10" style="display: none" id="categorybox">
+        <div class="navbar-fixed-top mt40 p5">
+            <button type="button" class="btn btn-primary btn-xs" id="savecategory"><i class="fa fa-save"><span class="ml5">保存</span></i></button>
+        </div>
+        <div class="mt30 ztree" id="categoryTree"></div>
+    </div>
+    <div class="row m10" style="display: none" id="formbox">
+        <div class="navbar-fixed-top mt40 p5">
+            <button type="button" class="btn btn-primary btn-xs" id="saveformtree"><i class="fa fa-save"><span class="ml5">保存</span></i></button>
+        </div>
+        <div class="mt30 ztree" id="formTree"></div>
+    </div>
+    <div class="row m10" style="display: none" id="roles">
+        <div class="navbar-fixed-top mt40 p5">
+            <button type="button" class="btn btn-primary btn-permission btn-permission-save btn-xs" id="saveroles"><i class="fa fa-save"><span class="ml5">保存</span></i></button>
+        </div>
+        <div class="mt30 ztree" id="rolesTree"></div>
+    </div>
+    <div class="row m10" style="display: none" id="users">
+        <div class="navbar-fixed-top mt40 p5">
+            <button type="button" class="btn btn-primary btn-permission btn-permission-save btn-xs" id="saveusers"><i class="fa fa-save"><span class="ml5">保存</span></i></button>
+        </div>
+        <div class="mt30 ztree" id="usersTree"></div>
+    </div>
+    <div class="row m10" style="display: none" id="chatusers">
+        <div class="navbar-fixed-top mt40 p5">
+            <button type="button" class="btn btn-primary btn-permission btn-permission-save btn-xs" id="savechatusers"><i class="fa fa-save"><span class="ml5">保存</span></i></button>
+        </div>
+        <div class="mt30 ztree" id="chatusersTree"></div>
+    </div>
+    <div class="row m10" style="display: none" id="flowlines">
+        <div class="navbar-fixed-top mt40 p5">
+            <button type="button" class="btn btn-primary btn-permission btn-permission-save btn-xs" id="setflowline"><i class="fa fa-save"><span class="ml5">保存</span></i></button>
+        </div>
+        <div class="mt30 ztree" id="flowlinesTree"></div>
+    </div>
+    <div class="row p5" style="text-align:right">
+        @await Component.InvokeAsync("Menu", true)
+    </div>
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="tabs-container">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a data-toggle="tab" href="#mytab-1" aria-expanded="true"> 基本信息</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" href="#mytab-2" aria-expanded="false">流程设计</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="mytab-1" class="tab-pane active">
+                            <div class="panel-body">
+                                <form class="form-horizontal m-t" id="form-flow">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">流程Id：</label>
+                                        <div class="col-sm-8">
+                                            @if (Model.FlowId == default(Guid))
+                                            {
+                                                <input class="form-control required" type="text" placeholder="系统自动生成" value="" name="FlowId" readonly disabled>
+                                            }
+                                            else
+                                            {
+                                                <input class="form-control required" type="text" asp-for="FlowId" name="FlowId" readonly disabled>
+                                            }
+                                            <input type="hidden" asp-for="FlowContent" name="FlowContent" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">编码：</label>
+                                        <div class="col-sm-8">
+                                            @if (Model.FlowId == default(Guid))
+                                            {
+                                                <input class="form-control required" type="text" placeholder="系统自动生成" name="FlowCode" value="" readonly disabled>
+                                            }
+                                            else
+                                            {
+                                                <input class="form-control required" type="text" asp-for="FlowCode" name="FlowCode" readonly disabled>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">流程名称：</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control required" type="text" asp-for="FlowName" name="FlowName">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">流程分类：</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <input type="hidden" asp-for="CategoryId" name="CategoryId">
+                                                <input class="form-control required" type="text" asp-for="CategoryName" placeholder="请选择分类" name="CategoryName" readonly>
+                                                <span class="input-group-addon" id="selectcategoryTree"><i class="fa fa-search"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">关联表单：</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <input type="hidden" asp-for="FormId" name="FormId">
+                                                <input class="form-control required" type="text" asp-for="FormName" placeholder="请选择表单" name="FormName" readonly>
+                                                <span class="input-group-addon" id="selectformTree"><i class="fa fa-search"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">状态：</label>
+                                        <div class="col-sm-8">
+                                            @if (Model.Enable == 1)
+                                            {
+                                                <input type="checkbox" class="i-checks" name="Enable" checked>
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" class="i-checks" name="Enable">
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">备注：</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control required" type="text" asp-for="Memo" name="Memo">
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                        <div id="mytab-2" class="tab-pane">
+                            <div class="panel-body">
+                                <div id="workflowpanel" style="display: inline-block;"></div>
+                                <form class="myForm" id="propertyForm">
+                                    <div class="form_title">属性查看</div>
+                                    <div class="form_content">
+                                        <table>
+                                            <tr><td style="width:30%">Id：</td><td style="width:70%"><input type="text" autocomplete="off" id="ele_id" readonly /></td></tr>
+                                            <tr><td>Name</td><td><input type="text" id="ele_name" autocomplete="off" /></td></tr>
+                                            <tr><td>Type</td><td><input type="text" id="ele_type" readonly /></td></tr>
+                                            <tr><td>Model</td><td><input type="text" id="ele_model" readonly /></td></tr>
+                                            <tr><td>From</td><td><input type="text" id="ele_from" readonly /></td></tr>
+                                            <tr><td>To</td><td><input type="text" id="ele_to" readonly /></td></tr>
+                                        </table>
+                                    </div>
+                                    <div id="mynodeeventtitle" style="display:none" class="form_title">任务节点事件</div>
+                                    <div id="mynodeeventcontent" style="display:none" class="form_content">
+                                        <table>
+                                            <tr>
+                                                <td style="width:30%">执行人</td>
+                                                <td style="width:70%">
+                                                    <select name="NodeDesignate" id="NodeDesignate">
+                                                        <option value="ALL_USER">任何人</option>
+                                                        <option value="SPECIAL_USER">指定用户</option>
+                                                        <option value="SPECIAL_ROLE">指定角色</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr style="display:none" id="selectuserbox">
+                                                <td>选择用户</td>
+                                                <td>
+                                                    <input type="hidden" />
+                                                    <textarea readonly title="选择用户"></textarea>
+                                                    <a id="selectuserpage">选择</a>
+                                                </td>
+                                            </tr>
+                                            <tr style="display:none" id="selectrolebox">
+                                                <td>选择角色</td>
+                                                <td>
+                                                    <input type="hidden" />
+                                                    <textarea readonly title="选择角色"></textarea><a id="selectroletrees">选择</a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div id="mynodechattitle" style="display:none" class="form_title">会签节点事件</div>
+                                    <div id="mynodechatcontent" style="display:none" class="form_content">
+                                        <table>
+                                            <tr>
+                                                <td style="width:30%">会签类型</td>
+                                                <td style="width:70%">
+                                                    <select name="ChatType" id="ChatType">
+                                                        @foreach (var item in Enum<ChatType>.AsEnumerable())
+                                                        {
+                                                            <option value="@((int)item)">@item.GetDescription()</option>
+                                                        }
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>并行计算方式</td>
+                                                <td>
+                                                    <select id="ChatParallelCalcType" name="ChatParallelCalcType">
+                                                        @foreach (var item in Enum<ChatParallelCalcType>.AsEnumerable())
+                                                        {
+                                                            <option value="@((int)item)">@item.GetDescription()</option>
+                                                        }
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>会签人选</td>
+                                                <td>
+                                                    <input type="hidden" />
+                                                    <textarea readonly title="选择用户"></textarea>
+                                                    <a id="selectchatusertrees">选择</a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div id="mylineeventtitle" style="display:none" class="form_title">连线节点事件</div>
+                                    <div id="mylineeventcontent" style="display:none" class="form_content">
+                                        <table>
+                                            <tr>
+                                                <td style="width:30%">类型</td>
+                                                <td style="width:70%">
+                                                    <select name="LineType" id="LineType" disabled>
+                                                        <option value="System" selected>系统通用</option>
+                                                        <option value="Custom">自定义</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr style="display:none" id="selectlinebox">
+                                                <td>选择类型</td>
+                                                <td>
+                                                    <input type="hidden" />
+                                                    <label id="linename" style="margin-right: 20px;"></label><a id="selectsystemlinetype">选择</a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div style="margin: 5px 0 0;text-align: center;">
+                                        <input type="button" class="btn btn-primary btn-permission btn-permission-save btn-xs" value="确定" id="savenodeprop" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

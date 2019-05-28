@@ -1,0 +1,26 @@
+﻿@model List<SysSystem>
+@{
+    Layout = "~/Views/Shared/_LayoutContent.cshtml";
+}
+@section css{
+    <link href="~/ui/css/plugins/ztree/metroStyle/metroStyle.css" rel="stylesheet" />
+}
+@section scripts{
+    <script>seajs.use("@Url.Content("/src/sys/user/js/dataprivileges.js")");</script>
+}
+<div class="show-content" id="msapp" v-cloak>
+    <div class="row p5">
+        <select class="form-control w150" style="display: inline-block" id="selectSystem">
+            <option value="0">--请选择系统--</option>
+            @foreach (var item in Model)
+            {
+                <option value="@item.SystemId">@item.SystemName</option>
+            }
+        </select>
+        <button type="button" id="savedepts" class="btn btn-primary btn-sm"><i class="fa fa-save"><span class="ml5">保存</span></i></button>
+        <button type="button" id="formReturn" class="btn btn-default btn-sm"><i class="fa fa-mail-reply"></i><span class="ml5">返回</span></button>
+    </div>
+    <div class="row m10" style="display: none" id="depts">
+        <div class="mt30 ztree" id="deptsTree"></div>
+    </div>
+</div>

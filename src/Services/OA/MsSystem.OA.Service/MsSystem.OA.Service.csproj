@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MsSystem.OA.IRepository\MsSystem.OA.IRepository.csproj" />
+    <ProjectReference Include="..\MsSystem.OA.IService\MsSystem.OA.IService.csproj" />
+  </ItemGroup>
+
+</Project>

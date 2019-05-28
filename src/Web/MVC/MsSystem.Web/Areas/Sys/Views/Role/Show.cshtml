@@ -1,0 +1,37 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutContent.cshtml";
+}
+@section scripts{
+    <script>seajs.use("@Url.Content("/src/sys/role/js/show.js")");</script>
+}
+<div class="show-content" id="msapp" v-cloak>
+    <div class="row p5">
+        @await Component.InvokeAsync("Menu", true)
+    </div>
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <form class="form-horizontal m-t" id="form-role">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">角色名称：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control required" type="text" name="RoleName" v-model="SysRole.RoleName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">备注：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control required" type="text" name="RoleName" v-model="SysRole.Memo">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">状态：</label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" v-model="SysRole.IsDel" v-bind:true-value="0" v-bind:false-value="1">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

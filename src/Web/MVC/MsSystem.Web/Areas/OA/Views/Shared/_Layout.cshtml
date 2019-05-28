@@ -1,0 +1,12 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section css{
+    @RenderSection("css", false)
+}
+@section scripts{
+    @RenderSection("scripts", false)
+}
+@*用于CAP订阅定位当前系统*@
+<input type="hidden" value="WorkFlowStatusChangedOA" name="TargetName" id="TargetName" />
+@RenderBody()

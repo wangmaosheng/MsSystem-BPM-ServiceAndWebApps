@@ -1,0 +1,66 @@
+﻿@using MsSystem.Web.Areas.Sys.Infrastructure
+@model ResourceIndexViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutContent.cshtml";
+}
+@section css{
+    <style>
+        .treegrid-indent {
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+            position: relative;
+        }
+    </style>
+}
+@section scripts{
+    <script> seajs.use("@Url.Content("/src/sys/resource/js/index.js")");</script>
+}
+<div class="wrapper-content">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 text-left pl20">
+                        所属系统
+                        <span class="select-box inline">
+                            <select class="select" id="changesystem">
+                                <option value="0">-请选择系统-</option>
+                                @foreach (var item in Model.SystemItems)
+                                {
+                                    <option value="@item.Value" selected="@item.Selected">@item.Text</option>
+                                }
+                            </select>
+                        </span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 text-right">
+                        @await Component.InvokeAsync("Menu")
+                    </div>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="full-height-scroll">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered tree">
+                            <thead>
+                                <tr>
+                                    <th class="w50"><input type="checkbox" id="ms_checkall" class="i-checks" /></th>
+                                    <th class="w300">菜单名称</th>
+                                    <th class="w200">URL</th>
+                                    <th>备注</th>
+                                    <th>操作权限</th>
+                                    <th class="w50">图标</th>
+                                    <th class="w50">排序</th>
+                                    <th class="w50">状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @Html.Raw(Model.ResourceTree.ToMenus())
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

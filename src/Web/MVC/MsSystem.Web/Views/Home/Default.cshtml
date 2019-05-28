@@ -1,0 +1,163 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section css{ 
+    <style>
+        .shortcut-ui {
+            display: inline-block;
+            width: 100%;
+            padding: 0px;
+            margin: 0px;
+        }
+            .shortcut-ui li {
+                list-style-type: none;
+                text-align: center;
+                margin: 10px 0px;
+            }
+        .shortcut-ui li .short-icon {
+            display: inline-block;
+            width: 100%;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            border-radius: 2px;
+            font-size: 30px;
+            background-color: #F8F8F8;
+            color: #999;
+            transition: all .3s;
+            -webkit-transition: all .3s;
+        }
+            .shortcut-ui li .short-icon:hover {
+                background-color: #ddd;
+                font-size: 28px;
+            }
+            .shortcut-ui li cite {
+                position: relative;
+                top: 2px;
+                display: block;
+                color: #666;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                font-size: 12px;
+                font-style: normal;
+            }
+    </style>
+}
+@section scripts{ 
+    <script>
+        var mypage = {
+            init: function () {
+                this.shortcut();
+                this.todoList();
+            },
+            shortcut: function () {
+                $('.shortcut-ui li').on('click', 'a', function () {
+                    var url = $(this).attr('data-href');
+                    utils.menu.open({
+                        dataUrl: url,
+                        menuName: $(this).find('cite').text()
+                    });
+                });
+            },
+            todoList: function () {
+                axios.get('/WF/WorkFlowInstance/HomeTodoList').then(function (response) {
+                    var data = response.data;
+                    if (data.TotalItems > 0) {
+                        $('#todolistCount').text(data.TotalItems);
+                        var html = '<thead><tr><th>流程名称</th><th class="w150">日期</th><th class="w75">发起人</th></tr></thead>';
+                        html += '<tbody>';
+                        $.each(data.Items, function (e, item) {
+                            html += '<tr>';
+                            if (item.FormType == 1) {
+                                html += '<td><a data-formtype="' + item.FormType + '" data-formid="' + item.FormData + '" data-formname="' + item.FormName + '" data-formurl="' + item.FormUrl+'">' + item.FlowName + '</a></td>';
+                            } else {
+                                html += '<td><a data-formtype="' + item.FormType + '" data-formname="' + item.FormName + '" data-flowid="' + item.FlowId + '" data-instanceid="' + item.InstanceId +'">' + item.FlowName + '</a></td>';
+                            }
+                            html += '<td>' + $.unixToDate(item.CreateTime, true) + '</td>';
+                            html += '<td>' + item.UserName + '</td>';
+                            html += '</tr>';
+                        });
+                        html += '</tbody>';
+                        $('#todolistItem').append(html);
+                    } else {
+                        $('#todolistItem').append('<tr><td colspan="3" style="border:none"><h3 class="text-center">暂无数据！</h3></td></tr>');
+                    }
+                });
+                $('#todolistItem').on('click', 'a', function () {
+                    var _this = $(this);
+                    var formtype = _this.attr('data-formtype');
+                    var formname = _this.attr('data-formname');
+                    if (formtype == 1) {
+                        var formid = _this.attr('data-formid');
+                        var formurl = _this.attr('data-formurl');
+                        utils.menu.open({
+                            dataUrl: formurl + "?id=" + formid,
+                            menuName: formname + '流程查看'
+                        });
+                    } else if (formtype == 0) {
+                        var flowid = $(this).attr('data-flowid');
+                        var instanceid = $(this).attr('data-instanceid');
+                        utils.menu.open({
+                            dataUrl: "/WF/WorkFlowInstance/Process?flowid=" + flowid + "&instanceid=" + instanceid,
+                            menuName: formname + '流程查看'
+                        });
+                    }
+                })
+            }
+        };
+        $(function () {
+            mypage.init();
+        });
+    </script>
+}
+<div class="wrapper wrapper-content" style="padding: 15px;">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>快捷方式</h5>
+                </div>
+                <div class="ibox-content">
+                    <ul class="shortcut-ui">
+                        <li class="col-sm-3">
+                            <a href="javascript:void(0)" data-href="/Sys/Resource/Index">
+                                <i class="fa fa-bars short-icon"></i>
+                                <cite>菜单管理</cite>
+                            </a>
+                        </li>
+                        <li class="col-sm-3">
+                            <a href="javascript:void(0)" data-href="/Sys/Role/Index">
+                                <i class="fa fa-group short-icon"></i>
+                                <cite>角色管理</cite>
+                            </a>
+                        </li>
+                        <li class="col-sm-3">
+                            <a href="javascript:void(0)" data-href="/WF/WorkFlow/Index">
+                                <i class="fa fa-legal short-icon"></i>
+                                <cite>流程设计</cite>
+                            </a>
+                        </li>
+                        <li class="col-sm-3">
+                            <a href="javascript:void(0)" data-href="/WF/WorkFlowInstance/Start">
+                                <i class="fa fa-location-arrow short-icon"></i>
+                                <cite>流程发起</cite>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-danger pull-right" id="todolistCount"></span>
+                    <h5>待办事项</h5>
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-hover no-margins" id="todolistItem"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

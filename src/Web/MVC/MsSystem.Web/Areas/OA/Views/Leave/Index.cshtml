@@ -1,0 +1,76 @@
+﻿@using MsSystem.Web.Areas.WF.Infrastructure
+@model Page<OaLeaveDto>
+@{
+    ViewData["Title"] = "员工请假";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section scripts{
+    <script>
+        isrefresh = true;
+        $(function(){
+            $('.jquery-pager').pager({
+                currentPageName: 'PageIndex',
+                pageSizeName: 'PageSize'
+            });
+            $('#Leave_Index_2').click(function () {
+                utils.menu.open({
+                    dataUrl: '/OA/Leave/Show',
+                    menuName: '员工请假填写'
+                });
+            });
+            $('a[name=editform]').on('click', function () {
+                var _this = $(this);
+                var id = _this.attr('data-id');
+                utils.menu.open({
+                    dataUrl: '/OA/Leave/Show?id=' + id,
+                    menuName: '员工请假' + _this.text()
+                });
+            });
+        });
+    </script>
+}
+<div class="wrapper-content">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title text-right">
+                @await Component.InvokeAsync("Menu")
+            </div>
+            <div class="ibox-content">
+                <div class="full-height-scroll">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="w50"><input type="checkbox" id="ms_checkall" class="i-checks" /></th>
+                                    <th class="w200">编号</th>
+                                    <th>标题</th>
+                                    <th class="w100">请假人</th>
+                                    <th class="w150">创建时间</th>
+                                    <th class="w100 text-center">流程状态</th>
+                                    <th class="w100 text-center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" class="i-checks" value="@item.Id" />
+                                        </td>
+                                        <td>@item.LeaveCode</td>
+                                        <td>@item.Title</td>
+                                        <td>@item.UserName</td>
+                                        <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd hh:mm:ss")</td>
+                                        <td class="text-center">@Html.Raw(((WorkFlowStatus)item.FlowStatus).ToWorkFlowStatusIcon())</td>
+                                        <td class="text-center"><a name="editform" data-id="@item.Id">@((WorkFlowStatus)item.FlowStatus == WorkFlowStatus.UnSubmit ? "编辑" : "查看")</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="jquery-pager" data-pageindex="@Model.PageIndex" data-pagesize="@Model.PageSize" data-datacount="@Model.TotalItems"></div>
+            </div>
+        </div>
+    </div>
+</div>

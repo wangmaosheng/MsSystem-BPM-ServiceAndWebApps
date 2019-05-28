@@ -1,0 +1,28 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="/ui/css/bootstrap.min14ed.css" asp-append-version="true" rel="stylesheet" />
+    <link href="/ui/css/font-awesome.css" asp-append-version="true" rel="stylesheet">
+    <link href="/ui/css/animate.min.css" asp-append-version="true" rel="stylesheet">
+    <link href="/ui/js/plugins/layer/skin/layer.css" asp-append-version="true" rel="stylesheet" />
+    <link href="/ui/css/plugins/toastr/toastr.min.css" asp-append-version="true" rel="stylesheet" />
+    <link href="/ui/css/plugins/iCheck/custom.css" asp-append-version="true" rel="stylesheet" />
+    <link href="/ui/css/style.css" asp-append-version="true" rel="stylesheet">
+    <link href="/ui/css/common.css" asp-append-version="true" rel="stylesheet" />
+    @RenderSection("css", false)
+</head>
+<body class="fixed-sidebar full-height-layout gray-bg skin-1 pace-done">
+    @RenderBody()
+    <script src="/ui/js/seajs/sea.js" asp-append-version="true"></script>
+    <script src="/src/js/config.js" asp-append-version="true"></script>
+    @RenderSection("scripts", false)
+</body>
+</html>

@@ -1,0 +1,126 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutContent.cshtml";
+    List<JadeFramework.Core.Domain.Entities.SelectListItem> msgList = new List<JadeFramework.Core.Domain.Entities.SelectListItem>();
+    foreach (var item in JadeFramework.Core.Enum<OaMessageType>.AsEnumerable())
+    {
+        string key = item.GetDescription();
+        int value = (int)item;
+        msgList.Add(new JadeFramework.Core.Domain.Entities.SelectListItem
+        {
+            Text = item.GetDescription(),
+            Value = ((int)item).ToString()
+        });
+    }
+    string msgJson = Newtonsoft.Json.JsonConvert.SerializeObject(msgList);
+    List<JadeFramework.Core.Domain.Entities.SelectListItem> userTypeList = new List<JadeFramework.Core.Domain.Entities.SelectListItem>();
+    foreach (var item in JadeFramework.Core.Enum<OaMessageFaceUserType>.AsEnumerable())
+    {
+        string key = item.GetDescription();
+        int value = (int)item;
+        userTypeList.Add(new JadeFramework.Core.Domain.Entities.SelectListItem
+        {
+            Text = item.GetDescription(),
+            Value = ((int)item).ToString()
+        });
+    }
+    string userTypeJson = Newtonsoft.Json.JsonConvert.SerializeObject(userTypeList);
+}
+@section scripts{
+    <script>
+        var msgtypeList = JSON.parse('@Html.Raw(msgJson)');
+        var usertypeList = JSON.parse('@Html.Raw(userTypeJson)');
+        seajs.use("@Url.Content("/src/oa/message/show.js")");
+    </script>
+}
+<div class="show-content" id="msapp" v-cloak>
+    <div class="row p5">
+        @await Component.InvokeAsync("Menu", true)
+    </div>
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <form class="form-horizontal m-t" id="form-msg">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">标题</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control required" name="Title" v-model="MessageShowDTO.Title" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">消息类型</label>
+                        <div class="col-sm-8">
+                            <span class="select-box inline">
+                                <select name="MsgType" v-model="MessageShowDTO.MsgType">
+                                    <option :value="item.Value" v-for="item in MessageType">{{item.Text}}</option>
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">面向人员类型</label>
+                        <div class="col-sm-8">
+                            <span class="select-box inline">
+                                <select name="FaceUserType" v-model="MessageShowDTO.FaceUserType">
+                                    <option :value="item.Value" v-for="item in UserType">{{item.Text}}</option>
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">是否是本地消息</label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" v-model="MessageShowDTO.IsLocal" v-bind:true-value="1" v-bind:false-value="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">打开方式</label>
+                        <div class="col-sm-8">
+                            <span class="select-box inline">
+                                <select name="TargetType" v-model="MessageShowDTO.TargetType">
+                                    <option value="blank">新开页签</option>
+                                    <option value="tab">内置TAB</option>
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group" v-if="MessageShowDTO.IsLocal==0">
+                        <label class="col-sm-3 control-label">链接地址</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control required" name="Link" v-model="MessageShowDTO.Link" />
+                        </div>
+                    </div>
+                    <div class="form-group" v-else>
+                        <label class="col-sm-3 control-label">消息内容</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" v-model="MessageShowDTO.Content"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">开始时间</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="StartTime" autocomplete="off" id="StartTime" v-model="MessageShowDTO.StartTime" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">结束时间</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="EndTime" autocomplete="off" id="EndTime" v-model="MessageShowDTO.EndTime" />
+                        </div>
+                    </div>
+                    <div class="form-group" v-if="MessageShowDTO.Id > 0">
+                        <label class="col-sm-3 control-label">创建时间</label>
+                        <div class="col-sm-8">
+                            <label class="control-label">{{MessageShowDTO.CreateTime|unixToDateFormat}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">状态</label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" v-model="MessageShowDTO.IsDel" v-bind:true-value="0" v-bind:false-value="1">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

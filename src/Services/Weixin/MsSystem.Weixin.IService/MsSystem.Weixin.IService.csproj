@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JadeFramework.Weixin" Version="1.0.1.4" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\MsSystem.Weixin.Model\MsSystem.Weixin.Model.csproj" />
+    <ProjectReference Include="..\MsSystem.Weixin.ViewModel\MsSystem.Weixin.ViewModel.csproj" />
+  </ItemGroup>
+
+</Project>

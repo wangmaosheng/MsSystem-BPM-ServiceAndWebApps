@@ -1,0 +1,104 @@
+﻿@using MsSystem.Web.Areas.WF.Infrastructure
+@model Page<UserWorkFlowDto>
+@{
+    ViewData["Title"] = "我的待办";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section scripts{
+    <script>
+        $(function () {
+            $('.jquery-pager').pager({
+                currentPageName: 'PageIndex',
+                pageSizeName: 'PageSize'
+            });
+            $('a[name=showflow]').click(function () {
+                var _this = $(this);
+                var formtype = _this.attr('data-formtype');
+                var formname = _this.attr('data-formname');
+                if (formtype == 1) {
+                    var formid = _this.attr('data-formid');
+                    var formurl = _this.attr('data-formurl');
+                    utils.menu.open({
+                        dataUrl: formurl + "?id=" + formid,
+                        menuName: formname + '流程查看'
+                    });
+                } else if (formtype == 0) {
+                    var flowid = $(this).attr('data-flowid');
+                    var instanceid = $(this).attr('data-instanceid');
+                    utils.menu.open({
+                        dataUrl: "/WF/WorkFlowInstance/Process?flowid=" + flowid + "&instanceid=" + instanceid,
+                        menuName: formname + '流程查看'
+                    });
+                }
+            });
+        });
+    </script>
+}
+
+<div class="wrapper-content">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title text-right">
+                @await Component.InvokeAsync("Menu")
+            </div>
+            <div class="ibox-content">
+                <div class="full-height-scroll">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="w50"><input type="checkbox" id="ms_checkall" class="i-checks" /></th>
+                                    <th>实例编号</th>
+                                    <th>流程名称</th>
+                                    <th>表单名称</th>
+                                    <th class="w150">发起人</th>
+                                    <th class="w150">流程类型</th>
+                                    <th class="w150 text-center">状态</th>
+                                    <th class="w150">创建时间</th>
+                                    <th class="w100 text-center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" class="i-checks" value="@item.FlowId" />
+                                        </td>
+                                        <td class="w150">@item.InstanceCode</td>
+                                        <td>@item.FlowName</td>
+                                        <td>@item.FormName</td>
+                                        <td>@item.UserName</td>
+                                        <td>@(((WorkFlowFormType)item.FormType).GetDescription())</td>
+                                        <td class="text-center">
+                                            @Html.Raw(HtmlExtensions.ToWorkFlowInstanceStatusIcon(item.IsFinish,item.Status))
+                                        </td>
+                                        <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd hh:mm:ss")</td>
+                                        <td class="text-center">
+                                            @switch ((WorkFlowFormType)item.FormType)
+                                            {
+                                                case WorkFlowFormType.System:
+                                                    <a name="showflow" data-formtype="@item.FormType"
+                                                       data-formid="@item.FormData"
+                                                       data-formname="@item.FormName"
+                                                       data-formurl="@item.FormUrl">查看</a>
+                                                    break;
+                                                case WorkFlowFormType.Custom:
+                                                    <a name="showflow" data-formtype="@item.FormType"
+                                                       data-formname="@item.FormName"
+                                                       data-flowid="@item.FlowId"
+                                                       data-instanceid="@item.InstanceId">查看</a>
+                                                    break;
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="jquery-pager" data-pageindex="@Model.PageIndex" data-pagesize="@Model.PageSize" data-datacount="@Model.TotalItems"></div>
+            </div>
+        </div>
+    </div>
+</div>

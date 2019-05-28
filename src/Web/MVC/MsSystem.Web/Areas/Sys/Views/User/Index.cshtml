@@ -1,0 +1,103 @@
+﻿@model UserIndexViewModel
+@{
+    ViewData["Title"] = "用户管理";
+    Layout = "~/Views/Shared/_LayoutContent.cshtml";
+}
+@section css{
+    <link href="~/ui/css/plugins/ztree/metroStyle/metroStyle.css" asp-append-version="true" rel="stylesheet" />
+}
+@section scripts{
+    <script> seajs.use("@Url.Content("/src/sys/user/js/index.js")");</script>
+}
+<div class="wrapper-content">
+    <div class="row m10" style="display: none" id="roles">
+        <div class="navbar-fixed-top mt40 p5">
+            <button type="button" class="btn btn-primary btn-permission btn-permission-save btn-xs" id="saveroles"><i class="fa fa-save"><span class="ml5">保存</span></i></button>
+            <input type="hidden" name="huserid" value="0" />
+        </div>
+        <div class="mt30 ztree" id="rolesTree"></div>
+    </div>
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 text-left pl20">
+                        <form method="get">
+                            <div class="col-lg-4 col-md-4 col-sm-4 ms-group">
+                                <label class="col-lg-4 col-md-4 col-sm-4 ms-label">用户名</label>
+                                <div class="col-lg-8 col-md-8 col-sm-8 ms-input">
+                                    <input type="text" class="form-control" name="UserName" asp-for="@Model.Search.UserName">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 ms-group">
+                                <label class="col-lg-4 col-md-4 col-sm-4 ms-label">用户状态</label>
+                                <div class="col-lg-8 col-md-8 col-sm-8 ms-input">
+                                    <span class="select-box inline">
+                                        <select class="select" name="IsDel">
+                                            <option value="-1" selected="@(Model.Search.IsDel==-1)">--全部--</option>
+                                            <option value="0" selected="@(Model.Search.IsDel==0)">可用</option>
+                                            <option value="1" selected="@(Model.Search.IsDel==1)">不可用</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 text-right">
+                        @await Component.InvokeAsync("Menu")
+                    </div>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="full-height-scroll">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="w50"><input type="checkbox" id="ms_checkall" class="i-checks" /></th>
+                                    <th>用户账号</th>
+                                    <th>用户名</th>
+                                    <th>工号</th>
+                                    <th class="w150">创建时间</th>
+                                    @*<th class="w100 text-center">数据授权</th>*@
+                                    <th class="w75 text-center">分配角色</th>
+                                    <th class="w75 text-center">分配部门</th>
+                                    <th class="w75 text-center">账号状态</th>
+                                    <th class="w75 text-center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Users.Items)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" class="i-checks" value="@item.UserId" />
+                                        </td>
+                                        <td>@item.Account</td>
+                                        <td>@item.UserName</td>
+                                        <td>@item.JobNumber</td>
+                                        <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd hh:mm:ss")</td>
+                                        @*<td class="text-center">
+                                            <a name="showdataprivileges" data-userid="@item.UserId"><i class="fa fa-database"></i></a>
+                                        </td>*@
+                                        <td class="text-center">
+                                            <a name="showrole" data-userid="@item.UserId"><i class="fa fa-group"></i></a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a name="showdept" data-userid="@item.UserId"><i class="fa fa-sitemap"></i></a>
+                                        </td>
+                                        <td class="text-center">
+                                            @Html.Raw(item.IsDel == 1 ? "<i title=\"已删除\" class=\"fa fa-trash red\"></i>" : "<i title=\"可用\" class=\"fa fa-check green\"></i>")
+                                        </td>
+                                        <td class="text-center"><a name="showuserinfo" data-userid="@item.UserId">查看</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="jquery-pager" data-pageindex="@Model.Search.PageIndex" data-pagesize="@Model.Search.PageSize" data-datacount="@Model.Users.TotalItems"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

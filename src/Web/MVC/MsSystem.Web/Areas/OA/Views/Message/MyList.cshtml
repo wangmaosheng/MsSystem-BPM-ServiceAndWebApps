@@ -1,0 +1,83 @@
+﻿@model Page<OaMessageMyList>
+@{
+    ViewData["Title"] = "消息列表";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section scripts{
+    <script>
+        $(function () {
+            $('.jquery-pager').pager({
+                currentPageName: 'PageIndex',
+                pageSizeName: 'PageSize'
+            });
+            $('a[name=getdetail]').on('click', function () {
+                var id = $(this).attr('data-id');
+                utils.menu.open({
+                    dataUrl: '/OA/Message/Detail?id=' + id,
+                    menuName: '消息查看'
+                });
+            });
+        });
+    </script>
+}
+<div class="wrapper-content">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title text-right">
+                @await Component.InvokeAsync("Menu")
+            </div>
+            <div class="ibox-content">
+                <div class="full-height-scroll">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="w50"><input type="checkbox" id="ms_checkall" class="i-checks" /></th>
+                                    <th class="w200">消息类型</th>
+                                    <th>消息标题</th>
+                                    <th class="w150">发布时间</th>
+                                    <th class="w100 text-center">状态</th>
+                                    <th class="w100 text-center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" class="i-checks" value="@item.Id" />
+                                        </td>
+                                        <td>@(((OaMessageType)item.MsgType).GetDescription())</td>
+                                        <td>@item.Title</td>
+                                        <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd hh:mm:ss")</td>
+                                        <td class="text-center">
+                                            @if (item.IsRead > 0)
+                                            {
+                                                <span class=" green">已读</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="red">未读</span>
+                                            }
+                                        </td>
+                                        <td class="text-center">
+                                            @if (item.IsLocal == 1)
+                                            {
+                                                <a data-id="@item.Id" name="getdetail">查看</a>
+                                            }
+                                            else
+                                            {
+                                                <a target="_blank" href="@item.Link">查看</a>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="jquery-pager" data-pageindex="@Model.PageIndex" data-pagesize="@Model.PageSize" data-datacount="@Model.TotalItems"></div>
+            </div>
+        </div>
+    </div>
+</div>

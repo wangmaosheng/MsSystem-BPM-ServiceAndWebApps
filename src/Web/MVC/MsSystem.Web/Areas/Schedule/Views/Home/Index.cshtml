@@ -1,0 +1,163 @@
+﻿@model Page<ScheduleDto>
+@{
+    ViewData["Title"] = "任务调度";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section css{
+
+}
+@section scripts{
+    <script>
+        $(function () {
+            $('.jquery-pager').pager({
+                currentPageName: 'PageIndex',
+                pageSizeName: 'PageSize'
+            });
+            $('#Home_Index_2').click(function () {
+                utils.open({
+                    content: '/Schedule/Home/Show',
+                    title: '新增调度',
+                    area: ['850px', '700px'],
+                });
+            });
+            $('button[name=scheduleedit]').click(function () {
+                var id = $(this).parent().attr('data-id');
+                layer.open({
+                    type: 2,
+                    title: '调度明细',
+                    area: ['900px', '650px'],
+                    maxmin: true,
+                    content: '/Schedule/Home/Show?id=' + id,
+                });
+            });
+            $('button[name=schedulestart]').click(function () {
+                excuteHander($(this).parent().attr('data-id'), '/Schedule/Home/StartAsync');
+            });
+            $('button[name=schedulestop]').click(function () {
+                excuteHander($(this).parent().attr('data-id'), '/Schedule/Home/StopAsync');
+            });
+            $('button[name=scheduleexecute]').click(function () {
+                excuteHander($(this).parent().attr('data-id'), '/Schedule/Home/ExecuteJobAsync');
+            });
+            $('button[name=schedulesuspend]').click(function () {
+                excuteHander($(this).parent().attr('data-id'), '/Schedule/Home/SuspendAsync');
+            });
+            function excuteHander(id, url) {
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: { id: id },
+                    url: url,
+                    success: function (data) {
+                        if (data) {
+                            layer.msg('操作成功!', {
+                                icon: 1,
+                                time: 2000
+                            }, function () {
+                                location.reload();
+                            });   
+                        } else {
+                            layer.msg('操作失败！', { icon: 2 });
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+}
+
+<div class="wrapper-content">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title text-right">
+                @await Component.InvokeAsync("Menu")
+            </div>
+            <div class="ibox-content">
+                <div class="full-height-scroll">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="w50"><input type="checkbox" id="ms_checkall" class="i-checks" /></th>
+                                    <th>任务名称</th>
+                                    <th>任务分组</th>
+                                    <th>URL</th>
+                                    <th>CRON表达式</th>
+                                    <th>执行次数</th>
+                                    <th>间隔时间(秒)</th>
+                                    <th class="text-center">任务执行状态</th>
+                                    <th>程序集</th>
+                                    <th>IJob实现类</th>
+                                    <th>开始时间</th>
+                                    <th>结束时间</th>
+                                    <th class="w50 text-center">状态</th>
+                                    <th class="w200 text-center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" class="i-checks" value="@item.JobId" />
+                                        </td>
+                                        <td>@item.JobName</td>
+                                        <td>@item.JobGroup</td>
+                                        <td>@item.Url</td>
+                                        <td>@item.Cron</td>
+                                        <td>@item.RunTimes</td>
+                                        <td>@item.IntervalSecond</td>
+                                        <td class="text-center">
+                                            @if (item.JobStatus == 1)
+                                            {
+                                                <i title="已启用" class="fa fa-check green"></i>
+                                            }
+                                            else
+                                            {
+                                                <i title="已停止" class="fa fa-ban red"></i>
+                                            }
+                                        </td>
+                                        <td>@item.AssemblyName</td>
+                                        <td>@item.ClassName</td>
+                                        <td>@Convert.ToDateTime(item.BeginTime).ToString("yyyy-MM-dd hh:mm:ss")</td>
+                                        <td>@Convert.ToDateTime(item.EndTime).ToString("yyyy-MM-dd hh:mm:ss")</td>
+                                        <td class="text-center">
+                                            @if (item.Status == 1)
+                                            {
+                                                <i title="正常" class="fa fa-check green"></i>
+                                            }
+                                            else
+                                            {
+                                                <i title="已删除" class="fa fa-trash red"></i>
+                                            }
+                                        </td>
+                                        <td class="text-center" data-id="@item.JobId">
+                                            @if (item.Status == 0)
+                                            {
+                                                <button class="btn btn-primary btn-xs" name="schedulestart">启用</button>
+                                            }
+                                            else
+                                            {
+                                                if (item.JobStatus == 1)
+                                                {
+                                                    <button class="btn btn-warning btn-xs" name="schedulesuspend">暂停</button>
+                                                }
+                                                else
+                                                {
+                                                    <button class="btn btn-success btn-xs" name="scheduleexecute">执行</button>
+                                                }
+                                                <button class="btn btn-danger btn-xs" name="schedulestop">删除</button>
+                                            }
+                                            <button class="btn btn-info btn-xs" name="scheduleedit">编辑</button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="jquery-pager" data-pageindex="@Model.PageIndex" data-pagesize="@Model.PageSize" data-datacount="@Model.TotalItems"></div>
+            </div>
+        </div>
+    </div>
+</div>

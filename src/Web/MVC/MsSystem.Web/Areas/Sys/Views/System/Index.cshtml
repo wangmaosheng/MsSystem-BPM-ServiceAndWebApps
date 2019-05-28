@@ -1,0 +1,64 @@
+﻿@model Page<SysSystem>
+@{
+    ViewData["Title"] = "系统管理";
+    Layout = "~/Views/Shared/_LayoutContent.cshtml";
+}
+@section scripts{
+    <script>seajs.use("@Url.Content("/src/sys/system/js/index.js")");</script>
+}
+<div class="wrapper-content">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title text-right">
+                @await Component.InvokeAsync("Menu")
+            </div>
+            <div class="ibox-content">
+                <div class="full-height-scroll">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="w50"><input type="checkbox" id="ms_checkall" class="i-checks" /></th>
+                                    <th>系统名称</th>
+                                    <th>系统备注</th>
+                                    <th class="w75 text-center">系统排序</th>
+                                    <th class="w300">系统编码</th>
+                                    <th class="w150">创建时间</th>
+                                    <th class="w75 text-center">系统状态</th>
+                                    <th class="w75 text-center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" class="i-checks" value="@item.SystemId" />
+                                        </td>
+                                        <td>@item.SystemName</td>
+                                        <td>@item.Memo</td>
+                                        <td class="text-center">@item.Sort</td>
+                                        <td>@item.SystemCode</td>
+                                        <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd hh:mm:ss")</td>
+                                        <td class="text-center">
+                                            @if (item.IsDel == 1)
+                                            {
+                                                <i title="已删除" class="fa fa-trash red"></i>
+                                            }
+                                            else
+                                            {
+                                                <i title="可用" class="fa fa-check green"></i>
+                                            }
+                                        </td>
+                                        <td class="text-center"><a data-systemid="@item.SystemId" name="showsysteminfo">查看</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="jquery-pager" data-pageindex="@Model.PageIndex" data-pagesize="@Model.PageSize" data-datacount="@Model.TotalItems"></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,116 @@
+﻿@model FormDetailDto
+@{
+    ViewData["Title"] = "表单构建";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section css{
+    <link href="~/ui/css/plugins/summernote/summernote.css" rel="stylesheet" />
+    <link href="~/ui/css/plugins/summernote/summernote-bs3.css" rel="stylesheet" />
+}
+@section scripts{
+    <script src="/ui/js/plugins/summernote/summernote.min.js"></script>
+    <script src="/ui/js/plugins/summernote/summernote-zh-CN.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.summernote').summernote({
+                height: 200,
+                lang: 'zh-CN'
+            });
+            $('#formReturn').click(function () {
+                utils.menu.closeCurrentTab();
+            });
+            $('#formSave').click(function () {
+                var html = $('.summernote').code();
+                if (html.indexOf("name") != -1) {
+                    alert('表单构建中不允许自己命名标签名称！');
+                    return;
+                }
+                var model = {
+                    'FormId': $('input[name=FormId]').val(),
+                    'FormName': $('input[name=FormName]').val(),
+                    'FormType': $('select[name=FormType]').val(),
+                    'Content': html,
+                    'FormUrl': $('input[name=FormUrl]').val()
+                };
+                var url;
+                if (model.FormId == null || model.FormId == '00000000-0000-0000-0000-000000000000') {
+                    url = '/WF/Form/InsertAsync';
+                } else {
+                    url = '/WF/Form/UpdateAsync';
+                }
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: { model: model },
+                    url: url,
+                    success: function (data) {
+                        if (data) {
+                            layer.msg('操作成功！', { icon: 1, time: 1500 });
+                            utils.menu.closeCurrentTab();
+                        } else {
+                            layer.msg('操作失败！', { icon: 5, time: 1500 });
+                        }
+                    }
+                });
+            });
+            $('select[name=FormType]').change(function () {
+                var val = $(this).val();
+                if (val == '@((int)WorkFlowFormType.System)') {
+                    $('#systemOpt').show();
+                    $('#customOpt').hide();
+                } else {
+                    $('#customOpt').show();
+                    $('#systemOpt').hide();
+                }
+            });
+        });
+    </script>
+}
+<div class="show-content">
+    <div class="row p5">
+        @await Component.InvokeAsync("Menu", true)
+    </div>
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="tabs-container">
+                    <div class="tab-content">
+                        <form class="form-horizontal m-t" id="form-schedule">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">表单名称：</label>
+                                <div class="col-sm-9">
+                                    <input type="hidden" asp-for="FormId" />
+                                    <input type="text" asp-for="FormName" class="form-control" placeholder="请输表单名称">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">表单类型：</label>
+                                <div class="col-sm-9">
+                                    <span class="select-box inline">
+                                        <select class="select" name="FormType" asp-for="FormType">
+                                            @foreach (var item in Enum<WorkFlowFormType>.AsEnumerable())
+                                            {
+                                                <option value="@((int)item)">@item.GetDescription()</option>
+                                            }
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                            <div id="customOpt" class="ibox-content no-padding" style="@((WorkFlowFormType)Model.FormType==WorkFlowFormType.Custom?"":"display:none")">
+                                <div class="summernote">
+                                    @Html.Raw(Model.Content)
+                                </div>
+                            </div>
+                            <div id="systemOpt" class="form-group" style="@((WorkFlowFormType)Model.FormType==WorkFlowFormType.System?"":"display:none")">
+                                <label class="col-sm-3 control-label">表单地址：</label>
+                                <div class="col-sm-9">
+                                    <input type="text" asp-for="FormUrl" class="form-control" placeholder="表单地址">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

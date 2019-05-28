@@ -1,0 +1,98 @@
+﻿@model Page<SysLog>
+@{
+    ViewData["Title"] = "日志列表";
+    Layout = "~/Views/Shared/_LayoutContent.cshtml";
+    LogSearchDto search = ViewBag.LogSearch as LogSearchDto;
+}
+@section scripts{
+    <script>seajs.use("@Url.Content("/src/sys/log/js/index.js")");</script>
+}
+<div class="wrapper-content">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 text-left pl20">
+                        <form method="get">
+                            <div class="col-lg-4 col-md-4 col-sm-4 ms-group">
+                                <label class="col-lg-4 col-md-4 col-sm-4 ms-label">日志类别</label>
+                                <div class="col-lg-8 col-md-8 col-sm-8 ms-input">
+                                    <span class="select-box inline">
+                                        <select class="select" id="changetype" name="LogLevel">
+                                            <option>-请选择-</option>
+                                            @foreach (var item in Enum<LogLevel>.AsEnumerable())
+                                            {
+                                                if (search.logLevel == item)
+                                                {
+                                                    <option selected="selected" value="@Enum.Parse(typeof(LogLevel), item.ToString())">@item.ToString()</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@Enum.Parse(typeof(LogLevel), item.ToString())">@item.ToString()</option>
+                                                }
+                                            }
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 ms-group">
+                                <label class="col-lg-4 col-md-4 col-sm-4 ms-label">应用程序</label>
+                                <div class="col-lg-8 col-md-8 col-sm-8 ms-input">
+                                    <span class="select-box inline">
+                                        <select class="select" name="Application">
+                                            <option value="">-请选择-</option>
+                                            @foreach (var item in Enum<Application>.AsEnumerable())
+                                            {
+                                                if (search.Application == item)
+                                                {
+                                                    <option selected="selected" value="@((int)item)">@item.GetDescription()</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@((int)item)">@item.GetDescription()</option>
+                                                }
+                                            }
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 text-right">
+                        @await Component.InvokeAsync("Menu")
+                    </div>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="full-height-scroll">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="w75 text-center">日志级别</th>
+                                    <th class="w150">应用程序</th>
+                                    <th class="w200">信息</th>
+                                    <th>Exception</th>
+                                    <th class="w150 text-center">创建时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td class="text-center">@item.Level</td>
+                                        <td>@item.Application</td>
+                                        <td>@item.Message</td>
+                                        <td>@item.Exception</td>
+                                        <td>@item.Logged.ToString("yyyy-MM-dd hh:mm:ss")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="jquery-pager" data-pageindex="@Model.PageIndex" data-pagesize="@Model.PageSize" data-datacount="@Model.TotalItems"></div>
+            </div>
+        </div>
+    </div>
+</div>

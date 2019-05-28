@@ -1,0 +1,57 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutContent.cshtml";
+}
+@section scripts{
+    <script>seajs.use("@Url.Content("/src/sys/user/js/show.js")");</script>
+}
+<div class="show-content" id="msapp" v-cloak>
+    <div class="row p5">
+        @await Component.InvokeAsync("Menu",true)
+    </div>
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <form class="form-horizontal m-t" id="form-user">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">账号</label>
+                        <div class="col-sm-8">
+                            <label v-if="User.UserId > 0" class="control-label">{{User.Account}}</label>
+                            <label v-else class="control-label gray">保存后自动生成</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">工号</label>
+                        <div class="col-sm-8">
+                            <label v-if="User.UserId > 0" class="control-label">{{User.JobNumber}}</label>
+                            <label v-else class="control-label gray">保存后自动生成</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">用户名</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control required" name="UserName" v-model="User.UserName" />
+                        </div>
+                    </div>
+                    <div class="form-group" v-if="User.UserId == 0">
+                        <label class="col-sm-3 control-label">密码</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control required" name="Password" v-model="User.Password" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">创建时间</label>
+                        <div class="col-sm-8">
+                            <label class="control-label" v-if="User.UserId > 0">{{User.CreateTime|unixToDateFormat}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">状态</label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" v-model="User.IsDel" v-bind:true-value="0" v-bind:false-value="1">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

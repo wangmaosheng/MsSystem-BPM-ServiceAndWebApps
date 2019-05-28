@@ -1,0 +1,22 @@
+﻿@model WorkFlowProcess
+@{
+    ViewData["Title"] = "流程申请";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+<div class="show-content">
+    <div class="row p5">
+        @await Component.InvokeAsync("WorkFlowMenu", Model)
+    </div>
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title text-center font-bold">
+                @Model.FlowName
+            </div>
+            <div class="ibox-content">
+                <form class="form-horizontal m-t" id="form-process">
+                    @Html.Raw(Model.FormContent)
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

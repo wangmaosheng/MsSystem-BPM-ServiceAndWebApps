@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JadeFramework.Dapper" Version="1.0.1.2" />
+    <PackageReference Include="JadeFramework.WorkFlow" Version="1.0.1.9" />
+  </ItemGroup>
+
+</Project>

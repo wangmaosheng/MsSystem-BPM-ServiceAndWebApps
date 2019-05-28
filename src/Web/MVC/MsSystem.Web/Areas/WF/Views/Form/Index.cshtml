@@ -1,0 +1,73 @@
+﻿@model Page<FormPageDto>
+@{
+    ViewData["Title"] = "表单列表";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section scripts{
+    <script>
+        $(function(){
+            $('.jquery-pager').pager({
+                currentPageName: 'PageIndex',
+                pageSizeName: 'PageSize'
+            });
+            $('#Form_Index_2').click(function () {
+                utils.menu.open({
+                    dataUrl: '/WF/Form/Show',
+                    menuName: '新增表单'
+                });
+            });
+            $('a[name=editform]').click(function () {
+                var id = $(this).attr('data-id');
+                utils.menu.open({
+                    dataUrl: '/WF/Form/Show?id=' + id,
+                    menuName: '编辑表单'
+                });
+            });
+        });
+    </script>
+}
+<div class="wrapper-content">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title text-right">
+                @await Component.InvokeAsync("Menu")
+            </div>
+            <div class="ibox-content">
+                <div class="full-height-scroll">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="w50"><input type="checkbox" id="ms_checkall" class="i-checks" /></th>
+                                    <th class="w300">表单ID</th>
+                                    <th>表单名称</th>
+                                    <th>已关联的流程</th>
+                                    <th class="w100">表单类型</th>
+                                    <th class="w150">创建时间</th>
+                                    <th class="w100 text-center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" class="i-checks" value="@item.FormId" />
+                                    </td>
+                                    <td>@item.FormId</td>
+                                    <td>@item.FormName</td>
+                                    <td>@item.FlowName</td>
+                                    <td>@(((WorkFlowFormType)item.FormType).GetDescription())</td>
+                                    <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd hh:mm:ss")</td>
+                                    <td class="text-center"><a name="editform" data-id="@item.FormId">编辑</a></td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="jquery-pager" data-pageindex="@Model.PageIndex" data-pagesize="@Model.PageSize" data-datacount="@Model.TotalItems"></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="RestSharp" Version="106.6.7" />
+    <PackageReference Include="DotNetCore.CAP.MySql" Version="2.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MsSystem.WF.IRepository\MsSystem.WF.IRepository.csproj" />
+    <ProjectReference Include="..\MsSystem.WF.IService\MsSystem.WF.IService.csproj" />
+  </ItemGroup>
+
+</Project>

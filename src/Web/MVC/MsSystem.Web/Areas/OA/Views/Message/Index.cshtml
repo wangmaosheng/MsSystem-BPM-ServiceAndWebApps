@@ -1,0 +1,148 @@
+﻿@model Page<OaMessage>
+@{
+    ViewData["Title"] = "消息管理";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section scripts{
+    <script>
+        $(function () {
+            $('.jquery-pager').pager({
+                currentPageName: 'PageIndex',
+                pageSizeName: 'PageSize'
+            });
+            $('#Message_Index_2').on('click', function () {
+                utils.menu.open({
+                    menuName: '新增消息',
+                    dataUrl: '/OA/Message/Show'
+                });
+            });
+            $('#MessageIndex_3').on('click', function () {
+                var arrid = $('.ibox-content table tbody tr td input[type=checkbox]:checked');
+                if (arrid.length == 1) {
+                    utils.menu.open({
+                        menuName: '编辑消息',
+                        dataUrl: '/OA/Message/Show?id=' + arrid.val()
+                    });
+                } else {
+                    layer.msg('请选择一条数据！', { icon: 2, time: 1500 });
+                }
+            });
+            $('#Message_Index_4').on('click', function () {
+                var ids = [];
+                $('.ibox-content table tbody tr td input[type=checkbox]:checked').each(function () {
+                    ids.push($(this).val());
+                });
+                if (ids.length <= 0) {
+                    layer.msg('请至少选择一条数据！', { icon: 5, time: 1500 });
+                    return;
+                }
+                layer.confirm('确认要删除？', { icon: 3, title: '提示' }, function (index) {
+                    axios.post('/OA/Message/Delete', ids).then(function (response) {
+                        utils.permission.authResponse(response);
+                    });
+                    location.reload();
+                });
+            });
+            $('.ibox-content table tbody tr').dblclick(function () {
+                var id = $(this).find('td input[type=checkbox]').val();
+                utils.menu.open({
+                    menuName: '消息查看',
+                    dataUrl: '/OA/Message/Show?id=' + id
+                });
+            });
+            $('a[name=getshow]').click(function () {
+                var id = $(this).attr('data-id');
+                utils.menu.open({
+                    menuName: '消息查看',
+                    dataUrl: '/OA/Message/Show?id=' + id
+                });
+            });
+            $('#Message_Index_9').click(function () {
+                //alert('暂未实现，显示三种情况：全部人员/按角色选人/直接选人');
+                var ids = [];
+                $('.ibox-content table tbody tr td input[type=checkbox]:checked').each(function () {
+                    ids.push($(this).val());
+                });
+                if (ids.length <= 0) {
+                    layer.msg('请至少选择一条数据！', { icon: 5, time: 1500 });
+                    return;
+                }
+                layer.confirm('确认要将其变为可用？有些消息可能被立即发送，请慎重', { icon: 3, title: '提示' }, function (index) {
+                    axios.post('/OA/Message/EnableMessage', ids).then(function (response) {
+                        if (response.data) {
+                            layer.msg('执行成功！');
+                        } else {
+                            layer.msg('执行失败！', { icon: 5, time: 1500 });
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+}
+<div class="wrapper-content">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title text-right">
+                @await Component.InvokeAsync("Menu")
+            </div>
+            <div class="ibox-content">
+                <div class="full-height-scroll">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="w50"><input type="checkbox" id="ms_checkall" class="i-checks" /></th>
+                                    <th>消息标题</th>
+                                    <th>消息类型</th>
+                                    <th>面向人员类型</th>
+                                    <th>是否站内消息</th>
+                                    <th>跳转方式</th>
+                                    <th>链接地址</th>
+                                    <th>是否立即生效</th>
+                                    <th>开始时间</th>
+                                    <th>结束时间</th>
+                                    <th class="w150">创建时间</th>
+                                    <th class="w50 text-center">状态</th>
+                                    <th class="w50 text-center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" class="i-checks" value="@item.Id" />
+                                        </td>
+                                        <td>@item.Title</td>
+                                        <td>@(((OaMessageType)item.MsgType).GetDescription())</td>
+                                        <td>@(((OaMessageFaceUserType)item.FaceUserType).GetDescription())</td>
+                                        <td>@(item.IsLocal==1?"是":"否")</td>
+                                        <td>@item.TargetType</td>
+                                        <td>@item.Link</td>
+                                        <td>@(item.IsEnable==1?"是":"否")</td>
+                                        <td>@(item.StartTime == 0 ? "" : item.StartTime.ToDateTime().ToString("yyyy-MM-dd HH:mm:ss"))</td>
+                                        <td>@(item.EndTime == 0 ? "" : item.EndTime.ToDateTime().ToString("yyyy-MM-dd HH:mm:ss"))</td>
+                                        <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                        <td class="text-center">
+                                            @if (item.IsDel == 1)
+                                            {
+                                                <i title="已删除" class="fa fa-trash red"></i>
+                                            }
+                                            else
+                                            {
+                                                <i title="可用" class="fa fa-check green"></i>
+                                            }
+                                        </td>
+                                        <td><a data-id="@item.Id" name="getshow">查看</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="jquery-pager" data-pageindex="@Model.PageIndex" data-pagesize="@Model.PageSize" data-datacount="@Model.TotalItems"></div>
+            </div>
+        </div>
+    </div>
+</div>

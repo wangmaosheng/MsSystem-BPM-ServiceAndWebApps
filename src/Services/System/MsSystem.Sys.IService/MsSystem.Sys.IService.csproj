@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MsSystem.Sys.Model\MsSystem.Sys.Model.csproj" />
+    <ProjectReference Include="..\MsSystem.Sys.ViewModel\MsSystem.Sys.ViewModel.csproj" />
+  </ItemGroup>
+
+</Project>

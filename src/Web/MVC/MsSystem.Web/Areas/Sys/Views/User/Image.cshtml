@@ -1,0 +1,109 @@
+﻿@{
+    ViewData["Title"] = "用户头像";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section css{ 
+    <style>
+        .userimg {
+            width: 198px;
+            height: 198px;
+            border: 1px solid #dddddd;
+            margin: 0 13px;
+            background: url(/ui/img/userimg.png) no-repeat center;
+            position: relative;
+        }
+            .userimg input {
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 5;
+                cursor: pointer;
+            }
+        .previewimg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+    </style>
+}
+@section scripts{
+    <script>
+        $(function () {
+            var imgurl = null;
+            $("#img_input").on("change", function (e) {
+                var file = e.target.files[0]; //获取图片资源
+                // 只选择图片文件
+                if (!file.type.match('image.*')) {
+                    return false;
+                }
+                var reader = new FileReader();
+                reader.readAsDataURL(file); // 读取文件
+                // 渲染文件
+                reader.onload = function (arg) {
+                    var img = '<img style="width:100%;height:100%" src="' + arg.target.result + '" alt="preview"/>';
+                    $(".previewimg").empty().append(img);
+                };
+                var filedata = new FormData();
+                filedata.append(file.name, file);
+                $.ajax({
+                    type: "POST",
+                    url: '/Sys/User/Upload',
+                    contentType: false,
+                    processData: false,
+                    data: filedata,
+                    success: function (data) {
+                        if (!data.IsError) {
+                            imgurl = data.Data;
+                        } else {
+                            layer.msg('上传失败！', { icon: 5, time: 1500 });
+                        }
+                    }
+                });
+
+            });
+            $('#uploadimg').click(function () {
+                if (imgurl == null) {
+                    layer.msg('请选择上传图片！', { icon: 5, time: 1500 });
+                    return;
+                }
+                $.ajax({
+                    dataType: 'JSON',
+                    type: 'POST',
+                    data: { imgurl: imgurl},
+                    url: '/Sys/User/ModifyUserHeadImgAsync',
+                    success: function (data) {
+                        if (data) {
+                            layer.msg('保存成功！重新登录可以看到新的头像', { icon: 1, time: 3000 });
+                        } else {
+                            layer.msg('保存失败！', { icon: 1, time: 1500 });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}
+<div class="wrapper-content">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-content">
+                <div class="full-height-scroll">
+                    <div class="userimg">
+                        <form id="uploadForm">
+                            <input type="file" name="file" id="img_input">
+                            <div class="previewimg"></div>
+                        </form>
+                    </div>
+                    <div style="margin:20px;padding:20px;">
+                        <button class="btn btn-common" id="uploadimg"><i class="fa fa-upload"></i><span class="ml5">保存上传</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

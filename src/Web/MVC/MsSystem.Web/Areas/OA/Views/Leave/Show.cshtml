@@ -1,0 +1,133 @@
+﻿@model OaLeaveShowDto
+@{
+    ViewData["Title"] = "员工请假填写";
+    Layout = "~/Areas/OA/Views/Shared/_Layout.cshtml";
+}
+@section css{
+    <link href="~/ui/js/plugins/laydate/theme/default/laydate.css" rel="stylesheet" />
+}
+@section scripts{
+    <script src="~/ui/js/plugins/laydate/laydate.js"></script>
+    <script>
+        var saveFormData = function (successcb) {
+            var isvalidate = $('#flowform').valid();
+            if (isvalidate === false) {
+                return;
+            }
+            var url = "/OA/Leave/";
+            var id = $('input[name=LeaveCode]').prev().val();
+            if (id > 0) {
+                url += "UpdateAsync";
+            } else {
+                url += "InsertAsync";
+            }
+            var param = {
+                'Id': id,
+                'Title': $('input[name=Title]').val(),
+                'LeaveType': $('select[name=LeaveType]').val(),
+                'StartTime': $('input[name=StartTime]').val(),
+                'EndTime': $('input[name=EndTime]').val(),
+                'Reason': $('textarea[name=Reason]').val()
+            };
+            axios.post(url, param).then(function (response) {
+                if (response.data.IsError == false) {
+                    $('input[name=PageId]').val(response.data.Data);
+                    layer.msg('保存成功！', { icon: 1, time: 1000 }, function () {
+                        if (typeof (successcb) == "function") {
+                            successcb();
+                        } else {
+                            utils.menu.closeCurrentTab();
+                        }
+                    });
+                } else {
+                    layer.msg('保存失败！', { icon: 5, time: 1500 });
+                }
+            });
+        };
+        $(function () {
+            var startDate = laydate.render({
+                elem: '#StartTime',
+                min: Date.now(),
+                done: function (value, date) {
+                    endDate.config.min = {
+                        year: date.year,
+                        month: date.month - 1,
+                        date: date.date,
+                    };
+                    endDate.config.start = {
+                        year: date.year,
+                        month: date.month - 1,
+                        date: date.date,
+                    };
+                }
+            });
+            var endDate = laydate.render({
+                elem: '#EndTime',
+                min: Date.now(),
+                done: function (value, date) {
+                    startDate.config.max = {
+                        year: date.year,
+                        month: date.month - 1,
+                        date: date.date,
+                    }
+                }
+            });
+        });
+    </script>
+}
+<div class="show-content">
+    <div class="row p5">
+        @await Component.InvokeAsync("WorkFlowSystemMenu", new SystemFlowDto { FormUrl = "/OA/Leave/Show", PageId = Model.Id == default(int) ? null : Model.Id.ToString() })
+    </div>
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <form class="form-horizontal m-t" id="flowform">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">编号：</label>
+                        <div class="col-sm-9">
+                            <input type="hidden" name="TableName" value="oa_leave" />
+                            <input type="hidden" asp-for="Id" data-name="Id" name="PageId" />
+                            <input type="text" asp-for="LeaveCode" class="form-control" placeholder="系统自动生成" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">请假标题：</label>
+                        <div class="col-sm-9">
+                            <input type="text" asp-for="Title" class="form-control required">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">请假类型：</label>
+                        <div class="col-sm-9">
+                            <span class="select-box inline">
+                                <select class="select" asp-for="LeaveType">
+                                    @foreach (var item in Enum<OaLeaveType>.AsEnumerable())
+                                    {
+                                        <option value="@((int)item)">@item.GetDescription()</option>
+                                    }
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">开始时间：</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control w150 required" name="StartTime" value="@Model.StartTime.ToString("yyyy-MM-dd")" id="StartTime" />
+                        </div>
+                        <label class="col-sm-2 control-label">结束时间：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control w150 required" name="EndTime" value="@Model.EndTime.ToString("yyyy-MM-dd")" id="EndTime" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">请假原因：</label>
+                        <div class="col-sm-9">
+                            <textarea asp-for="Reason" class="form-control required"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

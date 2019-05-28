@@ -1,0 +1,8 @@
+﻿@model List<string>
+@if (Model.Any())
+{
+    foreach (var item in Model)
+    {
+        @Html.Raw(item)
+    }
+}

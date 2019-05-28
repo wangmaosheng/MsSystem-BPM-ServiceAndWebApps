@@ -1,0 +1,36 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>@ViewData["Title"] 权限系统、工作流系统、OA办公</title>
+    <!--[if lt IE 9]>
+        <meta http-equiv="refresh" content="0;/error/ie" />
+    <![endif]-->
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/ui/css/bootstrap.min14ed.css" asp-append-version="true" rel="stylesheet" />
+    <link href="/ui/css/font-awesome.css" asp-append-version="true" rel="stylesheet">
+    <link href="/ui/css/animate.min.css" asp-append-version="true" rel="stylesheet">
+    <link href="/ui/css/style.css" asp-append-version="true" rel="stylesheet">
+</head>
+<body class="fixed-sidebar full-height-layout gray-bg skin-1" style="overflow:hidden">
+    <div id="wrapper">
+        @RenderBody()
+    </div>
+    <script src="/ui/js/jquery.min.js"></script>
+    <script src="/ui/js/plugins/polyfill/polyfill.min.js"></script>
+    <script src="/ui/js/bootstrap.min.js"></script>
+    <script src="/lib/signalr/dist/browser/signalr.min.js"></script>
+    <script src="/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/ui/js/plugins/layer/layer.min.js"></script>
+    <script src="/src/js/weather.js" asp-append-version="true"></script>
+    <script src="/src/js/home.js" asp-append-version="true"></script>
+    @RenderSection("scripts", false)
+</body>
+</html>

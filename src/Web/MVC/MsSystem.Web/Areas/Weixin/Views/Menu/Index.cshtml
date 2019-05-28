@@ -1,0 +1,65 @@
+﻿@model List<WxMenuDto>
+@{
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section css{
+    <style>
+        .treegrid-indent {
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+            position: relative;
+        }
+    </style>
+}
+@section scripts{
+    <environment exclude="Development">
+        <script src="https://cdn.bootcss.com/jquery-cookie/1.4.0/jquery.cookie.min.js"></script>
+    </environment>
+    <environment include="Development">
+        <script src="~/ui/js/jquery.cookie.js"></script>
+    </environment>
+    <script src="~/ui/js/plugins/treegrid/js/jquery.treegrid.js"></script>
+    <script>
+        $(function () {
+            $('.tree').treegrid({
+                initialState: 'collapse',
+                saveState: true,
+                treeColumn: 1
+            });
+        });
+    </script>
+}
+<div class="wrapper-content">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title text-right">
+                @await Component.InvokeAsync("Menu")
+            </div>
+            <div class="ibox-content">
+                <div class="full-height-scroll">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered tree">
+                            <thead>
+                                <tr>
+                                    <th class="w50"><input type="checkbox" id="ms_checkall" class="i-checks" /></th>
+                                    <th class="w150" title="菜单标题，不超过16个字节，子菜单不超过60个字节">菜单名称</th>
+                                    <th class="w200" title="菜单的响应动作类型，view表示网页类型，click表示点击类型，miniprogram表示小程序类型">菜单响应动作类型</th>
+                                    <th class="w100" title="菜单KEY值，用于消息接口推送，不超过128字节">菜单KEY值</th>
+                                    <th title="网页 链接，用户点击菜单可打开链接，不超过1024字节。 type为miniprogram时，不支持小程序的老版本客户端将打开本url。">网页链接</th>
+                                    <th class="w100" title="小程序的appid（仅认证公众号可配置）">小程序appid</th>
+                                    <th title="小程序的页面路径">小程序页面路径</th>
+                                    <th class="w50">排序</th>
+                                    <th class="w50">状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @Html.Raw(Model.ToWxMenus())
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

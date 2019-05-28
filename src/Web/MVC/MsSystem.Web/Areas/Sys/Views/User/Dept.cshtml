@@ -1,0 +1,70 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutContent.cshtml";
+}
+@section css{
+    <style>
+        .checkbutton {
+            border: 3px solid #ccc;
+            margin: 5px;
+            background: #F7F7F7;
+            cursor: pointer;
+            -webkit-border-radius: 5px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .checkbutton .checkText { 
+            min-width: 90px;
+            margin-left: 5px;
+            float: left;
+            height: 40px;
+            line-height: 40px;
+        }
+        .checkbutton .triangle {
+            float: right;
+            height: 0px;
+            width: 0px;
+            border: 20px solid #ccc;
+            border-color: #ccc #ccc transparent transparent;
+            border-style: solid solid dashed dashed;
+        }
+            .checkbutton .triangle.triangleOk {
+                height: 40px;
+                width: 40px;
+                border: none;
+                background-image: url(/ui/img/icons.png);
+                background-position: -107px -16px;
+            }
+    </style>
+}
+@section scripts{
+    <script>seajs.use("@Url.Content("/src/sys/user/js/dept.js")");</script>
+}
+<div class="show-content" id="msapp" v-cloak>
+    <div class="row p5">
+        <div class="btn-group btn-group-sm">
+            <button type="button" id="formSave" class="btn btn-primary btn-sm btn-permission btn-permission-save"><i class="fa fa-save"></i><span class="ml5">保存</span></button>
+            <button type="button" id="formReturn" class="btn btn-default btn-sm btn-permission"><i class="fa fa-mail-reply"></i><span class="ml5">返回</span></button>
+        </div>
+        <span style="float: right;">
+            当前用户
+            <i class="fa fa-user" style="color: #0e9aef"></i><span class="ml10" style=" font-size: 16px; font-weight: bold">{{UserName}}</span>
+        </span>
+    </div>
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <form class="form-horizontal m-t" id="form-dept">
+                    <div class="row">
+                        <div v-for="item in Depts" class="col-lg-3 col-md-3 col-sm-3">
+                            <div class="checkbutton" v-on:click="selectDept(item.Value)">
+                                <div class="checkText">{{item.Text}}</div>
+                                <div class="triangle triangleOk" v-if="item.Selected"></div>
+                                <div class="triangle" v-else></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

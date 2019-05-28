@@ -1,0 +1,114 @@
+﻿@model Page<WfWorkflow>
+@{
+    ViewData["Title"] = "流程列表";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section scripts{
+    <script>
+        $(function(){
+            $('.jquery-pager').pager({
+                currentPageName: 'PageIndex',
+                pageSizeName: 'PageSize'
+            });
+            $('#WorkFlow_Index_2').click(function () {
+                utils.menu.open({
+                    dataUrl: '/WF/WorkFlow/Show',
+                    menuName: '新增流程'
+                });
+            });
+            $('#WorkFlow_Index_3').on('click', function () {
+                var arrid = $('.ibox-content table tbody tr td input[type=checkbox]:checked');
+                if (arrid.length === 1) {
+                    utils.menu.open({
+                        menuName: '编辑流程',
+                        dataUrl: '/WF/WorkFlow/Show?id=' + arrid.val()
+                    });
+                } else {
+                    layer.msg('请选择一条数据！', { icon: 2, time: 1500 });
+                }
+            });
+            $('a[name=editflow]').click(function () {
+                var id = $(this).attr('data-id');
+                utils.menu.open({
+                    dataUrl: '/WF/WorkFlow/Show?id=' + id,
+                    menuName: '编辑流程'
+                });
+            });
+            $('#WorkFlow_Index_4').on('click', function () {
+                var ids = [];
+                $('.ibox-content table tbody tr td input[type=checkbox]:checked').each(function () {
+                    ids.push($(this).val());
+                });
+                if (ids.length <= 0) {
+                    layer.msg('请至少选择一条数据！', { icon: 5, time: 1500 });
+                    return;
+                }
+                layer.confirm('确认要删除？', { icon: 3, title: '提示' }, function (index) {
+                    axios.post('/WF/WorkFlow/DeleteAsync', { Ids: ids}).then(function (response) {
+                        utils.permission.authResponse(response);
+                    });
+                    window.location.reload(true);
+                });
+            });
+        });
+    </script>
+}
+
+<div class="wrapper-content">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title text-right">
+                @await Component.InvokeAsync("Menu")
+            </div>
+            <div class="ibox-content">
+                <div class="full-height-scroll">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="w50"><input type="checkbox" id="ms_checkall" class="i-checks" /></th>
+                                    <th class="w300">流程ID</th>
+                                    <th class="w200">流程编号</th>
+                                    <th>流程名称</th>
+                                    <th>流程备注</th>
+                                    <th class="w150">创建时间</th>
+                                    <th class="w50 text-center">状态</th>
+                                    <th class="w100 text-center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" class="i-checks" value="@item.FlowId" />
+                                        </td>
+                                        <td>@item.FlowId</td>
+                                        <td>@item.FlowCode</td>
+                                        <td>@item.FlowName</td>
+                                        <td>@item.Memo</td>
+                                        <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                        <td class="text-center">
+                                            @if (item.Enable == 0)
+                                            {
+                                                <i title="不可用" class="fa fa-trash red"></i>
+                                            }
+                                            else
+                                            {
+                                                <i title="可用" class="fa fa-check green"></i>
+                                            }
+                                        </td>
+                                        <td class="text-center">
+                                            <a title="编辑" data-id="@item.FlowId" name="editflow"><i class="fa fa-edit"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="jquery-pager" data-pageindex="@Model.PageIndex" data-pagesize="@Model.PageSize" data-datacount="@Model.TotalItems"></div>
+            </div>
+        </div>
+    </div>
+</div>

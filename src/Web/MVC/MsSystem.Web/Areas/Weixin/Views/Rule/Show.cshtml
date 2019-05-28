@@ -1,0 +1,174 @@
+﻿@model RuleReplyDto
+@{
+    ViewData["Title"] = "自动回复";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section css{ 
+    <style>
+        .ruletext {
+            margin-bottom: 10px;
+        }
+    </style>
+}
+@section scripts{
+    <script>
+        $(function(){
+            $('#addtextresponses').click(function () {
+                var name = $.getRandomGuid();
+                $(this).prev().append('<div class="input-group m-b"><span class="input-group-addon"><a class="rmTextResponse"><i class="fa fa-remove"></i></a></span><textarea class="form-control ruletext" name="TextResponse_' + name + '" required></textarea>');
+            });
+            $('#textresponse').on('click', '.rmTextResponse', function () {
+                $(this).parent().parent().remove();
+            });
+            $('#addkeyword').click(function () {
+                var name = $.getRandomGuid();
+                $(this).prev().append('<div class="input-group m-b"><span class="input-group-addon"><a class="rmKeyword"><i class="fa fa-remove"></i></a></span><input type="text" name="Keyword_' + name +'" class="form-control ruletext" required></div>');
+            });
+            $('#keywords').on('click', '.rmKeyword', function () {
+                $(this).parent().parent().remove();
+            });
+            $('select[name=ResponseMsgType]').on('change', function () {
+                if ($(this).val() == 1) {
+                    $('#tab_text').show();
+                } else {
+                    $('#tab_text').hide();
+                }
+            });
+            $('select[name=RuleType]').on('change', function () {
+                if ($(this).val() == 1) {
+                    $('select[name=RequestMsgType]').attr('disabled', true);
+                    $('select[name=RequestMsgType]').val(@((int)RequestMsgType.Event));
+                    $('#keywordgroup').hide();
+                } else if ($(this).val() == 2) {
+                    $('select[name=RequestMsgType]').attr('disabled', false);
+                    $('select[name=RequestMsgType]').val(@((int)RequestMsgType.Text));
+                    $('#keywordgroup').hide();
+                } else {
+                    $('select[name=RequestMsgType]').attr('disabled', true);
+                    $('select[name=RequestMsgType]').val(@((int)RequestMsgType.Text));
+                    $('#keywordgroup').show();
+                }
+            });
+            $('#formSave').click(function () {
+                if ($('#form-rule').valid()) {
+                    var model = {
+                        'Id': $('#ruleid').val(),
+                        'RuleName': $('input[name=RuleName]').val(),
+                        'RuleType': $('select[name=RuleType]').val(),
+                        'RequestMsgType': $('select[name=RequestMsgType]').val(),
+                        'ResponseMsgType': $('select[name=ResponseMsgType]').val(),
+                        'Keywords': [],
+                        'ResponseText': []
+                    };
+                    $('#keywords input').each(function (index, item) {
+                        model.Keywords.push($(this).val());
+                    });
+                    $('#textresponse textarea').each(function () {
+                        model.ResponseText.push($(this).val());
+                    });
+                    if (model.Keywords.length == 0 && $('select[name=RuleType]').val() == 0) {
+                        layer.msg('请添加关键词！', { icon: 2 });
+                        return;
+                    }
+                    if (model.ResponseText.length == 0) {
+                        layer.msg('请添加文本回复内容！', { icon: 2 });
+                        return;
+                    }
+                    var url = model.Id > 0 ? '/Weixin/Rule/Update' : '/Weixin/Rule/Add';
+                    axios.post(url, model).then(function (response) {
+                        utils.permission.authShowResponse(response);
+                    });
+                }
+            });
+        });
+    </script>
+}
+<div class="show-content">
+    <div class="row p5">
+        @await Component.InvokeAsync("Menu", true)
+    </div>
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="tabs-container">
+                    <div class="tab-content">
+                        <form class="form-horizontal m-t" id="form-rule">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">规则名称</label>
+                                <div class="col-sm-8">
+                                    <input asp-for="Id" id="ruleid" type="hidden">
+                                    <input asp-for="RuleName" type="text" class="form-control" placeholder="请输入规则名称" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">规则类型</label>
+                                <div class="col-sm-8">
+                                    <span class="select-box inline">
+                                        <select class="select" asp-for="RuleType" required>
+                                            @foreach (var item in Enum<WxRuleType>.AsEnumerable())
+                                            {
+                                                <option value="@((int)item)">@item.GetDescription()</option>
+                                            }
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">接受消息类型</label>
+                                <div class="col-sm-8">
+                                    <span class="select-box inline">
+                                        <select class="select" asp-for="RequestMsgType" disabled required>
+                                            @foreach (var item in Enum<RequestMsgType>.AsEnumerable())
+                                            {
+                                                <option value="@((int)item)">@item.GetDescription()</option>
+                                            }
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" id="keywordgroup" style="@((WxRuleType)Model.RuleType==WxRuleType.Normal?"display:block":"display:none")">
+                                <label class="col-sm-3 control-label">关键词</label>
+                                <div class="col-sm-7" id="keywords">
+                                    @foreach (var item in Model.Keywords)
+                                    {
+                                        <div class="input-group m-b">
+                                            <span class="input-group-addon"> <a class="rmKeyword"><i class="fa fa-remove"></i></a></span>
+                                            <input type="text" class="form-control ruletext" name="@("Keyword_"+ Guid.NewGuid())" value="@item" required>
+                                        </div>
+                                    }
+                                </div>
+                                <a style="top: 8px;position: relative;" id="addkeyword"><i class="fa fa-plus"></i>添加</a>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">响应消息类型</label>
+                                <div class="col-sm-8">
+                                    <span class="select-box inline">
+                                        <select class="select" asp-for="ResponseMsgType" required>
+                                            @foreach (var item in Enum<ResponseMsgType>.AsEnumerable())
+                                            {
+                                                <option value="@((int)item)">@item.GetDescription()</option>
+                                            }
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" id="tab_text">
+                                <label class="col-sm-3 control-label">文本响应</label>
+                                <div class="col-sm-7" id="textresponse">
+                                    @foreach (var item in Model.ResponseText)
+                                    {
+                                        <div class="input-group m-b">
+                                            <span class="input-group-addon"> <a class="rmTextResponse"><i class="fa fa-remove"></i></a></span>
+                                            <textarea class="form-control ruletext" name="@("TextResponse_"+Guid.NewGuid())" required>@item</textarea>
+                                        </div>
+                                    }
+                                </div>
+                                <a style="top: 8px;position: relative;" id="addtextresponses"><i class="fa fa-plus"></i>添加</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

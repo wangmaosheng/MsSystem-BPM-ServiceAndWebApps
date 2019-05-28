@@ -1,0 +1,131 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutContent.cshtml";
+}
+@section css{
+    <link href="~/ui/css/plugins/ztree/metroStyle/metroStyle.css" rel="stylesheet" />
+    <style>
+        .dbtable {
+            display: inline-block;
+            float: left;
+            height: 600px;
+            overflow: auto;
+        }
+        .tablecolumn {
+            float: left;
+            display: block;
+            width: calc(100% - 200px);
+        }
+        .dropdown-menu > li > a {
+            text-align: right;
+        }
+    </style>
+}
+@section scripts{
+    <script> seajs.use("@Url.Content("/src/sys/codebuilder/index.js")");</script>
+}
+<div class="wrapper-content">
+    <div class="row">
+        <div class="ibox" id="msapp" v-cloak>
+            <div class="ibox-title">
+                <div class="row">
+                    <form class="form-horizontal m-t" id="form-resource">
+                        <div class="col-md-2 col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><span class="red">*</span>数据来源</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control required" type="text" name="DataSource" v-model="TableSearch.DataSource" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2  col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><span class="red">*</span>数据库</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control required" type="text" name="Database" v-model="TableSearch.Database" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2  col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><span class="red">*</span>用户名</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control required" type="text" name="UserId" v-model="TableSearch.UserId" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2  col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><span class="red">*</span>密码</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control required" type="password" name="Password" v-model="TableSearch.Password" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><span class="red">*</span>命名空间</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control required" type="text" name="Namespace" v-model="TableSearch.Namespace" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-4">
+                            <div class="form-group text-right pr10">
+                                <button type="button" class="btn btn-primary btn-sm" v-on:click="getTables"><i class="fa fa-download"></i><span class="ml5">拉取表</span></button>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary btn-sm btn-smdropdown-toggle" data-toggle="dropdown">
+                                        <i class="fa fa-arrow-down"></i><span class="ml5">生成代码</span><span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a v-on:click="createCode(1)">EF实体生成</a></li>
+                                        <li><a v-on:click="createCode(2)">EF映射生成</a></li>
+                                        <li><a v-on:click="createCode(3)">EF仓储生成</a></li>
+                                        <li><a v-on:click="createCode(4)">EF仓储接口生成</a></li>
+                                        <li><a v-on:click="createCode(5)">EF服务生成</a></li>
+                                        <li><a v-on:click="createCode(6)">EF服务接口生成</a></li>
+                                        <li class="divider"></li>
+                                        <li><a v-on:click="createCode(11)">GM-NH实体生成</a></li>
+                                        <li><a v-on:click="createCode(12)">GM-NH实体映射</a></li>
+                                        <li><a v-on:click="createCode(13)">GM-NH仓储生成</a></li>
+                                        <li><a v-on:click="createCode(14)">GM-NH服务生成</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="row" style="display: block">
+                    <div class="w200 dbtable">
+                        <div class="ztree" id="tableTrees"></div>
+                    </div>
+                    <div class="col-md-12 tablecolumn">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>列名</th>
+                                    <th>主键/外键</th>
+                                    <th>是否可空</th>
+                                    <th>字段类型</th>
+                                    <th>字段长度</th>
+                                    <th>字段描述</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in TableColumn">
+                                    <td>{{item.COLUMN_NAME}}</td>
+                                    <td>{{item.COLUMN_KEY}}</td>
+                                    <td>{{item.IS_NULLABLE}}</td>
+                                    <td>{{item.DATA_TYPE}}</td>
+                                    <td>{{item.CHARACTER_MAXIMUM_LENGTH}}</td>
+                                    <td>{{item.COLUMN_COMMENT}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

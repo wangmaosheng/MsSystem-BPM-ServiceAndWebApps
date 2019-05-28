@@ -1,0 +1,118 @@
+﻿@model RoleIndexViewModel
+@{
+    ViewData["Title"] = "角色管理";
+    Layout = "~/Views/Shared/_LayoutContent.cshtml";
+}
+@section css{
+    <link href="~/ui/css/plugins/ztree/metroStyle/metroStyle.css" rel="stylesheet" />
+}
+@section scripts{
+    <script>seajs.use("@Url.Content("/src/sys/role/js/index.js")");</script>
+}
+<div class="wrapper-content">
+    <div class="row m10" style="display: none" id="resource">
+        <div class="navbar-fixed-top mt40 p5">
+            <button type="button" class="btn btn-primary btn-xs" id="saveroleres"><i class="fa fa-save"><span class="ml5">保存</span></i></button>
+            <input type="hidden" name="hroleid" value="0" />
+        </div>
+        <div class="mt30 ztree" id="resourcesTree"></div>
+    </div>
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 text-left pl20">
+                        <form method="get">
+                            <div class="col-lg-4 col-md-4 col-sm-4 ms-group">
+                                <label class="col-lg-4 col-md-4 col-sm-4 ms-label">角色名称</label>
+                                <div class="col-lg-8 col-md-8 col-sm-8 ms-input">
+                                    <input type="text" class="form-control" name="RoleName" asp-for="@Model.RoleSearch.RoleName">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 ms-group">
+                                <label class="col-lg-4 col-md-4 col-sm-4 ms-label">所属系统</label>
+                                <div class="col-lg-8 col-md-8 col-sm-8 ms-input">
+                                    <span class="select-box inline">
+                                        <select class="select" name="SystemId" id="SystemId">
+                                            <option value="0">-请选择系统-</option>
+                                            @foreach (var item in Model.Systems)
+                                            {
+                                                <option value="@item.Value" selected="@item.Selected">@item.Text</option>
+                                            }
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 ms-group">
+                                <label class="col-lg-4 col-md-4 col-sm-4 ms-label">角色状态</label>
+                                <div class="col-lg-8 col-md-8 col-sm-8 ms-input">
+                                    <span class="select-box inline">
+                                        <select class="select"  name="IsDel">
+                                            <option value="-1" selected="@(Model.RoleSearch.IsDel==-1)">--全部--</option>
+                                            <option value="0" selected="@(Model.RoleSearch.IsDel==0)">可用</option>
+                                            <option value="1" selected="@(Model.RoleSearch.IsDel==1)">不可用</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 text-right">
+                        @await Component.InvokeAsync("Menu")
+                    </div>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="full-height-scroll">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="w50"><input type="checkbox" id="ms_checkall" class="i-checks" /></th>
+                                    <th>角色名称</th>
+                                    <th>备注</th>
+                                    <th class="w150">创建时间</th>
+                                    <th class="w75 text-center">分配资源</th>
+                                    <th class="w75 text-center">分配用户</th>
+                                    <th class="w50 text-center">状态</th>
+                                    <th class="w50 text-center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var item in Model.Page.Items)
+                            {
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" class="i-checks" value="@item.RoleId"/>
+                                    </td>
+                                    <td>@item.RoleName</td>
+                                    <td>@item.Memo</td>
+                                    <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd hh:mm:ss")</td>
+                                    <td class="text-center">
+                                        <a data-roleid="@item.RoleId" name="showres" title="分配资源"><i class="fa fa-bars"></i></a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a data-roleid="@item.RoleId" name="showuser" title="分配用户"><i class="fa fa-user"></i></a>
+                                    </td>
+                                    <td class="text-center">
+                                        @if (item.IsDel == 1)
+                                        {
+                                            <i title="已删除" class="fa fa-trash red"></i>
+                                        }
+                                        else
+                                        {
+                                            <i title="可用" class="fa fa-check green"></i>
+                                        }
+                                    </td>
+                                    <td class="text-center"><a data-roleid="@item.RoleId" name="showroleinfo">查看</a></td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="jquery-pager" data-pageindex="@Model.Page.PageIndex" data-pagesize="@Model.Page.PageSize" data-datacount="@Model.Page.TotalItems"></div>
+            </div>
+        </div>
+    </div>
+</div>

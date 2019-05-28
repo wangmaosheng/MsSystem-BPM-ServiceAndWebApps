@@ -1,0 +1,36 @@
+﻿@model WorkFlowImageDto
+@{
+    ViewData["Title"] = "流程图查看";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section css{
+    <link href="~/ui/js/gooflow/fonts/iconflow.css" asp-append-version="true" rel="stylesheet" />
+    <link href="~/ui/js/gooflow/GooFlow.css" asp-append-version="true" rel="stylesheet" />
+}
+@section scripts{
+    <script src="~/ui/js/gooflow/GooFunc.js" asp-append-version="true"></script>
+    <script src="~/ui/js/gooflow/GooFlow.js" asp-append-version="true"></script>
+    <script src="~/ui/js/gooflow/GooFlow_color.js" asp-append-version="true"></script>
+    <script>
+        $(function () {
+            var workflow = $.createGooFlow($("#workflowpanel"), {});
+            workflow.loadData(JSON.parse('@Html.Raw(Model.FlowContent)'));
+            workflow.reinitSize($(this).width() - 10, $(this).height() - 10);
+            window.onresize = function () {
+                workflow.reinitSize($(this).width() - 10, $(this).height() - 10);
+            };
+            $('@("#"+ Model.CurrentNodeId.ToString())').addClass('GooFlow_item_selected').attr('title', '当前节点');
+        });
+    </script>
+}
+<div class="show-content">
+    <div class="row">
+        <div class="ibox float-e-margins" style="padding:0">
+            <div class="ibox-content" style="padding:0">
+                <div class="panel-body" style="padding:0">
+                    <div id="workflowpanel" style="display: inline-block;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

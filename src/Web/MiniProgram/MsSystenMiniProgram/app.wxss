@@ -1,0 +1,17 @@
+/* @import 'weui/weui.wxss'; */
+@import "/dist/packages/@zanui/index.wxss";
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+} 
+.wxParse-img {
+  display: block !important;
+}
+.space {
+  height:20rpx;
+  background-color: #F2f2f2;
+}

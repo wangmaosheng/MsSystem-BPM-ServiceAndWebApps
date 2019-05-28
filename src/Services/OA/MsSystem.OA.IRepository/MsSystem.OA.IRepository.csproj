@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JadeFramework.Dapper" Version="1.0.1.2" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\MsSystem.OA.Model\MsSystem.OA.Model.csproj" />
+    <ProjectReference Include="..\MsSystem.OA.ViewModel\MsSystem.OA.ViewModel.csproj" />
+  </ItemGroup>
+
+</Project>

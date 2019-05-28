@@ -1,0 +1,137 @@
+﻿@{
+    ViewData["Title"] = "发起流程";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section css{
+    <link href="/ui/css/plugins/ztree/metroStyle/metroStyle.css" rel="stylesheet" />
+    <style>
+        .treebox{
+            float:left;
+            width:250px;
+            display:inline-block;
+        }
+        .ztree li a.curSelectedNode{background-color:#ccc}
+    </style>
+}
+@section scripts{ 
+    <script src="/ui/js/plugins/ztree/jquery.ztree.all.js"></script>
+    <script>
+        var mypage = {
+            setting: {
+                view: {
+                    dblClickExpand: dblClickExpand
+                },
+                data: {
+                    simpleData: {
+                        enable: true
+                    }
+                },
+                callback: {
+                    onClick: selecChildren
+                }
+            },
+            init: function () {
+                mypage.initEvent();
+            },
+            initEvent: function () {
+                $('#datalist table tbody').on('click', 'a[name=addprocess]', function () {
+                    var flowid = $(this).attr('data-flowid');
+                    var formtype = $(this).attr('data-formtype');
+                    var formname = $(this).attr('data-formname');
+                    if (formtype == 1) {
+                        var url = $(this).attr('data-formurl');
+                        utils.menu.open({
+                            dataUrl: url,
+                            menuName: formname + '流程申请'
+                        });
+                    } else if (formtype==0) {
+                        utils.menu.open({
+                            dataUrl: '/WF/WorkFlowInstance/Process?flowid=' + flowid,
+                            menuName: formname + '流程申请'
+                        });
+                    }
+                });
+            },
+            loadTree: function () {
+                var index = layer.load();
+                axios.get('/WF/Category/GetCategoryTreeAsync').then(function (response) {
+                    if (response.status == 200) {
+                        $.fn.zTree.init($("#categoryTree"), mypage.setting, response.data);
+                        mypage.loadData(null, function () {
+                            layer.close(index);
+                        });
+                    }
+                });
+            },
+            loadData: function (id,cb) {
+                if (id == undefined) {
+                    id == null;
+                }
+                axios.get('/WF/WorkFlow/GetWorkFlowStartAsync?categoryid=' + id).then(function (response) {
+                    var html = '';
+                    if (response.data.length > 0) {
+                        $.each(response.data, function (index, item) {
+                            html += '<tr>';
+                            html += '<td>' + item.FlowCode + '</td>';
+                            html += '<td>' + item.FlowName + '</td>';
+                            html += '<td>' + item.CategoryName + '</td>';
+                            html += '<td>' + item.FormName + '</td>';
+                            html += '<td class="text-center"><a name="addprocess" data-formname="' + item.FormName + '" data-formtype="' + item.FormType + '" data-formurl="' + item.FormUrl + '" data-flowid="' + item.FlowId + '">发起</a></td>';
+                            html += '</tr>';
+                        });
+                        $('#datalist table tbody').empty().append(html);
+                    } else {
+                        var html = '<tr><td colspan="3" style="text-align:center">暂无数据！</td></tr>';
+                        $('#datalist table tbody').empty().append(html);
+                    }
+                    if (typeof (cb) == "function") {
+                        cb();
+                    }
+                });
+            }
+        };
+        function dblClickExpand(treeId, treeNode) {
+            return treeNode.level > 0;
+        }
+        function selecChildren(event, treeId, treeNode, clickFlag) {
+            var index = layer.load();
+            mypage.loadData(treeNode.id, function () {
+                layer.close(index);
+            });
+        }
+        $(function () {
+            mypage.init();
+            mypage.loadTree();
+        });
+    </script>
+}
+<div class="wrapper-content">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title text-right">
+                @await Component.InvokeAsync("Menu")
+            </div>
+            <div class="ibox-content">
+                <div class="full-height-scroll">
+                    <div class="treebox">
+                        <div class="ztree" id="categoryTree"></div>
+                    </div>
+                    <div class="table-responsive" id="datalist">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>流程编号</th>
+                                    <th>流程名称</th>
+                                    <th>分类名称</th>
+                                    <th>关联表单</th>
+                                    <th class="w100 text-center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

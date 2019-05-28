@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="8.0.13" />
+    <PackageReference Include="JadeFramework.Dapper" Version="1.0.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MsSystem.WF.IRepository\MsSystem.WF.IRepository.csproj" />
+    <ProjectReference Include="..\MsSystem.WF.Model\MsSystem.WF.Model.csproj" />
+    <ProjectReference Include="..\MsSystem.WF.ViewModel\MsSystem.WF.ViewModel.csproj" />
+  </ItemGroup>
+
+</Project>

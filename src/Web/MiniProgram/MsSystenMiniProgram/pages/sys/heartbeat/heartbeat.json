@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "系统心跳图",
+  "usingComponents": {
+    "wxc-tab": "../../../dist/packages/@minui/wxc-tab/dist/index",
+    "wxc-tab-panel": "../../../dist/packages/@minui/wxc-tab/dist/panel",
+    "wxc-tab-label": "../../../dist/packages/@minui/wxc-tab/dist/label",
+    "wxc-button": "../../../dist/packages/@minui/wxc-button/dist/index",
+    "wxc-icon": "../../../dist/packages/@minui/wxc-icon/dist/index"
+  }
+}

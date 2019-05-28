@@ -1,0 +1,59 @@
+﻿@model Page<SysUser>
+@{
+    Layout = "~/Views/Shared/_LayoutContent.cshtml";
+}
+@section scripts{
+    <script>seajs.use("@Url.Content("/src/sys/role/js/user.js")");</script>
+}
+<div class="show-content">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title">
+                <button class="btn btn-primary btn-sm" id="addUser"><i class="fa fa-plus"></i><span class="ml5">加入用户</span></button>
+                <button class="btn btn-danger btn-sm" id="delUser"><i class="fa fa-trash"></i><span class="ml5">删除</span></button>
+            </div>
+            <div class="ibox-content">
+                <div class="full-height-scroll">
+                    <div class="table-responsive">
+                        <input type="hidden" value="@ViewBag.roleid" id="roleid" />
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="w50"><input type="checkbox" class="i-checks" /></th>
+                                    <th>用户名</th>
+                                    <th>账号</th>
+                                    <th class="w150">创建时间</th>
+                                    <th class="w50 text-center">状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" class="i-checks" value="@item.UserId" />
+                                        </td>
+                                        <td>@item.UserName</td>
+                                        <td>@item.Account</td>
+                                        <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd")</td>
+                                        <td class="text-center">
+                                            @if (item.IsDel == 1)
+                                            {
+                                                <i title="已删除" class="fa fa-trash red"></i>
+                                            }
+                                            else
+                                            {
+                                                <i title="可用" class="fa fa-check green"></i>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="jquery-pager" data-pageindex="@Model.PageIndex" data-pagesize="@Model.PageSize" data-datacount="@Model.TotalItems"></div>
+            </div>
+        </div>
+    </div>
+</div>

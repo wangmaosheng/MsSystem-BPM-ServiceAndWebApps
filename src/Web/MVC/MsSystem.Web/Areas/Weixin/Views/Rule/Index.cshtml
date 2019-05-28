@@ -1,0 +1,81 @@
+﻿@model Page<RuleListDto>
+@{
+    ViewData["Title"] = "自动回复";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section scripts{
+    <script>
+        $(function () {
+            $('.jquery-pager').pager({
+                currentPageName: 'PageIndex',
+                pageSizeName: 'PageSize'
+            });
+            $('#Rule_Index_2').click(function () {
+                utils.open({
+                    content: '/Weixin/Rule/Show',
+                    title: '新增规则',
+                    area: ['850px', '700px']
+                });
+            });
+            $('a[name=editrule]').click(function () {
+                var id = $(this).attr('data-id');
+                utils.open({
+                    content: '/Weixin/Rule/Show?id=' + id,
+                    title: '编辑规则',
+                    area: ['850px', '700px']
+                });
+            });
+        });
+    </script>
+}
+<div class="wrapper-content">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title text-right">
+                @await Component.InvokeAsync("Menu")
+            </div>
+            <div class="ibox-content">
+                <div class="full-height-scroll">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="w50"><input type="checkbox" id="ms_checkall" class="i-checks" /></th>
+                                    <th class="w200">规则名称</th>
+                                    <th class="w200">规则类型</th>
+                                    <th class="w200">规则接收请求类型</th>
+                                    <th class="w200">规则响应消息类型</th>
+                                    <th>关键词</th>
+                                    <th class="w100 text-center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" class="i-checks" value="@item.Id" />
+                                        </td>
+                                        <td>@item.RuleName</td>
+                                        <td>
+                                            @(((WxRuleType)item.RuleType).GetDescription())
+                                        </td>
+                                        <td>
+                                            @(((RequestMsgType)item.RequestMsgType).GetDescription())
+                                        </td>
+                                        <td>
+                                            @(((ResponseMsgType)item.ResponseMsgType).GetDescription())
+                                        </td>
+                                        <td>@item.Keywords</td>
+                                        <td class="text-center"><a name="editrule" data-id="@item.Id">编辑</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="jquery-pager" data-pageindex="@Model.PageIndex" data-pagesize="@Model.PageSize" data-datacount="@Model.TotalItems"></div>
+            </div>
+        </div>
+    </div>
+</div>
