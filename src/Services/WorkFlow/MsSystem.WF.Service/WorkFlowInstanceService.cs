@@ -1143,7 +1143,7 @@ namespace MsSystem.WF.Service
                             else
                             {
                                 dbflowinstance.MakerList = "";
-                                dbflowinstance.IsFinish = (int)WorkFlowInstanceStatus.Deprecate;
+                                dbflowinstance.IsFinish = 0;
                                 dbflowinstance.Status = (int)WorkFlowStatus.Deprecate;
                                 dbflowinstance.PreviousId = dbflowinstance.ActivityId;
                                 dbflowinstance.ActivityId = context.WorkFlow.NextNodeId;
