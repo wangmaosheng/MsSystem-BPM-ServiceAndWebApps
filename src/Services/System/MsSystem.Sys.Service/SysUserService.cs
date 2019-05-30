@@ -44,14 +44,6 @@ namespace MsSystem.Sys.Service
                 string pwd = EncryptProvider.CreateSha1Code(password); 
                 account = account.TrimBlank();
                 SysUser dbuser = await _databaseFixture.Db.SysUser.FindAsync(m => m.IsDel == 0 && m.Account == account && m.Password == pwd);
-                loginResult.User = new UserIdentity
-                {
-                    UserId = dbuser.UserId,
-                    UserName = dbuser.UserName,
-                    HeadImg = dbuser.HeadImg,
-                    Sex = UserSex.Unknown,
-                    CreateTime = dbuser.CreateTime.ToDateTime()
-                };
                 if (dbuser == null)
                 {
                     loginResult.Message = "用户名或密码错误！";
@@ -60,6 +52,14 @@ namespace MsSystem.Sys.Service
                 else
                 {
                     _logJobs.LoginLog(dbuser.UserId, dbuser.UserName);
+                    loginResult.User = new UserIdentity
+                    {
+                        UserId = dbuser.UserId,
+                        UserName = dbuser.UserName,
+                        HeadImg = dbuser.HeadImg,
+                        Sex = UserSex.Unknown,
+                        CreateTime = dbuser.CreateTime.ToDateTime()
+                    };
                     loginResult.LoginStatus = LoginStatus.Success;
                 }
             }
