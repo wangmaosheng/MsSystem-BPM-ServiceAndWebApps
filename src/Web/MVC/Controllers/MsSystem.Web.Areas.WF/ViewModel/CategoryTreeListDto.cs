@@ -21,6 +21,11 @@ namespace MsSystem.Web.Areas.WF.ViewModel
         public Guid ParentId { get; set; }
 
         /// <summary>
+        /// 状态
+        /// </summary>
+        public int Status { get; set; }
+
+        /// <summary>
         /// 备注
         /// </summary>
         public string Memo { get; set; }
@@ -32,6 +37,10 @@ namespace MsSystem.Web.Areas.WF.ViewModel
     }
     public class CategoryDetailDto
     {
+        public CategoryDetailDto()
+        {
+            this.Id = Guid.NewGuid();
+        }
         /// <summary>
         /// 分类ID
         /// </summary>
@@ -56,5 +65,15 @@ namespace MsSystem.Web.Areas.WF.ViewModel
         /// 父级姓名
         /// </summary>
         public string ParentName { get; set; }
+        /// <summary>
+        /// 状态
+        /// </summary>
+        public int Status { get; set; }
+        public string UserId { get; set; } 
+    }
+    public class CategoryDeleteDto
+    {
+        public List<Guid> Ids { get; set; }
+        public string UserId { get; set; }
     }
 }

@@ -26,6 +26,11 @@ namespace MsSystem.WF.ViewModel
         public string Memo { get; set; }
 
         /// <summary>
+        /// 状态
+        /// </summary>
+        public int Status { get; set; }
+
+        /// <summary>
         /// 子分类
         /// </summary>
         public List<CategoryTreeListDto> Children { get; set; }
@@ -56,5 +61,14 @@ namespace MsSystem.WF.ViewModel
         /// 父级姓名
         /// </summary>
         public string ParentName { get; set; }
+
+        public int Status { get; set; }
+        public string UserId { get; set; }
+    }
+
+    public class CategoryDeleteDto
+    {
+        public List<Guid> Ids { get; set; }
+        public string UserId { get; set; }
     }
 }

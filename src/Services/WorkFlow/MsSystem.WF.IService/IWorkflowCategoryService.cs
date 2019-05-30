@@ -1,5 +1,6 @@
 ﻿using JadeFramework.Core.Domain.Entities;
 using MsSystem.WF.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,5 +19,9 @@ namespace MsSystem.WF.IService
         /// </summary>
         /// <returns></returns>
         Task<List<ZTree>> GetCategoryTreeAsync();
+        Task<CategoryDetailDto> GetCategoryDetailAsync(Guid id);
+        Task<bool> InsertAsync(CategoryDetailDto model);
+        Task<bool> UpdateAsync(CategoryDetailDto model);
+        Task<bool> DeleteAsync(CategoryDeleteDto model);
     }
 }

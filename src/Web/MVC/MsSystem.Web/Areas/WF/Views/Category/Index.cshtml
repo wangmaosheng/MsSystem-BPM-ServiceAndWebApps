@@ -14,7 +14,48 @@
 }
 @section scripts{
     <script>
-
+        $(function () {
+            $('table').on('click', 'a[name=editcategory]', function () {
+                var id = $(this).attr('data-id');
+                utils.open({
+                    dataUrl: '/WF/Category/Show?id=' + id,
+                    menuName: '编辑分类'
+                });
+            });
+            $('#Category_Index_2').click(function () {
+                utils.open({
+                    dataUrl: '/WF/Category/Show',
+                    menuName: '新增分类'
+                });
+            });
+            $('#Category_Index_3').on('click', function () {
+                var arrid = $('.ibox-content table tbody tr td input[type=checkbox]:checked');
+                if (arrid.length == 1) {
+                    utils.open({
+                        dataUrl: '/WF/Category/Show?id=' + arrid.val(),
+                        menuName: '编辑分类',
+                    });
+                } else {
+                    layer.msg('请选择一条数据！', { icon: 2, time: 1500 });
+                }
+            });
+            $('#Category_Index_4').click(function () {
+                var ids = [];
+                $('.ibox-content table tbody tr td input[type=checkbox]:checked').each(function () {
+                    ids.push($(this).val());
+                });
+                if (ids.length <= 0) {
+                    layer.msg('请至少选择一条数据！', { icon: 5, time: 1500 });
+                    return;
+                }
+                layer.confirm('确认要删除？', { icon: 3, title: '提示' }, function (index) {
+                    axios.post('/WF/Category/DeleteAsync', { ids: ids}).then(function (response) {
+                        utils.permission.authResponse(response);
+                    });
+                    layer.close(index);
+                });
+            });
+        })
     </script>
 }
 <div class="wrapper-content">
@@ -32,7 +73,8 @@
                                     <th class="w50"><input type="checkbox" id="ms_checkall" class="i-checks" /></th>
                                     <th class="w300">分类名称</th>
                                     <th>备注</th>
-                                    <th class="w100">操作</th>
+                                    <th class="w75">分类状态</th>
+                                    <th class="w100 text-center">操作</th>
                                 </tr>
                             </thead>
                             <tbody>

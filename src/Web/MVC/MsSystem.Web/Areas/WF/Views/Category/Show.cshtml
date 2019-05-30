@@ -1,1 +1,154 @@
-﻿
+﻿@model CategoryDetailDto
+@{
+    ViewData["Title"] = "分类查看";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section css{
+    <link href="/ui/css/plugins/ztree/metroStyle/metroStyle.css" rel="stylesheet" />
+    <style>
+        .dropzmenu {
+            display: none;
+            z-index: 100;
+            background-color: #eee;
+            width: 80%;
+            position: absolute;
+        }
+
+        .ztree {
+            max-height: 200px;
+            overflow: auto;
+        }
+    </style>
+}
+@section scripts{
+    <script src="~/ui/js/plugins/ztree/jquery.ztree.all.js"></script>
+    <script>
+        var mypage = {
+            init: function () {
+                this.initEvent();
+                this.initZTree();
+            },
+            initEvent: function () {
+                $('#clearMenu').click(function () {
+                    $("#menuselected").val('');
+                    $('#ParentId').val('@(default(Guid).ToString())');
+                });
+                $('#selectMenu').click(function () {
+                    $("#menuContent").toggle(200);
+                });
+                $('#formSave').click(function () {
+                    if ($('#form-category').valid() === false) {
+                        return;
+                    }
+                    var id = $('#categoryid').val();
+                    var url = id == '@(default(Guid).ToString())' ? '/WF/Category/InsertAsync' : '/WF/Category/UpdateAsync';
+                    var model = {
+                        Id: $('#categoryid').val(),
+                        Name: $('input[name=Name]').val(),
+                        ParentId: $('input[name=ParentId]').val(),
+                        Status: $('#Status').is(':checked') ? 1 : 0,
+                        Memo: $('textarea[name=Memo]').val()
+                    };
+                    debugger;
+                    axios.post(url, model).then(function (response) {
+                        utils.permission.authResponse(response);
+                    });
+                });
+            },
+            initZTree: function () {
+                var id = $('#categoryid').val();
+                axios.get('/WF/Category/GetCategoryTreeAsync?id=' + id).then(function (response) {
+                    var parentMenus = response.data;
+                    //设置默认选中
+                    $.each(parentMenus, function (i, item) {
+                        if (item.id == $('#ParentId').val()) {
+                            $("#menuselected").val(item.name);
+                            return false;
+                        }
+                    });
+                    var zNodes = parentMenus;
+                    var setting = {
+                        view: {
+                            dblClickExpand: false
+                        },
+                        data: {
+                            simpleData: {
+                                enable: true
+                            }
+                        },
+                        callback: {
+                            beforeClick: beforeClick
+                        }
+                    };
+                    function beforeClick(treeId, treeNode) {
+                        $('#ParentId').val(parseInt(treeNode.id));
+                        $("#menuselected").val(treeNode.name);
+                        $("#menuContent").toggle();
+                    }
+                    var treeobj = $.fn.zTree.init($("#treeMenu"), setting, zNodes);
+                    treeobj.expandAll(true);
+                });
+            }
+        };
+        $(function () {
+            mypage.init();
+        });
+    </script>
+}
+<div class="show-content">
+    <div class="row p5">
+        @await Component.InvokeAsync("Menu", true)
+    </div>
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="tabs-container">
+                    <div class="tab-content">
+                        <form class="form-horizontal m-t" id="form-category">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">分类名称：</label>
+                                <div class="col-sm-9">
+                                    <input type="hidden" asp-for="Id" id="categoryid" />
+                                    <input type="text" asp-for="Name" class="form-control required" placeholder="请输入分类名称">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">父级分类：</label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <input type="hidden" asp-for="ParentId" />
+                                        <input type="text" class="form-control" readonly asp-for="ParentName" id="menuselected" />
+                                        <span class="input-group-addon" id="clearMenu"><i class="fa fa-close"></i></span>
+                                        <span class="input-group-addon" id="selectMenu"><i class="fa fa-search"></i></span>
+                                    </div>
+                                    <div id="menuContent" class="dropzmenu">
+                                        <ul id="treeMenu" class="ztree"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">分类状态：</label>
+                                <div class="col-sm-9">
+                                    @if (Model.Status == 1)
+                                    {
+                                        <input type="checkbox" id="Status" checked class="i-checks" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" id="Status" class="i-checks" />
+                                    }
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">备注：</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" asp-for="Memo"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

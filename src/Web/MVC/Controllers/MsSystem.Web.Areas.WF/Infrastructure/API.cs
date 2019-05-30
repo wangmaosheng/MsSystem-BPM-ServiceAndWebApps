@@ -25,6 +25,10 @@ namespace MsSystem.Web.Areas.WF.Infrastructure
         {
             public static string GetTreeListAsync(string baseUri) => $"{baseUri}/Category/GetTreeListAsync";
             public static string GetCategoryTreeAsync(string baseUri) => $"{baseUri}/Category/GetCategoryTreeAsync";
+            public static string GetCategoryDetailAsync(string baseUri,Guid id) => $"{baseUri}/Category/GetCategoryDetailAsync?id="+ id;
+            public static string InsertAsync(string baseUri) => $"{baseUri}/Category/InsertAsync";
+            public static string UpdateAsync(string baseUri) => $"{baseUri}/Category/UpdateAsync";
+            public static string DeleteAsync(string baseUri) => $"{baseUri}/Category/DeleteAsync";
         }
         public static class WorkFlowInstance
         {

@@ -38,5 +38,29 @@ namespace MsSystem.WF.API.Controllers
             return await categoryService.GetCategoryTreeAsync();
         }
 
+        [HttpGet]
+        public async Task<CategoryDetailDto> GetCategoryDetailAsync(Guid id)
+        {
+            return await categoryService.GetCategoryDetailAsync(id);
+        }
+
+        [HttpPost]
+        public async Task<bool> InsertAsync([FromBody]CategoryDetailDto model)
+        {
+            return await categoryService.InsertAsync(model);
+        }
+
+        [HttpPost]
+        public async Task<bool> UpdateAsync([FromBody]CategoryDetailDto model)
+        {
+            return await categoryService.UpdateAsync(model);
+        }
+
+        [HttpPost]
+        public async Task<bool> DeleteAsync([FromBody]CategoryDeleteDto model)
+        {
+            return await categoryService.DeleteAsync(model);
+        }
+
     }
 }

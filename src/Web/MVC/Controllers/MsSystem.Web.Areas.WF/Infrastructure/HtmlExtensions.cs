@@ -30,7 +30,8 @@ namespace MsSystem.Web.Areas.WF.Infrastructure
                 sb.Append("<td><input type=\"checkbox\" class=\"i-checks\" data-pid=\"" + item.Id + "\" value=\"" + item.Id + "\" /></td>");
                 sb.Append("<td>" + item.Name + "</td>");
                 sb.Append("<td>" + item.Memo + "</td>");
-                sb.Append("<td>编辑</td>");
+                sb.Append("<td class=\"text-center\">" + (item.Status == 1 ? "<i title=\"可用\" class=\"fa fa-check green\"></i>" : "<i title=\"已删除\" class=\"fa fa-trash red\"></i>") + "</td>");
+                sb.Append("<td class=\"text-center\"><a name=\"editcategory\" data-id=\"" + item.Id + "\">编辑</a></td>");
                 sb.Append("</tr>");
                 if (item.Children.Any())
                 {

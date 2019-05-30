@@ -1,4 +1,8 @@
 ﻿"use strict";
+window.refresh = function (index) {
+    layer.close(index);
+    location.reload();
+};
 var isrefresh = false;
 function refresh() {
     if (isrefresh) {
@@ -165,6 +169,10 @@ const open = function (options) {
             layero.find('iframe').focus();
         }
     };
+    if (options.dataUrl) {//该操作为了兼容之前写的utils.menus.open方法中的参数
+        defaults.title = options.menuName;
+        defaults.content = options.dataUrl;
+    }
     var resoptions = $.extend(defaults, options);
     layer.open(resoptions);
 };

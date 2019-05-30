@@ -3,6 +3,7 @@ using JadeFramework.Core.Extensions;
 using Microsoft.Extensions.Configuration;
 using MsSystem.Web.Areas.WF.Infrastructure;
 using MsSystem.Web.Areas.WF.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -22,6 +23,10 @@ namespace MsSystem.Web.Areas.WF.Service
         /// </summary>
         /// <returns></returns>
         Task<List<ZTree>> GetCategoryTreeAsync();
+        Task<CategoryDetailDto> GetCategoryDetailAsync(Guid id);
+        Task<bool> InsertAsync(CategoryDetailDto model);
+        Task<bool> UpdateAsync(CategoryDetailDto model);
+        Task<bool> DeleteAsync(CategoryDeleteDto model);
     }
     public class WorkflowCategoryService : IWorkflowCategoryService
     {
@@ -48,6 +53,30 @@ namespace MsSystem.Web.Areas.WF.Service
             var uri = API.Category.GetTreeListAsync(_baseUrl);
             var responseString = await _apiClient.GetStringAsync(uri);
             return responseString.ToObject<List<CategoryTreeListDto>>();
+        }
+        public async Task<CategoryDetailDto> GetCategoryDetailAsync(Guid id)
+        {
+            var uri = API.Category.GetCategoryDetailAsync(_baseUrl, id);
+            var responseString = await _apiClient.GetStringAsync(uri);
+            return responseString.ToObject<CategoryDetailDto>();
+        }
+
+        public async Task<bool> InsertAsync(CategoryDetailDto model)
+        {
+            var uri = API.Category.InsertAsync(_baseUrl);
+            return await _apiClient.PostBooleanAsync(uri, model);
+        }
+
+        public async Task<bool> UpdateAsync(CategoryDetailDto model)
+        {
+            var uri = API.Category.UpdateAsync(_baseUrl);
+            return await _apiClient.PostBooleanAsync(uri, model);
+        }
+
+        public async Task<bool> DeleteAsync(CategoryDeleteDto model)
+        {
+            var uri = API.Category.DeleteAsync(_baseUrl);
+            return await _apiClient.PostBooleanAsync(uri, model);
         }
     }
 }
