@@ -6,5 +6,6 @@ namespace MsSystem.OA.IService
     public interface IWorkFlowService
     {
         Task<bool> ChangeTableStatusAsync(WorkFlowStatusChange statusChange);
+        Task<string> WorkFlowSelectInfoAsync(string sql);
     }
 }

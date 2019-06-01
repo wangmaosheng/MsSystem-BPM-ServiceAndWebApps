@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JadeFramework.Core" Version="1.0.1.2" />
+    <PackageReference Include="JadeFramework.Core" Version="1.0.1.8" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
   </ItemGroup>
 

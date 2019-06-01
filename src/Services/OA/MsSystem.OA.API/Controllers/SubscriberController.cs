@@ -1,5 +1,6 @@
 ﻿using DotNetCore.CAP;
 using JadeFramework.WorkFlow;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MsSystem.OA.IService;
 using System.Threading.Tasks;
@@ -18,6 +19,11 @@ namespace MsSystem.OA.API.Controllers
             this.workFlowService = workFlowService;
         }
 
+        /// <summary>
+        /// CAP 改变OA系统表单流程状态
+        /// </summary>
+        /// <param name="statusChange"></param>
+        /// <returns></returns>
         [NonAction]
         [CapSubscribe("WorkFlowStatusChangedOA")]
         public async Task ChangeTableStatusAsync(WorkFlowStatusChange statusChange)
