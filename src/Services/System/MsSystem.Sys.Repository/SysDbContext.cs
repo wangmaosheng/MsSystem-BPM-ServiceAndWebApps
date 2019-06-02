@@ -29,6 +29,10 @@ namespace MsSystem.Sys.Repository
         private ISysUserRoleRepository _sysUserRole;
         private ISysDataPrivilegesRepository _sysDataPrivileges;
 
+        private ISysLeaderRepository _sysLeader;
+        private ISysDeptLeaderRepository _sysDeptLeader;
+        private ISysWorkflowsqlRepository _sysWorkflowsql;
+
         public ISysButtonRepository SysButton => _sysButton ?? (_sysButton = new SysButtonRepository(Connection, _config));
         public ISysDeptRepository SysDept => _sysDept ?? (_sysDept = new SysDeptRepository(Connection, _config));
         public ISysReleaseLogRepository SysReleaseLog => _sysReleaseLog ?? (_sysReleaseLog = new SysReleaseLogRepository(Connection, _config));
@@ -40,7 +44,9 @@ namespace MsSystem.Sys.Repository
         public ISysUserRepository SysUser => _sysUser ?? (_sysUser = new SysUserRepository(Connection, _config));
         public ISysUserRoleRepository SysUserRole => _sysUserRole ?? (_sysUserRole = new SysUserRoleRepository(Connection, _config));
         public ISysDataPrivilegesRepository SysDataPrivileges => _sysDataPrivileges ?? (_sysDataPrivileges = new SysDataPrivilegesRepository(Connection, _config));
-
+        public ISysLeaderRepository SysLeader => _sysLeader ?? (_sysLeader = new SysLeaderRepository(Connection, _config));
+        public ISysDeptLeaderRepository SysDeptLeader => _sysDeptLeader ?? (_sysDeptLeader = new SysDeptLeaderRepository(Connection, _config));
+        public ISysWorkflowsqlRepository SysWorkflowsql => _sysWorkflowsql ?? (_sysWorkflowsql = new SysWorkflowsqlRepository(Connection, _config));
     }
     public class SysLogDbContext : DapperDbContext, ISysLogDbContext
     {

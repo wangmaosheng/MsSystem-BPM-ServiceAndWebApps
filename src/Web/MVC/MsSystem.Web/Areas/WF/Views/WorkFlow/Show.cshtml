@@ -173,6 +173,7 @@
                                                         <option value="ALL_USER">任何人</option>
                                                         <option value="SPECIAL_USER">指定用户</option>
                                                         <option value="SPECIAL_ROLE">指定角色</option>
+                                                        <option value="SQL">SQL自动获取</option>
                                                     </select>
                                                 </td>
                                             </tr>
@@ -189,6 +190,12 @@
                                                 <td>
                                                     <input type="hidden" />
                                                     <textarea readonly title="选择角色"></textarea><a id="selectroletrees">选择</a>
+                                                </td>
+                                            </tr>
+                                            <tr style="display:none" id="selectsqlcode">
+                                                <td>SQL代码</td>
+                                                <td>
+                                                    <textarea style="width:150px;min-height:100px;cursor:auto"></textarea>
                                                 </td>
                                             </tr>
                                         </table>

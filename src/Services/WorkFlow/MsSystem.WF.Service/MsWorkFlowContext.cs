@@ -1,13 +1,13 @@
-﻿using JadeFramework.Core.Extensions;
-using JadeFramework.WorkFlow;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace MsSystem.WF.Service
+﻿namespace MsSystem.WF.Service
 {
+    using JadeFramework.Core.Extensions;
+    using JadeFramework.WorkFlow;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     /// <summary>
     /// workflow context
     /// </summary>

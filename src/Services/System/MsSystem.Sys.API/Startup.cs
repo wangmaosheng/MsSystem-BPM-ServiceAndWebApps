@@ -65,6 +65,9 @@ namespace MsSystem.Sys.API
             services.AddScoped<ISysUserService, SysUserService>();
             services.AddScoped<ISysSystemService, SysSystemService>();
             services.AddScoped<ISysDeptService, SysDeptService>();
+
+            services.AddScoped<IWorkFlowService, WorkFlowService>();
+
             #endregion
 
             services.AddMvc(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))

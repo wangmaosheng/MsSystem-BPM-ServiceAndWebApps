@@ -239,10 +239,10 @@ $(function () {
                 if (workflow.getItemInfo(id, 'node').setInfo) {
                     var nodeobj = workflow.getItemInfo(id, 'node');
                     $('#NodeDesignate').val(nodeobj.setInfo.NodeDesignate);
-                    var node_ids = [];
+                    var node_ids;
                     if (nodeobj.setInfo.NodeDesignate === 'SPECIAL_ROLE') {
                         $('#selectrolebox').show();
-                        $('#selectuserbox').hide();
+                        $('#selectuserbox,#selectsqlcode').hide();
                         node_ids = nodeobj.setInfo.Nodedesignatedata.roles;
                         pageprop.__getRoleTree(node_ids, function (ids, names, data) {
                             $('#selectrolebox input[type=hidden]').val(ids.join(','));
@@ -250,14 +250,20 @@ $(function () {
                         });
                     } else if (nodeobj.setInfo.NodeDesignate === 'SPECIAL_USER') {
                         $('#selectuserbox').show();
-                        $('#selectrolebox').hide();
+                        $('#selectrolebox,#selectsqlcode').hide();
                         node_ids = nodeobj.setInfo.Nodedesignatedata.users;
                         pageprop.__getUserTree(node_ids, function (ids, names, data) {
                             $('#selectuserbox input[type=hidden]').val(ids.join(','));
                             $('#selectuserbox textarea').val(names.join(','));
                         });
-                    } else {
-                        $('#selectrolebox,#selectuserbox').hide();
+                    } else if (nodeobj.setInfo.NodeDesignate === 'SQL') {
+                        $('#selectsqlcode').show();
+                        $('#selectuserbox,#selectrolebox').hide();
+                        node_ids = nodeobj.setInfo.Nodedesignatedata.sql;
+                        $('#selectsqlcode textarea').val(node_ids);
+                    }
+                    else {
+                        $('#selectrolebox,#selectuserbox,#selectsqlcode').hide();
                     }
                 }
             } else if (type === 'chat') {
@@ -404,12 +410,15 @@ $(function () {
                 var val = $(this).val();
                 if (val == 'SPECIAL_USER') {
                     $('#selectuserbox').show();
-                    $('#selectrolebox').hide();
+                    $('#selectsqlcode,#selectrolebox').hide();
                 } else if (val == 'SPECIAL_ROLE') {
                     $('#selectrolebox').show();
-                    $('#selectuserbox').hide();
+                    $('#selectsqlcode,#selectuserbox').hide();
+                } else if (val == 'SQL') {
+                    $('#selectsqlcode').show();
+                    $('#selectuserbox,#selectuserbox').hide();
                 } else {
-                    $('#selectuserbox,#selectrolebox').hide();
+                    $('#selectuserbox,#selectrolebox,#selectsqlcode').hide();
                 }
             });
             $('#selectroletrees').click(function () {
@@ -532,13 +541,16 @@ $(function () {
                             Nodedesignatedata: {
                                 users: [],
                                 roles: [],
-                                orgs: []
+                                orgs: [],
+                                sql: ''
                             }
                         };
                         if (selfinfodata.NodeDesignate == 'SPECIAL_ROLE') {
                             selfinfodata.Nodedesignatedata.roles = $('#selectrolebox input[type=hidden]').val().split(',');
                         } else if (selfinfodata.NodeDesignate == 'SPECIAL_USER') {
                             selfinfodata.Nodedesignatedata.users = $('#selectuserbox input[type=hidden]').val().split(',');
+                        } else if (selfinfodata.NodeDesignate == 'SQL') {
+                            selfinfodata.Nodedesignatedata.sql = $('#selectsqlcode textarea').val();
                         }
                     } else if (nodeType === 'chat') {
                         selfinfodata = {

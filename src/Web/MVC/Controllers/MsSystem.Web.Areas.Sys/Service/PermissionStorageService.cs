@@ -70,8 +70,7 @@ namespace MsSystem.Web.Areas.Sys.Service
                 this.Store(permission);
                 return permission;
             }
-            //异步
-            return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<UserPermission>(res));
+            return JsonConvert.DeserializeObject<UserPermission>(res);
         }
 
 

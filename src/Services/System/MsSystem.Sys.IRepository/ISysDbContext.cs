@@ -15,6 +15,9 @@ namespace MsSystem.Sys.IRepository
         ISysUserDeptRepository SysUserDept { get; }
         ISysUserRoleRepository SysUserRole { get; }
         ISysDataPrivilegesRepository SysDataPrivileges { get; }
+        ISysLeaderRepository SysLeader { get; }
+        ISysDeptLeaderRepository SysDeptLeader { get; }
+        ISysWorkflowsqlRepository SysWorkflowsql { get; }
     }
     public interface ISysLogDbContext : IDapperDbContext
     {

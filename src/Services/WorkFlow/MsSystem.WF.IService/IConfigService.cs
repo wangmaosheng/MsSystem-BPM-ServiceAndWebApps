@@ -1,4 +1,5 @@
 ﻿using JadeFramework.Core.Domain.Entities;
+using MsSystem.WF.ViewModel;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,5 +19,6 @@ namespace MsSystem.WF.IService
         /// <param name="roleids"></param>
         /// <returns></returns>
         Task<List<long>> GetUserIdsByRoleIdsAsync(List<long> roleids);
+        Task<List<long>> GetFlowNodeInfo(string sysname, FlowViewModel model);
     }
 }

@@ -29,11 +29,11 @@ namespace MsSystem.WF.Service
 
 
         /// <summary>
-        /// 获取当前节点执行人
+        /// 获取当前节点类型
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public string GetMakerList(FlowNode node)
+        private string GetMakerList(FlowNode node)
         {
             if (node.SetInfo == null)
             {
@@ -44,9 +44,11 @@ namespace MsSystem.WF.Service
                 case FlowNodeSetInfo.ALL_USER:
                     return MakerListEnum.AllUser.ToString();
                 case FlowNodeSetInfo.SPECIAL_USER:
-                    return string.Join(",", node.SetInfo.Nodedesignatedata.Users);
+                    return string.Join(",", node.SetInfo.Nodedesignatedata.Users);//返回用户ID
                 case FlowNodeSetInfo.SPECIAL_ROLE:
-                    return string.Join(",", node.SetInfo.Nodedesignatedata.Roles);
+                    return string.Join(",", node.SetInfo.Nodedesignatedata.Roles);//返回角色ID
+                case FlowNodeSetInfo.SQL:
+                    return node.SetInfo.Nodedesignatedata.SQL;//返回sql
                 default:
                     return MakerListEnum.None.ToString();
             }
@@ -56,8 +58,9 @@ namespace MsSystem.WF.Service
         /// 获取权限系统Maker User Id
         /// </summary>
         /// <param name="node"></param>
+        /// <param name="userid"></param>
         /// <returns></returns>
-        public async Task<MakerListModel> GetSysMakerList(FlowNode node)
+        private async Task<MakerListModel> GetSysMakerList(FlowNode node,string userid)
         {
             if (node.SetInfo == null)
             {
@@ -86,6 +89,30 @@ namespace MsSystem.WF.Service
                         UserIds = userids,
                         MakerType = MakerListEnum.Roles
                     };
+                case FlowNodeSetInfo.SQL:
+                    string idsql = node.SetInfo.Nodedesignatedata.SQL;
+                    var array = idsql.Split('_');
+                    if (array.Length >= 2)
+                    {
+                        string sysname = array[0].ToLower();//sys oa  wf weixin
+                        var res = await configService.GetFlowNodeInfo(sysname, new FlowViewModel
+                        {
+                            sql = idsql,
+                            param = new
+                            {
+                                userid = userid
+                            }
+                        });
+                        return new MakerListModel
+                        {
+                            UserIds = res,
+                            MakerType = MakerListEnum.SQL
+                        };
+                    }
+                    else
+                    {
+                        throw new Exception("无法判断要访问哪个系统！");
+                    }
                 default:
                     return new MakerListModel
                     {
@@ -137,7 +164,6 @@ namespace MsSystem.WF.Service
         {
             return await databaseFixture.Db.WorkflowInstance.GetMyApprovalHistoryAsync(pageIndex, pageSize, userId);
         }
-
 
 
         /// <summary>
@@ -235,7 +261,7 @@ namespace MsSystem.WF.Service
                 try
                 {
                     var dbflow = await databaseFixture.Db.Workflow.FindByIdAsync(model.FlowId);
-                    MsWorkFlowContext context = new MsWorkFlowContext(new WorkFlow
+                    MsWorkFlowContext context = new MsWorkFlowContext(new JadeFramework.WorkFlow.WorkFlow
                     {
                         FlowId = dbflow.FlowId,
                         FlowJSON = dbflow.FlowContent,
@@ -358,6 +384,21 @@ namespace MsSystem.WF.Service
         }
 
         /// <summary>
+        /// 获取执行过的节点
+        /// </summary>
+        /// <param name="instanceid"></param>
+        /// <returns></returns>
+        private async Task<List<FlowNode>> GetExcuteNodes(Guid instanceid)
+        {
+            var operationHis = await databaseFixture.Db.WorkflowOperationHistory.FindAllAsync(m => m.InstanceId == instanceid);
+            return operationHis.Where(m => m.TransitionType == (int)WorkFlowMenu.Agree || m.TransitionType == (int)WorkFlowMenu.Submit).Select(m => new FlowNode
+            {
+                Id = m.NodeId,
+                Name = m.NodeName
+            }).ToList();
+        }
+
+        /// <summary>
         /// 获取工作流进程信息
         /// </summary>
         /// <param name="process"></param>
@@ -418,7 +459,7 @@ namespace MsSystem.WF.Service
                 }
                 //根据当前人获取可操作的按钮
                 //获取下一步的执行人
-                MsWorkFlowContext context = new MsWorkFlowContext(new WorkFlow
+                MsWorkFlowContext context = new MsWorkFlowContext(new JadeFramework.WorkFlow.WorkFlow
                 {
                     FlowId = dbflow.FlowId,
                     FlowJSON = flowinstance.FlowContent,
@@ -451,47 +492,19 @@ namespace MsSystem.WF.Service
                 }
                 else
                 {
-                    var maker = await this.GetSysMakerList(context.WorkFlow.ActivityNode);
+                    var maker = await GetSysMakerList(context.WorkFlow.ActivityNode, model.UserId);
                     if (maker.MakerType != MakerListEnum.None)
                     {
-                        if (maker.MakerType == MakerListEnum.Users)
+                        if (maker.UserIds.Contains(process.UserId.ToInt64()))
                         {
-                            var makerUsers = flowinstance.MakerList.Split(',').Where(m => !string.IsNullOrEmpty(m));
-                            if (makerUsers.Contains(process.UserId))
+                            model.Menus = new List<int>
                             {
-                                model.Menus = new List<int>
-                                {
-                                    (int)WorkFlowMenu.Agree,
-                                    (int)WorkFlowMenu.Deprecate,
-                                    (int)WorkFlowMenu.Back,
-                                };
-                                //获取执行过的节点
-                                var operationHis = await databaseFixture.Db.WorkflowOperationHistory.FindAllAsync(m => m.InstanceId == process.InstanceId);
-                                model.ExecutedNode = operationHis.Where(m => m.TransitionType == (int)WorkFlowMenu.Agree || m.TransitionType == (int)WorkFlowMenu.Submit).Select(m => new FlowNode
-                                {
-                                    Id = m.NodeId,
-                                    Name = m.NodeName
-                                }).ToList();
-                            }
-                        }
-                        else
-                        {
-                            if (maker.UserIds.Contains(process.UserId.ToInt64()))
-                            {
-                                model.Menus = new List<int>
-                                {
-                                    (int)WorkFlowMenu.Agree,
-                                    (int)WorkFlowMenu.Deprecate,
-                                    (int)WorkFlowMenu.Back,
-                                };
-                                //获取执行过的节点
-                                var operationHis = await databaseFixture.Db.WorkflowOperationHistory.FindAllAsync(m => m.InstanceId == process.InstanceId);
-                                model.ExecutedNode = operationHis.Where(m=> m.TransitionType == (int)WorkFlowMenu.Agree || m.TransitionType == (int)WorkFlowMenu.Submit).Select(m => new FlowNode
-                                {
-                                    Id = m.NodeId,
-                                    Name = m.NodeName
-                                }).ToList();
-                            }
+                                (int)WorkFlowMenu.Agree,
+                                (int)WorkFlowMenu.Deprecate,
+                                (int)WorkFlowMenu.Back,
+                            };
+                            //获取执行过的节点
+                            model.ExecutedNode = await GetExcuteNodes(process.InstanceId);
                         }
                         if (model.Menus == null)
                         {
@@ -810,7 +823,7 @@ namespace MsSystem.WF.Service
                 try
                 {
                     var dbflow = await databaseFixture.Db.Workflow.FindByIdAsync(model.FlowId);
-                    MsWorkFlowContext context = new MsWorkFlowContext(new WorkFlow
+                    MsWorkFlowContext context = new MsWorkFlowContext(new JadeFramework.WorkFlow.WorkFlow
                     {
                         FlowId = dbflow.FlowId,
                         FlowJSON = dbflow.FlowContent,
@@ -899,7 +912,7 @@ namespace MsSystem.WF.Service
                     {
                         return WorkFlowResult.Error("该流程已经结束！");
                     }
-                    MsWorkFlowContext context = new MsWorkFlowContext(new WorkFlow
+                    MsWorkFlowContext context = new MsWorkFlowContext(new JadeFramework.WorkFlow.WorkFlow
                     {
                         FlowId = model.FlowId,
                         FlowJSON = dbflowinstance.FlowContent,
@@ -1075,7 +1088,7 @@ namespace MsSystem.WF.Service
                     {
                         return WorkFlowResult.Error("该流程已经结束！");
                     }
-                    MsWorkFlowContext context = new MsWorkFlowContext(new WorkFlow
+                    MsWorkFlowContext context = new MsWorkFlowContext(new JadeFramework.WorkFlow.WorkFlow
                     {
                         FlowId = model.FlowId,
                         FlowJSON = dbflowinstance.FlowContent,
@@ -1222,7 +1235,7 @@ namespace MsSystem.WF.Service
                     {
                         throw new Exception("参数报错！");
                     }
-                    MsWorkFlowContext context = new MsWorkFlowContext(new WorkFlow
+                    MsWorkFlowContext context = new MsWorkFlowContext(new JadeFramework.WorkFlow.WorkFlow
                     {
                         FlowId = model.FlowId,
                         FlowJSON = dbflowinstance.FlowContent,

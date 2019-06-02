@@ -1,6 +1,6 @@
 ﻿using JadeFramework.Core.Consul;
 
-namespace MsSystem.WF.API
+namespace MsSystem.WF.ViewModel
 {
     public class AppSettings
     {
@@ -25,6 +25,7 @@ namespace MsSystem.WF.API
         public string Users { get; set; }
         public string Roles { get; set; }
         public string GetUserIds { get; set; }
+        public string GetFlowNodeInfo { get; set; }
     }
     public class MsApplication
     {
