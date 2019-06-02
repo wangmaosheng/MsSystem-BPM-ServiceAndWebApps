@@ -53,7 +53,7 @@ namespace MsSystem.Web
             services.AddScoped<ICachingProvider, MemoryCachingProvider>();
             //验证码
             services.AddScoped<IVerificationCode, VerificationCode>();
-            services.AddScoped<IPermissionStorageContainer, PermissionStorageService>();
+            services.AddScoped<IPermissionStorageContainer, RedisPermissionStorageService>();
             var container = new ContainerBuilder();
             container.Populate(services);
             return new AutofacServiceProvider(container.Build());
