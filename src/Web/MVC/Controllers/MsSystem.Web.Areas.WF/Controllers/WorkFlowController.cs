@@ -33,16 +33,15 @@ namespace MsSystem.Web.Areas.WF.Controllers
         }
 
         [HttpGet]
-        [Permission]
+        [Permission("/WF/WorkFlow/Index", ButtonType.View, true)]
         public async Task<IActionResult> Show(Guid? id)
         {
             WorkFlowDetailDto workflow = id != null ? await workFlowService.GetByIdAsync(id.Value) : new WorkFlowDetailDto();
             return View(workflow);
         }
 
-
         [HttpPost]
-        [Permission("/WF/WorlFlow/Index", ButtonType.Add, false)]
+        [Permission("/WF/WorkFlow/Index", ButtonType.Add, false)]
         public async Task<bool> InsertAsync(WorkFlowDetailDto workflow)
         {
             workflow.CreateUserId = UserIdentity.UserId.ToString();
@@ -50,7 +49,7 @@ namespace MsSystem.Web.Areas.WF.Controllers
         }
 
         [HttpPost]
-        [Permission("/WF/WorlFlow/Index", ButtonType.Edit, false)]
+        [Permission("/WF/WorkFlow/Index", ButtonType.Edit, false)]
         public async Task<bool> UpdateAsync(WorkFlowDetailDto workflow)
         {
             workflow.CreateUserId = UserIdentity.UserId.ToString();
@@ -64,7 +63,7 @@ namespace MsSystem.Web.Areas.WF.Controllers
         /// <param name="userid"></param>
         /// <returns></returns>
         [HttpPost]
-        [Permission("/WF/WorlFlow/Index", ButtonType.Delete, false)]
+        [Permission("/WF/WorkFlow/Index", ButtonType.Delete, false)]
         public async Task<bool> DeleteAsync([FromBody]FlowDeleteDTO dto)
         {
             dto.UserId = UserIdentity.UserId;
