@@ -78,7 +78,7 @@ namespace MsSystem.Web.Areas.WF.Infrastructure
             }
             else if (isFinish == 1 && status == (int)WorkFlowStatus.IsFinish)
             {
-                html.Append("<span><i class=\"fa fa-spin fa-spinner green\"></i>已审核</span>");
+                html.Append("<span><i class=\"fa fa-check green\"></i>已审核</span>");
             }
             else if (isFinish == 0 && status == (int)WorkFlowStatus.Running)
             {
@@ -93,31 +93,6 @@ namespace MsSystem.Web.Areas.WF.Infrastructure
                 html.Append("<span><i class=\"fa fa-mail-reply red\"></i>已退回</span>");
             }
             return html;
-
-            //if (isFinish == null)
-            //{
-            //    html.Append("<span class=\"gray\"><i class=\"fa fa-undo\"></i>未提交</span>");
-            //    return html;
-            //}
-            //WorkFlowInstanceStatus instanceStatus = (WorkFlowInstanceStatus)isFinish;
-            //switch (instanceStatus)
-            //{
-            //    case WorkFlowInstanceStatus.Running:
-            //        html.Append("<span><i class=\"fa fa-spin fa-spinner green\"></i>运行中</span>");
-            //        break;
-            //    case WorkFlowInstanceStatus.IsFinish:
-            //        html.Append("<span><i class=\"fa fa-circle red\"></i>已结束</span>");
-            //        break;
-            //    case WorkFlowInstanceStatus.Deprecate:
-            //        html.Append("<span><i class=\"fa fa-close red\"></i>不同意</span>");
-            //        break;
-            //    case WorkFlowInstanceStatus.Back:
-            //        html.Append("<span><i class=\"fa fa-mail-reply red\"></i>已退回</span>");
-            //        break;
-            //    default:
-            //        break;
-            //}
-            //return html;
         }
     }
 }

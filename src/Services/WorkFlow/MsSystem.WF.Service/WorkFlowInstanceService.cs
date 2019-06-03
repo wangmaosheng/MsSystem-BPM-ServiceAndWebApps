@@ -994,7 +994,15 @@ namespace MsSystem.WF.Service
                                     dbflowinstance.ActivityType = (int)context.WorkFlow.NextNodeType;
                                     dbflowinstance.MakerList = (context.WorkFlow.NextNodeType == WorkFlowInstanceNodeType.EndRound ? "" : this.GetMakerList(context.WorkFlow.NextNode)).Trim();
                                     dbflowinstance.IsFinish = context.WorkFlow.NextNodeType.ToIsFinish();
-                                    dbflowinstance.Status = (int)WorkFlowStatus.Running;
+
+                                    if (context.WorkFlow.NextNodeType == WorkFlowInstanceNodeType.EndRound)
+                                    {
+                                        dbflowinstance.Status = (int)WorkFlowStatus.IsFinish;
+                                    }
+                                    else
+                                    {
+                                        dbflowinstance.Status = (int)WorkFlowStatus.Running;
+                                    }
                                     await databaseFixture.Db.WorkflowInstance.UpdateAsync(dbflowinstance, tran);
 
                                     //流程结束情况
