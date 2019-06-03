@@ -95,13 +95,12 @@ namespace MsSystem.WF.Service
                     if (array.Length >= 2)
                     {
                         string sysname = array[0].ToLower();//sys oa  wf weixin
+                        var param = new Dictionary<string, object>();
+                        param.Add("userid", userid);
                         var res = await configService.GetFlowNodeInfo(sysname, new FlowViewModel
                         {
                             sql = idsql,
-                            param = new
-                            {
-                                userid = userid
-                            }
+                            param = param
                         });
                         return new MakerListModel
                         {
@@ -281,7 +280,7 @@ namespace MsSystem.WF.Service
                             ActivityName = context.WorkFlow.NextNode.Name,
                             ActivityType = (int)context.WorkFlow.NextNodeType,
                             PreviousId = context.WorkFlow.ActivityNodeId,
-                            MakerList = (this.GetMakerList(context.WorkFlow.Nodes[context.WorkFlow.NextNodeId]) + ",").Trim(),
+                            MakerList = this.GetMakerList(context.WorkFlow.Nodes[context.WorkFlow.NextNodeId]).Trim(),
                             CreateUserId = model.UserId,
                             CreateUserName = model.UserName,
                             FlowContent = dbflow.FlowContent,
@@ -297,7 +296,7 @@ namespace MsSystem.WF.Service
                         workflowInstance.ActivityName = context.WorkFlow.NextNode.Name;
                         workflowInstance.ActivityType = (int)context.WorkFlow.NextNodeType;
                         workflowInstance.PreviousId = context.WorkFlow.ActivityNodeId;
-                        workflowInstance.MakerList = (this.GetMakerList(context.WorkFlow.Nodes[context.WorkFlow.NextNodeId]) + ",").Trim();
+                        workflowInstance.MakerList = this.GetMakerList(context.WorkFlow.Nodes[context.WorkFlow.NextNodeId]).Trim();
                         workflowInstance.FlowContent = dbflow.FlowContent;
                         workflowInstance.IsFinish = context.WorkFlow.NextNodeType.ToIsFinish();
                         workflowInstance.Status = (int)WorkFlowStatus.Running;
@@ -492,7 +491,7 @@ namespace MsSystem.WF.Service
                 }
                 else
                 {
-                    var maker = await GetSysMakerList(context.WorkFlow.ActivityNode, model.UserId);
+                    var maker = await GetSysMakerList(context.WorkFlow.ActivityNode, process.UserId);
                     if (maker.MakerType != MakerListEnum.None)
                     {
                         if (maker.UserIds.Contains(process.UserId.ToInt64()))
@@ -705,7 +704,7 @@ namespace MsSystem.WF.Service
                     dbflowinstance.ActivityId = nextNode.Id;
                     dbflowinstance.ActivityName = nextNode.Name;
                     dbflowinstance.ActivityType = (int)nextNode.NodeType();
-                    dbflowinstance.MakerList = (nextNode.NodeType() == WorkFlowInstanceNodeType.EndRound ? "" : this.GetMakerList(nextNode) + ",").Trim();
+                    dbflowinstance.MakerList = (nextNode.NodeType() == WorkFlowInstanceNodeType.EndRound ? "" : this.GetMakerList(nextNode)).Trim();
                     //计算票数
                     var result = await CalcVotes(dbflowinstance.InstanceId, dbflowinstance.PreviousId, nextNode, context.WorkFlow.ActivityNode.SetInfo.ChatData.ParallelCalcType);
                     dbflowinstance.IsFinish = (int)result;
@@ -773,7 +772,7 @@ namespace MsSystem.WF.Service
                     dbflowinstance.ActivityId = nextNode.Id;
                     dbflowinstance.ActivityName = nextNode.Name;
                     dbflowinstance.ActivityType = (int)nextNode.NodeType();
-                    dbflowinstance.MakerList = (nextNode.NodeType() == WorkFlowInstanceNodeType.EndRound ? "" : this.GetMakerList(nextNode) + ",").Trim();
+                    dbflowinstance.MakerList = (nextNode.NodeType() == WorkFlowInstanceNodeType.EndRound ? "" : this.GetMakerList(nextNode)).Trim();
                     //计算票数
                     var result = await CalcVotes(dbflowinstance.InstanceId, dbflowinstance.PreviousId, nextNode, context.WorkFlow.ActivityNode.SetInfo.ChatData.ParallelCalcType);
                     dbflowinstance.IsFinish = (int)result;
@@ -837,7 +836,7 @@ namespace MsSystem.WF.Service
                     dbinstance.ActivityName = context.WorkFlow.NextNode.Name;
                     dbinstance.ActivityType = (int)context.WorkFlow.NextNodeType;
                     dbinstance.PreviousId = context.WorkFlow.ActivityNodeId;
-                    dbinstance.MakerList = (this.GetMakerList(context.WorkFlow.Nodes[context.WorkFlow.NextNodeId]) + ",").Trim();
+                    dbinstance.MakerList = this.GetMakerList(context.WorkFlow.Nodes[context.WorkFlow.NextNodeId]).Trim();
                     dbinstance.IsFinish = context.WorkFlow.NextNodeType.ToIsFinish();
                     dbinstance.Status = (int)WorkFlowStatus.Running;
                     await databaseFixture.Db.WorkflowInstance.UpdateAsync(dbinstance, tran);
@@ -943,7 +942,7 @@ namespace MsSystem.WF.Service
                                 dbflowinstance.ActivityId = reallynode.Id;
                                 dbflowinstance.ActivityName = reallynode.Name;
                                 dbflowinstance.ActivityType = (int)reallynode.NodeType();
-                                dbflowinstance.MakerList = (reallynode.NodeType() == WorkFlowInstanceNodeType.EndRound ? "" : this.GetMakerList(reallynode) + ",").Trim();
+                                dbflowinstance.MakerList = (reallynode.NodeType() == WorkFlowInstanceNodeType.EndRound ? "" : this.GetMakerList(reallynode)).Trim();
                                 dbflowinstance.IsFinish = reallynode.NodeType().ToIsFinish();
                                 await databaseFixture.Db.WorkflowInstance.UpdateAsync(dbflowinstance, tran);
 
@@ -993,7 +992,7 @@ namespace MsSystem.WF.Service
                                     dbflowinstance.ActivityId = context.WorkFlow.NextNodeId;
                                     dbflowinstance.ActivityName = context.WorkFlow.NextNode.Name;
                                     dbflowinstance.ActivityType = (int)context.WorkFlow.NextNodeType;
-                                    dbflowinstance.MakerList = (context.WorkFlow.NextNodeType == WorkFlowInstanceNodeType.EndRound ? "" : this.GetMakerList(context.WorkFlow.NextNode) + ",").Trim();
+                                    dbflowinstance.MakerList = (context.WorkFlow.NextNodeType == WorkFlowInstanceNodeType.EndRound ? "" : this.GetMakerList(context.WorkFlow.NextNode)).Trim();
                                     dbflowinstance.IsFinish = context.WorkFlow.NextNodeType.ToIsFinish();
                                     dbflowinstance.Status = (int)WorkFlowStatus.Running;
                                     await databaseFixture.Db.WorkflowInstance.UpdateAsync(dbflowinstance, tran);
@@ -1117,7 +1116,7 @@ namespace MsSystem.WF.Service
                                 dbflowinstance.ActivityId = reallynode.Id;
                                 dbflowinstance.ActivityName = reallynode.Name;
                                 dbflowinstance.ActivityType = (int)reallynode.NodeType();
-                                dbflowinstance.MakerList = (reallynode.NodeType() == WorkFlowInstanceNodeType.EndRound ? "" : this.GetMakerList(reallynode) + ",").Trim();
+                                dbflowinstance.MakerList = (reallynode.NodeType() == WorkFlowInstanceNodeType.EndRound ? "" : this.GetMakerList(reallynode)).Trim();
                                 dbflowinstance.IsFinish = reallynode.NodeType().ToIsFinish();
                                 dbflowinstance.Status = (int)WorkFlowStatus.Deprecate;
                                 await databaseFixture.Db.WorkflowInstance.UpdateAsync(dbflowinstance, tran);
@@ -1257,7 +1256,7 @@ namespace MsSystem.WF.Service
                         }
                         else
                         {
-                            dbflowinstance.MakerList = (rejectNode.NodeType() == WorkFlowInstanceNodeType.EndRound ? "" : this.GetMakerList(rejectNode) + ",").Trim(); ;
+                            dbflowinstance.MakerList = (rejectNode.NodeType() == WorkFlowInstanceNodeType.EndRound ? "" : this.GetMakerList(rejectNode)).Trim(); ;
                         }
                         dbflowinstance.IsFinish = rejectNode.NodeType() == WorkFlowInstanceNodeType.EndRound ? (int)WorkFlowInstanceStatus.IsFinish : (int)WorkFlowInstanceStatus.Running;
                         dbflowinstance.Status = (int)WorkFlowStatus.Back;

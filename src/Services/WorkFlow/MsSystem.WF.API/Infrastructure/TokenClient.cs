@@ -36,7 +36,7 @@ namespace MsSystem.WF.API.Infrastructure
             {
                 var response = await Client.RequestTokenAsync(new TokenRequest
                 {
-                    Address = _appSettings.Value.MsApplication.url,
+                    Address = _appSettings.Value.MsApplication.url + _appSettings.Value.MsApplication.tokenurl,
                     ClientId = _appSettings.Value.MsApplication.client_id,
                     ClientSecret = _appSettings.Value.MsApplication.client_secret,
                     GrantType = _appSettings.Value.MsApplication.grant_type
@@ -48,7 +48,7 @@ namespace MsSystem.WF.API.Infrastructure
                 }
                 else
                 {
-                    return response.Error;
+                    return null;
                 }
             }
             else

@@ -96,14 +96,11 @@ namespace MsSystem.Web.Areas.Sys.Service
         private static RedisClient _redisClient;
         private IHttpContextAccessor _httpContextAccessor;
         private ISysResourceService _resourceService;
-        //private ICachingProvider _cacheFactory;
         public RedisPermissionStorageService(
-            //ICachingProvider cacheFactory,
             IHttpContextAccessor httpContextAccessor,
             IConfiguration Configuration,
             ISysResourceService resourceService)
         {
-            //_cacheFactory = cacheFactory;
             _httpContextAccessor = httpContextAccessor;
             _resourceService = resourceService;
 
@@ -127,7 +124,6 @@ namespace MsSystem.Web.Areas.Sys.Service
         {
             string json = JsonConvert.SerializeObject(obj);
             _redisClient.GetDefaultDatabase().StringSet(this.Key, json);
-            //_cacheFactory.Set(this.Key, json);
         }
 
         /// <summary>
@@ -137,7 +133,6 @@ namespace MsSystem.Web.Areas.Sys.Service
         public object Get()
         {
             var res = _redisClient.GetDefaultDatabase().StringGet(this.Key);
-            //var res = _cacheFactory.Get(this.Key);
             return res;
         }
 

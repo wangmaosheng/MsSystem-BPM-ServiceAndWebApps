@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MsSystem.Sys.IService;
 using MsSystem.Sys.ViewModel;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MsSystem.Sys.API.Controllers
@@ -20,9 +21,9 @@ namespace MsSystem.Sys.API.Controllers
         }
 
         [HttpPost]
-        public async Task<string> WorkFlowSelectInfoAsync([FromBody]FlowViewModel model)
+        public async Task<List<long>> GetFlowNodeInfo([FromBody]FlowViewModel model)
         {
-            return await flowService.WorkFlowSelectInfoAsync(model);
+            return await flowService.GetFlowNodeInfo(model);
         }
     }
 }

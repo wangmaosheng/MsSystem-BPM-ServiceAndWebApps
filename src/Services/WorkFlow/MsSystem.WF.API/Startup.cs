@@ -85,7 +85,7 @@ namespace MsSystem.WF.API
         {
             //缓存
             services.AddScoped<ICachingProvider, MemoryCachingProvider>();
-
+            services.AddMemoryCache();
             services.AddServiceRegistration();
             services.AddResponseCompression();
 
@@ -109,7 +109,7 @@ namespace MsSystem.WF.API
             services.AddScoped<IWorkFlowInstanceService, WorkFlowInstanceService>();
             services.AddScoped<IWorkflowCategoryService, WorkflowCategoryService>();
 
-
+            services.AddScoped<ICachingProvider, MemoryCachingProvider>();
             services.AddAutoMapper();
 
             services.AddMvc(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
