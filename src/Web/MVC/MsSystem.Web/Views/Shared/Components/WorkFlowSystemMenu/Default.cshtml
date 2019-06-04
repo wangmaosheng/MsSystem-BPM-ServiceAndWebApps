@@ -420,11 +420,17 @@
                     $.each(response.data.Data, function (index, item) {
                         var icon = getApprovalIcon(item.TransitionType);
                         html += '<div class="vertical-timeline-block">';
-                        html += '<div class="vertical-timeline-icon blue-bight-bg"><i class="' + icon +'"></i></div>';
-                        html += '<div class="vertical-timeline-content">';
-                        html += '<h2>' + item.CreateUserName+'</h2>';
-                        html += '<p>' + item.Content+'</p >';
-                        html += '<span class="vertical-date"><small>' + $.unixToDate(item.CreateTime, true)+'</small></span>';
+                        html += '<div class="vertical-timeline-icon white-bg"><i class="' + icon +'"></i></div>';
+                        html += '<div class="vertical-timeline-content" style="padding: 0.4em;">';
+                        html += '<p style="margin:0px;border-bottom: 1px solid #f1f1f1;">';
+                        html += '<strong>【' + item.NodeName + '】</strong>&nbsp;&nbsp;' + item.CreateUserName;
+                        if (item.TransitionType != null) {
+                            html += '<span class="vertical-date" style="float:right"><small style="color:#0e9aef;">' + $.unixToDate(item.CreateTime, true) + '</small></span>';
+                        }
+                        html +='</p>'
+                        if (item.Content != null) {
+                            html += '<p style="padding-left:5px;margin:8px 0px;">' + item.Content + '</p >';
+                        }
                         html += '</div>';
                         html += '</div>';
                     });
@@ -438,15 +444,17 @@
         function getApprovalIcon(type) {
             switch (type) {
                 case 1:
-                    return "fa fa-circle";
+                    return "fa fa-play green";
                 case 2:
-                    return "fa fa-check";
+                    return "fa fa-check green";
                 case 3:
-                    return "fa fa-close";
+                    return "fa fa-mail-reply red";
+                case 5:
+                    return "fa fa-reply-all red";
                 case 7:
                     return "fa fa-rotate-left";
                 default:
-                    return '';
+                    return "fa fa-stop red";
             }
         }
     });

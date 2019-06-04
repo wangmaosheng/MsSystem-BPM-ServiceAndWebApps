@@ -1322,7 +1322,24 @@ namespace MsSystem.WF.Service
         public async Task<WorkFlowResult> GetFlowApprovalAsync(WorkFlowProcessTransition model)
         {
             var dbhistory = await databaseFixture.Db.WorkflowOperationHistory.FindAllAsync(m => m.InstanceId == model.InstanceId);
-            return WorkFlowResult.Success(string.Empty, dbhistory.OrderBy(m => m.CreateTime));
+            var dbinstance = await databaseFixture.Db.WorkflowInstance.FindByIdAsync(model.InstanceId);
+            if (dbinstance.IsFinish == 1)
+            {
+                List<WfWorkflowOperationHistory> list = new List<WfWorkflowOperationHistory>();
+                list.Add(new WfWorkflowOperationHistory
+                {
+                    NodeName = "结束",
+                    TransitionType = null,
+                    CreateUserName = "",
+                    CreateTime = dbhistory.OrderByDescending(m => m.CreateTime).Select(m => m.CreateTime).First() + 1
+                });
+                IEnumerable<WfWorkflowOperationHistory> result = dbhistory.Union(list);
+                return WorkFlowResult.Success(string.Empty, result.OrderBy(m => m.CreateTime));
+            }
+            else
+            {
+                return WorkFlowResult.Success(string.Empty, dbhistory.OrderBy(m => m.CreateTime));
+            }
         }
 
         /// <summary>
