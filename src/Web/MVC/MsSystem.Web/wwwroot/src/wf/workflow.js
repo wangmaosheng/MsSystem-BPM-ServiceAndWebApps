@@ -4,7 +4,6 @@ var formTree;
 var rolesTree;
 var usersTree;
 var chatUserTree;
-var lineTree;
 function dblClickExpand(treeId, treeNode) {
     return treeNode.level > 0;
 }
@@ -282,12 +281,8 @@ $(function () {
         },
         toggleLineEvent: function (id) {
             $('#mylineeventtitle,#mylineeventcontent').show();
-            $('#selectlinebox').show();
             if (workflow.getItemInfo(id, 'line').setInfo) {
-                pageprop.__getSystemLines(workflow.getItemInfo(id, 'line').setInfo.lineId, function (ids, names, data) {
-                    $('#selectlinebox input[type=hidden]').val(ids.join(','));
-                    $('#selectlinebox #linename').text(names.join(','));
-                });
+                $('#selectlinebox textarea').val(workflow.getItemInfo(id, 'line').setInfo.CustomSQL);
             }
         },
         __getRoleTree: function (node_ids, callback) {
@@ -332,28 +327,6 @@ $(function () {
                                 names.push(item.name);
                             }
                         });
-                    });
-                    layer.close(index);
-                    if (callback) {
-                        callback(ids, names, data);
-                    }
-                }
-            });
-        },
-        __getSystemLines: function (line_ids, callback) {
-            var index = layer.load();
-            $.ajax({
-                type: 'GET',
-                dataType: 'JSON',
-                url: '/WF/WorkFlow/GetAllLinesAsync',
-                success: function (data) {
-                    var ids = [];
-                    var names = [];
-                    $.each(data, function (index, item) {
-                        if (line_ids == item.id) {
-                            ids.push(item.id);
-                            names.push(item.name);
-                        }
                     });
                     layer.close(index);
                     if (callback) {
@@ -464,27 +437,6 @@ $(function () {
                     content: $('#users')
                 });
             });
-            $('#selectsystemlinetype').click(function () {
-                var idstr = $('#selectlinebox input[type=hidden]').val();
-                var ids = idstr.split(',');
-                $.ajax({
-                    type: 'GET',
-                    dataType: 'JSON',
-                    url: '/WF/WorkFlow/GetAllLinesAsync',
-                    data: { ids: ids },
-                    success: function (data) {
-                        lineTree = $.fn.zTree.init($("#flowlinesTree"), pageprop.setting, data);
-                        lineTree.expandAll(true);
-                    }
-                });
-                utils.open({
-                    type: 1,
-                    title: '选择类型',
-                    maxmin: false,
-                    area: ['300px', '500px'],
-                    content: $('#flowlines')
-                });
-            });
             $('#saveroles').click(function () {
                 var nodes = rolesTree.getCheckedNodes(true);
                 var ids = [];
@@ -507,22 +459,6 @@ $(function () {
                 }
                 $('#selectuserbox input[type=hidden]').val(ids.join(','));
                 $('#selectuserbox textarea').val(names.join(','));
-                layer.closeAll();
-            });
-            $('#setflowline').click(function () {
-                var nodes = lineTree.getCheckedNodes(true);
-                if (nodes > 1) {
-                    alert('只能选择一个节点！');
-                    return;
-                }
-                var ids = [];
-                var names = [];
-                for (var i = 0; i < nodes.length; i++) {
-                    ids.push(nodes[i].id);
-                    names.push(nodes[i].name);
-                }
-                $('#selectlinebox input[type=hidden]').val(ids.join(','));
-                $('#selectlinebox #linename').text(names.join(','));
                 layer.closeAll();
             });
         },
@@ -570,10 +506,9 @@ $(function () {
                     }
                     workflow.setName($('#ele_id').val(), $('#ele_name').val(), 'node', selfinfodata);
                 } else if (nodeModel === 'line') {
-                    var id = $('#selectlinebox input[type=hidden]').val();
+                    var sql = $('#selectlinebox textarea').val();
                     var setInfo = {
-                        lineId: id,
-                        lineType: 'System'
+                        CustomSQL: sql
                     };
                     workflow.setName($('#ele_id').val(), $('#ele_name').val(), 'line', setInfo);
                 }

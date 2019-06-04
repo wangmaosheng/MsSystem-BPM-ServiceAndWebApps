@@ -2,16 +2,16 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MsSystem.Sys.Model
+namespace MsSystem.WF.Model
 {
     /// <summary>
     /// 用于工作流获取权限系统数据
     /// </summary>
-    [Table("sys_workflowsql")]
-    public class SysWorkflowsql
+    [Table("wf_workflowsql")]
+    public class WfWorkflowsql
     {
         /// <summary>
-        /// 流程sql名称,必须是以sys_为开头，用于判断属于哪个系统，方便调用接口
+        /// 流程sql名称,必须是以wf_为开头，用于判断属于哪个系统，方便调用接口
         /// </summary>
         [Key]
         public string Name { get; set; }
@@ -51,12 +51,11 @@ namespace MsSystem.Sys.Model
         /// </summary>
         public long CreateTime { get; set; }
     }
-
-    public class SysWorkflowsqlMapper : ClassMapper<SysWorkflowsql>
+    internal sealed class WfWorkflowsqlMapper : ClassMapper<WfWorkflowsql>
     {
-        public SysWorkflowsqlMapper()
+        public WfWorkflowsqlMapper()
         {
-            Table("sys_workflowsql");
+            Table("wf_workflowsql");
             AutoMap();
         }
     }

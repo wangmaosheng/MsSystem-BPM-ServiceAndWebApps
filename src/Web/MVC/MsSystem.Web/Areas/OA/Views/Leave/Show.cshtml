@@ -9,6 +9,10 @@
 @section scripts{
     <script src="~/ui/js/plugins/laydate/laydate.js"></script>
     <script>
+        var optionParams = {
+            'UserId': null,
+            'FormId': $('input[name=PageId]').val()
+        };
         var saveFormData = function (successcb) {
             var isvalidate = $('#flowform').valid();
             if (isvalidate === false) {

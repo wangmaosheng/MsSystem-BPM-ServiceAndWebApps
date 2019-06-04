@@ -76,7 +76,7 @@ namespace MsSystem.Web.Areas.WF.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<WorkFlowResult> CreateInstanceAsync([FromBody]WorkFlowInstanceDto model)
+        public async Task<WorkFlowResult> CreateInstanceAsync([FromBody]WorkFlowProcessTransition model)
         {
             model.UserId = UserIdentity.UserId.ToString();
             model.UserName = UserIdentity.UserName;

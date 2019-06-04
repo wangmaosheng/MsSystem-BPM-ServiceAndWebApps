@@ -65,16 +65,16 @@ namespace MsSystem.WF.API.Controllers
             return await workFlowService.GetWorkFlowStartAsync(categoryid);
         }
 
-        [HttpGet]
-        public async Task<List<WorkFlowLineDto>> GetAllLinesAsync()
-        {
-            return await workFlowService.GetAllLinesAsync();
-        }
+        //[HttpGet]
+        //public async Task<List<WorkFlowLineDto>> GetAllLinesAsync()
+        //{
+        //    return await workFlowService.GetAllLinesAsync();
+        //}
 
-        [HttpGet]
-        public async Task<WorkFlowLineDto> GetLineAsync(Guid lineid)
-        {
-            return await workFlowService.GetLineAsync(lineid);
-        }
+        //[HttpGet]
+        //public async Task<WorkFlowLineDto> GetLineAsync(Guid lineid)
+        //{
+        //    return await workFlowService.GetLineAsync(lineid);
+        //}
     }
 }

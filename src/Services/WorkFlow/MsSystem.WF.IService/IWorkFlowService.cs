@@ -15,7 +15,7 @@ namespace MsSystem.WF.IService
         Task<bool> UpdateAsync(WorkFlowDetailDto workflow);
         Task<bool> DeleteAsync(FlowDeleteDTO dto);
         Task<List<WorkFlowStartDto>> GetWorkFlowStartAsync(Guid categoryid);
-        Task<List<WorkFlowLineDto>> GetAllLinesAsync();
-        Task<WorkFlowLineDto> GetLineAsync(Guid lineid);
+        //Task<List<WorkFlowLineDto>> GetAllLinesAsync();
+        //Task<WorkFlowLineDto> GetLineAsync(Guid lineid);
     }
 }

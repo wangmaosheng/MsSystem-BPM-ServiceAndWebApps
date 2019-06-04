@@ -49,34 +49,34 @@
             case WorkFlowMenu.Deprecate:
                 cls = "fa fa-close";
                 break;
-            case WorkFlowMenu.Cancel:
-                break;
-            case WorkFlowMenu.Throgh:
-                break;
-            case WorkFlowMenu.Assign:
-                break;
             case WorkFlowMenu.Back:
                 cls = "fa fa-rotate-left";
                 break;
-            case WorkFlowMenu.Stop:
-                cls = "fa fa-stop red";
-                break;
-            case WorkFlowMenu.View:
-                break;
             case WorkFlowMenu.FlowImage:
-                cls = "fa fa-file-picture-o";
-                break;
-            case WorkFlowMenu.CC:
-                break;
-            case WorkFlowMenu.Suspend:
-                break;
-            case WorkFlowMenu.Resume:
+                cls = "fa fa-image";
                 break;
             case WorkFlowMenu.Approval:
                 cls = "fa fa-list-alt";
                 break;
             case WorkFlowMenu.ReSubmit:
                 cls = "fa fa-mail-forward";
+                break;
+            case WorkFlowMenu.Withdraw:
+                cls = "fa fa-reply-all";
+                break;
+            case WorkFlowMenu.View:
+                break;
+            case WorkFlowMenu.Cancel:
+                break;
+            case WorkFlowMenu.Throgh:
+                break;
+            case WorkFlowMenu.Assign:
+                break;
+            case WorkFlowMenu.CC:
+                break;
+            case WorkFlowMenu.Suspend:
+                break;
+            case WorkFlowMenu.Resume:
                 break;
             default:
                 break;
@@ -149,7 +149,7 @@
             });
         }
     });
-    var save_form = function (type,callback) {
+    var save_form = function (type, callback) {
         var model = {
             FlowId: $('input[name=FlowId]').val(),
             InstanceId: $('input[name=InstanceId]').val(),
@@ -159,7 +159,8 @@
                 KeyValue: $('input[name=PageId]').val(),
                 TableName: $('input[name=TableName]').val(),
                 TargetName: $('#TargetName').val()
-            }
+            },
+            OptionParams: optionParams == undefined ? null : optionParams
         };
         var loadingIndex = layer.load(0, {
             shade: [0.25, 'gray'],
@@ -202,7 +203,8 @@
                     KeyValue: $('input[name=PageId]').val(),
                     TableName: $('input[name=TableName]').val(),
                     TargetName: $('#TargetName').val()
-                }
+                },
+                OptionParams: optionParams == undefined ? null : optionParams
             };
             transition(model);
             return false;
@@ -211,7 +213,7 @@
     </text>
     }
     @if (Model.Menus.Contains((int)WorkFlowMenu.Agree)
-       || Model.Menus.Contains((int)WorkFlowMenu.Deprecate)|| Model.Menus.Contains((int)WorkFlowMenu.ReSubmit) || Model.Menus.Contains((int)WorkFlowMenu.Stop))
+       || Model.Menus.Contains((int)WorkFlowMenu.Deprecate)|| Model.Menus.Contains((int)WorkFlowMenu.ReSubmit) || Model.Menus.Contains((int)WorkFlowMenu.Withdraw))
     {
     <text>
     var get_modal = function (menutype, content, tipmsg) {
@@ -241,11 +243,11 @@
                 if (callback) {
                     callback();
                 }
-                layer.msg('提交成功！', { icon: 1, time: 1500 }, function () {
+                layer.msg('流程提交成功！', { icon: 1, time: 1500 }, function () {
                     utils.menu.closeCurrentTab();
                 });
             } else {
-                layer.msg('提交失败！', { icon: 5, time: 1500 });
+                layer.msg('流程提交失败！', { icon: 5, time: 1500 });
             }
         });
     }
@@ -272,7 +274,8 @@
                         KeyValue: $('input[name=PageId]').val(),
                         TableName: $('input[name=TableName]').val(),
                         TargetName: $('#TargetName').val()
-                    }
+                    },
+                    OptionParams: optionParams == undefined ? null : optionParams
                 };
                 transition(model, function () {
                     $modal.modal("hide");
@@ -304,7 +307,8 @@
                         KeyValue: $('input[name=PageId]').val(),
                         TableName: $('input[name=TableName]').val(),
                         TargetName: $('#TargetName').val()
-                    }
+                    },
+                    OptionParams: optionParams == undefined ? null : optionParams
                 };
                 transition(model, function () {
                     $modal.modal("hide");
@@ -371,7 +375,8 @@
                         KeyValue: $('input[name=PageId]').val(),
                         TableName: $('input[name=TableName]').val(),
                         TargetName: $('#TargetName').val()
-                    }
+                    },
+                    OptionParams: optionParams == undefined ? null : optionParams
                 };
                 transition(model, function () {
                     $modal.modal("hide");
@@ -447,17 +452,23 @@
     });
     </text>
     }
-    @if (Model.Menus.Contains((int)WorkFlowMenu.Stop))
+    @if (Model.Menus.Contains((int)WorkFlowMenu.Withdraw))
     {
     <text>
-    $('button[name=WorkFlowBtn][data-typename=@WorkFlowMenu.Stop]').on('click', function () {
-        layer.confirm('您确定要终止该流程？', {
+    $('button[name=WorkFlowBtn][data-typename=@WorkFlowMenu.Withdraw]').on('click', function () {
+        layer.confirm('您确定要撤回该流程？', {
             btn: ['确定', '取消']
         }, function () {
             var model = {
                 FlowId: '@Model.FlowId',
                 InstanceId: $('input[name=InstanceId]').val(),
-                MenuType: '@WorkFlowMenu.Stop'
+                MenuType: '@WorkFlowMenu.Withdraw',
+                StatusChange: {
+                    KeyName: $('input[name=PageId]').attr('data-name'),
+                    KeyValue: $('input[name=PageId]').val(),
+                    TableName: $('input[name=TableName]').val(),
+                    TargetName: $('#TargetName').val()
+                }
             };
             transition(model, function () {
 

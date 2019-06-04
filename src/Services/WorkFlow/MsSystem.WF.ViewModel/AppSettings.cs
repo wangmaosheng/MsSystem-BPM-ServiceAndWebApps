@@ -26,6 +26,7 @@ namespace MsSystem.WF.ViewModel
         public string Roles { get; set; }
         public string GetUserIds { get; set; }
         public string GetFlowNodeInfo { get; set; }
+        public string GetFinalNodeId { get; set; }
     }
     public class MsApplication
     {

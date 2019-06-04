@@ -28,7 +28,7 @@ namespace MsSystem.WF.API.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<WorkFlowResult> CreateInstanceAsync([FromBody]WorkFlowInstanceDto model)
+        public async Task<WorkFlowResult> CreateInstanceAsync([FromBody]WorkFlowProcessTransition model)
         {
             return await _workFlowInstanceService.CreateInstanceAsync(model);
         }

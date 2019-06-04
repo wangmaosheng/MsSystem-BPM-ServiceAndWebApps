@@ -55,10 +55,13 @@ namespace MsSystem.Web.Areas.WF.Infrastructure
                     html.Append("<i class=\"fa fa-check green\"></i>");
                     break;
                 case WorkFlowStatus.Deprecate:
-                    html.Append("<i class=\"fa fa-ban red\"></i>");
+                    html.Append("<i class=\"fa fa-close red\"></i>");
                     break;
                 case WorkFlowStatus.Back:
-                    html.Append("<i class=\"fa fa-rotate-left red\"></i>");
+                    html.Append("<i class=\"fa fa-mail-reply red\"></i>");
+                    break;
+                case WorkFlowStatus.Withdraw:
+                    html.Append("<i class=\"fa fa-reply-all red\" ></i>");
                     break;
                 case WorkFlowStatus.UnSubmit:
                 default:
@@ -72,25 +75,38 @@ namespace MsSystem.Web.Areas.WF.Infrastructure
         public static StringBuilder ToWorkFlowInstanceStatusIcon(int? isFinish, int status)
         {
             StringBuilder html = new StringBuilder();
-            if (isFinish == null && status == (int)WorkFlowStatus.UnSubmit)
+            WorkFlowStatus flowStatus = (WorkFlowStatus)status;
+            if (isFinish == null && flowStatus == WorkFlowStatus.UnSubmit)
             {
                 html.Append("<span class=\"gray\"><i class=\"fa fa-undo\"></i>未提交</span>");
             }
-            else if (isFinish == 1 && status == (int)WorkFlowStatus.IsFinish)
+            else if (isFinish == 1 && flowStatus == WorkFlowStatus.IsFinish)
             {
                 html.Append("<span><i class=\"fa fa-check green\"></i>已审核</span>");
             }
-            else if (isFinish == 0 && status == (int)WorkFlowStatus.Running)
+            else
             {
-                html.Append("<span><i class=\"fa fa-spin fa-spinner green\"></i>审核中</span>");
-            }
-            else if (isFinish == 0 && status == (int)WorkFlowStatus.Deprecate)
-            {
-                html.Append("<span><i class=\"fa fa-close red\"></i>不同意</span>");
-            }
-            else if (isFinish == 0 && status == (int)WorkFlowStatus.Back)
-            {
-                html.Append("<span><i class=\"fa fa-mail-reply red\"></i>已退回</span>");
+                switch (flowStatus)
+                {
+                    case WorkFlowStatus.Running:
+                        html.Append("<span><i class=\"fa fa-spin fa-spinner green\"></i>审核中</span>");
+                        break;
+                    case WorkFlowStatus.Deprecate:
+                        html.Append("<span><i class=\"fa fa-close red\"></i>不同意</span>");
+                        break;
+                    case WorkFlowStatus.Back:
+                        html.Append("<span><i class=\"fa fa-mail-reply red\"></i>已退回</span>");
+                        break;
+                    case WorkFlowStatus.Stop:
+                        html.Append("<span><i class=\"fa fa-mail-reply red\"></i>已终止</span>");
+                        break;
+                    case WorkFlowStatus.Withdraw:
+                        html.Append("<span><i class=\"fa fa-reply-all red\"></i>已撤回</span>");
+                        break;
+                    default:
+                        html.Append("<span>状态未知</span>");
+                        break;
+                }
             }
             return html;
         }

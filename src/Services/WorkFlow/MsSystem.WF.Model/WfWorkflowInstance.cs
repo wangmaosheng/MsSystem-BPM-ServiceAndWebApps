@@ -51,6 +51,7 @@ namespace MsSystem.WF.Model
 
         /// <summary>
         /// 执行人
+        /// 为0表示全部人员
         /// </summary>
         public string MakerList { get; set; }
 

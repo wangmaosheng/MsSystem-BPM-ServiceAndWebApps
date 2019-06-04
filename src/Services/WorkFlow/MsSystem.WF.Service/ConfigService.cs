@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using MsSystem.WF.IService;
 using MsSystem.WF.ViewModel;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -70,6 +71,26 @@ namespace MsSystem.WF.Service
             string res = await response.Content.ReadAsStringAsync();
             return res.ToObject<List<long>>();
         }
-
+        /// <summary>
+        /// 获取最终的节点ID
+        /// </summary>
+        /// <param name="model">连线条件字典集合</param>
+        /// <returns></returns>
+        public async Task<Guid?> GetFinalNodeId(string sysname, FlowLineFinalNodeDto model)
+        {
+            string url = string.Format(_appSettings.Value.MsApplication.url + _appSettings.Value.WorkFlow.GetFinalNodeId, sysname);
+            var content = new StringContent(model.ToJson(), System.Text.Encoding.UTF8, "application/json");
+            var response = await _apiClient.PostAsync(url, content);
+            response.EnsureSuccessStatusCode();
+            string res = await response.Content.ReadAsStringAsync();
+            if (res.IsNullOrEmpty())
+            {
+                return null;
+            }
+            else
+            {
+                return Guid.Parse(res);
+            }
+        }
     }
 }

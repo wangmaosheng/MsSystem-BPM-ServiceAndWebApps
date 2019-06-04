@@ -11,6 +11,7 @@ namespace MsSystem.WF.IRepository
         IWfWorkflowOperationHistoryRepository WorkflowOperationHistory { get; }
         IWfWorkflowCategoryRepository WorkflowCategory { get; }
         IWfWorkflowInstanceFormRepository WorkflowInstanceForm { get; }
-        IWfWorkflowLineRepository WorkflowLine { get; }
+        //IWfWorkflowLineRepository WorkflowLine { get; }
+        IWfWorkflowsqlRepository WfWorkflowsql { get; }
     }
 }

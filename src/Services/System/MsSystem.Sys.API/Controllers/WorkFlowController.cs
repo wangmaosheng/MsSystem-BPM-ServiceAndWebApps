@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MsSystem.Sys.IService;
 using MsSystem.Sys.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -20,10 +21,27 @@ namespace MsSystem.Sys.API.Controllers
             this.flowService = flowService;
         }
 
+        /// <summary>
+        /// 获取节点人员信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<List<long>> GetFlowNodeInfo([FromBody]FlowViewModel model)
         {
             return await flowService.GetFlowNodeInfo(model);
         }
+
+        /// <summary>
+        /// 获取最终的节点ID
+        /// </summary>
+        /// <param name="model">连线条件字典集合</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<Guid?> GetFinalNodeId([FromBody]FlowLineFinalNodeDto model)
+        {
+            return await flowService.GetFinalNodeId(model);
+        }
+
     }
 }

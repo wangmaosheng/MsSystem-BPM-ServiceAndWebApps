@@ -2,7 +2,6 @@
 using MsSystem.Sys.IRepository;
 using MsSystem.Sys.IService;
 using MsSystem.Sys.ViewModel;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,10 +31,16 @@ namespace MsSystem.Sys.Service
                 string mysql = dbflow.FlowSQL;
                 var dbparamnames = dbflow.Param.Split(',');
                 DynamicParameters dbArgs = new DynamicParameters();
-                foreach (var item in dbparamnames)
+                foreach (string item in dbparamnames)
                 {
-                    var dicValue = model.param[item];
-                    dbArgs.Add(item, dicValue);
+                    if (item.Equals("userid", StringComparison.OrdinalIgnoreCase))
+                    {
+                        dbArgs.Add(item, model.UserId);
+                    }
+                    else
+                    {
+                        dbArgs.Add(item, model.param[item]);
+                    }
                 }
                 var res = await databaseFixture.Db.Connection.QueryAsync<string>(mysql, dbArgs);
                 string userids = res.ToList()[0];
@@ -47,5 +52,41 @@ namespace MsSystem.Sys.Service
                 throw new Exception(ex.Message);
             }
         }
+
+        /// <summary>
+        /// 获取最终的节点ID
+        /// </summary>
+        /// <param name="data">连线条件字典集合</param>
+        /// <returns></returns>
+        public async Task<Guid?> GetFinalNodeId(FlowLineFinalNodeDto model)
+        {
+            Guid? finalid = null;
+            foreach (var item in model.Data)
+            {
+                var dbflowsql = await databaseFixture.Db.SysWorkflowsql.FindByIdAsync(item.Value);
+                string mysql = dbflowsql.FlowSQL;
+                var dbparamnames = dbflowsql.Param.Split(',');
+                DynamicParameters dbArgs = new DynamicParameters();
+                foreach (string param in dbparamnames)
+                {
+                    if (param.Equals("userid", StringComparison.OrdinalIgnoreCase))//当前用户ID特殊处理
+                    {
+                        dbArgs.Add(param, model.UserId);
+                    }
+                    else
+                    {
+                        dbArgs.Add(param, model.Param[param]);
+                    }
+                }
+                var res = await databaseFixture.Db.Connection.QueryAsync<int>(mysql, dbArgs);
+                if (res != null && res.ToList()[0]==1)
+                {
+                    finalid = item.Key;
+                    break;
+                }
+            }
+            return finalid;
+        }
+
     }
 }

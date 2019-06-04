@@ -97,25 +97,25 @@ namespace MsSystem.WF.Service
             return await databaseFixture.Db.Workflow.GetWorkFlowStartAsync(categoryid);
         }
 
-        public async Task<List<WorkFlowLineDto>> GetAllLinesAsync()
-        {
-            var dbLines = await databaseFixture.Db.WorkflowLine.FindAllAsync(m => m.IsDel == 0);
-            return dbLines.Select(m => new WorkFlowLineDto
-            {
-                LineId = m.Id,
-                Name = m.Name
-            }).ToList();
-        }
+        //public async Task<List<WorkFlowLineDto>> GetAllLinesAsync()
+        //{
+        //    var dbLines = await databaseFixture.Db.WorkflowLine.FindAllAsync(m => m.IsDel == 0);
+        //    return dbLines.Select(m => new WorkFlowLineDto
+        //    {
+        //        LineId = m.Id,
+        //        Name = m.Name
+        //    }).ToList();
+        //}
 
-        public async Task<WorkFlowLineDto> GetLineAsync(Guid lineid)
-        {
-            var line = await databaseFixture.Db.WorkflowLine.FindByIdAsync(lineid);
-            return new WorkFlowLineDto
-            {
-                LineId = line.Id,
-                Name = line.Name
-            };
-        }
+        //public async Task<WorkFlowLineDto> GetLineAsync(Guid lineid)
+        //{
+        //    var line = await databaseFixture.Db.WorkflowLine.FindByIdAsync(lineid);
+        //    return new WorkFlowLineDto
+        //    {
+        //        LineId = line.Id,
+        //        Name = line.Name
+        //    };
+        //}
 
     }
 }

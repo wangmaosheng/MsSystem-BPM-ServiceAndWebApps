@@ -13,7 +13,7 @@ namespace MsSystem.WF.IService
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        Task<WorkFlowResult> CreateInstanceAsync(WorkFlowInstanceDto model);
+        Task<WorkFlowResult> CreateInstanceAsync(WorkFlowProcessTransition model);
 
         /// <summary>
         /// 获取用户待办事项

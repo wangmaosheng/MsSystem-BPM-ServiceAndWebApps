@@ -1,12 +1,13 @@
 ﻿using JadeFramework.Core.Domain.Entities;
 using MsSystem.WF.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MsSystem.WF.IService
 {
     /// <summary>
-    /// TODO 服务之间调用待优化
+    /// 服务之间调用
     /// </summary>
     public interface IConfigService
     {
@@ -20,5 +21,11 @@ namespace MsSystem.WF.IService
         /// <returns></returns>
         Task<List<long>> GetUserIdsByRoleIdsAsync(List<long> roleids);
         Task<List<long>> GetFlowNodeInfo(string sysname, FlowViewModel model);
+        /// <summary>
+        /// 获取最终的节点ID
+        /// </summary>
+        /// <param name="model">连线条件字典集合</param>
+        /// <returns></returns>
+        Task<Guid?> GetFinalNodeId(string sysname, FlowLineFinalNodeDto model);
     }
 }

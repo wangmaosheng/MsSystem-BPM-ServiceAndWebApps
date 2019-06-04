@@ -47,12 +47,6 @@
         </div>
         <div class="mt30 ztree" id="chatusersTree"></div>
     </div>
-    <div class="row m10" style="display: none" id="flowlines">
-        <div class="navbar-fixed-top mt40 p5">
-            <button type="button" class="btn btn-primary btn-permission btn-permission-save btn-xs" id="setflowline"><i class="fa fa-save"><span class="ml5">保存</span></i></button>
-        </div>
-        <div class="mt30 ztree" id="flowlinesTree"></div>
-    </div>
     <div class="row p5" style="text-align:right">
         @await Component.InvokeAsync("Menu", true)
     </div>
@@ -238,20 +232,10 @@
                                     <div id="mylineeventtitle" style="display:none" class="form_title">连线节点事件</div>
                                     <div id="mylineeventcontent" style="display:none" class="form_content">
                                         <table>
-                                            <tr>
-                                                <td style="width:30%">类型</td>
+                                            <tr id="selectlinebox">
+                                                <td style="width:30%">SQL判断</td>
                                                 <td style="width:70%">
-                                                    <select name="LineType" id="LineType" disabled>
-                                                        <option value="System" selected>系统通用</option>
-                                                        <option value="Custom">自定义</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr style="display:none" id="selectlinebox">
-                                                <td>选择类型</td>
-                                                <td>
-                                                    <input type="hidden" />
-                                                    <label id="linename" style="margin-right: 20px;"></label><a id="selectsystemlinetype">选择</a>
+                                                    <textarea style="width:150px;min-height:100px;cursor:auto"></textarea>
                                                 </td>
                                             </tr>
                                         </table>

@@ -18,7 +18,7 @@ namespace MsSystem.Web.Areas.WF.Service
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        Task<WorkFlowResult> CreateInstanceAsync(WorkFlowInstanceDto model);
+        Task<WorkFlowResult> CreateInstanceAsync(WorkFlowProcessTransition model);
 
         /// <summary>
         /// 获取用户待办事项
@@ -109,7 +109,7 @@ namespace MsSystem.Web.Areas.WF.Service
             _baseUrl = configuration["MsApplication:url"] + "/api/wf";
         }
 
-        public async Task<WorkFlowResult> CreateInstanceAsync(WorkFlowInstanceDto model)
+        public async Task<WorkFlowResult> CreateInstanceAsync(WorkFlowProcessTransition model)
         {
             var uri = API.WorkFlowInstance.CreateInstanceAsync(_baseUrl);
             var content = new StringContent(JsonConvert.SerializeObject(model), System.Text.Encoding.UTF8, "application/json");
