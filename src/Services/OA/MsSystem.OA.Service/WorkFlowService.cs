@@ -47,13 +47,21 @@ namespace MsSystem.OA.Service
                 DynamicParameters dbArgs = new DynamicParameters();
                 foreach (string item in dbparamnames)
                 {
-                    if (item.Equals("userid", StringComparison.OrdinalIgnoreCase))
+                    if (item.ToLower().Equals("userid", StringComparison.OrdinalIgnoreCase))
                     {
                         dbArgs.Add(item, model.UserId);
                     }
                     else
                     {
                         dbArgs.Add(item, model.param[item]);
+                        foreach (var key in model.param.Keys)
+                        {
+                            if (key.ToLower() == item.ToLower())
+                            {
+                                dbArgs.Add(item, model.param[key]);
+                                break;
+                            }
+                        }
                     }
                 }
                 var res = await databaseFixture.Db.Connection.QueryAsync<string>(mysql, dbArgs);
@@ -83,17 +91,24 @@ namespace MsSystem.OA.Service
                 DynamicParameters dbArgs = new DynamicParameters();
                 foreach (string param in dbparamnames)
                 {
-                    if (param.Equals("userid", StringComparison.OrdinalIgnoreCase))//当前用户ID特殊处理
+                    if (param.ToLower().Equals("userid", StringComparison.OrdinalIgnoreCase))//当前用户ID特殊处理
                     {
                         dbArgs.Add(param, model.UserId);
                     }
                     else
                     {
-                        dbArgs.Add(param, model.Param[param]);
+                        foreach (var key in model.Param.Keys)
+                        {
+                            if (key.ToLower() == param.ToLower())
+                            {
+                                dbArgs.Add(param, model.Param[key]);
+                                break;
+                            }
+                        }
                     }
                 }
                 var res = await databaseFixture.Db.Connection.QueryAsync<int>(mysql, dbArgs);
-                if (res != null && res.ToList()[0] == 1)
+                if (res != null && res.Count()==1)
                 {
                     finalid = item.Key;
                     break;

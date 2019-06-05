@@ -21,15 +21,5 @@ namespace MsSystem.Sys.API.Controllers
             nlog.Log(logEvent);
             return Ok();
         }
-
-        public static Dictionary<string, byte> healthbeat = new Dictionary<string, byte>();
-
-        [HttpGet]
-        public async Task<string> GetData(string clientid)
-        {
-            return null;
-        }
     }
-
-
 }

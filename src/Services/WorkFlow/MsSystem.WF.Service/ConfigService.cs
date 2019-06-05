@@ -83,14 +83,8 @@ namespace MsSystem.WF.Service
             var response = await _apiClient.PostAsync(url, content);
             response.EnsureSuccessStatusCode();
             string res = await response.Content.ReadAsStringAsync();
-            if (res.IsNullOrEmpty())
-            {
-                return null;
-            }
-            else
-            {
-                return Guid.Parse(res);
-            }
+            Guid? finalnodeid = JsonConvert.DeserializeObject<Guid?>(res);
+            return finalnodeid;
         }
     }
 }

@@ -46,8 +46,8 @@ namespace MsSystem.Web.Areas.OA.Controllers
             {
                 model = new OaLeaveShowDto()
                 {
-                    StartTime = DateTime.Now,
-                    EndTime = DateTime.Now.AddDays(1)
+                    StartTime = DateTime.Now.AddDays(1),
+                    EndTime = DateTime.Now.AddDays(2)
                 };
             }
             else

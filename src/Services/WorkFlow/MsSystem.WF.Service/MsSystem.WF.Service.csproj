@@ -9,6 +9,7 @@
     <PackageReference Include="AutoMapper" Version="8.0.0" />
     <PackageReference Include="RestSharp" Version="106.6.7" />
     <PackageReference Include="DotNetCore.CAP.MySql" Version="2.5.0" />
+    <PackageReference Include="JadeFramework.Core" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>

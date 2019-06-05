@@ -17,6 +17,7 @@ namespace MsSystem.OA.Repository
         public IOaDbContext Db { get; }
         public void Dispose()
         {
+            Db.Dispose();
         }
     }
 }

@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JadeFramework.Core" Version="1.0.1.9" />
-    <PackageReference Include="JadeFramework.WorkFlow" Version="1.0.2.8" />
+    <PackageReference Include="JadeFramework.Core" Version="1.0.2" />
+    <PackageReference Include="JadeFramework.WorkFlow" Version="1.0.2.9" />
   </ItemGroup>
 
 </Project>

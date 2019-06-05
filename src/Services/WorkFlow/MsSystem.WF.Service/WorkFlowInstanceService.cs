@@ -365,8 +365,10 @@ namespace MsSystem.WF.Service
         /// <returns></returns>
         public async Task<WorkFlowProcess> GetProcessAsync(WorkFlowProcess process)
         {
-            WorkFlowProcess model = new WorkFlowProcess();
-            model.InstanceId = process.InstanceId;
+            WorkFlowProcess model = new WorkFlowProcess
+            {
+                InstanceId = process.InstanceId
+            };
             var dbflow = await databaseFixture.Db.Workflow.FindByIdAsync(process.FlowId);
             model.FlowId = dbflow.FlowId;
             model.FlowName = dbflow.FlowName;
@@ -941,15 +943,28 @@ namespace MsSystem.WF.Service
                                         if (finalid != null)
                                         {
                                             FlowNode reallynode = context.WorkFlow.Nodes[finalid.Value];
+                                            dbflowinstance.IsFinish = reallynode.NodeType().ToIsFinish();
+                                            if (reallynode.NodeType() == WorkFlowInstanceNodeType.EndRound)
+                                            {
+                                                dbflowinstance.Status = (int)WorkFlowStatus.IsFinish;
+                                            }
+                                            else
+                                            {
+                                                dbflowinstance.Status = (int)WorkFlowStatus.Running;
+                                            }
                                             dbflowinstance.ActivityId = reallynode.Id;
                                             dbflowinstance.ActivityName = reallynode.Name;
                                             dbflowinstance.ActivityType = (int)reallynode.NodeType();
                                             dbflowinstance.MakerList = reallynode.NodeType() == WorkFlowInstanceNodeType.EndRound
                                                 ? "" 
                                                 : await this.GetMakerListAsync(reallynode, model.UserId, model.OptionParams);
-                                            dbflowinstance.IsFinish = reallynode.NodeType().ToIsFinish();
-                                            dbflowinstance.Status = (int)WorkFlowStatus.Running;
                                             await databaseFixture.Db.WorkflowInstance.UpdateAsync(dbflowinstance, tran);
+
+                                            //流程结束情况
+                                            if ((int)WorkFlowInstanceStatus.Finish == dbflowinstance.IsFinish)
+                                            {
+                                                publishFlowStatus = WorkFlowStatus.IsFinish;
+                                            }
 
                                             #region 添加流转记录
 
@@ -1325,10 +1340,10 @@ namespace MsSystem.WF.Service
         }
 
 
-        protected async Task<WorkFlowResult> ProcessTransitionStopAsync(WorkFlowProcessTransition model)
-        {
-            return WorkFlowResult.Success();
-        }
+        //protected async Task<WorkFlowResult> ProcessTransitionStopAsync(WorkFlowProcessTransition model)
+        //{
+        //    return WorkFlowResult.Success();
+        //}
         /// <summary>
         /// 获取审批意见
         /// </summary>
@@ -1340,14 +1355,16 @@ namespace MsSystem.WF.Service
             var dbinstance = await databaseFixture.Db.WorkflowInstance.FindByIdAsync(model.InstanceId);
             if (dbinstance.IsFinish == 1)
             {
-                List<WfWorkflowOperationHistory> list = new List<WfWorkflowOperationHistory>();
-                list.Add(new WfWorkflowOperationHistory
+                List<WfWorkflowOperationHistory> list = new List<WfWorkflowOperationHistory>
                 {
-                    NodeName = "结束",
-                    TransitionType = null,
-                    CreateUserName = "",
-                    CreateTime = dbhistory.OrderByDescending(m => m.CreateTime).Select(m => m.CreateTime).First() + 1
-                });
+                    new WfWorkflowOperationHistory
+                    {
+                        NodeName = "结束",
+                        TransitionType = null,
+                        CreateUserName = "",
+                        CreateTime = dbhistory.OrderByDescending(m => m.CreateTime).Select(m => m.CreateTime).First() + 1
+                    }
+                };
                 IEnumerable<WfWorkflowOperationHistory> result = dbhistory.Union(list);
                 return WorkFlowResult.Success(string.Empty, result.OrderBy(m => m.CreateTime));
             }
