@@ -16,6 +16,7 @@
             rejectNodeStr += "<option value=" + item.Id + ">" + item.Name + "</option>";
         }
     }
+    WorkFlowStatus flowStatus = (WorkFlowStatus)Model.FlowData.Status;
 }
 
 <div class="btn-group btn-group-sm" id="flowmenus">
@@ -41,34 +42,34 @@
             case WorkFlowMenu.Deprecate:
                 cls = "fa fa-close";
                 break;
-            case WorkFlowMenu.Cancel:
-                break;
-            case WorkFlowMenu.Throgh:
-                break;
-            case WorkFlowMenu.Assign:
-                break;
             case WorkFlowMenu.Back:
                 cls = "fa fa-rotate-left";
                 break;
-            case WorkFlowMenu.Stop:
-                cls = "fa fa-stop red";
-                break;
-            case WorkFlowMenu.View:
-                break;
             case WorkFlowMenu.FlowImage:
-                cls = "fa fa-file-picture-o";
-                break;
-            case WorkFlowMenu.CC:
-                break;
-            case WorkFlowMenu.Suspend:
-                break;
-            case WorkFlowMenu.Resume:
+                cls = "fa fa-image";
                 break;
             case WorkFlowMenu.Approval:
                 cls = "fa fa-list-alt";
                 break;
             case WorkFlowMenu.ReSubmit:
                 cls = "fa fa-mail-forward";
+                break;
+            case WorkFlowMenu.Withdraw:
+                cls = "fa fa-reply-all";
+                break;
+            case WorkFlowMenu.View:
+                break;
+            case WorkFlowMenu.Cancel:
+                break;
+            case WorkFlowMenu.Throgh:
+                break;
+            case WorkFlowMenu.Assign:
+                break;
+            case WorkFlowMenu.CC:
+                break;
+            case WorkFlowMenu.Suspend:
+                break;
+            case WorkFlowMenu.Resume:
                 break;
             default:
                 break;
@@ -78,6 +79,38 @@
         </button>
     }
 </div>
+
+@if (Model.FlowData.IsFinish == null && flowStatus == WorkFlowStatus.UnSubmit)
+{
+    <div class="flowstatus unsubmit">未提交</div>
+}
+else if (Model.FlowData.IsFinish == 1 && flowStatus == WorkFlowStatus.IsFinish)
+{
+    <div class="flowstatus checked">已审核</div>
+}
+else
+{
+    switch (flowStatus)
+    {
+        case WorkFlowStatus.Running:
+            <div class="flowstatus running">审核中</div>
+            break;
+        case WorkFlowStatus.Deprecate:
+            <div class="flowstatus unuchecked">不同意</div>
+            break;
+        case WorkFlowStatus.Back:
+            <div class="flowstatus unuchecked">已退回</div>
+            break;
+        case WorkFlowStatus.Stop:
+            <div class="flowstatus unuchecked">已终止</div>
+            break;
+        case WorkFlowStatus.Withdraw:
+            <div class="flowstatus unsubmit">已撤回</div>
+            break;
+        default:
+            break;
+    }
+}
 
 <script type="text/javascript" on-content-loaded="true">
     var data='';
@@ -478,17 +511,17 @@
     });
     </text>
     }
-    @if (Model.Menus.Contains((int)WorkFlowMenu.Stop))
+    @if (Model.Menus.Contains((int)WorkFlowMenu.Withdraw))
     {
     <text>
-    $('button[name=WorkFlowBtn][data-typename=@WorkFlowMenu.Stop]').on('click', function () {
+    $('button[name=WorkFlowBtn][data-typename=@WorkFlowMenu.Withdraw]').on('click', function () {
         layer.confirm('您确定要终止该流程？', {
             btn: ['确定', '取消']
         }, function () {
             var model = {
                 FlowId: '@Model.FlowId',
                 InstanceId: $('input[name=InstanceId]').val(),
-                MenuType: '@WorkFlowMenu.Stop'
+                MenuType: '@WorkFlowMenu.Withdraw'
             };
             transition(model, function () {
 

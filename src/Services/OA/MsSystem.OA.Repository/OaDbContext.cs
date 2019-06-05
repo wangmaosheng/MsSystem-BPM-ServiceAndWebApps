@@ -27,5 +27,9 @@ namespace MsSystem.OA.Repository
         public IOaMessageUserReadRepository OaMessageUserRead => _messageUserRead ?? (_messageUserRead = new OaMessageUserReadRepository(Connection, _config));
         private IOaMessageUserRepository _messageUser;
         public IOaMessageUserRepository OaMessageUser => _messageUser ?? (_messageUser = new OaMessageUserRepository(Connection, _config));
+
+        private IOaWorkflowsqlRepository _workflowsql;
+        public IOaWorkflowsqlRepository OaWorkflowsql => _workflowsql ?? (_workflowsql = new OaWorkflowsqlRepository(Connection, _config));
+
     }
 }

@@ -26,8 +26,8 @@ namespace MsSystem.OA.Service
         {
             var entity = await _databaseFixture.Db.OaLeaveRepository.FindByIdAsync(id);
             var res = _mapper.Map<OaLeave, OaLeaveShowDto>(entity);
-            res.StartTime = entity.StartTime.ToDateTime();
-            res.EndTime = entity.EndTime.ToDateTime();
+            res.StartTime = entity.StartTime.ToDateTime().Date;
+            res.EndTime = entity.EndTime.ToDateTime().Date;
             return res;
         }
 
@@ -45,6 +45,7 @@ namespace MsSystem.OA.Service
                 dbentity.LeaveCode = DateTime.Now.ToTimeStamp() + string.Empty.CreateNumberNonce();
                 dbentity.StartTime = entity.StartTime.ToTimeStamp();
                 dbentity.EndTime = entity.EndTime.ToTimeStamp();
+                dbentity.Days = (entity.EndTime - entity.StartTime).Days + 1;
                 int id = await _databaseFixture.Db.OaLeaveRepository.InsertReturnIdAsync(dbentity);
                 return AjaxResult.Success(data: id);
             }
@@ -63,9 +64,9 @@ namespace MsSystem.OA.Service
                 dbdata.AgentId = entity.AgentId;
                 dbdata.LeaveType = entity.LeaveType;
                 dbdata.Reason = entity.Reason;
-                dbdata.Days = entity.Days;
                 dbdata.StartTime = entity.StartTime.ToTimeStamp();
                 dbdata.EndTime = entity.EndTime.ToTimeStamp();
+                dbdata.Days = (entity.EndTime - entity.StartTime).Days + 1;
                 await _databaseFixture.Db.OaLeaveRepository.UpdateAsync(dbdata);
                 return AjaxResult.Success(data: dbdata.Id);
             }

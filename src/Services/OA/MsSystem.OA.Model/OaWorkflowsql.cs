@@ -2,13 +2,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MsSystem.Sys.Model
+namespace MsSystem.OA.Model
 {
     /// <summary>
     /// 用于工作流获取权限系统数据
     /// </summary>
-    [Table("sys_workflowsql")]
-    public class SysWorkflowsql
+    [Table("oa_workflowsql")]
+    public class OaWorkflowsql
     {
         /// <summary>
         /// 流程sql名称,必须是以sys_为开头，用于判断属于哪个系统，方便调用接口
@@ -52,11 +52,11 @@ namespace MsSystem.Sys.Model
         public long CreateTime { get; set; }
     }
 
-    public class SysWorkflowsqlMapper : ClassMapper<SysWorkflowsql>
+    public class OaWorkflowsqlMapper : ClassMapper<OaWorkflowsql>
     {
-        public SysWorkflowsqlMapper()
+        public OaWorkflowsqlMapper()
         {
-            Table("sys_workflowsql");
+            Table("oa_workflowsql");
             AutoMap();
         }
     }

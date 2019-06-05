@@ -9,5 +9,6 @@ namespace MsSystem.OA.IRepository
         IOaMessageRepository OaMessage { get; }
         IOaMessageUserReadRepository OaMessageUserRead { get; }
         IOaMessageUserRepository OaMessageUser { get; }
+        IOaWorkflowsqlRepository OaWorkflowsql { get; }
     }
 }
