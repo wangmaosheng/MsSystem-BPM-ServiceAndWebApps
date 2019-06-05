@@ -385,6 +385,11 @@ namespace MsSystem.WF.Service
                     (int)WorkFlowMenu.Save,
                     (int)WorkFlowMenu.Return,
                 };
+                model.FlowData = new WorkFlowProcessFlowData
+                {
+                    IsFinish = null,
+                    Status = (int)WorkFlowStatus.UnSubmit
+                };
             }
             else
             {
@@ -395,6 +400,11 @@ namespace MsSystem.WF.Service
                 model.FormData = instanceform.FormData;
 
                 var flowinstance = await databaseFixture.Db.WorkflowInstance.FindByIdAsync(process.InstanceId);
+                model.FlowData = new WorkFlowProcessFlowData
+                {
+                    IsFinish = flowinstance.IsFinish,
+                    Status = flowinstance.Status
+                };
                 if (flowinstance.IsFinish == null && model.FormType == WorkFlowFormType.Custom)//表示自定义表单刚保存情况
                 {
                     model.Menus = new List<int>
@@ -406,7 +416,6 @@ namespace MsSystem.WF.Service
                     };
                     return model;
                 }
-
                 if (flowinstance.IsFinish == (int)WorkFlowInstanceStatus.Finish)
                 {
                     model.Menus = new List<int>
@@ -425,6 +434,7 @@ namespace MsSystem.WF.Service
                     FlowJSON = flowinstance.FlowContent,
                     ActivityNodeId = flowinstance.ActivityId
                 });
+                model.FlowData.CurrentNode = context.WorkFlow.ActivityNode;
                 if (context.WorkFlow.ActivityNode.Type == FlowNode.START)//节点退回到开始节点情况
                 {
                     var dbinstance = await databaseFixture.Db.WorkflowInstance.FindByIdAsync(process.InstanceId);
@@ -1314,6 +1324,11 @@ namespace MsSystem.WF.Service
             }
         }
 
+
+        protected async Task<WorkFlowResult> ProcessTransitionStopAsync(WorkFlowProcessTransition model)
+        {
+            return WorkFlowResult.Success();
+        }
         /// <summary>
         /// 获取审批意见
         /// </summary>

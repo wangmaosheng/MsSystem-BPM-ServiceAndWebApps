@@ -1134,12 +1134,16 @@
     font-family: 微软雅黑;
 }
     .flowstatus.unsubmit {
-        color: #f1f1f1;
-        box-shadow: 0px 0px 4px #f1f1f1;
+        color: #ddd;
+        box-shadow: 0px 0px 4px #ddd;
     }
-    .flowstatus.checking {
+    .flowstatus.checked {
         color: #13ce66;
         box-shadow: 0px 0px 4px #13ce66;
+    }
+    .flowstatus.running {
+        color: #0e9aef;
+        box-shadow: 0px 0px 4px #0e9aef;
     }
     .flowstatus.unuchecked {
         color: #FF0000;
