@@ -1120,3 +1120,28 @@
     border-color: #0e9aef;
     background-image: none;
 }
+
+.flowstatus {
+    width: 70px;
+    height: 70px;
+    position: absolute;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 68px;
+    top: 45px;
+    transform: rotate(-45deg);
+    font-size: 16px;
+    font-family: 微软雅黑;
+}
+    .flowstatus.unsubmit {
+        color: #f1f1f1;
+        box-shadow: 0px 0px 4px #f1f1f1;
+    }
+    .flowstatus.checking {
+        color: #13ce66;
+        box-shadow: 0px 0px 4px #13ce66;
+    }
+    .flowstatus.unuchecked {
+        color: #FF0000;
+        box-shadow: 0px 0px 4px #FF0000;
+    }
