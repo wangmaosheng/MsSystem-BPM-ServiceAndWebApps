@@ -508,6 +508,15 @@ namespace MsSystem.WF.Service
                         model.Menus.Add((int)WorkFlowMenu.FlowImage);
                         model.Menus.Add((int)WorkFlowMenu.Return);
                     }
+                    else
+                    {
+                        model.Menus = new List<int>
+                        {
+                            (int)WorkFlowMenu.Approval,
+                            (int)WorkFlowMenu.FlowImage,
+                            (int)WorkFlowMenu.Return
+                        };
+                    }
                 }
             }
             return model;

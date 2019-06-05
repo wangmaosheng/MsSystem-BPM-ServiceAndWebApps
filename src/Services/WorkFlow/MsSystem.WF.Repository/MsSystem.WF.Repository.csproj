@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="MySql.Data" Version="8.0.13" />
-    <PackageReference Include="JadeFramework.Dapper" Version="1.0.1.3" />
+    <PackageReference Include="JadeFramework.Dapper" Version="1.0.1.4" />
   </ItemGroup>
 
   <ItemGroup>
