@@ -1,4 +1,4 @@
-1、下载
+﻿1、下载
 wget https://releases.hashicorp.com/consul/1.4.0/consul_1.4.0_linux_amd64.zip
 2、解压
 unzip consul_1.4.0_linux_amd64.zip
@@ -9,7 +9,7 @@ mv consul /usr/local/bin
 Description=consul service
 [Service]
 WorkingDirectory=/usr/local/bin
-ExecStart=/usr/local/bin/consul agent -server -bootstrap -ui -datacenter=dc-92 -data-dir=/tmp/consul/data -client 0.0.0.0 -bind 127.0.0.1
+ExecStart=/usr/local/bin/consul agent -server -ui -bootstrap-expect=1 -data-dir=/usr/local/consul/data -node=agent-one -advertise=127.0.0.1 -bind=0.0.0.0 -client=0.0.0.0
 Restart=always
 # Restart service after 10 seconds if the dotnet service crashes:
 RestartSec=10
