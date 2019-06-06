@@ -1224,7 +1224,10 @@ GooFlow.prototype={
 				jq.removeClass("item_focus").children("div:eq(0)").css("display","none");
 				if(this.$nodeData[this.$focus].marked){
 					jq.addClass("item_mark").css("border-color",GooFlow.color.mark);
-				}
+                }
+                if (GooFlow.prototype.color.line) {
+                    jq.css("border-color",);
+                }
 			}
 			else{
 				if(typeof this.onItemBlur==='function' && this.onItemBlur(this.$focus,"line")===false)	return false;
@@ -1258,8 +1261,8 @@ GooFlow.prototype={
         if (jq.prop("tagName") == "DIV") {
             if (bool && this.onItemFocus != null && !this.onItemFocus(id, "node")) return;
             jq.addClass("item_focus");
-            if (GooFlow.prototype.color.line) {
-                jq.css("border-color", GooFlow.prototype.color.line);
+            if (GooFlow.prototype.color.node) {
+                jq.css("border-color", GooFlow.prototype.color.node);
             }
             if (this.$editable) jq.children("div:eq(0)").css("display", "block");
             this.$workArea.append(jq);
@@ -2476,12 +2479,12 @@ GooFlow.prototype={
 GooFlow.color={
 	//main:"#20A0FF",
 	font:"#15428B",
-	node:"#C0CCDA",
+	node:"#fff",
 	line:"#1D8CE0",
-	lineFont:"#777",
+	lineFont:"#000",
 	mark:"#ff8800",
-	mix:"#B6F700",
-	mixFont:"#777"
+    mix:"#5CCB41",
+	mixFont:"#333"
 };
 	//默认的文字说明注释内容
 GooFlow.remarks={

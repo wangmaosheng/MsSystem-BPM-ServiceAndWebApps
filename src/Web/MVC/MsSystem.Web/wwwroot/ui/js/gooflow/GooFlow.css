@@ -95,23 +95,54 @@ v\:group,v\:rect,v\:imagedata,v\:oval,v\:line,v\:polyline,v\:stroke,v\:textbox {
 .GooFlow_work .draw{color:#ff8800}
 
 /*各种节点样式*/
-.GooFlow_item{
-	position:absolute;background:#A1DCEB;padding:1px;
-	border-radius:3px;background-color:#C1DCFC;box-shadow:1px 1px 2px rgba(99,99,99,2);
+.GooFlow_item {
+    position: absolute;
+    background: #A1DCEB;
+    padding: 1px;
+    border-radius: 3px;
+    border: 1px;
+    border-style: solid;
+    box-shadow: 1px 2px 8px #7A808C;
 }
 .GooFlow_item.GooFlow_item_selected{background-color:#1ab394 !important}
 .GooFlow table{padding:1px 2px;border-radius:2px}
-.GooFlow td,.GooFlow td div{ vertical-align:middle;text-align:center;padding:0;cursor:default;word-wrap:break-word;word-break:break-all}
+.GooFlow td, .GooFlow td div {
+    vertical-align: middle;
+    text-align: center;
+    padding: 0;
+    cursor: pointer;
+    word-wrap: break-word;
+    word-break: break-all;
+    color: #303030;
+    font-size:12px;
+}
 .GooFlow .ico{width:18px;cursor:move;text-align:center; vertical-align: middle;}
-.GooFlow .ico i{filter:Alpha(Opacity=30);-moz-opacity:0.3;opacity:0.3;color:#000;margin:0 auto;}
+    .GooFlow .ico i {
+        filter: Alpha(Opacity=30);
+        -moz-opacity: 0.3;
+        opacity: 1;
+        color: #0e9aef;
+        margin: 0 auto;
+    }
 
-.GooFlow .item_round{border-radius:13px; overflow:visible}
+.GooFlow .item_round{border-radius:3px; overflow:visible}
 .GooFlow .item_round table{border:0;padding:3px;width:26px;height:26px}
 .GooFlow .item_round .span{
 	display:block;text-align:center; position:absolute;top:100%;left:-100%;width:300%;overflow:visible;
-	padding:0;cursor:default;word-wrap: break-word;word-break:break-all
+	padding:0;cursor:default;word-wrap: break-word;word-break:break-all;
+    color:#303030;
+    font-size:12px;
 }
-.GooFlow .item_mix{background:#B6F700;color:#fff}
+.GooFlow .item_mix {
+    background: #5CCB41;
+    color: #fff;
+    box-shadow: 1px 1px 2px #5CCB41;
+}
+.GooFlow .item_mix i.ico_start{
+    color:#fff;
+    opacity:1;
+    font-size:14px;
+}
 .GooFlow .item_focus{border:#3892D3 1px solid !important;padding:0;z-index:5}
 .GooFlow .item_focus table{margin:0 !important;}
 .GooFlow .item_focus.item_round .span{
@@ -211,4 +242,4 @@ v\:group,v\:rect,v\:imagedata,v\:oval,v\:line,v\:polyline,v\:stroke,v\:textbox {
 .myForm .form_content table input[type=text]{width:150px;padding: 3px 2px;}
 .myForm .form_content table textarea{width:120px;cursor:not-allowed}
 #propertyForm{float:right;width:260px}
-.GooFlow_item.item_round .ico_end.round{color:red;}
+.GooFlow_item.item_round .ico_end.round{color:red;opacity:1;}
