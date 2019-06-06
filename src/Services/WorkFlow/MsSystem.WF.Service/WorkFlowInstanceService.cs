@@ -167,7 +167,8 @@ namespace MsSystem.WF.Service
                             CreateUserName = addProcess.UserName,
                             FlowContent = dbflow.FlowContent,
                             IsFinish = null,
-                            Status = (int)WorkFlowStatus.UnSubmit
+                            Status = (int)WorkFlowStatus.UnSubmit,
+                            UpdateTime = DateTime.Now.ToTimeStamp()
                         };
                         await databaseFixture.Db.WorkflowInstance.InsertAsync(workflowInstance, tran);
                         addProcess.InstanceId = workflowInstance.InstanceId;
@@ -183,7 +184,8 @@ namespace MsSystem.WF.Service
                             InstanceId = addProcess.InstanceId,
                             FormId = dbform.FormId,
                             FormType = dbform.FormType,
-                            FormUrl = null
+                            FormUrl = null,
+                            CreateTime = DateTime.Now.ToTimeStamp(),
                         };
                         await databaseFixture.Db.WorkflowInstanceForm.InsertAsync(instanceForm, tran);
                     }
@@ -246,7 +248,8 @@ namespace MsSystem.WF.Service
                             CreateUserName = model.UserName,
                             FlowContent = dbflow.FlowContent,
                             IsFinish = context.WorkFlow.NextNodeType.ToIsFinish(),
-                            Status = (int)WorkFlowStatus.Running
+                            Status = (int)WorkFlowStatus.Running,
+                            UpdateTime = DateTime.Now.ToTimeStamp()
                         };
                         await databaseFixture.Db.WorkflowInstance.InsertAsync(workflowInstance, tran);
                     }
@@ -261,6 +264,7 @@ namespace MsSystem.WF.Service
                         workflowInstance.FlowContent = dbflow.FlowContent;
                         workflowInstance.IsFinish = context.WorkFlow.NextNodeType.ToIsFinish();
                         workflowInstance.Status = (int)WorkFlowStatus.Running;
+                        workflowInstance.UpdateTime = DateTime.Now.ToTimeStamp();
                         await databaseFixture.Db.WorkflowInstance.UpdateAsync(workflowInstance, tran);
                     }
 
@@ -347,15 +351,30 @@ namespace MsSystem.WF.Service
         /// 获取执行过的节点
         /// </summary>
         /// <param name="instanceid"></param>
+        /// <param name="currentNodeId"></param>
         /// <returns></returns>
-        private async Task<List<FlowNode>> GetExcuteNodes(Guid instanceid)
+        private async Task<List<FlowNode>> GetExcuteNodes(Guid instanceid,Guid currentNodeId)
         {
             var operationHis = await databaseFixture.Db.WorkflowOperationHistory.FindAllAsync(m => m.InstanceId == instanceid);
-            return operationHis.Where(m => m.TransitionType == (int)WorkFlowMenu.Agree || m.TransitionType == (int)WorkFlowMenu.Submit).Select(m => new FlowNode
+            var list = operationHis.Where(m => m.NodeId != currentNodeId && (m.TransitionType == (int)WorkFlowMenu.Agree || m.TransitionType == (int)WorkFlowMenu.Submit))
+                .OrderBy(m => m.CreateTime);
+            List<FlowNode> nodes = new List<FlowNode>();
+            foreach (var item in list)
             {
-                Id = m.NodeId,
-                Name = m.NodeName
-            }).ToList();
+                if (item.TransitionType == (int)WorkFlowMenu.Back)//当循环到Back节点时候，后面节点不在循环
+                {
+                    break;
+                }
+                else
+                {
+                    nodes.Add(new FlowNode
+                    {
+                        Id = item.NodeId,
+                        Name = item.NodeName
+                    });
+                }
+            }
+            return nodes;
         }
 
         /// <summary>
@@ -487,7 +506,7 @@ namespace MsSystem.WF.Service
                                     (int)WorkFlowMenu.Back,
                                 };
                                 //获取执行过的节点
-                                model.ExecutedNode = await GetExcuteNodes(process.InstanceId);
+                                model.ExecutedNode = await GetExcuteNodes(process.InstanceId, flowinstance.ActivityId);
                             }
                         }
                         if (model.Menus == null)
@@ -499,7 +518,7 @@ namespace MsSystem.WF.Service
                         if (prenode.Count == 1)
                         {
                             var nodeType = context.GetNodeType(prenode[0].From);
-                            if (nodeType == WorkFlowInstanceNodeType.BeginRound && process.UserId == dbflow.CreateUserId)
+                            if (nodeType == WorkFlowInstanceNodeType.BeginRound && process.UserId == flowinstance.CreateUserId)
                             {
                                 model.Menus.Add((int)WorkFlowMenu.Withdraw);
                             }
@@ -832,6 +851,7 @@ namespace MsSystem.WF.Service
                     dbinstance.MakerList = await this.GetMakerListAsync(context.WorkFlow.Nodes[context.WorkFlow.NextNodeId], model.UserId, model.OptionParams);
                     dbinstance.IsFinish = context.WorkFlow.NextNodeType.ToIsFinish();
                     dbinstance.Status = (int)WorkFlowStatus.Running;
+                    dbinstance.UpdateTime = DateTime.Now.ToTimeStamp();
                     await databaseFixture.Db.WorkflowInstance.UpdateAsync(dbinstance, tran);
 
                     #endregion
@@ -964,6 +984,7 @@ namespace MsSystem.WF.Service
                                             dbflowinstance.ActivityId = reallynode.Id;
                                             dbflowinstance.ActivityName = reallynode.Name;
                                             dbflowinstance.ActivityType = (int)reallynode.NodeType();
+                                            dbflowinstance.UpdateTime = DateTime.Now.ToTimeStamp();
                                             dbflowinstance.MakerList = reallynode.NodeType() == WorkFlowInstanceNodeType.EndRound
                                                 ? "" 
                                                 : await this.GetMakerListAsync(reallynode, model.UserId, model.OptionParams);
@@ -1021,6 +1042,7 @@ namespace MsSystem.WF.Service
                                 dbflowinstance.ActivityId = context.WorkFlow.NextNodeId;
                                 dbflowinstance.ActivityName = context.WorkFlow.NextNode.Name;
                                 dbflowinstance.ActivityType = (int)context.WorkFlow.NextNodeType;
+                                dbflowinstance.UpdateTime = DateTime.Now.ToTimeStamp();
                                 dbflowinstance.MakerList = context.WorkFlow.NextNodeType == WorkFlowInstanceNodeType.EndRound
                                     ? ""
                                     : await this.GetMakerListAsync(context.WorkFlow.NextNode, model.UserId, model.OptionParams);
@@ -1133,6 +1155,7 @@ namespace MsSystem.WF.Service
                         dbflowinstance.Status = (int)WorkFlowStatus.Deprecate;
                         dbflowinstance.PreviousId = dbflowinstance.ActivityId;
                         dbflowinstance.ActivityId = context.WorkFlow.NextNodeId;
+                        dbflowinstance.UpdateTime = DateTime.Now.ToTimeStamp();
                         await databaseFixture.Db.WorkflowInstance.UpdateAsync(dbflowinstance, tran);
 
                         #region 流转记录
@@ -1222,6 +1245,7 @@ namespace MsSystem.WF.Service
                         dbflowinstance.ActivityId = rejectNodeId;
                         dbflowinstance.ActivityName = rejectNode.Name;
                         dbflowinstance.ActivityType = (int)rejectNode.NodeType();
+                        dbflowinstance.UpdateTime = DateTime.Now.ToTimeStamp();
                         if (rejectNode.NodeType() == WorkFlowInstanceNodeType.BeginRound)//开始节点时候
                         {
                             dbflowinstance.MakerList = dbflowinstance.CreateUserId + ",";
@@ -1230,9 +1254,9 @@ namespace MsSystem.WF.Service
                         {
                             dbflowinstance.MakerList = rejectNode.NodeType() == WorkFlowInstanceNodeType.EndRound
                                 ? ""
-                                : await this.GetMakerListAsync(rejectNode, model.UserId, model.OptionParams);
+                                : await this.GetMakerListAsync(rejectNode, dbflowinstance.CreateUserId, model.OptionParams);
                         }
-                        dbflowinstance.IsFinish = rejectNode.NodeType() == WorkFlowInstanceNodeType.EndRound ? (int)WorkFlowInstanceStatus.Finish : (int)WorkFlowInstanceStatus.Running;
+                        dbflowinstance.IsFinish = rejectNode.NodeType().ToIsFinish();
                         dbflowinstance.Status = (int)WorkFlowStatus.Back;
                         await databaseFixture.Db.WorkflowInstance.UpdateAsync(dbflowinstance, tran);
 
@@ -1334,6 +1358,8 @@ namespace MsSystem.WF.Service
                         //自定义表单流程实例修改
                         dbflowinstance.IsFinish = null;
                         dbflowinstance.Status = (int)WorkFlowStatus.UnSubmit;
+                        dbflowinstance.MakerList = null;
+                        dbflowinstance.UpdateTime = DateTime.Now.ToTimeStamp();
                         await databaseFixture.Db.WorkflowInstance.UpdateAsync(dbflowinstance, tran);
                     }
 

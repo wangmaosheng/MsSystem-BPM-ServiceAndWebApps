@@ -86,6 +86,8 @@ namespace MsSystem.WF.Model
         /// 创建人姓名
         /// </summary>
         public string CreateUserName { get; set; }
+
+        public long UpdateTime { get; set; }
     }
     internal class WfWorkflowInstanceMapper : ClassMapper<WfWorkflowInstance>
     {

@@ -39,13 +39,28 @@ namespace MsSystem.Sys.Service
                     }
                     else
                     {
-                        dbArgs.Add(item, model.param[item]);
+                        foreach (var key in model.param.Keys)
+                        {
+                            if (key.ToLower() == item.ToLower())
+                            {
+                                dbArgs.Add(item, model.param[key]);
+                                break;
+                            }
+                        }
                     }
                 }
                 var res = await databaseFixture.Db.Connection.QueryAsync<string>(mysql, dbArgs);
-                string userids = res.ToList()[0];
-                string[] array = userids.Split(',');
-                return array.Select(x => Convert.ToInt64(x)).ToList();
+                var list = res.Where(m => !string.IsNullOrEmpty(m)).ToList();
+                if (list.Any())
+                {
+                    string userids = res.ToList()[0];
+                    string[] array = userids.Split(',');
+                    return array.Select(x => Convert.ToInt64(x)).ToList();
+                }
+                else
+                {
+                    throw new Exception("人员查询未找到！！！");
+                }
             }
             catch (Exception ex)
             {
@@ -75,7 +90,14 @@ namespace MsSystem.Sys.Service
                     }
                     else
                     {
-                        dbArgs.Add(param, model.Param[param]);
+                        foreach (var key in model.Param.Keys)
+                        {
+                            if (key.ToLower() == param.ToLower())
+                            {
+                                dbArgs.Add(param, model.Param[key]);
+                                break;
+                            }
+                        }
                     }
                 }
                 var res = await databaseFixture.Db.Connection.QueryAsync<int>(mysql, dbArgs);

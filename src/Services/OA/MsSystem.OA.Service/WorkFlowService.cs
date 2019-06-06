@@ -53,7 +53,6 @@ namespace MsSystem.OA.Service
                     }
                     else
                     {
-                        dbArgs.Add(item, model.param[item]);
                         foreach (var key in model.param.Keys)
                         {
                             if (key.ToLower() == item.ToLower())
@@ -65,9 +64,17 @@ namespace MsSystem.OA.Service
                     }
                 }
                 var res = await databaseFixture.Db.Connection.QueryAsync<string>(mysql, dbArgs);
-                string userids = res.ToList()[0];
-                string[] array = userids.Split(',');
-                return array.Select(x => Convert.ToInt64(x)).ToList();
+                var list = res.Where(m => !string.IsNullOrEmpty(m)).ToList();
+                if (list.Any())
+                {
+                    string userids = res.ToList()[0];
+                    string[] array = userids.Split(',');
+                    return array.Select(x => Convert.ToInt64(x)).ToList();
+                }
+                else
+                {
+                    throw new Exception("人员查询未找到！！！");
+                }
             }
             catch (Exception ex)
             {
@@ -108,7 +115,7 @@ namespace MsSystem.OA.Service
                     }
                 }
                 var res = await databaseFixture.Db.Connection.QueryAsync<int>(mysql, dbArgs);
-                if (res != null && res.Count()==1)
+                if (res != null && res.ToList()[0] == 1)
                 {
                     finalid = item.Key;
                     break;
