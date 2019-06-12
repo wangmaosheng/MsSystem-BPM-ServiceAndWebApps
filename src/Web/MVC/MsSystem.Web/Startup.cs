@@ -74,7 +74,6 @@ namespace MsSystem.Web
             {
                 app.UseExceptionHandler("/Error/Index");
                 env.ConfigureNLog("NLog.config");
-                app.UseWebMarkupMin();
             }
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
@@ -105,17 +104,6 @@ namespace MsSystem.Web
             services.AddMvc(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter))).AddJsonOptions(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
             services.AddMemoryCache();
             services.AddSession();
-            services.AddWebMarkupMin(options =>
-            {
-                options.AllowMinificationInDevelopmentEnvironment = true;
-                options.AllowCompressionInDevelopmentEnvironment = true;
-            }).AddHtmlMinification(options =>
-            {
-                options.MinificationSettings.RemoveRedundantAttributes = true;
-                options.MinificationSettings.RemoveHttpProtocolFromAttributes = true;
-                options.MinificationSettings.RemoveHttpsProtocolFromAttributes = true;
-            })
-            .AddHttpCompression();
             return services;
         }
         public static IServiceCollection AddSysHttpClientServices(this IServiceCollection services)
