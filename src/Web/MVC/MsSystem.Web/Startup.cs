@@ -26,7 +26,6 @@ using System;
 using System.Net.Http;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
-using WebMarkupMin.AspNetCore2;
 
 namespace MsSystem.Web
 {
