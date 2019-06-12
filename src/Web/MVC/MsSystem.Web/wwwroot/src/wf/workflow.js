@@ -4,6 +4,10 @@ var formTree;
 var rolesTree;
 var usersTree;
 var chatUserTree;
+
+var viewrolesTree;
+var viewusersTree;
+
 function dblClickExpand(treeId, treeNode) {
     return treeNode.level > 0;
 }
@@ -78,7 +82,7 @@ $(function () {
     basicpage.init();
 
     var property = {
-        toolBtns: ["start round mix", "end round", "task"],
+        toolBtns: ["start round mix", "end round", "task", "view"],
         haveHead: true,
         headLabel: true,
         headBtns: [],
@@ -99,7 +103,8 @@ $(function () {
         fork: "分支结点",
         join: "联合结点",
         complex: "复合结点",
-        group: "组织划分框编辑开关"
+        group: "组织划分框编辑开关",
+        view: "通知节点"
     };
     workflow = $.createGooFlow($("#workflowpanel"), property);
     if ($('input[name=FlowId]').val() && $('input[name=FlowId]').val() !== '00000000-0000-0000-0000-000000000000') {
@@ -139,14 +144,14 @@ $(function () {
     };
     workflow.onItemBlur = function (id, model) {
         document.getElementById("propertyForm").reset();
-        $('#mynodeeventtitle,#mynodeeventcontent,#mynodechattitle,#mynodechatcontent,#mylineeventtitle,#mylineeventcontent').hide();
+        $('.form_title:not(:first),.form_content:not(:first)').hide();
         $('#linename').text('');
         return true;
     };
     workflow.onItemDbClick = function (id, model) {
         var nodeobj = workflow.getItemInfo(id, model);
         if (model === 'node') {
-            if (nodeobj.type === 'task' || nodeobj.type === 'node' || nodeobj.type === 'chat') {
+            if (nodeobj.type === 'task' || nodeobj.type === 'node' || nodeobj.type === 'chat' || nodeobj.type === 'view') {
                 pageprop.toggleNodeEvent(nodeobj.id, nodeobj.type);
                 return false;
             } 
@@ -277,6 +282,38 @@ $(function () {
                         $('#selectchatusertrees').parent().find('textarea').val(names.join(','));
                     });
                 }
+            } else if (type == 'view') {
+                $('#myviewtitle,#myviewcontent').show();
+                if (workflow.getItemInfo(id, 'node').setInfo) {
+                    var nodeobj = workflow.getItemInfo(id, 'node');
+                    $('#NodeViewDesignate').val(nodeobj.setInfo.NodeDesignate);
+                    var node_ids;
+                    if (nodeobj.setInfo.NodeDesignate === 'SPECIAL_ROLE') {
+                        $('#selectviewrolebox').show();
+                        $('#selectviewuserbox,#selectviewsqlcode').hide();
+                        node_ids = nodeobj.setInfo.Nodedesignatedata.roles;
+                        pageprop.__getRoleTree(node_ids, function (ids, names, data) {
+                            $('#selectviewrolebox input[type=hidden]').val(ids.join(','));
+                            $('#selectviewrolebox textarea').val(names.join(','));
+                        });
+                    } else if (nodeobj.setInfo.NodeDesignate === 'SPECIAL_USER') {
+                        $('#selectviewuserbox').show();
+                        $('#selectviewrolebox,#selectviewsqlcode').hide();
+                        node_ids = nodeobj.setInfo.Nodedesignatedata.users;
+                        pageprop.__getUserTree(node_ids, function (ids, names, data) {
+                            $('#selectviewuserbox input[type=hidden]').val(ids.join(','));
+                            $('#selectviewuserbox textarea').val(names.join(','));
+                        });
+                    } else if (nodeobj.setInfo.NodeDesignate === 'SQL') {
+                        $('#selectviewsqlcode').show();
+                        $('#selectviewuserbox,#selectviewrolebox').hide();
+                        node_ids = nodeobj.setInfo.Nodedesignatedata.sql;
+                        $('#selectviewsqlcode textarea').val(node_ids);
+                    }
+                    else {
+                        $('#selectviewrolebox,#selectviewuserbox,#selectviewsqlcode').hide();
+                    }
+                }
             }
         },
         toggleLineEvent: function (id) {
@@ -389,9 +426,24 @@ $(function () {
                     $('#selectsqlcode,#selectuserbox').hide();
                 } else if (val == 'SQL') {
                     $('#selectsqlcode').show();
-                    $('#selectuserbox,#selectuserbox').hide();
+                    $('#selectuserbox,#selectrolebox').hide();
                 } else {
                     $('#selectuserbox,#selectrolebox,#selectsqlcode').hide();
+                }
+            });
+            $('#NodeViewDesignate').change(function () {
+                var val = $(this).val();
+                if (val == 'SPECIAL_USER') {
+                    $('#selectviewuserbox').show();
+                    $('#selectviewsqlcode,#selectviewrolebox').hide();
+                } else if (val == 'SPECIAL_ROLE') {
+                    $('#selectviewrolebox').show();
+                    $('#selectviewsqlcode,#selectviewuserbox').hide();
+                } else if (val == 'SQL') {
+                    $('#selectviewsqlcode').show();
+                    $('#selectviewuserbox,#selectviewrolebox').hide();
+                } else {
+                    $('#selectviewuserbox,#selectviewrolebox,#selectviewsqlcode').hide();
                 }
             });
             $('#selectroletrees').click(function () {
@@ -415,7 +467,27 @@ $(function () {
                     content: $('#roles')
                 });
             });
-
+            $('#selectviewroletrees').click(function () {
+                var idstr = $('#selectviewrolebox input[type=hidden]').val();
+                var ids = idstr.split(',');
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'JSON',
+                    url: '/WF/Config/GetRoleTreesAsync',
+                    data: { ids: ids },
+                    success: function (data) {
+                        viewrolesTree = $.fn.zTree.init($("#viewrolesTree"), pageprop.setting, data);
+                        viewrolesTree.expandAll(true);
+                    }
+                });
+                utils.open({
+                    type: 1,
+                    title: '选择角色',
+                    maxmin: false,
+                    area: ['300px', '500px'],
+                    content: $('#viewroles')
+                });
+            });
             $('#selectuserpage').click(function () {
                 var idstr = $('#selectuserbox input[type=hidden]').val();
                 var ids = idstr.split(',');
@@ -437,6 +509,27 @@ $(function () {
                     content: $('#users')
                 });
             });
+            $('#selectviewuserpage').click(function () {
+                var idstr = $('#selectviewuserbox input[type=hidden]').val();
+                var ids = idstr.split(',');
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'JSON',
+                    url: '/WF/Config/GetUserTreeAsync',
+                    data: { ids: ids },
+                    success: function (data) {
+                        viewusersTree = $.fn.zTree.init($("#viewusersTree"), pageprop.setting, data);
+                        viewusersTree.expandAll(true);
+                    }
+                });
+                utils.open({
+                    type: 1,
+                    title: '选择用户',
+                    maxmin: false,
+                    area: ['300px', '500px'],
+                    content: $('#viewusers')
+                });
+            });
             $('#saveroles').click(function () {
                 var nodes = rolesTree.getCheckedNodes(true);
                 var ids = [];
@@ -449,6 +542,18 @@ $(function () {
                 $('#selectrolebox textarea').val(names.join(','));
                 layer.closeAll();
             });
+            $('#saveviewroles').click(function () {
+                var nodes = viewrolesTree.getCheckedNodes(true);
+                var ids = [];
+                var names = [];
+                for (var i = 0; i < nodes.length; i++) {
+                    ids.push(nodes[i].id);
+                    names.push(nodes[i].name);
+                }
+                $('#selectviewrolebox input[type=hidden]').val(ids.join(','));
+                $('#selectviewrolebox textarea').val(names.join(','));
+                layer.closeAll();
+            });
             $('#saveusers').click(function () {
                 var nodes = usersTree.getCheckedNodes(true);
                 var ids = [];
@@ -459,6 +564,18 @@ $(function () {
                 }
                 $('#selectuserbox input[type=hidden]').val(ids.join(','));
                 $('#selectuserbox textarea').val(names.join(','));
+                layer.closeAll();
+            });
+            $('#saveviewusers').click(function () {
+                var nodes = viewusersTree.getCheckedNodes(true);
+                var ids = [];
+                var names = [];
+                for (var i = 0; i < nodes.length; i++) {
+                    ids.push(nodes[i].id);
+                    names.push(nodes[i].name);
+                }
+                $('#selectviewuserbox input[type=hidden]').val(ids.join(','));
+                $('#selectviewuserbox textarea').val(names.join(','));
                 layer.closeAll();
             });
         },
@@ -503,6 +620,23 @@ $(function () {
                             }
                         };
                         selfinfodata.Nodedesignatedata.users = $('#selectchatusertrees').parent().find('input[type=hidden]').val().split(',');
+                    } else if (nodeType == 'view') {
+                        selfinfodata = {
+                            NodeDesignate: $('#NodeViewDesignate').val(),
+                            Nodedesignatedata: {
+                                users: [],
+                                roles: [],
+                                orgs: [],
+                                sql: ''
+                            }
+                        };
+                        if (selfinfodata.NodeDesignate == 'SPECIAL_ROLE') {
+                            selfinfodata.Nodedesignatedata.roles = $('#selectviewrolebox input[type=hidden]').val().split(',');
+                        } else if (selfinfodata.NodeDesignate == 'SPECIAL_USER') {
+                            selfinfodata.Nodedesignatedata.users = $('#selectviewuserbox input[type=hidden]').val().split(',');
+                        } else if (selfinfodata.NodeDesignate == 'SQL') {
+                            selfinfodata.Nodedesignatedata.sql = $('#selectviewsqlcode textarea').val();
+                        }
                     }
                     workflow.setName($('#ele_id').val(), $('#ele_name').val(), 'node', selfinfodata);
                 } else if (nodeModel === 'line') {

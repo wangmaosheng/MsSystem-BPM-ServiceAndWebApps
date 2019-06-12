@@ -31,19 +31,31 @@
     </div>
     <div class="row m10" style="display: none" id="roles">
         <div class="navbar-fixed-top mt40 p5">
-            <button type="button" class="btn btn-primary btn-permission btn-permission-save btn-xs" id="saveroles"><i class="fa fa-save"><span class="ml5">保存</span></i></button>
+            <button type="button" class="btn btn-primary btn-xs" id="saveroles"><i class="fa fa-save"><span class="ml5">保存</span></i></button>
         </div>
         <div class="mt30 ztree" id="rolesTree"></div>
     </div>
     <div class="row m10" style="display: none" id="users">
         <div class="navbar-fixed-top mt40 p5">
-            <button type="button" class="btn btn-primary btn-permission btn-permission-save btn-xs" id="saveusers"><i class="fa fa-save"><span class="ml5">保存</span></i></button>
+            <button type="button" class="btn btn-primary btn-xs" id="saveusers"><i class="fa fa-save"><span class="ml5">保存</span></i></button>
         </div>
         <div class="mt30 ztree" id="usersTree"></div>
     </div>
+    <div class="row m10" style="display: none" id="viewroles">
+        <div class="navbar-fixed-top mt40 p5">
+            <button type="button" class="btn btn-primary btn-xs" id="saveviewroles"><i class="fa fa-save"><span class="ml5">保存</span></i></button>
+        </div>
+        <div class="mt30 ztree" id="viewrolesTree"></div>
+    </div>
+    <div class="row m10" style="display: none" id="viewusers">
+        <div class="navbar-fixed-top mt40 p5">
+            <button type="button" class="btn btn-primary btn-xs" id="saveviewusers"><i class="fa fa-save"><span class="ml5">保存</span></i></button>
+        </div>
+        <div class="mt30 ztree" id="viewusersTree"></div>
+    </div>
     <div class="row m10" style="display: none" id="chatusers">
         <div class="navbar-fixed-top mt40 p5">
-            <button type="button" class="btn btn-primary btn-permission btn-permission-save btn-xs" id="savechatusers"><i class="fa fa-save"><span class="ml5">保存</span></i></button>
+            <button type="button" class="btn btn-primary btn-xs" id="savechatusers"><i class="fa fa-save"><span class="ml5">保存</span></i></button>
         </div>
         <div class="mt30 ztree" id="chatusersTree"></div>
     </div>
@@ -164,14 +176,14 @@
                                                 <td style="width:30%">执行人</td>
                                                 <td style="width:70%">
                                                     <select name="NodeDesignate" id="NodeDesignate">
-                                                        <option value="ALL_USER">任何人</option>
+                                                        @*<option value="ALL_USER">任何人</option>*@
                                                         <option value="SPECIAL_USER">指定用户</option>
                                                         <option value="SPECIAL_ROLE">指定角色</option>
                                                         <option value="SQL">SQL自动获取</option>
                                                     </select>
                                                 </td>
                                             </tr>
-                                            <tr style="display:none" id="selectuserbox">
+                                            <tr id="selectuserbox">
                                                 <td>选择用户</td>
                                                 <td>
                                                     <input type="hidden" />
@@ -235,6 +247,43 @@
                                             <tr id="selectlinebox">
                                                 <td style="width:30%">SQL判断</td>
                                                 <td style="width:70%">
+                                                    <textarea style="width:150px;min-height:100px;cursor:auto"></textarea>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div id="myviewtitle" style="display:none" class="form_title">通知节点事件</div>
+                                    <div id="myviewcontent" style="display:none" class="form_content">
+                                        <table>
+                                            <tr>
+                                                <td style="width:30%">执行人</td>
+                                                <td style="width:70%">
+                                                    <select name="NodeDesignate" id="NodeViewDesignate">
+                                                        <option value="CREATEUSER">流程发起人</option>
+                                                        <option value="SPECIAL_USER">指定用户</option>
+                                                        <option value="SPECIAL_ROLE">指定角色</option>
+                                                        <option value="SQL">SQL自动获取</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr id="selectviewuserbox">
+                                                <td>选择用户</td>
+                                                <td>
+                                                    <input type="hidden" />
+                                                    <textarea readonly title="选择用户"></textarea>
+                                                    <a id="selectviewuserpage">选择</a>
+                                                </td>
+                                            </tr>
+                                            <tr style="display:none" id="selectviewrolebox">
+                                                <td>选择角色</td>
+                                                <td>
+                                                    <input type="hidden" />
+                                                    <textarea readonly title="选择角色"></textarea><a id="selectviewroletrees">选择</a>
+                                                </td>
+                                            </tr>
+                                            <tr style="display:none" id="selectviewsqlcode">
+                                                <td>SQL标识</td>
+                                                <td>
                                                     <textarea style="width:150px;min-height:100px;cursor:auto"></textarea>
                                                 </td>
                                             </tr>

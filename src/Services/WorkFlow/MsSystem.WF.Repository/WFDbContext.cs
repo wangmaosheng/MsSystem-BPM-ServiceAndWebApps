@@ -42,13 +42,11 @@ namespace MsSystem.WF.Repository
         public IWfWorkflowInstanceFormRepository WorkflowInstanceForm => _workflowInstanceForm
             ?? (_workflowInstanceForm = new WfWorkflowInstanceFormRepository(Connection, _config));
 
-        //private IWfWorkflowLineRepository _workflowLine;
-
-        //public IWfWorkflowLineRepository WorkflowLine => _workflowLine ?? (_workflowLine = new WfWorkflowLineRepository(Connection, _config));
-
-
         private IWfWorkflowsqlRepository _wfWorkflowsql;
-
         public IWfWorkflowsqlRepository WfWorkflowsql => _wfWorkflowsql ?? (_wfWorkflowsql = new WfWorkflowsqlRepository(Connection, _config));
+
+
+        private IWfWorkflowNoticeRepository _wfWorkflowNotice;
+        public IWfWorkflowNoticeRepository WfWorkflowNotice => _wfWorkflowNotice ?? (_wfWorkflowNotice = new WfWorkflowNoticeRepository(Connection, _config));
     }
 }

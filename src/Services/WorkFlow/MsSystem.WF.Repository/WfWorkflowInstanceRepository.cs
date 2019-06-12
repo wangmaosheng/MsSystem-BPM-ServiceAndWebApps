@@ -30,22 +30,44 @@ namespace MsSystem.WF.Repository
                 PageSize = searchDto.PageSize
             };
 
-            string sql = $@"SELECT wf.`FlowId`,wf.`FlowName`,ins.`InstanceId`,ins.`Code` AS InstanceCode,ins.`IsFinish`,ins.`Status`,ins.`CreateTime`,
-            ins.`CreateUserName` AS UserName ,ff.`FormName`,ff.`FormType`,ff.`FormUrl`,wif.`FormData`
-            FROM `wf_workflow_instance` ins 
-            INNER JOIN `wf_workflow` wf ON wf.`FlowId`=ins.`FlowId`
-            INNER JOIN `wf_workflow_form` ff ON ff.`FormId`=wf.`FormId`
-            INNER JOIN `wf_workflow_instance_form` wif ON wif.`InstanceId`=ins.`InstanceId`
-            WHERE ins.`MakerList` LIKE '%{searchDto.UserId},%'
-            ORDER BY ins.`CreateTime` DESC
+            string sql = $@"SELECT * FROM (
+                    SELECT wf.`FlowId`,wf.`FlowName`,ins.`InstanceId`,ins.`Code` AS InstanceCode,ins.`IsFinish`,ins.`Status`,ins.`CreateTime`,
+                    ins.`CreateUserName` AS UserName ,ff.`FormName`,ff.`FormType`,ff.`FormUrl`,wif.`FormData`
+                    FROM `wf_workflow_instance` ins 
+                    INNER JOIN `wf_workflow` wf ON wf.`FlowId`=ins.`FlowId`
+                    INNER JOIN `wf_workflow_form` ff ON ff.`FormId`=wf.`FormId`
+                    INNER JOIN `wf_workflow_instance_form` wif ON wif.`InstanceId`=ins.`InstanceId`
+                    WHERE ins.`MakerList` LIKE '%{searchDto.UserId},%'
+                    UNION 
+                    SELECT wf.`FlowId`,wf.`FlowName`,ins.`InstanceId`,ins.`Code` AS InstanceCode,ins.`IsFinish`,ins.`Status`,ins.`CreateTime`,
+                    ins.`CreateUserName` AS UserName ,ff.`FormName`,ff.`FormType`,ff.`FormUrl`,wif.`FormData`
+                    FROM `wf_workflow_instance` ins 
+                    INNER JOIN `wf_workflow` wf ON wf.`FlowId`=ins.`FlowId`
+                    INNER JOIN `wf_workflow_form` ff ON ff.`FormId`=wf.`FormId`
+                    INNER JOIN `wf_workflow_instance_form` wif ON wif.`InstanceId`=ins.`InstanceId`
+                    LEFT JOIN `wf_workflow_notice` wfn ON wfn.`InstanceId`=ins.`InstanceId`
+                    WHERE wfn.IsTransition=1 AND wfn.IsRead=0 AND wfn.Status=1 AND wfn.Maker='{searchDto.UserId}'
+                    ) t ORDER BY t.`CreateTime` DESC
             LIMIT {(searchDto.PageIndex - 1) * searchDto.PageSize},{searchDto.PageSize}";
 
-            string countsql = $@"SELECT COUNT(1) FROM `wf_workflow_instance` ins 
-            INNER JOIN `wf_workflow` wf ON wf.`FlowId`= ins.`FlowId`
-            INNER JOIN `wf_workflow_form` ff ON ff.`FormId`=wf.`FormId`
-            INNER JOIN `wf_workflow_instance_form` wif ON wif.`InstanceId`=ins.`InstanceId`
-            WHERE ins.`MakerList` LIKE '%{searchDto.UserId},%'
-            ORDER BY ins.`CreateTime` DESC" ;
+            string countsql = $@"SELECT COUNT(1) FROM (
+SELECT wf.`FlowId`,wf.`FlowName`,ins.`InstanceId`,ins.`Code` AS InstanceCode,ins.`IsFinish`,ins.`Status`,ins.`CreateTime`,
+ins.`CreateUserName` AS UserName ,ff.`FormName`,ff.`FormType`,ff.`FormUrl`,wif.`FormData`
+FROM `wf_workflow_instance` ins 
+INNER JOIN `wf_workflow` wf ON wf.`FlowId`=ins.`FlowId`
+INNER JOIN `wf_workflow_form` ff ON ff.`FormId`=wf.`FormId`
+INNER JOIN `wf_workflow_instance_form` wif ON wif.`InstanceId`=ins.`InstanceId`
+WHERE ins.`MakerList` LIKE '%{searchDto.UserId},%'
+UNION 
+SELECT wf.`FlowId`,wf.`FlowName`,ins.`InstanceId`,ins.`Code` AS InstanceCode,ins.`IsFinish`,ins.`Status`,ins.`CreateTime`,
+ins.`CreateUserName` AS UserName ,ff.`FormName`,ff.`FormType`,ff.`FormUrl`,wif.`FormData`
+FROM `wf_workflow_instance` ins 
+INNER JOIN `wf_workflow` wf ON wf.`FlowId`=ins.`FlowId`
+INNER JOIN `wf_workflow_form` ff ON ff.`FormId`=wf.`FormId`
+INNER JOIN `wf_workflow_instance_form` wif ON wif.`InstanceId`=ins.`InstanceId`
+LEFT JOIN `wf_workflow_notice` wfn ON wfn.`InstanceId`=ins.`InstanceId`
+WHERE wfn.IsTransition=1 AND wfn.IsRead=0 AND wfn.Status=1 AND wfn.Maker='{searchDto.UserId}'
+) t ORDER BY t.`CreateTime` DESC";
 
             page.Items = await this.Connection.QueryAsync<UserWorkFlowDto>(sql);
             page.TotalItems = await this.Connection.ExecuteScalarAsync<int>(countsql);

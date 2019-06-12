@@ -20,7 +20,7 @@ namespace MsSystem.WF.Service
         private readonly IConfigService configService;
         private readonly ICapPublisher capPublisher;
 
-        public WorkFlowInstanceService(IWFDatabaseFixture databaseFixture, IConfigService configService,ICapPublisher capPublisher)
+        public WorkFlowInstanceService(IWFDatabaseFixture databaseFixture, IConfigService configService, ICapPublisher capPublisher)
         {
             this.databaseFixture = databaseFixture;
             this.configService = configService;
@@ -31,10 +31,10 @@ namespace MsSystem.WF.Service
         /// 获取流程发起人
         /// </summary>
         /// <param name="node"></param>
-        /// <param name="userid"></param>
+        /// <param name="userid">当前人</param>
         /// <param name="optionParams"></param>
         /// <returns></returns>
-        private async Task<string> GetMakerListAsync(FlowNode node,string userid, Dictionary<string, object> optionParams)
+        private async Task<string> GetMakerListAsync(FlowNode node, string userid, Dictionary<string, object> optionParams)
         {
             if (node.SetInfo == null)
             {
@@ -43,7 +43,7 @@ namespace MsSystem.WF.Service
             switch (node.SetInfo.NodeDesignate)
             {
                 case FlowNodeSetInfo.SPECIAL_USER:
-                    { 
+                    {
                         string res = string.Join(",", node.SetInfo.Nodedesignatedata.Users);
                         return res.IsNullOrEmpty() ? res : res + ",";
                     }
@@ -353,7 +353,7 @@ namespace MsSystem.WF.Service
         /// <param name="instanceid"></param>
         /// <param name="currentNodeId"></param>
         /// <returns></returns>
-        private async Task<List<FlowNode>> GetExcuteNodes(Guid instanceid,Guid currentNodeId)
+        private async Task<List<FlowNode>> GetExcuteNodes(Guid instanceid, Guid currentNodeId)
         {
             var operationHis = await databaseFixture.Db.WorkflowOperationHistory.FindAllAsync(m => m.InstanceId == instanceid);
             var list = operationHis.Where(m => m.NodeId != currentNodeId && (m.TransitionType == (int)WorkFlowMenu.Agree || m.TransitionType == (int)WorkFlowMenu.Submit))
@@ -439,12 +439,16 @@ namespace MsSystem.WF.Service
                 }
                 if (flowinstance.IsFinish == (int)WorkFlowInstanceStatus.Finish)
                 {
-                    model.Menus = new List<int>
+                    model.Menus = new List<int>();
+                    //已阅按钮显示判断
+                    var dbnotices = await databaseFixture.Db.WfWorkflowNotice.FindAllAsync(m => m.Maker == process.UserId && m.InstanceId == process.InstanceId && m.IsTransition == 1 && m.IsRead == 0 && m.Status == 1);
+                    if (dbnotices.Any())
                     {
-                        (int)WorkFlowMenu.Approval,
-                        (int)WorkFlowMenu.FlowImage,
-                        (int)WorkFlowMenu.Return,
-                    };
+                        model.Menus.Add((int)WorkFlowMenu.View);
+                    }
+                    model.Menus.Add((int)WorkFlowMenu.Approval);
+                    model.Menus.Add((int)WorkFlowMenu.FlowImage);
+                    model.Menus.Add((int)WorkFlowMenu.Return);
                     return model;
                 }
                 //根据当前人获取可操作的按钮
@@ -513,6 +517,13 @@ namespace MsSystem.WF.Service
                         {
                             model.Menus = new List<int>();
                         }
+                        //已阅按钮显示判断
+                        var dbnotices = await databaseFixture.Db.WfWorkflowNotice.FindAllAsync(m => m.Maker == model.UserId && m.InstanceId == model.InstanceId && m.IsTransition == 1 && m.IsRead == 0 && m.Status == 1);
+                        if (dbnotices.Any())
+                        {
+                            model.Menus.Add((int)WorkFlowMenu.View);
+                        }
+
                         //终止按钮显示判断
                         var prenode = context.GetLinesForFrom(flowinstance.ActivityId);
                         if (prenode.Count == 1)
@@ -594,6 +605,9 @@ namespace MsSystem.WF.Service
                 case WorkFlowMenu.Withdraw:
                     result = await ProcessTransitionWithdrawAsync(model);
                     break;
+                case WorkFlowMenu.View:
+                    result = await ProcessTransitionViewAsync(model);
+                    break;
                 case WorkFlowMenu.Stop:
                     break;
                 case WorkFlowMenu.Cancel:
@@ -601,8 +615,6 @@ namespace MsSystem.WF.Service
                 case WorkFlowMenu.Throgh:
                     break;
                 case WorkFlowMenu.Assign:
-                    break;
-                case WorkFlowMenu.View:
                     break;
                 case WorkFlowMenu.CC:
                     break;
@@ -663,7 +675,7 @@ namespace MsSystem.WF.Service
         /// <param name="model"></param>
         /// <param name="flowInstanceStatus"></param>
         /// <returns></returns>
-        private async Task ChatLogic(IDbTransaction tran, MsWorkFlowContext context,WfWorkflowInstance dbflowinstance, WorkFlowProcessTransition model, WorkFlowInstanceStatus flowInstanceStatus)
+        private async Task ChatLogic(IDbTransaction tran, MsWorkFlowContext context, WfWorkflowInstance dbflowinstance, WorkFlowProcessTransition model, WorkFlowInstanceStatus flowInstanceStatus)
         {
             //并行逻辑
             if (context.WorkFlow.ActivityNode.SetInfo.ChatData.ChatType == ChatType.Parallel)
@@ -908,6 +920,48 @@ namespace MsSystem.WF.Service
         }
 
         /// <summary>
+        /// //获取确定最终要执行的唯一节点
+        /// </summary>
+        /// <param name="nextLines"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private async Task<Guid?> GetFinalNodeId(List<FlowLine> nextLines, WorkFlowProcessTransition model)
+        {
+            var array = nextLines.First().SetInfo.CustomSQL.Split('_');
+            if (array.Length < 2)
+            {
+                throw new Exception("流程设计错误！！！");
+            }
+            string sysname = array[0];
+            //判断是否是工作流内置条件
+            Dictionary<Guid, string> condition = nextLines.ToDictionary(m => m.To, n => n.SetInfo.CustomSQL);
+            Guid? finalid = null;
+            if (sysname.Equals("wf", StringComparison.OrdinalIgnoreCase))
+            {
+                finalid = await databaseFixture.Db.WfWorkflowsql.GetFinalNodeId(new FlowLineFinalNodeDto
+                {
+                    Data = condition,
+                    Param = model.OptionParams,
+                    UserId = model.UserId
+                });
+            }
+            else
+            {
+                finalid = await configService.GetFinalNodeId(sysname, new FlowLineFinalNodeDto
+                {
+                    Data = condition,
+                    Param = model.OptionParams,
+                    UserId = model.UserId
+                });
+            }
+            if (finalid == null)
+            {
+                throw new Exception("流程节点最终未找到！！！");
+            }
+            return finalid;
+        }
+
+        /// <summary>
         /// 同意
         /// </summary>
         /// <param name="model"></param>
@@ -933,16 +987,15 @@ namespace MsSystem.WF.Service
                     });
 
                     //当前节点是会签节点
-                    if (context.WorkFlow.ActivityNode.NodeType() == WorkFlowInstanceNodeType.ChatNode)
+                    if (context.WorkFlow.ActivityNode.NodeType() == WorkFlowInstanceNodeType.Normal)
                     {
-                        await ChatLogic(tran, context, dbflowinstance, model, WorkFlowInstanceStatus.Running);
-                    }
-                    else
-                    {
-                        if (context.IsMultipleNextNode)
+                        if (context.IsMultipleNextNode())
                         {
                             var nextLines = context.GetLinesForTo(context.WorkFlow.ActivityNodeId);
-                            //多条连线条件必须都存在
+                            /*
+                             * 多条连线条件必须都存在情况判断
+                             * 注：一个节点下多个连线，则连线必须有SQL判断
+                             * **/
                             bool isOk = nextLines.Any(m => m.SetInfo == null || string.IsNullOrEmpty(m.SetInfo.CustomSQL));
                             if (isOk)
                             {
@@ -951,91 +1004,62 @@ namespace MsSystem.WF.Service
                             else
                             {
                                 //获取确定最终要执行的唯一节点
-                                var array = nextLines.First().SetInfo.CustomSQL.Split('_');
-                                if (array.Length >= 2)
+                                Guid? finalid = await GetFinalNodeId(nextLines, model);
+                                FlowNode reallynode = context.WorkFlow.Nodes[finalid.Value];
+                                dbflowinstance.IsFinish = reallynode.NodeType().ToIsFinish();
+                                if (reallynode.NodeType() == WorkFlowInstanceNodeType.EndRound)
                                 {
-                                    string sysname = array[0];
-                                    //判断是否是工作流内置条件
-                                    if (sysname.Equals("wf", StringComparison.OrdinalIgnoreCase))
-                                    {
-                                        throw new Exception("暂未实现！！！");
-                                    }
-                                    else
-                                    {
-                                        Dictionary<Guid, string> condition = nextLines.ToDictionary(m => m.To, n => n.SetInfo.CustomSQL);
-                                        Guid? finalid = await configService.GetFinalNodeId(sysname, new FlowLineFinalNodeDto
-                                        {
-                                            Data = condition,
-                                            Param = model.OptionParams,
-                                            UserId = model.UserId
-                                        });
-                                        if (finalid != null)
-                                        {
-                                            FlowNode reallynode = context.WorkFlow.Nodes[finalid.Value];
-                                            dbflowinstance.IsFinish = reallynode.NodeType().ToIsFinish();
-                                            if (reallynode.NodeType() == WorkFlowInstanceNodeType.EndRound)
-                                            {
-                                                dbflowinstance.Status = (int)WorkFlowStatus.IsFinish;
-                                            }
-                                            else
-                                            {
-                                                dbflowinstance.Status = (int)WorkFlowStatus.Running;
-                                            }
-                                            dbflowinstance.ActivityId = reallynode.Id;
-                                            dbflowinstance.ActivityName = reallynode.Name;
-                                            dbflowinstance.ActivityType = (int)reallynode.NodeType();
-                                            dbflowinstance.UpdateTime = DateTime.Now.ToTimeStamp();
-                                            dbflowinstance.MakerList = reallynode.NodeType() == WorkFlowInstanceNodeType.EndRound
-                                                ? "" 
-                                                : await this.GetMakerListAsync(reallynode, model.UserId, model.OptionParams);
-                                            await databaseFixture.Db.WorkflowInstance.UpdateAsync(dbflowinstance, tran);
-
-                                            //流程结束情况
-                                            if ((int)WorkFlowInstanceStatus.Finish == dbflowinstance.IsFinish)
-                                            {
-                                                publishFlowStatus = WorkFlowStatus.IsFinish;
-                                            }
-
-                                            #region 添加流转记录
-
-                                            WfWorkflowTransitionHistory transitionHistory = new WfWorkflowTransitionHistory
-                                            {
-                                                TransitionId = Guid.NewGuid(),
-                                                InstanceId = dbflowinstance.InstanceId,
-                                                FromNodeId = context.WorkFlow.ActivityNodeId,
-                                                FromNodName = context.WorkFlow.ActivityNode.Name,
-                                                FromNodeType = (int)context.WorkFlow.ActivityNodeType,
-                                                ToNodeId = reallynode.Id,
-                                                ToNodeType = (int)reallynode.NodeType(),
-                                                ToNodeName = reallynode.Name,
-                                                TransitionState = (int)WorkFlowTransitionStateType.Normal,
-                                                IsFinish = reallynode.NodeType().ToIsFinish(),
-                                                CreateUserId = model.UserId,
-                                                CreateUserName = model.UserName
-                                            };
-                                            await databaseFixture.Db.WorkflowTransitionHistory.InsertAsync(transitionHistory, tran);
-                                            #endregion
-                                        }
-                                        else
-                                        {
-                                            throw new Exception("流程节点最终未找到！！！");
-                                        }
-                                    }
+                                    dbflowinstance.Status = (int)WorkFlowStatus.IsFinish;
                                 }
                                 else
                                 {
-                                    throw new Exception("流程设计错误！！！");
+                                    dbflowinstance.Status = (int)WorkFlowStatus.Running;
                                 }
+                                dbflowinstance.ActivityId = reallynode.Id;
+                                dbflowinstance.ActivityName = reallynode.Name;
+                                dbflowinstance.ActivityType = (int)reallynode.NodeType();
+                                dbflowinstance.UpdateTime = DateTime.Now.ToTimeStamp();
+                                dbflowinstance.MakerList = reallynode.NodeType() == WorkFlowInstanceNodeType.EndRound ? "" : await this.GetMakerListAsync(reallynode, model.UserId, model.OptionParams);
+                                await databaseFixture.Db.WorkflowInstance.UpdateAsync(dbflowinstance, tran);
+
+                                //流程结束情况
+                                if ((int)WorkFlowInstanceStatus.Finish == dbflowinstance.IsFinish)
+                                {
+                                    publishFlowStatus = WorkFlowStatus.IsFinish;
+                                }
+
+                                #region 添加流转记录
+
+                                WfWorkflowTransitionHistory transitionHistory = new WfWorkflowTransitionHistory
+                                {
+                                    TransitionId = Guid.NewGuid(),
+                                    InstanceId = dbflowinstance.InstanceId,
+                                    FromNodeId = context.WorkFlow.ActivityNodeId,
+                                    FromNodName = context.WorkFlow.ActivityNode.Name,
+                                    FromNodeType = (int)context.WorkFlow.ActivityNodeType,
+                                    ToNodeId = reallynode.Id,
+                                    ToNodeType = (int)reallynode.NodeType(),
+                                    ToNodeName = reallynode.Name,
+                                    TransitionState = (int)WorkFlowTransitionStateType.Normal,
+                                    IsFinish = reallynode.NodeType().ToIsFinish(),
+                                    CreateUserId = model.UserId,
+                                    CreateUserName = model.UserName
+                                };
+                                await databaseFixture.Db.WorkflowTransitionHistory.InsertAsync(transitionHistory, tran);
+                                #endregion
+
+                                #region 通知节点信息添加
+
+                                var viewNodes = context.GetNextNodes(null, WorkFlowInstanceNodeType.ViewNode);
+                                await AddFlowNotice(viewNodes, dbflowinstance.CreateUserId, model, tran);
+
+                                #endregion
                             }
                         }
                         else
                         {
                             //下个节点是会签节点
-                            if (context.WorkFlow.NextNode.NodeType() == WorkFlowInstanceNodeType.ChatNode)
-                            {
-                                await NextChatLogic(tran, context, dbflowinstance, WorkFlowInstanceStatus.Running);
-                            }
-                            else
+                            if (context.WorkFlow.NextNode.NodeType() != WorkFlowInstanceNodeType.ChatNode)
                             {
                                 //修改流程实例
                                 dbflowinstance.PreviousId = dbflowinstance.ActivityId;
@@ -1043,9 +1067,7 @@ namespace MsSystem.WF.Service
                                 dbflowinstance.ActivityName = context.WorkFlow.NextNode.Name;
                                 dbflowinstance.ActivityType = (int)context.WorkFlow.NextNodeType;
                                 dbflowinstance.UpdateTime = DateTime.Now.ToTimeStamp();
-                                dbflowinstance.MakerList = context.WorkFlow.NextNodeType == WorkFlowInstanceNodeType.EndRound
-                                    ? ""
-                                    : await this.GetMakerListAsync(context.WorkFlow.NextNode, model.UserId, model.OptionParams);
+                                dbflowinstance.MakerList = context.WorkFlow.NextNodeType == WorkFlowInstanceNodeType.EndRound ? "" : await this.GetMakerListAsync(context.WorkFlow.NextNode, model.UserId, model.OptionParams);
 
                                 dbflowinstance.IsFinish = context.WorkFlow.NextNodeType.ToIsFinish();
 
@@ -1064,6 +1086,18 @@ namespace MsSystem.WF.Service
                                 {
                                     publishFlowStatus = WorkFlowStatus.IsFinish;
                                 }
+
+                                #region 通知节点信息添加
+
+                                var viewNodes = context.GetNextNodes(null, WorkFlowInstanceNodeType.ViewNode);
+                                await AddFlowNotice(viewNodes, dbflowinstance.CreateUserId, model, tran);
+
+                                #endregion
+                            }
+                            else
+                            {
+                                throw new Exception("当前不支持会签功能");
+                                //await NextChatLogic(tran, context, dbflowinstance, WorkFlowInstanceStatus.Running);
                             }
 
                             #region 添加流转记录
@@ -1087,6 +1121,11 @@ namespace MsSystem.WF.Service
 
                             #endregion
                         }
+                    }
+                    else
+                    {
+                        throw new Exception("当前只支持正常节点功能");
+                        //await ChatLogic(tran, context, dbflowinstance, model, WorkFlowInstanceStatus.Running);
                     }
 
                     #region 添加操作记录
@@ -1116,6 +1155,60 @@ namespace MsSystem.WF.Service
                 {
                     tran.Rollback();
                     return WorkFlowResult.Error(ex.Message);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="viewNodes"></param>
+        /// <param name="createuserid"></param>
+        /// <param name="model"></param>
+        /// <param name="tran"></param>
+        /// <returns></returns>
+        private async Task AddFlowNotice(List<FlowNode> viewNodes,string createuserid, WorkFlowProcessTransition model,IDbTransaction tran)
+        {
+            if (viewNodes.Any())
+            {
+                Dictionary<string, FlowNode> dic = new Dictionary<string, FlowNode>();
+                foreach (var item in viewNodes)
+                {
+                    string makerStr = "";
+                    if (item.SetInfo.NodeDesignate == FlowNodeSetInfo.CREATEUSER)
+                    {
+                        makerStr = createuserid + ",";
+                    }
+                    else
+                    {
+                        makerStr = await this.GetMakerListAsync(item, model.UserId, model.OptionParams);
+                    }
+                    if (makerStr.IsNotNullOrEmpty() && makerStr != "0")
+                    {
+                        string[] makerlist = makerStr.Split(',');
+                        foreach (var viewuserid in makerlist.Where(m=>!string.IsNullOrEmpty(m)))
+                        {
+                            if (!dic.ContainsKey(viewuserid))
+                            {
+                                dic.Add(viewuserid, item);
+                            }
+                        }
+                    }
+                }
+                List<WfWorkflowNotice> notices = dic.Select(m => new WfWorkflowNotice
+                {
+                    Id = Guid.NewGuid(),
+                    IsRead = 0,
+                    Maker = m.Key,
+                    NodeId = m.Value.Id,
+                    NodeName = m.Value.Name,
+                    Status = 1,
+                    IsTransition = 1,
+                    InstanceId = model.InstanceId
+                }).ToList();
+                if (notices.Any())
+                {
+                    await databaseFixture.Db.WfWorkflowNotice.BulkInsertAsync(notices, tran);
                 }
             }
         }
@@ -1324,7 +1417,7 @@ namespace MsSystem.WF.Service
         /// <returns></returns>
         protected async Task<WorkFlowResult> ProcessTransitionWithdrawAsync(WorkFlowProcessTransition model)
         {
-            using (var tran= databaseFixture.Db.BeginTransaction())
+            using (var tran = databaseFixture.Db.BeginTransaction())
             {
                 try
                 {
@@ -1374,11 +1467,52 @@ namespace MsSystem.WF.Service
             }
         }
 
+        /// <summary>
+        /// 已阅操作
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        protected async Task<WorkFlowResult> ProcessTransitionViewAsync(WorkFlowProcessTransition model)
+        {
+            using (var tran = databaseFixture.Db.BeginTransaction())
+            {
+                try
+                {
+                    var dbnotices = await databaseFixture.Db.WfWorkflowNotice.FindAllAsync(m => m.Maker == model.UserId && m.InstanceId == model.InstanceId && m.IsTransition == 1 && m.IsRead == 0 && m.Status == 1);
+                    foreach (var item in dbnotices)
+                    {
+                        item.IsRead = 1;
 
-        //protected async Task<WorkFlowResult> ProcessTransitionStopAsync(WorkFlowProcessTransition model)
-        //{
-        //    return WorkFlowResult.Success();
-        //}
+                        #region 添加操作记录
+                        WfWorkflowOperationHistory operationHistory = new WfWorkflowOperationHistory
+                        {
+                            OperationId = Guid.NewGuid(),
+                            InstanceId = model.InstanceId,
+                            CreateUserId = model.UserId,
+                            CreateUserName = model.UserName,
+                            Content = "流程已阅",
+                            NodeId = item.NodeId,
+                            NodeName = item.NodeName,
+                            TransitionType = (int)WorkFlowMenu.View
+                        };
+                        await databaseFixture.Db.WorkflowOperationHistory.InsertAsync(operationHistory, tran);
+                        #endregion
+                    }
+                    await databaseFixture.Db.WfWorkflowNotice.BulkUpdateAsync(dbnotices, tran);
+
+
+                    tran.Commit();
+
+                    return WorkFlowResult.Success();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    return WorkFlowResult.Error("已阅操作失败");
+                }
+            }
+        }
+
         /// <summary>
         /// 获取审批意见
         /// </summary>

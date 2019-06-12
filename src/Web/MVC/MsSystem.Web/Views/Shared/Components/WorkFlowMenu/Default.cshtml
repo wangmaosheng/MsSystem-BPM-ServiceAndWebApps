@@ -58,6 +58,7 @@
                 cls = "fa fa-reply-all";
                 break;
             case WorkFlowMenu.View:
+                cls = "fa fa-eye";
                 break;
             case WorkFlowMenu.Cancel:
                 break;
@@ -112,7 +113,7 @@ else
     }
 }
 
-<script type="text/javascript" on-content-loaded="true">
+            <script type="text/javascript" on-content-loaded="true">
     var data='';
     @if (!string.IsNullOrEmpty(Model.FormData))
     {
@@ -137,7 +138,7 @@ else
     $('button[name=WorkFlowBtn][data-typename=@WorkFlowMenu.FlowImage]').on('click', function () {
         utils.open({
             title: '流程图查看',
-            content: '/WF/WorkFlowInstance/FlowImage?@("flowid="+Model.FlowId+"&InstanceId=" + Model.InstanceId)'
+            content: '/WF/WorkFlowInstance/FlowImage?@("flowid=" + Model.FlowId + "&InstanceId=" + Model.InstanceId)'
         });
     });
     @if (Model.Menus.Contains((int)WorkFlowMenu.Save))
@@ -292,9 +293,10 @@ else
     });
     </text>
     }
-    @if (Model.Menus.Contains((int)WorkFlowMenu.Agree)
-       || Model.Menus.Contains((int)WorkFlowMenu.Deprecate)|| Model.Menus.Contains((int)WorkFlowMenu.ReSubmit) || Model.Menus.Contains((int)WorkFlowMenu.Withdraw))
-    {
+    @if (Model.Menus.Contains((int)WorkFlowMenu.Agree)|| Model.Menus.Contains((int)WorkFlowMenu.Deprecate)
+       || Model.Menus.Contains((int)WorkFlowMenu.ReSubmit) || Model.Menus.Contains((int)WorkFlowMenu.Withdraw)
+       || Model.Menus.Contains((int)WorkFlowMenu.View))
+    { 
     <text>
     var get_modal = function (menutype, content, tipmsg) {
         var html = '<div class="modal" style="overflow: auto;" tabindex="-1">';
@@ -512,6 +514,8 @@ else
                     return "fa fa-reply-all red";
                 case 7:
                     return "fa fa-rotate-left";
+                case 9:
+                    return "fa fa-eye green";
                 default:
                     return "fa fa-stop red";
             }
@@ -538,4 +542,17 @@ else
     });
     </text>
     }
-</script>
+    @if (Model.Menus.Contains((int)WorkFlowMenu.View))
+    {
+    <text>
+    $('button[name=WorkFlowBtn][data-typename=@WorkFlowMenu.View]').on('click', function () {
+        var model = {
+            FlowId: '@Model.FlowId',
+            InstanceId: $('input[name=InstanceId]').val(),
+            MenuType: '@WorkFlowMenu.View'
+        };
+        transition(model);
+    });
+    </text>
+    }
+            </script>

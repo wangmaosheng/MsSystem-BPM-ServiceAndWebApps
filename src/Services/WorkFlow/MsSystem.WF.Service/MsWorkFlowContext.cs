@@ -21,7 +21,7 @@
         {
             if (dbworkflow.FlowId == default(Guid))
             {
-                throw new ArgumentNullException("FlowId", " input workflow flowid is null");
+                throw new ArgumentNullException("FlowId", "input workflow flowid is null");
             }
             if (dbworkflow.FlowJSON.IsNullOrEmpty())
             {
@@ -44,7 +44,7 @@
 
             this.WorkFlow.ActivityNodeType = this.GetNodeType(this.WorkFlow.ActivityNodeId);
 
-            //会签开始节点和流程结束节点没有下一步
+            //会签会签节点和流程结束节点没有下一步
             if (this.WorkFlow.ActivityNodeType == WorkFlowInstanceNodeType.ChatNode || this.WorkFlow.ActivityNodeType == WorkFlowInstanceNodeType.EndRound)
             {
                 this.WorkFlow.NextNodeId = default(Guid);//未找到节点
@@ -52,7 +52,7 @@
             }
             else
             {
-                var nodeids = this.GetNextNodeId(this.WorkFlow.ActivityNodeId);
+                var nodeids = this.GetNextNodeIdsNotSpecialNode(this.WorkFlow.ActivityNodeId, WorkFlowInstanceNodeType.ViewNode);
                 if (nodeids.Count == 1)
                 {
                     this.WorkFlow.NextNodeId = nodeids[0];
@@ -68,9 +68,23 @@
         }
 
         /// <summary>
-        /// 下个节点是否是多个
+        /// 下个正常节点是否是多个
         /// </summary>
-        public bool IsMultipleNextNode { get; set; }
+        public bool IsMultipleNextNode(WorkFlowInstanceNodeType? nodeType = WorkFlowInstanceNodeType.Normal)
+        {
+            List<FlowNode> nodes = new List<FlowNode>();
+            List<FlowLine> lines = this.WorkFlow.Lines[this.WorkFlow.ActivityNodeId];
+            var nodeids = lines.Select(m => m.To).ToList();
+            foreach (var item in nodeids)
+            {
+                var _thisnode = this.WorkFlow.Nodes[item];
+                if (_thisnode.NodeType() == nodeType)
+                {
+                    nodes.Add(_thisnode);
+                }
+            }
+            return nodes.Count >= 2;
+        }
 
         /// <summary>
         /// 获取节点集合
@@ -149,10 +163,25 @@
             return lines;
         }
 
-        public List<FlowLine> GetLinesForTo(Guid nodeid)
+        /// <summary>
+        /// 根据节点ID获取该节点与下个节点的连线
+        /// </summary>
+        /// <param name="nodeid">节点ID</param>
+        /// <param name="nodeType">要获取的节点类型,默认正常节点</param>
+        /// <returns></returns>
+        public List<FlowLine> GetLinesForTo(Guid nodeid, WorkFlowInstanceNodeType? nodeType = WorkFlowInstanceNodeType.Normal)
         {
+            List<FlowLine> list = new List<FlowLine>();
             var lines = GetAllLines().Where(m => m.From == nodeid).ToList();
-            return lines;
+            foreach (var item in lines)
+            {
+                var _nodeType = this.GetNodeType(item.To);
+                if (_nodeType == nodeType)
+                {
+                    list.Add(item);
+                }
+            }
+            return list;
         }
 
         /// <summary>
@@ -187,15 +216,75 @@
         /// </summary>
         /// <param name="nodeId"></param>
         /// <returns></returns>
-        public List<Guid> GetNextNodeId(Guid nodeId)
+        public List<Guid> GetNextNodeIds(Guid nodeId)
         {
             List<FlowLine> lines = this.WorkFlow.Lines[nodeId];
-            if (lines.Count > 1)
-            {
-                this.IsMultipleNextNode = true;
-            }
             return lines.Select(m => m.To).ToList();
         }
+
+        /// <summary>
+        /// 根据节点id获取下个节点id
+        /// </summary>
+        /// <param name="nodeId"></param>
+        /// <param name="nodeType"></param>
+        /// <returns></returns>
+        public List<Guid> GetNextNodeIds(Guid nodeId, WorkFlowInstanceNodeType nodeType)
+        {
+            List<Guid> list = new List<Guid>();
+            List<FlowLine> lines = this.WorkFlow.Lines[nodeId];
+            var nodeids = lines.Select(m => m.To).ToList();
+            foreach (var item in nodeids)
+            {
+                var _thisnode = this.WorkFlow.Nodes[item];
+                if (_thisnode.NodeType() == nodeType)
+                {
+                    list.Add(item);
+                }
+            }
+            return list;
+        }
+        public List<Guid> GetNextNodeIdsNotSpecialNode(Guid nodeId, WorkFlowInstanceNodeType nodeType)
+        {
+            List<Guid> list = new List<Guid>();
+            List<FlowLine> lines = this.WorkFlow.Lines[nodeId];
+            var nodeids = lines.Select(m => m.To).ToList();
+            foreach (var item in nodeids)
+            {
+                var _thisnode = this.WorkFlow.Nodes[item];
+                if (_thisnode.NodeType() != nodeType)
+                {
+                    list.Add(item);
+                }
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// 获取该节点的下面节点
+        /// </summary>
+        /// <param name="nodeId"></param>
+        /// <param name="nodeType"></param>
+        /// <returns></returns>
+        public List<FlowNode> GetNextNodes(Guid? nodeId = null, WorkFlowInstanceNodeType? nodeType = WorkFlowInstanceNodeType.Normal)
+        {
+            if (nodeId == null)
+            {
+                nodeId = this.WorkFlow.ActivityNodeId;
+            }
+            List<FlowLine> lines = this.WorkFlow.Lines[nodeId.Value];
+            List<FlowNode> list = new List<FlowNode>();
+            var nodeids = lines.Select(m => m.To).ToList();
+            foreach (var item in nodeids)
+            {
+                var _thisnode = this.WorkFlow.Nodes[item];
+                if (_thisnode.NodeType() == nodeType)
+                {
+                    list.Add(_thisnode);
+                }
+            }
+            return list;
+        }
+
 
         /// <summary>
         /// 节点驳回
@@ -210,8 +299,7 @@
                 case NodeRejectType.PreviousStep:
                     return this.WorkFlow.PreviousId;
                 case NodeRejectType.FirstStep:
-                    var startNextNodeId = this.GetNextNodeId(this.WorkFlow.StartNodeId).First();
-                    return startNextNodeId;
+                    return this.GetNextNodeIds(this.WorkFlow.StartNodeId).First();
                 case NodeRejectType.ForOneStep:
                     if (rejectNodeid == null || rejectNodeid == default(Guid))
                     {

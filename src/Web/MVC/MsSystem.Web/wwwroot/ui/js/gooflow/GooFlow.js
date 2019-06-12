@@ -318,9 +318,15 @@ var GooFlow = function(selector,property){
         var X,Y;
         var ev=_mouseP(e),t=_elCsys(this);
         X=ev.x-t.left+this.parentNode.scrollLeft;
-        Y=ev.y-t.top+this.parentNode.scrollTop;
-        This.addNode(createGuid().toString(),{name:"node_"+This.$max,left:X,top:Y,type:This.$nowType});
-        This.$max++;
+        Y = ev.y - t.top + this.parentNode.scrollTop;
+        if (This.$nowType.indexOf('start') !== -1) {
+            This.addNode(createGuid().toString(), { name: "开始", left: X, top: Y, type: This.$nowType });
+        } else if (This.$nowType.indexOf('end') !== -1) {
+            This.addNode(createGuid().toString(), { name: "结束", left: X, top: Y, type: This.$nowType });
+        } else {
+            This.addNode(createGuid().toString(), { name: "node_" + This.$max, left: X, top: Y, type: This.$nowType });
+            This.$max++;
+        }
     });
 
 	this.$draw=null;//画矢量线条的容器
@@ -1352,17 +1358,16 @@ GooFlow.prototype={
 			this.pushOper("delNode",[id]);
 		}
 		var mark=json.marked? " item_mark":"";
-		if(json.type.indexOf(" round")<0){
-			if(!json.width||json.width<104)json.width=104;
-			if(!json.height||json.height<26)json.height=26;
-			if(!json.top||json.top<0)json.top=0;
-			if(!json.left||json.left<0)json.left=0;
-
-			this.$nodeDom[id]=$("<div class='GooFlow_item"+mark+"' id='"+id+"' style='top:"+json.top*this.$scale+"px;left:"+json.left*this.$scale+"px'><table cellspacing='1' style='width:"+(json.width*this.$scale-2)+"px;height:"+(json.height*this.$scale-2)+"px;'><tr><td class='ico'><i class='ico_"+json.type+"'></i></td><td><div>"+json.name+"</div></td></tr></table><div style='display:none'><div class='rs_bottom'></div><div class='rs_right'></div><div class='rs_rb'></div><div class='rs_close'></div></div></div>");
+        if (json.type.indexOf(" round") < 0) {
+            if (!json.width || json.width < 104) json.width = 104;
+            if (!json.height || json.height < 26) json.height = 26;
+            if (!json.top || json.top < 0) json.top = 0;
+            if (!json.left || json.left < 0) json.left = 0;
+            this.$nodeDom[id] = $("<div class='GooFlow_item" + mark + "' id='" + id + "' style='top:" + json.top * this.$scale + "px;left:" + json.left * this.$scale + "px'><table cellspacing='1' style='width:" + (json.width * this.$scale - 2) + "px;height:" + (json.height * this.$scale - 2) + "px;'><tr><td class='ico'><i class='ico_" + json.type + "'></i></td><td><div>" + json.name + "</div></td></tr></table><div style='display:none'><div class='rs_bottom'></div><div class='rs_right'></div><div class='rs_rb'></div><div class='rs_close'></div></div></div>");
 		}
-		else{
-			json.width=26;json.height=26;
-			this.$nodeDom[id]=$("<div class='GooFlow_item item_round"+mark+"' id='"+id+"' style='top:"+json.top*this.$scale+"px;left:"+json.left*this.$scale+"px'><table cellspacing='0' style='width:"+(json.width*this.$scale-2)+"px;height:"+(json.height*this.$scale-2)+"px;'><tr><td class='ico'><i class='ico_"+json.type+"'></i></td></tr></table><div  style='display:none'><div class='rs_close'></div></div><div class='span'>"+json.name+"</div></div>");
+        else {
+            json.width = 26; json.height = 26;
+            this.$nodeDom[id] = $("<div class='GooFlow_item item_round" + mark + "' id='" + id + "' style='top:" + json.top * this.$scale + "px;left:" + json.left * this.$scale + "px'><table cellspacing='0' style='width:" + (json.width * this.$scale - 2) + "px;height:" + (json.height * this.$scale - 2) + "px;'><tr><td class='ico'><i class='ico_" + json.type + "'></i></td></tr></table><div  style='display:none'><div class='rs_close'></div></div><div class='span'>" + json.name + "</div></div>");
 		}
 		if(GooFlow.color.node){
 			if(json.type.indexOf(" mix")>-1){
