@@ -11,18 +11,16 @@
                 pageSizeName: 'PageSize'
             });
             $('#Rule_Index_2').click(function () {
-                utils.open({
-                    content: '/Weixin/Rule/Show',
-                    title: '新增规则',
-                    area: ['850px', '700px']
+                utils.menu.open({
+                    dataUrl: '/Weixin/Rule/Show',
+                    menuName: '新增规则',
                 });
             });
             $('a[name=editrule]').click(function () {
                 var id = $(this).attr('data-id');
-                utils.open({
-                    content: '/Weixin/Rule/Show?id=' + id,
-                    title: '编辑规则',
-                    area: ['850px', '700px']
+                utils.menu.open({
+                    dataUrl: '/Weixin/Rule/Show?id=' + id,
+                    menuName: '编辑规则',
                 });
             });
         });
