@@ -440,6 +440,11 @@ namespace MsSystem.WF.Service
                 if (flowinstance.IsFinish == (int)WorkFlowInstanceStatus.Finish)
                 {
                     model.Menus = new List<int>();
+                    //流程打印按钮显示判断
+                    if (process.UserId == flowinstance.CreateUserId)//流程通过并且是当前人查看才显示打印按钮
+                    {
+                        model.Menus.Add((int)WorkFlowMenu.Print);
+                    }
                     //已阅按钮显示判断
                     var dbnotices = await databaseFixture.Db.WfWorkflowNotice.FindAllAsync(m => m.Maker == process.UserId && m.InstanceId == process.InstanceId && m.IsTransition == 1 && m.IsRead == 0 && m.Status == 1);
                     if (dbnotices.Any())
@@ -986,7 +991,6 @@ namespace MsSystem.WF.Service
                         PreviousId = dbflowinstance.PreviousId
                     });
 
-                    //当前节点是会签节点
                     if (context.WorkFlow.ActivityNode.NodeType() == WorkFlowInstanceNodeType.Normal)
                     {
                         if (context.IsMultipleNextNode())

@@ -18,8 +18,7 @@
     }
     WorkFlowStatus flowStatus = (WorkFlowStatus)Model.FlowData.Status;
 }
-
-<div class="btn-group btn-group-sm" id="flowmenus">
+<div class="btn-group btn-group-sm noprint" id="flowmenus">
     <input type="hidden" asp-for="InstanceId" />
     @foreach (var item in Model.Menus)
     {
@@ -59,6 +58,9 @@
                 break;
             case WorkFlowMenu.View:
                 cls = "fa fa-eye";
+                break;
+            case WorkFlowMenu.Print:
+                cls = "fa fa-print";
                 break;
             case WorkFlowMenu.Cancel:
                 break;
@@ -296,7 +298,7 @@ else
     @if (Model.Menus.Contains((int)WorkFlowMenu.Agree)|| Model.Menus.Contains((int)WorkFlowMenu.Deprecate)
        || Model.Menus.Contains((int)WorkFlowMenu.ReSubmit) || Model.Menus.Contains((int)WorkFlowMenu.Withdraw)
        || Model.Menus.Contains((int)WorkFlowMenu.View))
-    { 
+    {
     <text>
     var get_modal = function (menutype, content, tipmsg) {
         var html = '<div class="modal" style="overflow: auto;" tabindex="-1">';
@@ -555,4 +557,12 @@ else
     });
     </text>
     }
-            </script>
+    @if (Model.Menus.Contains((int)WorkFlowMenu.Print))
+    {
+    <text>
+    $('button[name=WorkFlowBtn][data-typename=@WorkFlowMenu.Print]').on('click', function () {
+        $("body").print();
+    });
+    </text>
+    }
+</script>

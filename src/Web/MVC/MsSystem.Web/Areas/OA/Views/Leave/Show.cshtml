@@ -88,22 +88,22 @@
             <div class="ibox-content">
                 <form class="form-horizontal m-t" id="flowform">
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">编号：</label>
-                        <div class="col-sm-9">
+                        <label class="col-xs-3 col-sm-3 control-label">编号：</label>
+                        <div class="col-xs-9 col-sm-9">
                             <input type="hidden" name="TableName" value="oa_leave" />
                             <input type="hidden" asp-for="Id" data-name="Id" name="PageId" />
                             <input type="text" asp-for="LeaveCode" class="form-control" placeholder="系统自动生成" disabled>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">请假标题：</label>
-                        <div class="col-sm-9">
+                        <label class="col-xs-3 col-sm-3 control-label">请假标题：</label>
+                        <div class="col-xs-9 col-sm-9">
                             <input type="text" asp-for="Title" class="form-control required">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">请假类型：</label>
-                        <div class="col-sm-9">
+                        <label class="col-xs-3 col-sm-3 control-label">请假类型：</label>
+                        <div class="col-xs-9 col-sm-9">
                             <span class="select-box inline">
                                 <select class="select" asp-for="LeaveType">
                                     @foreach (var item in Enum<OaLeaveType>.AsEnumerable())
@@ -115,18 +115,18 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">开始时间：</label>
-                        <div class="col-sm-3">
+                        <label class="col-xs-3 col-sm-3 control-label">开始时间：</label>
+                        <div class="col-xs-3 col-sm-3">
                             <input type="text" class="form-control w150 required" name="StartTime" value="@Model.StartTime.ToString("yyyy-MM-dd")" id="StartTime" />
                         </div>
-                        <label class="col-sm-2 control-label">结束时间：</label>
-                        <div class="col-sm-4">
+                        <label class="col-xs-2 col-sm-2 control-label">结束时间：</label>
+                        <div class="col-xs-4 col-sm-4">
                             <input type="text" class="form-control w150 required" name="EndTime" value="@Model.EndTime.ToString("yyyy-MM-dd")" id="EndTime" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">请假原因：</label>
-                        <div class="col-sm-9">
+                        <label class="col-xs-3 col-sm-3 control-label">请假原因：</label>
+                        <div class="col-xs-9 col-sm-9">
                             <textarea asp-for="Reason" class="form-control required"></textarea>
                         </div>
                     </div>

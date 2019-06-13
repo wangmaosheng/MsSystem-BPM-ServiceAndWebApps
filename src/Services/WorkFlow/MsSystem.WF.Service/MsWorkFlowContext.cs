@@ -68,9 +68,9 @@
         }
 
         /// <summary>
-        /// 下个正常节点是否是多个
+        /// 下个正常节点是否是多个(包含结束节点)
         /// </summary>
-        public bool IsMultipleNextNode(WorkFlowInstanceNodeType? nodeType = WorkFlowInstanceNodeType.Normal)
+        public bool IsMultipleNextNode()
         {
             List<FlowNode> nodes = new List<FlowNode>();
             List<FlowLine> lines = this.WorkFlow.Lines[this.WorkFlow.ActivityNodeId];
@@ -78,7 +78,7 @@
             foreach (var item in nodeids)
             {
                 var _thisnode = this.WorkFlow.Nodes[item];
-                if (_thisnode.NodeType() == nodeType)
+                if (_thisnode.NodeType() == WorkFlowInstanceNodeType.Normal|| _thisnode.NodeType() == WorkFlowInstanceNodeType.EndRound)
                 {
                     nodes.Add(_thisnode);
                 }
@@ -167,16 +167,16 @@
         /// 根据节点ID获取该节点与下个节点的连线
         /// </summary>
         /// <param name="nodeid">节点ID</param>
-        /// <param name="nodeType">要获取的节点类型,默认正常节点</param>
+        /// <param name="nodeType">要获取的节点类型,默认正常节点（包含结束节点）</param>
         /// <returns></returns>
-        public List<FlowLine> GetLinesForTo(Guid nodeid, WorkFlowInstanceNodeType? nodeType = WorkFlowInstanceNodeType.Normal)
+        public List<FlowLine> GetLinesForTo(Guid nodeid)
         {
             List<FlowLine> list = new List<FlowLine>();
             var lines = GetAllLines().Where(m => m.From == nodeid).ToList();
             foreach (var item in lines)
             {
                 var _nodeType = this.GetNodeType(item.To);
-                if (_nodeType == nodeType)
+                if (_nodeType == WorkFlowInstanceNodeType.Normal||_nodeType==WorkFlowInstanceNodeType.EndRound)
                 {
                     list.Add(item);
                 }

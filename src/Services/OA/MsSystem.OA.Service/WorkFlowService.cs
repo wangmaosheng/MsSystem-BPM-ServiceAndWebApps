@@ -115,7 +115,7 @@ namespace MsSystem.OA.Service
                     }
                 }
                 var res = await databaseFixture.Db.Connection.QueryAsync<int>(mysql, dbArgs);
-                if (res != null && res.ToList()[0] == 1)
+                if (res != null && res.Any())
                 {
                     finalid = item.Key;
                     break;

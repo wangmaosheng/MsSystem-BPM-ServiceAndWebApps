@@ -19,7 +19,7 @@
     WorkFlowStatus flowStatus = (WorkFlowStatus)Model.FlowData.Status;
 }
 
-<div class="btn-group btn-group-sm" id="flowmenus">
+<div class="btn-group btn-group-sm noprint" id="flowmenus">
     <input type="hidden" asp-for="FlowId" />
     <input type="hidden" asp-for="InstanceId" />
     @foreach (var item in Model.Menus)
@@ -67,6 +67,9 @@
                 break;
             case WorkFlowMenu.View:
                 cls = "fa fa-eye";
+                break;
+            case WorkFlowMenu.Print:
+                cls = "fa fa-print";
                 break;
             case WorkFlowMenu.Cancel:
                 break;
@@ -530,6 +533,14 @@ else
             MenuType: '@WorkFlowMenu.View'
         };
         transition(model);
+    });
+    </text>
+    }
+    @if (Model.Menus.Contains((int)WorkFlowMenu.Print))
+    {
+    <text>
+    $('button[name=WorkFlowBtn][data-typename=@WorkFlowMenu.Print]').on('click', function () {
+        $("body").print();
     });
     </text>
     }
