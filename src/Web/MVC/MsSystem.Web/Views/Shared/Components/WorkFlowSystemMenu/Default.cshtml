@@ -129,6 +129,7 @@ else
     $('button[name=WorkFlowBtn][data-typename=@WorkFlowMenu.FlowImage]').on('click', function () {
         utils.open({
             title: '流程图查看',
+            area: ['900px', '600px'],
             content: '/WF/WorkFlowInstance/FlowImage?@("flowid="+Model.FlowId+"&InstanceId=" + Model.InstanceId)'
         });
     });

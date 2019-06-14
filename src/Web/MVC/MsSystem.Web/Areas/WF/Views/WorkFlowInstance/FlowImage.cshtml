@@ -15,9 +15,9 @@
         $(function () {
             var workflow = $.createGooFlow($("#workflowpanel"), {});
             workflow.loadData(JSON.parse('@Html.Raw(Model.FlowContent)'));
-            workflow.reinitSize($(this).width() - 10, $(this).height() - 10);
+            workflow.reinitSize($(this).width(), $(this).height());
             window.onresize = function () {
-                workflow.reinitSize($(this).width() - 10, $(this).height() - 10);
+                workflow.reinitSize($(this).width(), $(this).height());
             };
             $('@("#"+ Model.CurrentNodeId.ToString())').addClass('GooFlow_item_selected').attr('title', '当前节点');
         });
