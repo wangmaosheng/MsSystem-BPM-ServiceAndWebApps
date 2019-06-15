@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using JadeFramework.Core.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MsSystem.Weixin.IService;
+using MsSystem.Weixin.ViewModel;
 using System.Threading.Tasks;
 
 namespace MsSystem.Weixin.API.Controllers
@@ -17,7 +19,21 @@ namespace MsSystem.Weixin.API.Controllers
         {
             this.wxAccountService = wxAccountService;
         }
-        [HttpPost]
+
+        [HttpGet]
+        public async Task<Page<WxAccountListDto>> GetPageAsync(int pageIndex, int pageSize)
+        {
+            return await wxAccountService.GetPageAsync(pageIndex, pageSize);
+        }
+
+
+
+
+        /// <summary>
+        /// 获取最新的accessToken
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
         public async Task<string> GetAccessTokenAsync()
         {
             return await wxAccountService.GetAccessTokenAsync();

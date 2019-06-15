@@ -71,7 +71,6 @@
     <None Include="Areas\OA\Views\Shared\_Layout.cshtml" />
     <None Include="Areas\OA\_ViewImports.cshtml" />
     <None Include="Areas\Weixin\Views\Menu\Index.cshtml" />
-    <None Include="Areas\Weixin\Views\Menu\Show.cshtml" />
     <None Include="Areas\Weixin\Views\Rule\Index.cshtml" />
     <None Include="Areas\Weixin\Views\Rule\Show.cshtml" />
     <None Include="Areas\Weixin\_ViewImports.cshtml" />

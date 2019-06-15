@@ -16,14 +16,7 @@ namespace MsSystem.Web.Areas.Weixin.Controllers
         {
             this.menuService = menuService;
         }
-
         public async Task<IActionResult> Index()
-        {
-            var res = await menuService.GetTreesAsync();
-            return View(res);
-        }
-
-        public IActionResult Show()
         {
             return View();
         }

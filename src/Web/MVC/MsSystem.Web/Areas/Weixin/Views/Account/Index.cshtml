@@ -1,0 +1,58 @@
+﻿@model Page<WxAccountListDto>
+@{
+    ViewData["Title"] = "公众号";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@section scripts{
+    <script>
+        $(function () {
+            $('.jquery-pager').pager({
+                currentPageName: 'PageIndex',
+                pageSizeName: 'PageSize'
+            });
+        });
+    </script>
+}
+<div class="wrapper-content">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title text-right">
+                @await Component.InvokeAsync("Menu")
+            </div>
+            <div class="ibox-content">
+                <div class="full-height-scroll">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="w50"><input type="checkbox" id="ms_checkall" class="i-checks" /></th>
+                                    <th>微信原始ID</th>
+                                    <th>AppId</th>
+                                    <th>AppSecret</th>
+                                    <th>公众号名称</th>
+                                    <th class="w100 text-center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" class="i-checks" value="@item.WeixinId" />
+                                        </td>
+                                        <td>@item.WeixinId</td>
+                                        <td>@item.AppId</td>
+                                        <td>@item.AppSecret</td>
+                                        <td>@item.WeixinName</td>
+                                        <td class="text-center"><a name="editrule" data-id="@item.WeixinId">编辑</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="jquery-pager" data-pageindex="@Model.PageIndex" data-pagesize="@Model.PageSize" data-datacount="@Model.TotalItems"></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,9 @@
-﻿using JadeFramework.Weixin.Models;
+﻿using JadeFramework.Core.Domain.Entities;
+using JadeFramework.Weixin.Models;
 using MsSystem.Weixin.IRepository;
 using MsSystem.Weixin.IService;
 using MsSystem.Weixin.Model;
+using MsSystem.Weixin.ViewModel;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
@@ -17,6 +19,28 @@ namespace MsSystem.Weixin.Service
         {
             this.databaseFixture = databaseFixture;
         }
+
+        public async Task<Page<WxAccountListDto>> GetPageAsync(int pageIndex, int pageSize)
+        {
+            return await databaseFixture.Db.WxAccount.GetPageAsync(pageIndex, pageSize);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         public WxAccount GetAccount()
         {
             return databaseFixture.Db.WxAccount.Find();

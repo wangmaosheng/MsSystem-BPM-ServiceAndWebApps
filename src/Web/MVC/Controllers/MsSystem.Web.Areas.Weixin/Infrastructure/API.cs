@@ -2,6 +2,10 @@
 {
     public static class API
     {
+        public static class Account
+        {
+            public static string GetPageAsync(string baseUri, int pageIndex, int pageSize) => $"{baseUri}/Account/GetPageAsync?pageIndex={pageIndex}&pageSize={pageSize}";
+        }
         public static class Rule
         {
             public static string GetRulePageAsync(string baseUri, int pageIndex, int pageSize) => $"{baseUri}/Rule/GetRulePageAsync?pageIndex={pageIndex}&pageSize={pageSize}";

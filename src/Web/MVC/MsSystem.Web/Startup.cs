@@ -163,6 +163,11 @@ namespace MsSystem.Web
         }
         public static IServiceCollection AddWeixinHttpClientServices(this IServiceCollection services)
         {
+            services.AddHttpClient<IAccountService, AccountService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
             services.AddHttpClient<IRuleService, RuleService>()
                    .SetHandlerLifetime(TimeSpan.FromMinutes(5))
                    .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()

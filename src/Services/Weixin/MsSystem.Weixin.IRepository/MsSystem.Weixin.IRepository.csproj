@@ -10,6 +10,7 @@
   
   <ItemGroup>
     <ProjectReference Include="..\MsSystem.Weixin.Model\MsSystem.Weixin.Model.csproj" />
+    <ProjectReference Include="..\MsSystem.Weixin.ViewModel\MsSystem.Weixin.ViewModel.csproj" />
   </ItemGroup>
 
 </Project>
