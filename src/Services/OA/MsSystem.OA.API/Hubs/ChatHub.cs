@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using MsSystem.OA.IService;
 using MsSystem.OA.ViewModel;
 using System;
 using System.Linq;
@@ -10,6 +11,13 @@ namespace MsSystem.OA.API.Hubs
     [Authorize]
     public class ChatHub: Hub
     {
+        private readonly IOaChatService _chatService;
+
+        public ChatHub(IOaChatService chatService)
+        {
+            this._chatService = chatService;
+        }
+
         public override async Task OnConnectedAsync()
         {
             await base.OnConnectedAsync();
@@ -44,6 +52,12 @@ namespace MsSystem.OA.API.Hubs
                     sender,
                     message,
                     time = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")
+                });
+                await _chatService.InsertAsync(new Model.OaChat
+                {
+                    Receiver = receiver,
+                    Sender = sender,
+                    Message = message
                 });
             }
             else

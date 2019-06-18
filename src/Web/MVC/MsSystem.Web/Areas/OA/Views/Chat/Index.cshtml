@@ -93,8 +93,13 @@
                 axios.post('/OA/Chat/GetChatUserAsync', chattinguserids).then(function (response) {
                     var data = response.data;
                     var html = '';
+                    var ToUserId = $('#ToUserId').val();
                     $.each(data, function (index, item) {
-                        html += '<div class="chat-user" data-userid="' + item.UserId + '">';
+                        if (ToUserId == item.UserId ) {
+                            html += '<div class="chat-user active" data-userid="' + item.UserId + '">';
+                        } else {
+                            html += '<div class="chat-user" data-userid="' + item.UserId + '">';
+                        }
                         if (item.IsOnline == 1) {
                             html += '<span class="pull-right label label-primary">在线</span>';
                         }
@@ -143,7 +148,7 @@
                 if (touserBox[0]) {
                     touserBox.show();
                 } else {
-                    var html = '<div class="chat-discussion" data-touser="' + userid + '"></div>';
+                    var html = '<div class="chat-discussion" data-pageindex="0" data-touser="' + userid + '"></div>';
                     $('.chat-discussion:last').after(html)
                 }
                 resetUserMessageCount(userid);
@@ -171,9 +176,6 @@
 <div class="wrapper-content">
     <div class="row">
         <div class="ibox">
-            <div class="ibox-title text-right">
-                @await Component.InvokeAsync("Menu")
-            </div>
             <div class="ibox-content">
                 <div class="row">
                     <div class="col-md-3" style="padding-right:0px;">

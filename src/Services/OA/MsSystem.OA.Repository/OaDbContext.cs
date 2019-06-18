@@ -31,5 +31,7 @@ namespace MsSystem.OA.Repository
         private IOaWorkflowsqlRepository _workflowsql;
         public IOaWorkflowsqlRepository OaWorkflowsql => _workflowsql ?? (_workflowsql = new OaWorkflowsqlRepository(Connection, _config));
 
+        private IOaChatRepository _oachat;
+        public IOaChatRepository OaChat => _oachat ?? (_oachat = new OaChatRepository(Connection, _config));
     }
 }

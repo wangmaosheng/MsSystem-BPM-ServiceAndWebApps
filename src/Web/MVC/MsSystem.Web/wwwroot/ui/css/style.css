@@ -5474,7 +5474,7 @@ dd.project-people {
     background-color: #fff;
     text-align: left;
     display: block;
-    padding: 10px;
+    padding: 5px 10px 10px;
     position: relative;
 }
 .message-date {
@@ -5488,6 +5488,7 @@ dd.project-people {
     line-height: 35px;
     height: 35px;
     padding: 0px 10px;
+    margin-top: 5px;
 }
 .chat-discussion {
     background: #fff;

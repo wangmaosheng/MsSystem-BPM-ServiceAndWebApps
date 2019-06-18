@@ -103,6 +103,7 @@ namespace MsSystem.OA.API
             services.AddScoped<IWorkFlowService, WorkFlowService>();
             services.AddScoped<IOaLeaveService, OaLeaveService>();
             services.AddScoped<IOaMessageService, OaMessageService>();
+            services.AddScoped<IOaChatService, OaChatService>();
             services.AddAutoMapper();
             services.AddMvc(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
                 .AddJsonOptions(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
