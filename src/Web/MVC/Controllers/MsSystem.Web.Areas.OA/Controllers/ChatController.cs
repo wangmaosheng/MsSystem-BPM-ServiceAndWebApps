@@ -25,7 +25,7 @@ namespace MsSystem.Web.Areas.OA.Controllers
         [Permission]
         public IActionResult Index()
         {
-            ViewBag.UserId = UserIdentity.UserId;
+            ViewBag.User = UserIdentity;
             return View();
         }
 

@@ -5461,7 +5461,7 @@ dd.project-people {
 }
 
 .chat-message {
-    padding: 10px 20px;
+    padding: 5px 20px;
 }
 .message-avatar {
     height: 48px;
@@ -5472,28 +5472,30 @@ dd.project-people {
 }
 .message {
     background-color: #fff;
-    border: 1px solid #e7eaec;
     text-align: left;
     display: block;
-    padding: 10px 20px;
+    padding: 10px;
     position: relative;
-    border-radius: 4px;
 }
 .message-date {
     font-size: 10px;
     color: #888888;
+    margin: 0px 10px;
 }
 .message-content {
-    display: block;
+    display: inline-block;
+    border-radius: 4px;
+    line-height: 35px;
+    height: 35px;
+    padding: 0px 10px;
 }
 .chat-discussion {
-    background: #eee;
+    background: #fff;
     padding: 15px;
     height: 400px;
     overflow-y: auto;
-}
-.chat-left{
-
+    border: 10px solid #eee;
+    border-top:none;
 }
 .chat-left .message-avatar{
     float: left;
@@ -5503,12 +5505,40 @@ dd.project-people {
     text-align: left;
     margin-left: 55px;
 }
-    .chat-left .message-date {
-        float: right;
-    }
-.chat-right{
-
+.chat-right .message-author{
+    float:right;
 }
+.chat-right .message-content {
+    background: #5FB878;
+    color: #fff;
+}
+.chat-left .message-content {
+    background: #e2e2e2;
+    color: #333;
+}
+    .chat-left .message-content:after {
+        content: '';
+        position: absolute;
+        top: 42px;
+        width: 0;
+        left: 0px;
+        height: 0;
+        border-style: solid dashed dashed;
+        border-color: #e2e2e2 transparent transparent;
+        overflow: hidden;
+        border-width: 10px;
+    }
+    .chat-right .message-content:after {
+        content: '';
+        position: absolute;
+        top: 42px;
+        width: 0;
+        height: 0;
+        border-style: solid dashed dashed;
+        border-color: #5FB878 transparent transparent;
+        overflow: hidden;
+        border-width: 10px;
+    }
     .chat-right .message-avatar {
         float: right;
         margin-left: 10px;
@@ -5518,7 +5548,7 @@ dd.project-people {
         margin-right: 55px;
     }
     .chat-right .message-date {
-        float: left;
+        /*float: left;*/
     }
 .chat-users {
     overflow-y: auto;

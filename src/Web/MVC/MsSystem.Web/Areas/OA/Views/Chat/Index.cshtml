@@ -1,54 +1,170 @@
 ﻿@{
     ViewData["Title"] = "聊天";
     Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+    UserIdentity user = ViewBag.User;
 }
 @inject MsSystem.Web.Infrastructure.TokenClient tokenClient
 @inject Microsoft.Extensions.Configuration.IConfiguration configuration
+@section css{ 
+    <style>
+        .chat-user{
+            cursor:pointer;
+        }
+        .chat-user.active {
+            background: #eee;
+        }
+        .currentUser {
+            background: #eee;
+            font-size: 12px;
+            text-align: center;
+            line-height: 40px;
+            height: 40px;
+            color: #333;
+            font-weight: bold;
+        }
+        .message-count {
+            background: red;
+            color: #fff;
+            width: 15px;
+            height: 15px;
+            text-align: center;
+            border-radius: 50%;
+            display:none;
+            margin:2px;
+        }
+    </style>
+}
 @section scripts{
     <script src="/lib/signalr/dist/browser/signalr.min.js"></script>
     <script>
-        var chattinguserids = [];
-        var userid = "@ViewBag.UserId";
-        const connection = new signalR.HubConnectionBuilder()
-            .withUrl("@(configuration["MsApplication:url"] + "/hub/oa/chatHub")", {
-                transport: signalR.HttpTransportType.LongPolling,
-                accessTokenFactory: () => {
-                    return "Authorization", getToken();
-                }
-            }).build();
-        connection.start().then(function () {
-            connection.invoke('InitMessage', userid);
-            }).catch(function (err) {
-            return console.error(err.toString());
-            });
-        //获取聊天信息
-        connection.on("ReceiveChater", function (data) {
-            debugger;
-        });
-        //获取在线人列表
-        connection.on("RefreshOnliner", data => {
-            axios.post('/OA/Chat/GetChatUserAsync', chattinguserids).then(function (response) {
-                var data = response.data;
-                var html = '';
-                $.each(data, function (index, item) {
-                    html += '<div class="chat-user">';
-                    if (item.IsOnline==1) {
-                        html += '<span class="pull-right label label-primary">在线</span>';
+        $(function () {
+            var chattinguserids = [];
+            var currentUserid = "@user.UserId";
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("@(configuration["MsApplication:url"] + "/hub/oa/chatHub")", {
+                    transport: signalR.HttpTransportType.LongPolling,
+                    accessTokenFactory: () => {
+                        return "Authorization", getToken();
                     }
-                    html += '<img class="chat-avatar" src="' + item.HeadImg + '" alt="">';
-                    html += '<div class="chat-user-name"><a>' + item.UserName + '</a>';
-                    html += '</div>';
-                    html += '</div>';
+                }).build();
+            connection.start().then(function () {
+                connection.invoke('InitMessage', currentUserid);
+                }).catch(function (err) {
+                return console.error(err.toString());
                 });
-                $('.users-list').empty().append(html);
+            //获取聊天信息
+            connection.on("ReceiveChater", function (data) {
+                var chatuser = $('.users-list .chat-user[data-userid=' + data.sender + ']');
+                var msgcount = chatuser.find('.message-count').text();
+                chatuser.find('.message-count').show();
+                if (msgcount == '') {
+                    chatuser.find('.message-count').text(1);
+                } else {
+                    chatuser.find('.message-count').text(parseInt(msgcount) + 1);
+                }
+                var headimg = chatuser.find('img').attr('src');
+                var username = chatuser.find('.chat-user-name a').text();
+                var html = '';
+                html += '<div class="chat-message chat-left">';
+                html += '<img class="message-avatar" src="' + headimg +'" alt="">';
+                html += '<div class="message">';
+                html += '<div><a class="message-author">' + username +'</a>';
+                html += '<span class="message-date">' + data.time+'</span></div>';
+                html += '<span class="message-content">';
+                html += data.message;
+                html += '</span>';
+                html += '</div>';
+                html += '</div>';
+                var chatBox = $('.chat-discussion[data-touser=' + data.sender + ']');
+                if (chatBox[0] == undefined) {
+                    var boxhtml = '';
+                    if ($('.chat-discussion')[0].length == 1) {
+                        boxhtml = '<div class="chat-discussion" data-touser="' + data.sender + '"></div>';
+                    } else {
+                        boxhtml = '<div class="chat-discussion" data-touser="' + data.sender + '" style="display:none"></div>';
+                    }
+                    $('.chat-discussion:last').after(boxhtml)
+                }
+                var relBox = $('.chat-discussion[data-touser=' + data.sender + ']');
+                relBox.append(html);
             });
-        });
-        function getToken() {
-            return '@tokenClient.GetToken().Result';
-        }
-        document.getElementById('sendMessage').addEventListener('click', function (e) {
-            e.preventDefault();
-            connection.invoke('SendMessage', data);
+            //获取在线人列表
+            connection.on("RefreshOnliner", data => {
+                axios.post('/OA/Chat/GetChatUserAsync', chattinguserids).then(function (response) {
+                    var data = response.data;
+                    var html = '';
+                    $.each(data, function (index, item) {
+                        html += '<div class="chat-user" data-userid="' + item.UserId + '">';
+                        if (item.IsOnline == 1) {
+                            html += '<span class="pull-right label label-primary">在线</span>';
+                        }
+                        html += '<span class="pull-right message-count"></span>';
+                        html += '<img class="chat-avatar" src="' + item.HeadImg + '" alt="">';
+                        html += '<div class="chat-user-name"><a data-userid="' + item.UserId + '">' + item.UserName + '</a>';
+                        html += '</div>';
+                        html += '</div>';
+                    });
+                    $('.users-list').empty().append(html);
+                });
+            });
+            function getToken() {
+                return '@tokenClient.GetToken().Result';
+            }
+            document.getElementById('sendMessage').addEventListener('click', function (e) {
+                e.preventDefault();
+                var userid = $('#ToUserId').val();
+                var message = $('textarea[name=message]').val();
+                connection.invoke('SendMessage', userid, currentUserid, message);
+                $('textarea[name=message]').val('');
+                var time = $.getCurrentTime();
+                var html = '';
+                html += '<div class="chat-message chat-right">';
+                html += '<img class="message-avatar" src="@user.HeadImg" alt="">';
+                html += '<div class="message">';
+                html += '<div><a class="message-author">@user.UserName</a>';
+                html += '<span class="message-date">' + time + '</span></div>';
+                html += '<span class="message-content">';
+                html += message;
+                html += '</span>';
+                html += '</div>';
+                html += '</div>';
+                $('.chat-discussion[data-touser=' + userid + ']').append(html);
+                resetUserMessageCount(userid);
+            });
+            $('.users-list').on('click', '.chat-user', function () {
+                $('.users-list .chat-user').removeClass('active');
+                $(this).addClass('active');
+                var currentDom = $(this).find('.chat-user-name a');
+                var userid = currentDom.attr('data-userid');
+                $('#ToUserId').val(userid);
+                $('.currentUser span').text(currentDom.text());
+                var touserBox = $('.chat-discussion[data-touser=' + userid + ']');
+                $('.chat-discussion').hide();
+                if (touserBox[0]) {
+                    touserBox.show();
+                } else {
+                    var html = '<div class="chat-discussion" data-touser="' + userid + '"></div>';
+                    $('.chat-discussion:last').after(html)
+                }
+                resetUserMessageCount(userid);
+                addOnlines(userid);
+                $('.chat-message-form').show();
+            });
+            function resetUserMessageCount(userid) {
+                var chatuser = $('.users-list .chat-user[data-userid=' + userid + ']');
+                chatuser.find('.message-count').text('').hide();
+            }
+            function addOnlines(userid) {
+                var flag = false;
+                for (var i = 0; i < chattinguserids.length; i++) {
+                    if (chattinguserids[i] == userid) {
+                        flag = true;
+                    }
+                }
+                if (!flag) {
+                    chattinguserids.push(userid);
+                }
+            }
         });
     </script>
 }
@@ -60,79 +176,25 @@
             </div>
             <div class="ibox-content">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-3" style="padding-right:0px;">
                         <div class="chat-users">
                             <div class="users-list">
-                                @*<div class="chat-user">
-                                    <img class="chat-avatar" src="/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg" alt="">
-                                    <div class="chat-user-name">
-                                        <a href="#">伤城Simple</a>
-                                    </div>
-                                </div>
-                                <div class="chat-user">
-                                    <img class="chat-avatar" src="/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg" alt="">
-                                    <div class="chat-user-name">
-                                        <a href="#">从未出现过的风景__</a>
-                                    </div>
-                                </div>
-                                <div class="chat-user">
-                                    <span class="pull-right label label-primary">在线</span>
-                                    <img class="chat-avatar" src="/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg" alt="">
-                                    <div class="chat-user-name">
-                                        <a href="#">冬伴花暖</a>
-                                    </div>
-                                </div>
-                                <div class="chat-user">
-                                    <span class="pull-right label label-primary">在线</span>
-                                    <img class="chat-avatar" src="/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg" alt="">
-                                    <div class="chat-user-name">
-                                        <a href="#">ZM敏姑娘	</a>
-                                    </div>
-                                </div>*@
+
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-9 ">
-                        <div class="chat-discussion">
-                            @*<div class="chat-message chat-left">
-                                <img class="message-avatar" src="/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg" alt="">
-                                <div class="message">
-                                    <a class="message-author" href="#"> 颜文字君</a>
-                                    <span class="message-date"> 2015-02-02 18:39:23 </span>
-                                    <span class="message-content">
-                                        H+ 是个好框架
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="chat-message chat-right">
-                                <img class="message-avatar" src="/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg" alt="">
-                                <div class="message">
-                                    <a class="message-author" href="#"> 林依晨Ariel </a>
-                                    <span class="message-date">  2015-02-02 11:12:36 </span>
-                                    <span class="message-content">
-                                        jQuery表单验证插件 - 让表单验证变得更容易
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="chat-message chat-right">
-                                <img class="message-avatar" src="/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg" alt="">
-                                <div class="message">
-                                    <a class="message-author" href="#"> 林依晨Ariel </a>
-                                    <span class="message-date">  2015-02-02 11:12:36 </span>
-                                    <span class="message-content">
-                                        jQuery表单验证插件 - 让表单验证变得更容易
-                                    </span>
-                                </div>
-                            </div>*@
+                    <div class="col-md-9" style="padding-left:0px;">
+                        <div class="currentUser">
+                            当前人：<span></span>
+                            <input type="hidden" id="ToUserId" value="" />
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="chat-message-form">
+                        <div class="chat-discussion" data-touser=""></div>
+                        <div class="chat-message-form" style="display:none">
                             <div class="form-group">
                                 <textarea class="form-control message-input" name="message"></textarea>
-                                <button class="btn btn-primary" id="sendMessage">发送</button>
+                                <div style="margin:10px;text-align:center">
+                                    <button class="btn btn-primary" id="sendMessage">发送</button>
+                                </div>
                             </div>
                         </div>
                     </div>

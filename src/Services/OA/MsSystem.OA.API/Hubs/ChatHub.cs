@@ -26,13 +26,25 @@ namespace MsSystem.OA.API.Hubs
             await base.OnDisconnectedAsync(ex);
         }
 
-        public async Task SendMessage(long userid, string message)
+        /// <summary>
+        /// 信息发送
+        /// </summary>
+        /// <param name="receiver">接收人</param>
+        /// <param name="sender">发送人</param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public async Task SendMessage(long receiver,long sender, string message)
         {
             //判断接收的人是否在线
-            var receiveUser = SignalRMessageGroups.UserGroups.FirstOrDefault(m => m.UserId == userid && m.GroupName == "ChatHubGroup");
+            var receiveUser = SignalRMessageGroups.UserGroups.FirstOrDefault(m => m.UserId == receiver && m.GroupName == "ChatHubGroup");
             if (receiveUser != null)
             {
-                await Clients.Client(receiveUser.ConnectionId).SendAsync("ReceiveChater", message);
+                await Clients.Client(receiveUser.ConnectionId).SendAsync("ReceiveChater", new
+                {
+                    sender,
+                    message,
+                    time = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")
+                });
             }
             else
             {
