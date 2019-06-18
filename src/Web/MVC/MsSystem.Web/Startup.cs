@@ -159,6 +159,11 @@ namespace MsSystem.Web
                     .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                     .AddPolicyHandler(GetRetryPolicy())
                     .AddPolicyHandler(GetCircuitBreakerPolicy());
+            services.AddHttpClient<IOaChatService, OaChatService>()
+                    .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                    .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                    .AddPolicyHandler(GetRetryPolicy())
+                    .AddPolicyHandler(GetCircuitBreakerPolicy());
             return services;
         }
         public static IServiceCollection AddWeixinHttpClientServices(this IServiceCollection services)

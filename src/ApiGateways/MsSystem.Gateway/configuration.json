@@ -74,18 +74,18 @@
       "ServiceName": "Mssystem.Weixin.API",
       "UseServiceDiscovery": true
     },
-    {
-      "DownstreamPathTemplate": "/{everything}",
-      "DownstreamScheme": "http",
-      "UpstreamPathTemplate": "/hub/{everything}",
-      "UpstreamHttpMethod": [],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MsSystem",
-        "AllowedScopes": []
-      },
-      "ServiceName": "Mssystem.Weixin.API",
-      "UseServiceDiscovery": true
-    },
+    //{
+    //  "DownstreamPathTemplate": "/{everything}",
+    //  "DownstreamScheme": "http",
+    //  "UpstreamPathTemplate": "/hub/{everything}",
+    //  "UpstreamHttpMethod": [],
+    //  "AuthenticationOptions": {
+    //    "AuthenticationProviderKey": "MsSystem",
+    //    "AllowedScopes": []
+    //  },
+    //  "ServiceName": "Mssystem.Weixin.API",
+    //  "UseServiceDiscovery": true
+    //},
     //MsSystem WF API
     {
       "DownstreamPathTemplate": "/api/{controller}/{action}",
@@ -99,19 +99,19 @@
       "ServiceName": "Mssystem.WF.API",
       "UseServiceDiscovery": true
     },
-    //MsSystem.Schedule.API
-    {
-      "DownstreamPathTemplate": "/api/{controller}/{action}",
-      "DownstreamScheme": "http",
-      "UpstreamPathTemplate": "/api/Schedule/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MsSystem",
-        "AllowedScopes": []
-      },
-      "ServiceName": "Mssystem.Schedule.API",
-      "UseServiceDiscovery": true
-    },
+    ////MsSystem.Schedule.API
+    //{
+    //  "DownstreamPathTemplate": "/api/{controller}/{action}",
+    //  "DownstreamScheme": "http",
+    //  "UpstreamPathTemplate": "/api/Schedule/{controller}/{action}",
+    //  "UpstreamHttpMethod": [ "Get", "Post" ],
+    //  "AuthenticationOptions": {
+    //    "AuthenticationProviderKey": "MsSystem",
+    //    "AllowedScopes": []
+    //  },
+    //  "ServiceName": "Mssystem.Schedule.API",
+    //  "UseServiceDiscovery": true
+    //},
     //MsSystem.OA.API
     {
       "DownstreamPathTemplate": "/api/{controller}/{action}",

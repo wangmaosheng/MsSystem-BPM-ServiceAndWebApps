@@ -93,5 +93,6 @@ namespace MsSystem.Sys.IService
         /// <param name="roleids"></param>
         /// <returns></returns>
         Task<List<long>> GetUserIdsByRoleIdsAsync(List<long> roleids);
+        Task<List<SysUser>> GetAllUserAsync();
     }
 }

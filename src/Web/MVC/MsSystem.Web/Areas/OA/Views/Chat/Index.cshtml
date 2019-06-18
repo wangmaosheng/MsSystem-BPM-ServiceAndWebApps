@@ -1,0 +1,143 @@
+﻿@{
+    ViewData["Title"] = "聊天";
+    Layout = "~/Views/Shared/_LayoutJQ.cshtml";
+}
+@inject MsSystem.Web.Infrastructure.TokenClient tokenClient
+@inject Microsoft.Extensions.Configuration.IConfiguration configuration
+@section scripts{
+    <script src="/lib/signalr/dist/browser/signalr.min.js"></script>
+    <script>
+        var chattinguserids = [];
+        var userid = "@ViewBag.UserId";
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("@(configuration["MsApplication:url"] + "/hub/oa/chatHub")", {
+                transport: signalR.HttpTransportType.LongPolling,
+                accessTokenFactory: () => {
+                    return "Authorization", getToken();
+                }
+            }).build();
+        connection.start().then(function () {
+            connection.invoke('InitMessage', userid);
+            }).catch(function (err) {
+            return console.error(err.toString());
+            });
+        //获取聊天信息
+        connection.on("ReceiveChater", function (data) {
+            debugger;
+        });
+        //获取在线人列表
+        connection.on("RefreshOnliner", data => {
+            axios.post('/OA/Chat/GetChatUserAsync', chattinguserids).then(function (response) {
+                var data = response.data;
+                var html = '';
+                $.each(data, function (index, item) {
+                    html += '<div class="chat-user">';
+                    if (item.IsOnline==1) {
+                        html += '<span class="pull-right label label-primary">在线</span>';
+                    }
+                    html += '<img class="chat-avatar" src="' + item.HeadImg + '" alt="">';
+                    html += '<div class="chat-user-name"><a>' + item.UserName + '</a>';
+                    html += '</div>';
+                    html += '</div>';
+                });
+                $('.users-list').empty().append(html);
+            });
+        });
+        function getToken() {
+            return '@tokenClient.GetToken().Result';
+        }
+        document.getElementById('sendMessage').addEventListener('click', function (e) {
+            e.preventDefault();
+            connection.invoke('SendMessage', data);
+        });
+    </script>
+}
+<div class="wrapper-content">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title text-right">
+                @await Component.InvokeAsync("Menu")
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="chat-users">
+                            <div class="users-list">
+                                @*<div class="chat-user">
+                                    <img class="chat-avatar" src="/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg" alt="">
+                                    <div class="chat-user-name">
+                                        <a href="#">伤城Simple</a>
+                                    </div>
+                                </div>
+                                <div class="chat-user">
+                                    <img class="chat-avatar" src="/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg" alt="">
+                                    <div class="chat-user-name">
+                                        <a href="#">从未出现过的风景__</a>
+                                    </div>
+                                </div>
+                                <div class="chat-user">
+                                    <span class="pull-right label label-primary">在线</span>
+                                    <img class="chat-avatar" src="/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg" alt="">
+                                    <div class="chat-user-name">
+                                        <a href="#">冬伴花暖</a>
+                                    </div>
+                                </div>
+                                <div class="chat-user">
+                                    <span class="pull-right label label-primary">在线</span>
+                                    <img class="chat-avatar" src="/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg" alt="">
+                                    <div class="chat-user-name">
+                                        <a href="#">ZM敏姑娘	</a>
+                                    </div>
+                                </div>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9 ">
+                        <div class="chat-discussion">
+                            @*<div class="chat-message chat-left">
+                                <img class="message-avatar" src="/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg" alt="">
+                                <div class="message">
+                                    <a class="message-author" href="#"> 颜文字君</a>
+                                    <span class="message-date"> 2015-02-02 18:39:23 </span>
+                                    <span class="message-content">
+                                        H+ 是个好框架
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="chat-message chat-right">
+                                <img class="message-avatar" src="/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg" alt="">
+                                <div class="message">
+                                    <a class="message-author" href="#"> 林依晨Ariel </a>
+                                    <span class="message-date">  2015-02-02 11:12:36 </span>
+                                    <span class="message-content">
+                                        jQuery表单验证插件 - 让表单验证变得更容易
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="chat-message chat-right">
+                                <img class="message-avatar" src="/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg" alt="">
+                                <div class="message">
+                                    <a class="message-author" href="#"> 林依晨Ariel </a>
+                                    <span class="message-date">  2015-02-02 11:12:36 </span>
+                                    <span class="message-content">
+                                        jQuery表单验证插件 - 让表单验证变得更容易
+                                    </span>
+                                </div>
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="chat-message-form">
+                            <div class="form-group">
+                                <textarea class="form-control message-input" name="message"></textarea>
+                                <button class="btn btn-primary" id="sendMessage">发送</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

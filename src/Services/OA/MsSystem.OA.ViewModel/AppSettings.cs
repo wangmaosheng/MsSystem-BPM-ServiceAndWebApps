@@ -1,11 +1,12 @@
 ﻿using JadeFramework.Core.Consul;
 
-namespace MsSystem.OA.API
+namespace MsSystem.OA.ViewModel
 {
     public class AppSettings
     {
         public Identity Identity { get; set; }
         public MySQL MySQL { get; set; }
+        public SystemAPI SystemAPI { get; set; }
         public RabbitMQ RabbitMQ { get; set; }
         public MsApplication MsApplication { get; set; }
         public ServiceDiscoveryOptions ServiceDiscovery { get; set; }
@@ -33,5 +34,10 @@ namespace MsSystem.OA.API
         public string HostName { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
+    }
+
+    public class SystemAPI
+    {
+        public string GetAllUserAsync { get; set; }
     }
 }

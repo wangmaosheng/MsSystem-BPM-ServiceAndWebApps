@@ -23,7 +23,10 @@ namespace MsSystem.Web.Areas.OA.Infrastructure
             public static string EnableMessageAsync(string baseUri) => $"{baseUri}/Message/EnableMessageAsync";
             public static string MyListAsync(string baseUri, OaMessageMyListSearch search) => $"{baseUri}/Message/MyListAsync?"+ search.ToUrlParam();
             public static string MyListDetailAsync(string baseUri, long id, long userid) => $"{baseUri}/Message/MyListDetailAsync?id=" + id + "&userid=" + userid;
-
+        }
+        public static class OaChat
+        {
+            public static string GetChatUserAsync(string baseUri) => $"{baseUri}/Chat/GetChatUserAsync";
         }
     }
 }

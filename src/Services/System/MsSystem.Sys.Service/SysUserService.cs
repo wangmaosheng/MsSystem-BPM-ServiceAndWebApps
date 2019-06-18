@@ -430,5 +430,11 @@ namespace MsSystem.Sys.Service
         {
             return await _databaseFixture.Db.SysUser.GetUserIdsByRoleIdsAsync(roleids);
         }
+
+        public async Task<List<SysUser>> GetAllUserAsync()
+        {
+            var allUser = await _databaseFixture.Db.SysUser.FindAllAsync(m => m.IsDel == 0);
+            return allUser.ToList();
+        }
     }
 }

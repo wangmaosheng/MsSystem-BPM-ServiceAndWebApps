@@ -3,6 +3,7 @@ using JadeFramework.Core.Domain.Result;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MsSystem.Sys.IService;
+using MsSystem.Sys.Model;
 using MsSystem.Sys.ViewModel;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -157,6 +158,16 @@ namespace MsSystem.Sys.API.Controllers
         public async Task<List<long>> GetUserIdsByRoleIdsAsync([FromBody]List<long> roleids)
         {
             return await _userService.GetUserIdsByRoleIdsAsync(roleids);
+        }
+
+        /// <summary>
+        /// 获取全部可用用户
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<List<SysUser>> GetAllUserAsync()
+        {
+            return await _userService.GetAllUserAsync();
         }
 
     }

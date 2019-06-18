@@ -5463,7 +5463,6 @@ dd.project-people {
 .chat-message {
     padding: 10px 20px;
 }
-
 .message-avatar {
     height: 48px;
     width: 48px;
@@ -5471,17 +5470,6 @@ dd.project-people {
     border-radius: 4px;
     margin-top: 1px;
 }
-
-.chat-discussion .chat-message:nth-child(2n+1) .message-avatar {
-    float: left;
-    margin-right: 10px;
-}
-
-.chat-discussion .chat-message:nth-child(2n) .message-avatar {
-    float: right;
-    margin-left: 10px;
-}
-
 .message {
     background-color: #fff;
     border: 1px solid #e7eaec;
@@ -5491,41 +5479,47 @@ dd.project-people {
     position: relative;
     border-radius: 4px;
 }
-
-.chat-discussion .chat-message:nth-child(2n+1) .message-date {
-    float: right;
-}
-
-.chat-discussion .chat-message:nth-child(2n) .message-date {
-    float: left;
-}
-
-.chat-discussion .chat-message:nth-child(2n+1) .message {
-    text-align: left;
-    margin-left: 55px;
-}
-
-.chat-discussion .chat-message:nth-child(2n) .message {
-    text-align: right;
-    margin-right: 55px;
-}
-
 .message-date {
     font-size: 10px;
     color: #888888;
 }
-
 .message-content {
     display: block;
 }
-
 .chat-discussion {
     background: #eee;
     padding: 15px;
     height: 400px;
     overflow-y: auto;
 }
+.chat-left{
 
+}
+.chat-left .message-avatar{
+    float: left;
+    margin-right: 10px;
+}
+.chat-left .message {
+    text-align: left;
+    margin-left: 55px;
+}
+    .chat-left .message-date {
+        float: right;
+    }
+.chat-right{
+
+}
+    .chat-right .message-avatar {
+        float: right;
+        margin-left: 10px;
+    }
+    .chat-right .message {
+        text-align: right;
+        margin-right: 55px;
+    }
+    .chat-right .message-date {
+        float: left;
+    }
 .chat-users {
     overflow-y: auto;
     height: 400px;

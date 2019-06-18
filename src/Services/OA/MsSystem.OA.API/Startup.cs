@@ -1,9 +1,11 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
+using JadeFramework.Cache;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,13 +13,18 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MsSystem.OA.API.Filters;
 using MsSystem.OA.API.Hubs;
+using MsSystem.OA.API.Infrastructure;
 using MsSystem.OA.IRepository;
 using MsSystem.OA.IService;
 using MsSystem.OA.Repository;
 using MsSystem.OA.Service;
+using MsSystem.OA.ViewModel;
 using NLog.Extensions.Logging;
 using NLog.Web;
+using Polly;
+using Polly.Extensions.Http;
 using System;
+using System.Net.Http;
 
 namespace MsSystem.OA.API
 {
@@ -36,6 +43,51 @@ namespace MsSystem.OA.API
             services.Configure<AppSettings>(Configuration);
             IOptions<AppSettings> appSettings = services.BuildServiceProvider().GetService<IOptions<AppSettings>>();
 
+            services.AddCustomMvc(appSettings).AddHttpClientServices();
+
+            var container = new ContainerBuilder();
+            container.Populate(services);
+            return new AutofacServiceProvider(container.Build());
+        }
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        {
+            loggerFactory.AddNLog();
+            if (env.IsDevelopment())
+            {
+                env.ConfigureNLog("NLog.Development.config");
+            }
+            else
+            {
+                env.ConfigureNLog("NLog.config");
+            }
+
+            app.UseCors("CorsPolicy");
+
+            app.UseResponseCompression();
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
+            app.UseAuthentication();
+            app.UseMvc();
+            app.UseServiceRegistration(new ServiceCheckOptions
+            {
+                HealthCheckUrl = "/api/HealthCheck/ping"
+            });
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<MessageHub>("/messageHub", options => options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
+                routes.MapHub<ChatHub>("/chatHub", options => options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
+            });
+        }
+    }
+    public static class ServiceCollectionExtensions
+    {
+        public static IServiceCollection AddCustomMvc(this IServiceCollection services, IOptions<AppSettings> appSettings)
+        {
+            services.AddScoped<ICachingProvider, MemoryCachingProvider>();
             services.AddServiceRegistration();
             services.AddResponseCompression();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -77,42 +129,44 @@ namespace MsSystem.OA.API
                 x.UseMySql(appSettings.Value.MySQL.Connection);
             });
 
-            var container = new ContainerBuilder();
-            container.Populate(services);
-            return new AutofacServiceProvider(container.Build());
+            return services;
         }
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public static IServiceCollection AddHttpClientServices(this IServiceCollection services)
         {
-            loggerFactory.AddNLog();
-            if (env.IsDevelopment())
-            {
-                env.ConfigureNLog("NLog.Development.config");
-            }
-            else
-            {
-                env.ConfigureNLog("NLog.config");
-            }
+            services.AddHttpClient<TokenClient>();
 
-            app.UseCors("CorsPolicy");
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            app.UseResponseCompression();
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
+            //register delegating handlers
+            services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
+            services.AddTransient<HttpClientRequestIdDelegatingHandler>();
 
-            app.UseAuthentication();
-            app.UseMvc();
-            app.UseServiceRegistration(new ServiceCheckOptions
-            {
-                HealthCheckUrl = "/api/HealthCheck/ping"
-            });
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<MessageHub>("/messageHub", options =>
-                    options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
-            });
+            //set 5 min as the lifetime for each HttpMessageHandler int the pool
+            services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(TimeSpan.FromMinutes(5));
+
+
+            services.AddHttpClient<ISystemService, SystemService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
+
+            return services;
+        }
+
+        static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        {
+            return HttpPolicyExtensions
+              .HandleTransientHttpError()
+              .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
+              .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+
+        }
+        static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
+        {
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
         }
     }
 }
