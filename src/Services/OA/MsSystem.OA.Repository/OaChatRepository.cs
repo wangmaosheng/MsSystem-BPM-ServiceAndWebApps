@@ -31,7 +31,7 @@ namespace MsSystem.OA.Repository
                 pageSize = model.PageSize
             });
 
-            return list.ToList();
+            return list.OrderBy(m => m.CreateTime).ToList();
         }
     }
 }

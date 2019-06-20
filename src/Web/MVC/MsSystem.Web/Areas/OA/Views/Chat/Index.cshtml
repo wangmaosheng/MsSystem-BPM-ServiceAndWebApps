@@ -22,7 +22,10 @@
             width: 200px;
             float: left;
             overflow-y: auto;
-            display:none;
+            display: none;
+            border: 1px solid #ddd;
+            box-shadow: 0px 0px 10px #ddd;
+            border-right: none;
         }
         .chat-main-right {
             width: 600px;
@@ -35,6 +38,7 @@
 
         .chat-users{
             margin-left:0px;
+            height:550px;
         }
         .chat-user {
             cursor: pointer;
@@ -500,7 +504,7 @@
                                 username = $('.currentUser span').text();
                                 html += '<div class="chat-message chat-left">';
                             }
-                            var time = $.unixToDate(item.CreateTime, true, 8);
+                            var time = $.unixToDate(item.CreateTime, true);
                             html += '<img class="message-avatar" src="' + headimg + '" alt="">';
                             html += '<div class="message">';
                             html += '<div><a class="message-author">' + username + '</a>';
