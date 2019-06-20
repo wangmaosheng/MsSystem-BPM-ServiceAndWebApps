@@ -5424,7 +5424,6 @@ dd.project-people {
     white: 36px;
     height: 36px;
     float: left;
-    margin-right: 10px;
 }
 
 .chat-user-name {
@@ -5495,8 +5494,6 @@ dd.project-people {
     padding: 15px;
     height: 400px;
     overflow-y: auto;
-    border: 10px solid #eee;
-    border-top:none;
 }
 .chat-left .message-avatar{
     float: left;
