@@ -5503,8 +5503,12 @@ dd.project-people {
     text-align: left;
     margin-left: 55px;
 }
-.chat-right .message-author{
-    float:right;
+.chat-left .message-author{
+    color:#888888;
+}
+.chat-right .message-author {
+    float: right;
+    color: #5FB878;
 }
 .chat-right .message-content {
     background: #5FB878;
@@ -5545,9 +5549,9 @@ dd.project-people {
         text-align: right;
         margin-right: 55px;
     }
-    .chat-right .message-date {
-        /*float: left;*/
-    }
+.chat-right .message-date {
+    color: #5FB878;
+}
 .chat-users {
     overflow-y: auto;
     height: 400px;

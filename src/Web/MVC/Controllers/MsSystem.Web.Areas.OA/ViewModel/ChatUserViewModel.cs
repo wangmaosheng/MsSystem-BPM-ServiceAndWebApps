@@ -32,4 +32,20 @@
         /// </summary>
         public long CreateTime { get; set; }
     }
+
+    public class ChatUserListDto
+    {
+        public long Id { get; set; }
+        public long Sender { get; set; }
+        public string Message { get; set; }
+        public long Receiver { get; set; }
+        public long CreateTime { get; set; }
+    }
+    public class ChatUserListSearchDto
+    {
+        public long Sender { get; set; }
+        public long Receiver { get; set; }
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; } = 20;
+    }
 }

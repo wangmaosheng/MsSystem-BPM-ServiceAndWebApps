@@ -36,5 +36,17 @@ namespace MsSystem.Web.Areas.OA.Controllers
             res.Remove(res.First(m => m.UserId == UserIdentity.UserId));
             return res;
         }
+
+        [HttpGet]
+        public async Task<List<ChatUserListDto>> GetChatListAsync(long receiver,int pageindex)
+        {
+            ChatUserListSearchDto model = new ChatUserListSearchDto();
+            model.Receiver = receiver;
+            model.PageIndex = pageindex == 0 ? 1 : pageindex;
+            model.PageSize = 20;
+            model.Sender = UserIdentity.UserId;
+            var res = await _chatService.GetChatListAsync(model);
+            return res;
+        }
     }
 }

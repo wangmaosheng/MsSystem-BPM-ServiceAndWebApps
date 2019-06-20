@@ -12,6 +12,7 @@ namespace MsSystem.Web.Areas.OA.Service
     public interface IOaChatService
     {
         Task<List<ChatUserViewModel>> GetChatUserAsync(List<long> chattinguserids);
+        Task<List<ChatUserListDto>> GetChatListAsync(ChatUserListSearchDto model);
     }
 
     public class OaChatService: IOaChatService
@@ -34,6 +35,13 @@ namespace MsSystem.Web.Areas.OA.Service
             response.EnsureSuccessStatusCode();
             string res = await response.Content.ReadAsStringAsync();
             return res.ToObject<List<ChatUserViewModel>>();
+        }
+
+        public async Task<List<ChatUserListDto>> GetChatListAsync(ChatUserListSearchDto model)
+        {
+            var uri = API.OaChat.GetChatListAsync(_baseUrl, model);
+            var responseString = await _apiClient.GetStringAsync(uri);
+            return responseString.ToObject<List<ChatUserListDto>>();
         }
 
     }

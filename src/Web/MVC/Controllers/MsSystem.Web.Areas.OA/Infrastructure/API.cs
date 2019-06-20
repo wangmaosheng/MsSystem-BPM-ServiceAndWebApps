@@ -27,6 +27,7 @@ namespace MsSystem.Web.Areas.OA.Infrastructure
         public static class OaChat
         {
             public static string GetChatUserAsync(string baseUri) => $"{baseUri}/Chat/GetChatUserAsync";
+            public static string GetChatListAsync(string baseUri, ChatUserListSearchDto model) => $"{baseUri}/Chat/GetChatListAsync?" + model.ToUrlParam();
         }
     }
 }

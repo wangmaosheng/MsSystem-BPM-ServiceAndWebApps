@@ -20,12 +20,14 @@ namespace MsSystem.OA.API.Controllers
     public class ChatController : ControllerBase
     {
         private ISystemService _systemService;
+        private readonly IOaChatService _chatService;
         private IHubContext<ChatHub> _hubContext;
 
-        public ChatController(IServiceProvider serviceProvider, ISystemService systemService)
+        public ChatController(IServiceProvider serviceProvider, ISystemService systemService,IOaChatService chatService)
         {
             _hubContext = serviceProvider.GetService<IHubContext<ChatHub>>();
             this._systemService = systemService;
+            this._chatService = chatService;
         }
 
         /// <summary>
@@ -62,5 +64,11 @@ namespace MsSystem.OA.API.Controllers
             return chatUsers.OrderByDescending(m => m.IsChatting).ThenByDescending(m => m.IsOnline).ThenBy(m => m.CreateTime).ToList(); ;
         }
 
+
+        [HttpGet]
+        public async Task<List<ChatUserListDto>> GetChatListAsync([FromQuery]ChatUserListSearchDto model)
+        {
+            return await _chatService.GetChatListAsync(model);
+        }
     }
 }

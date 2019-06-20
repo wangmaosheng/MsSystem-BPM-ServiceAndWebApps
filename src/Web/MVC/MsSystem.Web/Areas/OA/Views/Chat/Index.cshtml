@@ -10,6 +10,9 @@
         body {
             background:#fff !important;
         }
+        .ibox-content{
+            border:none !important;
+        }
         .chat-main {
             display: inline-block;
             background: #eee;
@@ -73,10 +76,12 @@
             background: #fff;
             width: 260px;
             border-radius: 3px;
-            box-shadow: 0px 0px 10px #eee;
-            border: 1px solid #eee;
             bottom: 0px;
         }
+            .chatim.active {
+                box-shadow: 0px 0px 10px #eee;
+                border: 1px solid #eee;
+            }
         .chatim-title {
             height: 55px;
             line-height: 55px;
@@ -170,11 +175,28 @@
         }
         .chatim-footer{
             text-align:center;
+            padding-bottom:10px;
         }
-        .chatim-footer a{
-            font-size:22px;
-            color:#444;
-            cursor:pointer;
+            .chatim-footer a {
+                font-size: 18px;
+                color: #fff;
+                cursor: pointer;
+                width: 38px;
+                height: 38px;
+                display: inline-block;
+                line-height: 38px;
+                border-radius: 50%;
+                background: #0e9aef;
+                box-shadow: 0px 0px 5px #0e9aef;
+                text-align: center;
+            }
+        .more-msg {
+            font-size: 12px;
+            color: #4ea9e9;
+        }
+        .more-msg:hover{
+            text-decoration:underline;
+            color: #4ea9e9;
         }
     </style>
 }
@@ -344,9 +366,9 @@
                     var html = '';
                     if ($('.chat-discussion').length == 1 || toTop == true) {
                         $('.chat-discussion').hide();
-                        html = '<div class="chat-discussion" data-pageindex="0" data-touser="' + userid + '"></div>';
+                        html = '<div class="chat-discussion" data-pageindex="0" data-touser="' + userid + '"><a class="more-msg"><i class="fa fa-clock-o"></i>查看更多消息</a></div>';
                     } else {
-                        html = '<div class="chat-discussion" style="display:none" data-pageindex="0" data-touser="' + userid + '"></div>';
+                        html = '<div class="chat-discussion" style="display:none" data-pageindex="0" data-touser="' + userid + '"><a class="more-msg"><i class="fa fa-clock-o"></i>查看更多消息</a></div>';
                     }
                     $('.chat-discussion:last').after(html)
                 }
@@ -445,12 +467,60 @@
                 if (type == 1) {
                     $(this).attr('data-type', 0);
                     $('.chatim-title,.chatim-body').fadeOut();
-                    $(this).find('i').attr('class','fa fa-plus');
+                    $(this).find('i').attr('class', 'fa fa-comments');
+                    $('.chatim').removeClass('active');
                 } else {
                     $(this).attr('data-type', 1);
                     $('.chatim-title,.chatim-body').fadeIn();
                     $(this).find('i').attr('class', 'fa fa-close');
+                    $('.chatim').addClass('active');
                 }
+            });
+            $('.chat-main-right').on('click', 'a.more-msg', function () {
+                var _this = $(this);
+                var pageindex = _this.parent().attr('data-pageindex');
+                var receiver = _this.parent().attr('data-touser');
+                var url = '/OA/Chat/GetChatListAsync?PageIndex=' + pageindex + '&Receiver=' + receiver + '';
+                axios.get(url).then(function (response) {
+                    var data = response.data;
+                    if (data.length > 0) {
+                        var ToUserId = $('#ToUserId').val();
+                        var currentDis = $('.chat-discussion[data-touser=' + ToUserId + ']');
+                        currentDis.find('a.more-msg').hide();
+                        var html = '<a class="more-msg"><i class="fa fa-clock-o"></i>查看更多消息</a>';
+                        $.each(data, function (index, item) {
+                            var headimg = '';
+                            var username = '';
+                            if (item.Sender == '@user.UserId') {
+                                headimg = '@user.HeadImg';
+                                username = '@user.UserName';
+                                html += '<div class="chat-message chat-right">';
+                            } else {
+                                headimg = $('.currentUser img').attr('src');
+                                username = $('.currentUser span').text();
+                                html += '<div class="chat-message chat-left">';
+                            }
+                            var time = $.unixToDate(item.CreateTime, true, 8);
+                            html += '<img class="message-avatar" src="' + headimg + '" alt="">';
+                            html += '<div class="message">';
+                            html += '<div><a class="message-author">' + username + '</a>';
+                            html += '<span class="message-date">' + time + '</span></div>';
+                            html += '<span class="message-content">';
+                            html += item.Message;
+                            html += '</span>';
+                            html += '</div>';
+                            html += '</div>';
+                        });
+                        var addpageindex = pageindex == 0 ? 1 : pageindex;
+                        if (addpageindex == 1) {
+                            currentDis.empty();
+                        }
+                        currentDis.prepend(html);
+                        currentDis.attr('data-pageindex', parseInt(addpageindex) + 1);
+                    } else {
+                        _this.hide();
+                    }
+                });
             });
         });
     </script>
@@ -488,7 +558,7 @@
                     </div>
                 </div>
 
-                <div class="chatim">
+                <div class="chatim active">
                     <div class="chatim-title">
                         <img src="@user.HeadImg" />
                         <span class="chatim-title-username">
