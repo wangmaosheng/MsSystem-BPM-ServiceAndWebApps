@@ -60,7 +60,7 @@ namespace MsSystem.WF.API.Controllers
         }
 
         [HttpGet]
-        public async Task<List<WorkFlowStartDto>> GetWorkFlowStartAsync(Guid categoryid)
+        public async Task<List<WorkFlowStartDto>> GetWorkFlowStartAsync([FromQuery]Guid categoryid)
         {
             return await workFlowService.GetWorkFlowStartAsync(categoryid);
         }
