@@ -1,4 +1,4 @@
-========================Docker安装========================
+﻿========================Docker安装========================
 1、通过 uname -r 命令查看你当前的内核版本
 uname -r
 2、使用 root 权限登录 Centos。确保 yum 包更新到最新。
@@ -19,6 +19,18 @@ sudo systemctl start docker
 sudo systemctl enable docker
 9、验证安装是否成功(有client和service两部分表示docker安装启动都成功了)
 docker version
+10、设置Docker国内镜像
+
+
+sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": ["https://ith0o9fu.mirror.aliyuncs.com"]
+}
+EOF
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+
 
 ========================Docker MySQL安装========================
 最好不要安装MySQL8.0版本，配置有点坑爹
@@ -39,11 +51,32 @@ mysql -u root -p
 
 6、文件挂载
 
+
+
+
+===========================
+//最新mysql-server安装
+创建文件 /docker/mysql/config/my.cnf
+修改内容
+[mysqld]
+user=mysql
+character-set-server=utf8
+[client]
+default-character-set=utf8
+[mysql]
+default-character-set=utf8
+
+
+
+docker run -p 3306:3306 --name mysql -v /docker/mysql/config/my.cnf:/etc/my.cnf -v /docker/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql/mysql-server
+
+
 ========================Docker Nginx安装========================
 1、查找 Docker Hub 上的 nginx 镜像
 docker search nginx
 2、拉取官方的镜像
 docker pull nginx
+
 
 
 

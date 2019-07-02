@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using DnsClient;
 
 namespace MsSystem.WF.Service
 {
@@ -15,14 +16,25 @@ namespace MsSystem.WF.Service
     {
         private readonly HttpClient _apiClient;
         private readonly IOptions<AppSettings> _appSettings;
-        public ConfigService(HttpClient apiClient, IOptions<AppSettings> appSettings)
+        private readonly IDnsQuery _dnsQuery;
+
+        public IDnsQuery DnsQuery => _dnsQuery;
+
+        public ConfigService(HttpClient apiClient, IOptions<AppSettings> appSettings,IDnsQuery dnsQuery)
         {
             _apiClient = apiClient;
             _appSettings = appSettings;
+            _dnsQuery = dnsQuery;
         }
 
         public async Task<List<ZTree>> GetRoleTreesAsync(List<long> ids)
         {
+            //Consul服务之间调用
+
+
+
+
+
             string url = _appSettings.Value.MsApplication.url + _appSettings.Value.WorkFlow.Roles;
             var content = new StringContent(JsonConvert.SerializeObject(ids), System.Text.Encoding.UTF8, "application/json");
             var response = await _apiClient.PostAsync(url, content);
