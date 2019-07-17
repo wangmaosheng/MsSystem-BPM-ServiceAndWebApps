@@ -107,19 +107,29 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{2A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnacksShop.Projects.API", "src\Services\Shop\Projects\SnacksShop.Projects.API\SnacksShop.Projects.API.csproj", "{35BC52CA-00AC-4C06-96BB-BDD253D70BDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnacksShop.Projects.Domain", "src\Services\Shop\Projects\SnacksShop.Projects.Domain\SnacksShop.Projects.Domain.csproj", "{707925DD-487B-4BE3-A6AF-5DAEC7465A1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnacksShop.Projects.Domain", "src\Services\Shop\Projects\SnacksShop.Projects.Domain\SnacksShop.Projects.Domain.csproj", "{707925DD-487B-4BE3-A6AF-5DAEC7465A1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnacksShop.Projects.Infrastructure", "src\Services\Shop\Projects\SnacksShop.Projects.Infrastructure\SnacksShop.Projects.Infrastructure.csproj", "{DB20B349-B602-4854-A730-71B616F85BB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnacksShop.Projects.Infrastructure", "src\Services\Shop\Projects\SnacksShop.Projects.Infrastructure\SnacksShop.Projects.Infrastructure.csproj", "{DB20B349-B602-4854-A730-71B616F85BB2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{DD97BDF1-8894-4708-83CB-87ACF05A0917}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventBus", "EventBus", "{F1A2A87A-9577-4CEA-AD0C-4F571A691E41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JadeFramework.EventBus", "src\BuildingBlocks\EventBus\JadeFramework.EventBus\JadeFramework.EventBus.csproj", "{0BE12DF7-9A72-4710-A79B-38035255E07A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JadeFramework.EventBus", "src\BuildingBlocks\EventBus\JadeFramework.EventBus\JadeFramework.EventBus.csproj", "{0BE12DF7-9A72-4710-A79B-38035255E07A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JadeFramework.EventBus.RabbitMQ", "src\BuildingBlocks\EventBus\JadeFramework.EventBus.RabbitMQ\JadeFramework.EventBus.RabbitMQ.csproj", "{66F70AC6-5408-4797-9EE4-C96855A895C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JadeFramework.EventBus.RabbitMQ", "src\BuildingBlocks\EventBus\JadeFramework.EventBus.RabbitMQ\JadeFramework.EventBus.RabbitMQ.csproj", "{66F70AC6-5408-4797-9EE4-C96855A895C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnacksShop.EventBus.RabbitMQ", "src\Services\Shop\SnacksShop.EventBus.RabbitMQ\SnacksShop.EventBus.RabbitMQ.csproj", "{B42EC198-5E89-499F-8A0B-F0F798F60D1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnacksShop.EventBus.RabbitMQ", "src\Services\Shop\SnacksShop.EventBus.RabbitMQ\SnacksShop.EventBus.RabbitMQ.csproj", "{B42EC198-5E89-499F-8A0B-F0F798F60D1C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ZipKin", "ZipKin", "{36477194-76AE-4E3F-8D8E-E853BB290770}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JadeFramework.Zipkin", "src\BuildingBlocks\Zipkin\JadeFramework.Zipkin\JadeFramework.Zipkin.csproj", "{813A2B1B-0688-4201-AC9F-0D48F68D0C20}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resilience", "Resilience", "{974277C4-8432-4154-B0C5-807350316EF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resilience.Http", "src\BuildingBlocks\Resilience\Resilience.Http\Resilience.Http.csproj", "{7A2668EC-9CC2-4119-B509-4270DD448933}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resilience.Http.DependencyInjection", "src\BuildingBlocks\Resilience\Resilience.Http.DependencyInjection\Resilience.Http.DependencyInjection.csproj", "{26D6C08B-9D02-4E66-B93E-ECB48DCBAC60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -299,6 +309,18 @@ Global
 		{B42EC198-5E89-499F-8A0B-F0F798F60D1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B42EC198-5E89-499F-8A0B-F0F798F60D1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B42EC198-5E89-499F-8A0B-F0F798F60D1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{813A2B1B-0688-4201-AC9F-0D48F68D0C20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{813A2B1B-0688-4201-AC9F-0D48F68D0C20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{813A2B1B-0688-4201-AC9F-0D48F68D0C20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{813A2B1B-0688-4201-AC9F-0D48F68D0C20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A2668EC-9CC2-4119-B509-4270DD448933}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A2668EC-9CC2-4119-B509-4270DD448933}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A2668EC-9CC2-4119-B509-4270DD448933}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A2668EC-9CC2-4119-B509-4270DD448933}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26D6C08B-9D02-4E66-B93E-ECB48DCBAC60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26D6C08B-9D02-4E66-B93E-ECB48DCBAC60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26D6C08B-9D02-4E66-B93E-ECB48DCBAC60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26D6C08B-9D02-4E66-B93E-ECB48DCBAC60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -362,6 +384,11 @@ Global
 		{0BE12DF7-9A72-4710-A79B-38035255E07A} = {F1A2A87A-9577-4CEA-AD0C-4F571A691E41}
 		{66F70AC6-5408-4797-9EE4-C96855A895C6} = {F1A2A87A-9577-4CEA-AD0C-4F571A691E41}
 		{B42EC198-5E89-499F-8A0B-F0F798F60D1C} = {4EE5DB73-E884-4B54-BF6E-CF8C7549C38C}
+		{36477194-76AE-4E3F-8D8E-E853BB290770} = {DD97BDF1-8894-4708-83CB-87ACF05A0917}
+		{813A2B1B-0688-4201-AC9F-0D48F68D0C20} = {36477194-76AE-4E3F-8D8E-E853BB290770}
+		{974277C4-8432-4154-B0C5-807350316EF8} = {DD97BDF1-8894-4708-83CB-87ACF05A0917}
+		{7A2668EC-9CC2-4119-B509-4270DD448933} = {974277C4-8432-4154-B0C5-807350316EF8}
+		{26D6C08B-9D02-4E66-B93E-ECB48DCBAC60} = {974277C4-8432-4154-B0C5-807350316EF8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F7327476-2342-495A-A128-22D87D70072D}

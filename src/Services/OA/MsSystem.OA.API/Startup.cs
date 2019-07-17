@@ -2,6 +2,7 @@
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using JadeFramework.Cache;
+using JadeFramework.Zipkin;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -44,7 +45,7 @@ namespace MsSystem.OA.API
             IOptions<AppSettings> appSettings = services.BuildServiceProvider().GetService<IOptions<AppSettings>>();
 
             services.AddCustomMvc(appSettings).AddHttpClientServices();
-
+            services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
             var container = new ContainerBuilder();
             container.Populate(services);
             return new AutofacServiceProvider(container.Build());
@@ -72,6 +73,7 @@ namespace MsSystem.OA.API
 
             app.UseAuthentication();
             app.UseMvc();
+            app.UseZipkin();
             app.UseServiceRegistration(new ServiceCheckOptions
             {
                 HealthCheckUrl = "/api/HealthCheck/ping"

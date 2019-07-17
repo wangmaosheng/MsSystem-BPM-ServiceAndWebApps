@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SnacksShop.Projects.Domain.AggregatesModel;
 using SnacksShop.Projects.Domain.SeedWork;
+using SnacksShop.Projects.Infrastructure.EntityConfigurations;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,9 +31,12 @@ namespace SnacksShop.Projects.Infrastructure
             return true;
         }
 
+
+        public DbSet<Project> Projects { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfiguration(new ProjectEntityConfiguration());
         }
     }
 }

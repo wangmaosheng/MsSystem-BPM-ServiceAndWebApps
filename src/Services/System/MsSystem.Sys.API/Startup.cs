@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using JadeFramework.Zipkin;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -70,6 +71,9 @@ namespace MsSystem.Sys.API
 
             #endregion
 
+            services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
+
+
             services.AddMvc(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
                 .AddJsonOptions(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
             services.AddAuthorization();
@@ -114,6 +118,7 @@ namespace MsSystem.Sys.API
             {
                 HealthCheckUrl = "api/HealthCheck/Ping"
             });
+            app.UseZipkin();
             app.UseAuthentication();
             app.UseMvc();
         }

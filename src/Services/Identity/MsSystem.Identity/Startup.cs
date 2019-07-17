@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using JadeFramework.Zipkin;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,8 @@ namespace MsSystem.Identity
                 .AddInMemoryClients(Config.GetClients())
                 .AddProfileService<ProfileService>();
 
+            services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
+
             services.AddMvc();
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -43,6 +46,7 @@ namespace MsSystem.Identity
             }
             app.UseMvc();
             app.UseIdentityServer();
+            app.UseZipkin();
             app.UseServiceRegistration(new ServiceCheckOptions
             {
                 HealthCheckUrl = "api/HealthCheck/Ping"
