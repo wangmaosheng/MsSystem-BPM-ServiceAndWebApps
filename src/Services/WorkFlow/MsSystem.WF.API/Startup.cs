@@ -70,10 +70,9 @@ namespace MsSystem.WF.API
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-
+            app.UseZipkin();
             app.UseAuthentication();
             app.UseMvc();
-            app.UseZipkin();
             app.UseServiceRegistration(new ServiceCheckOptions
             {
                 HealthCheckUrl = "/api/HealthCheck/ping"

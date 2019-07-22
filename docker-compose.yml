@@ -1,0 +1,50 @@
+version: '3.4'
+
+services:
+  
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - "${REDIS_DIR}/conf:/usr/local/etc/redis"
+      - "${REDIS_DIR}/data:/data"
+    restart: always
+    command:
+      redis-server
+
+  db:
+    image: mysql/mysql-server
+    container_name: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - data:/var/lib/mysql
+      - f/docker/mysql/config/my.cnf:/etc/my.cnf
+      - f/docker/mysql/init:/docker-entrypoint-initdb.d/
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    restart: always
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - 9411:9411
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    restart: always
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"

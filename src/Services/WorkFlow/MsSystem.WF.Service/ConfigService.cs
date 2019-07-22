@@ -16,22 +16,16 @@ namespace MsSystem.WF.Service
     {
         private readonly HttpClient _apiClient;
         private readonly IOptions<AppSettings> _appSettings;
-        private readonly IDnsQuery _dnsQuery;
 
-        public IDnsQuery DnsQuery => _dnsQuery;
-
-        public ConfigService(HttpClient apiClient, IOptions<AppSettings> appSettings,IDnsQuery dnsQuery)
+        public ConfigService(HttpClient apiClient, IOptions<AppSettings> appSettings)
         {
             _apiClient = apiClient;
             _appSettings = appSettings;
-            _dnsQuery = dnsQuery;
         }
 
         public async Task<List<ZTree>> GetRoleTreesAsync(List<long> ids)
         {
             //Consul服务之间调用
-
-
 
 
 
