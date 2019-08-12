@@ -2,6 +2,13 @@ version: '3.4'
 
 services:
   
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: always
+
   mysql:
     image: mysql/mysql-server:5.7
     container_name: mysql
@@ -14,6 +21,31 @@ services:
       - "./docker/mysql/init:/docker-entrypoint-initdb.d/"
     restart: always
 
+  rabbitmq:
+    image: rabbitmq:3.7-management
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    restart: always
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+  gateway:
+    container_name: gateway
+    build:
+      context: .
+      dockerfile: src/ApiGateways/MsSystem.Gateway/Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mysql
+      - identity
+      - oaapi
+      - sysapi
+      - wfapi
+
   identity:
     container_name: identity
     build:
@@ -23,3 +55,52 @@ services:
       - "5200:5200"
     depends_on:
       - mysql
+      - redis
+      - rabbitmq
+
+  oaapi:
+    container_name: oaapi
+    build:
+      context: .
+      dockerfile: src/Services/OA/MsSystem.OA.API/Dockerfile
+    ports:
+      - "5006:5006"
+    depends_on:
+      - mysql
+      - redis
+      - rabbitmq
+
+  sysapi:
+    container_name: sysapi
+    build:
+      context: .
+      dockerfile: src/Services/System/MsSystem.Sys.API/Dockerfile
+    ports:
+      - "5002:5002"
+    depends_on:
+      - mysql
+      - redis
+      - rabbitmq
+
+  wfapi:
+    container_name: wfapi
+    build:
+      context: .
+      dockerfile: src/Services/WorkFlow/MsSystem.WF.API/Dockerfile
+    ports:
+      - "5003:5003"
+    depends_on:
+      - mysql
+      - redis
+      - rabbitmq
+
+  web:
+    container_name: web
+    build:
+      context: .
+      dockerfile: src/Web/MVC/MsSystem.Web/Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+      - gateway

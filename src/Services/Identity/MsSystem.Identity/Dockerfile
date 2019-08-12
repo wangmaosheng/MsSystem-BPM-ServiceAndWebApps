@@ -5,9 +5,6 @@ EXPOSE 5200
 FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
 COPY ["src/Services/Identity/MsSystem.Identity/MsSystem.Identity.csproj", "src/Services/Identity/MsSystem.Identity/"]
-COPY ["src/BuildingBlocks/Zipkin/JadeFramework.Zipkin/JadeFramework.Zipkin.csproj", "src/BuildingBlocks/Zipkin/JadeFramework.Zipkin/"]
-COPY ["src/BuildingBlocks/Resilience/Resilience.Http.DependencyInjection/Resilience.Http.DependencyInjection.csproj", "src/BuildingBlocks/Resilience/Resilience.Http.DependencyInjection/"]
-COPY ["src/BuildingBlocks/Resilience/Resilience.Http/Resilience.Http.csproj", "src/BuildingBlocks/Resilience/Resilience.Http/"]
 RUN dotnet restore "src/Services/Identity/MsSystem.Identity/MsSystem.Identity.csproj"
 COPY . .
 WORKDIR "/src/src/Services/Identity/MsSystem.Identity"

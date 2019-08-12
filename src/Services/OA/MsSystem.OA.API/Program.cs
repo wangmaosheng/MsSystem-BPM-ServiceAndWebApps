@@ -15,7 +15,7 @@ namespace MsSystem.OA.API
             WebHost.CreateDefaultBuilder(args)
                 .UseNLog()
                 .UseStartup<Startup>()
-                .UseUrls("http://localhost:5006")
+                .UseUrls("http://*:5006")
                 .UseKestrel();
     }
 }

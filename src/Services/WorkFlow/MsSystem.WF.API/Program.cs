@@ -15,7 +15,7 @@ namespace MsSystem.WF.API
             WebHost.CreateDefaultBuilder(args)
                 .UseNLog()
                 .UseStartup<Startup>()
-                .UseUrls("http://localhost:5003")
+                .UseUrls("http://*:5003")
                 .UseKestrel();
     }
 }

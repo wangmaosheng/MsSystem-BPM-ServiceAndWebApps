@@ -26,7 +26,7 @@ namespace MsSystem.Gateway
                         .AddJsonFile("configuration.json", false, true);
                     })
                     .UseStartup<Startup>()
-                    .UseUrls(options.Service.GetUrl())
+                    .UseUrls("http://*:5000")
                     .Build();
 
         }

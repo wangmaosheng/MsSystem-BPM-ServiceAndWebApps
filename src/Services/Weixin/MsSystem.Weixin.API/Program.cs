@@ -16,6 +16,6 @@ namespace MsSystem.Weixin.API
                 .UseNLog()
                 .UseStartup<Startup>()
                 .UseKestrel()
-                .UseUrls("http://localhost:5004");
+                .UseUrls("http://*:5004");
     }
 }
