@@ -47,6 +47,7 @@ namespace MsSystem.Sys.API
                 opt.Audience = identityConfig["Audience"];
                 opt.RequireHttpsMetadata = false;
                 opt.SaveToken = true;
+                //opt.MetadataAddress = identityConfig["Authority"] + "/.well-known/openid-configuration";
             });
 
             #endregion

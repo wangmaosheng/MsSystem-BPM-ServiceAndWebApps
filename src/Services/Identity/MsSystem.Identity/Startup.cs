@@ -21,7 +21,11 @@ namespace MsSystem.Identity
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddServiceRegistration();
-            services.AddIdentityServer()
+            services.AddIdentityServer(c=> 
+            {
+                //c.IssuerUri = "https://localhost:5200/";
+                //c.PublicOrigin = "https://localhost:5200/";
+            })
                 .AddDeveloperSigningCredential()
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())

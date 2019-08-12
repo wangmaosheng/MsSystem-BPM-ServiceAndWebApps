@@ -19,7 +19,7 @@
       //"ServiceName": "IdentityAPI",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "identity",
           "Port": 5200
         }
       ]
@@ -33,7 +33,7 @@
       //"ServiceName": "IdentityAPI",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "identity",
           "Port": 5200
         }
       ]
@@ -52,7 +52,7 @@
       //"ServiceName": "Mssystem.OA.API",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "oaapi",
           "Port": 5006
         }
       ]
@@ -71,7 +71,7 @@
       //"ServiceName": "Mssystem.Sys.API",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "sysapi",
           "Port": 5002
         }
       ]
@@ -123,7 +123,7 @@
       //"ServiceName": "Mssystem.WF.API",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "wfapi",
           "Port": 5003
         }
       ]
@@ -155,7 +155,7 @@
       //"ServiceName": "Mssystem.OA.API",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "oaapi",
           "Port": 5006
         }
       ]

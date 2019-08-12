@@ -13,12 +13,14 @@ namespace MsSystem.Gateway
         }
         public static IWebHost BuildWebHost(string[] args)
         {
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", false, true)
-                .Build();
-            var options = new ServiceDiscoveryOptions();
-            configuration.Bind("ServiceDiscovery", options);
-            var url = options.Service.GetUrl();
+            //var configuration = new ConfigurationBuilder()
+            //    .AddJsonFile("appsettings.json", false, true)
+            //    .Build();
+            //var options = new ServiceDiscoveryOptions();
+            //configuration.Bind("ServiceDiscovery", options);
+            //var url = options.Service.GetUrl();
+
+
             return Microsoft.AspNetCore.WebHost.CreateDefaultBuilder(args)
                     .ConfigureAppConfiguration((hostingContext, builder) =>
                     {
@@ -27,6 +29,7 @@ namespace MsSystem.Gateway
                     })
                     .UseStartup<Startup>()
                     .UseUrls("http://*:5000")
+                    .UseKestrel()
                     .Build();
 
         }
