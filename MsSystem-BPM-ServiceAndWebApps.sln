@@ -131,12 +131,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resilience.Http", "src\Buil
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resilience.Http.DependencyInjection", "src\BuildingBlocks\Resilience\Resilience.Http.DependencyInjection\Resilience.Http.DependencyInjection.csproj", "{26D6C08B-9D02-4E66-B93E-ECB48DCBAC60}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{2DA2B471-ABAF-44E9-9E4B-34B23F4E71F2}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{30B56DAB-942F-4368-BA50-8AB66CAF79BD}"
 	ProjectSection(SolutionItems) = preProject
 		.env = .env
 	EndProjectSection
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{2DA2B471-ABAF-44E9-9E4B-34B23F4E71F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

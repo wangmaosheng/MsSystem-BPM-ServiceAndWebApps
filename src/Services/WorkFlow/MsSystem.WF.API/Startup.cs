@@ -44,7 +44,7 @@ namespace MsSystem.WF.API
             IOptions<AppSettings> appSettings = services.BuildServiceProvider().GetService<IOptions<AppSettings>>();
 
             services.AddCustomMvc(appSettings).AddHttpClientServices();
-            services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
+            //services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
             var container = new ContainerBuilder();
             container.Populate(services);
             return new AutofacServiceProvider(container.Build());
@@ -70,13 +70,13 @@ namespace MsSystem.WF.API
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-            app.UseZipkin();
+            //app.UseZipkin();
             app.UseAuthentication();
             app.UseMvc();
-            app.UseServiceRegistration(new ServiceCheckOptions
-            {
-                HealthCheckUrl = "/api/HealthCheck/ping"
-            });
+            //app.UseServiceRegistration(new ServiceCheckOptions
+            //{
+            //    HealthCheckUrl = "/api/HealthCheck/ping"
+            //});
         }
 
     }
@@ -87,7 +87,7 @@ namespace MsSystem.WF.API
             //缓存
             services.AddScoped<ICachingProvider, MemoryCachingProvider>();
             services.AddMemoryCache();
-            services.AddServiceRegistration();
+            //services.AddServiceRegistration();
             services.AddResponseCompression();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

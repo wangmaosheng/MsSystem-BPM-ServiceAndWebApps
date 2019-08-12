@@ -32,7 +32,7 @@ namespace MsSystem.Sys.API
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
 
-            services.AddServiceRegistration();
+            //services.AddServiceRegistration();
 
             services.AddResponseCompression();
 
@@ -71,7 +71,7 @@ namespace MsSystem.Sys.API
 
             #endregion
 
-            services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
+            //services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
 
 
             services.AddMvc(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
@@ -114,11 +114,11 @@ namespace MsSystem.Sys.API
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            app.UseServiceRegistration(new ServiceCheckOptions
-            {
-                HealthCheckUrl = "api/HealthCheck/Ping"
-            });
-            app.UseZipkin();
+            //app.UseServiceRegistration(new ServiceCheckOptions
+            //{
+            //    HealthCheckUrl = "api/HealthCheck/Ping"
+            //});
+            //app.UseZipkin();
             app.UseAuthentication();
             app.UseMvc();
         }

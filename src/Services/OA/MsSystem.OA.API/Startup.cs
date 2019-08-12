@@ -45,7 +45,7 @@ namespace MsSystem.OA.API
             IOptions<AppSettings> appSettings = services.BuildServiceProvider().GetService<IOptions<AppSettings>>();
 
             services.AddCustomMvc(appSettings).AddHttpClientServices();
-            services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
+            //services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
             var container = new ContainerBuilder();
             container.Populate(services);
             return new AutofacServiceProvider(container.Build());
@@ -73,11 +73,11 @@ namespace MsSystem.OA.API
 
             app.UseAuthentication();
             app.UseMvc();
-            app.UseZipkin();
-            app.UseServiceRegistration(new ServiceCheckOptions
-            {
-                HealthCheckUrl = "/api/HealthCheck/ping"
-            });
+            //app.UseZipkin();
+            //app.UseServiceRegistration(new ServiceCheckOptions
+            //{
+            //    HealthCheckUrl = "/api/HealthCheck/ping"
+            //});
             app.UseSignalR(routes =>
             {
                 routes.MapHub<MessageHub>("/messageHub", options => options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
@@ -90,7 +90,7 @@ namespace MsSystem.OA.API
         public static IServiceCollection AddCustomMvc(this IServiceCollection services, IOptions<AppSettings> appSettings)
         {
             services.AddScoped<ICachingProvider, MemoryCachingProvider>();
-            services.AddServiceRegistration();
+            //services.AddServiceRegistration();
             services.AddResponseCompression();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(opt =>

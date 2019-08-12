@@ -1,13 +1,13 @@
 ﻿{
   "GlobalConfiguration": {
     "RequestIdKey": "OcRequestId",
-    "AdministrationPath": "/administration",
-    "UseServiceDiscovery": true,
-    "ServiceDiscoveryProvider": {
-      "Type": "Consul",
-      "Host": "localhost",
-      "Port": "8500"
-    }
+    "AdministrationPath": "/administration"
+    //"UseServiceDiscovery": true,
+    //"ServiceDiscoveryProvider": {
+    //  "Type": "Consul",
+    //  "Host": "localhost",
+    //  "Port": "8500"
+    //}
   },
   "ReRoutes": [
     // identity center
@@ -16,16 +16,28 @@
       "DownstreamScheme": "http",
       "UpstreamPathTemplate": "/connect/token",
       "UpstreamHttpMethod": [ "Post" ],
-      "ServiceName": "IdentityAPI",
-      "UseServiceDiscovery": true
+      //"ServiceName": "IdentityAPI",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5200
+        }
+      ]
+      //"UseServiceDiscovery": true
     },
     {
       "DownstreamPathTemplate": "/.well-known/openid-configuration",
       "DownstreamScheme": "http",
       "UpstreamPathTemplate": "/.well-known/openid-configuration",
       "UpstreamHttpMethod": [ "get" ],
-      "ServiceName": "IdentityAPI",
-      "UseServiceDiscovery": true
+      //"ServiceName": "IdentityAPI",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5200
+        }
+      ]
+      //"UseServiceDiscovery": true
     },
     //signalr
     {
@@ -37,8 +49,14 @@
         "AuthenticationProviderKey": "MsSystem",
         "AllowedScopes": []
       },
-      "ServiceName": "Mssystem.OA.API",
-      "UseServiceDiscovery": true
+      //"ServiceName": "Mssystem.OA.API",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5006
+        }
+      ]
+      //"UseServiceDiscovery": true
     },
     //MsSystem Sys API
     {
@@ -50,30 +68,36 @@
         "AuthenticationProviderKey": "MsSystem",
         "AllowedScopes": []
       },
-      "ServiceName": "Mssystem.Sys.API",
-      "UseServiceDiscovery": true
+      //"ServiceName": "Mssystem.Sys.API",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5002
+        }
+      ]
+      //"UseServiceDiscovery": true
     },
-    //Weixin API
-    {
-      "DownstreamPathTemplate": "/api/weixin/{action}",
-      "DownstreamScheme": "http",
-      "UpstreamPathTemplate": "/api/wechat/weixin/{action}", //微信服务器接入
-      "UpstreamHttpMethod": [ "Get", "Post" ],
-      "ServiceName": "Mssystem.Weixin.API",
-      "UseServiceDiscovery": true
-    },
-    {
-      "DownstreamPathTemplate": "/api/{controller}/{action}",
-      "DownstreamScheme": "http",
-      "UpstreamPathTemplate": "/api/weixin/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MsSystem",
-        "AllowedScopes": []
-      },
-      "ServiceName": "Mssystem.Weixin.API",
-      "UseServiceDiscovery": true
-    },
+    ////Weixin API
+    //{
+    //  "DownstreamPathTemplate": "/api/weixin/{action}",
+    //  "DownstreamScheme": "http",
+    //  "UpstreamPathTemplate": "/api/wechat/weixin/{action}", //微信服务器接入
+    //  "UpstreamHttpMethod": [ "Get", "Post" ],
+    //  "ServiceName": "Mssystem.Weixin.API",
+    //  //"UseServiceDiscovery": true
+    //},
+    //{
+    //  "DownstreamPathTemplate": "/api/{controller}/{action}",
+    //  "DownstreamScheme": "http",
+    //  "UpstreamPathTemplate": "/api/weixin/{controller}/{action}",
+    //  "UpstreamHttpMethod": [ "Get", "Post" ],
+    //  "AuthenticationOptions": {
+    //    "AuthenticationProviderKey": "MsSystem",
+    //    "AllowedScopes": []
+    //  },
+    //  "ServiceName": "Mssystem.Weixin.API",
+    //  //"UseServiceDiscovery": true
+    //},
     //{
     //  "DownstreamPathTemplate": "/{everything}",
     //  "DownstreamScheme": "http",
@@ -96,8 +120,14 @@
         "AuthenticationProviderKey": "MsSystem",
         "AllowedScopes": []
       },
-      "ServiceName": "Mssystem.WF.API",
-      "UseServiceDiscovery": true
+      //"ServiceName": "Mssystem.WF.API",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ]
+      //"UseServiceDiscovery": true
     },
     ////MsSystem.Schedule.API
     //{
@@ -122,8 +152,14 @@
         "AuthenticationProviderKey": "MsSystem",
         "AllowedScopes": []
       },
-      "ServiceName": "Mssystem.OA.API",
-      "UseServiceDiscovery": true
+      //"ServiceName": "Mssystem.OA.API",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5006
+        }
+      ]
+      //"UseServiceDiscovery": true
     }
   ]
 }

@@ -1,8 +1,25 @@
 version: '3.4'
 
 services:
-  mssystem.web:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+  
+  mysql:
+    image: mysql/mysql-server:5.7
+    container_name: mysql
     ports:
-      - "80"
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+    volumes:
+      - "./docker/mysql/conf/my.cnf:/etc/my.cnf"
+      - "./docker/mysql/init:/docker-entrypoint-initdb.d/"
+    restart: always
+
+  identity:
+    container_name: identity
+    build:
+      context: .
+      dockerfile: src/Services/Identity/MsSystem.Identity/Dockerfile
+    ports:
+      - "5200:5200"
+    depends_on:
+      - mysql
