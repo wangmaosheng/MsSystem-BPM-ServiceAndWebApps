@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using JadeFramework.Zipkin;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,23 +21,22 @@ namespace MsSystem.Identity
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
+
             //services.AddServiceRegistration();
-            services.AddIdentityServer(c=> 
-            {
-                //c.IssuerUri = "https://localhost:5200/";
-                //c.PublicOrigin = "https://localhost:5200/";
-            })
+            services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
                 .AddProfileService<ProfileService>();
 
-            //services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
 
             services.AddMvc();
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseZipkin();
             loggerFactory.AddNLog();
             if (env.IsDevelopment())
             {
@@ -49,7 +49,6 @@ namespace MsSystem.Identity
             }
             app.UseMvc();
             app.UseIdentityServer();
-            //app.UseZipkin();
             //app.UseServiceRegistration(new ServiceCheckOptions
             //{
             //    HealthCheckUrl = "api/HealthCheck/Ping"

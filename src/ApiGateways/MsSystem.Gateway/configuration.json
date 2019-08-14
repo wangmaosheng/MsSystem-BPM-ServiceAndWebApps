@@ -77,39 +77,57 @@
       ]
       //"UseServiceDiscovery": true
     },
-    ////Weixin API
-    //{
-    //  "DownstreamPathTemplate": "/api/weixin/{action}",
-    //  "DownstreamScheme": "http",
-    //  "UpstreamPathTemplate": "/api/wechat/weixin/{action}", //微信服务器接入
-    //  "UpstreamHttpMethod": [ "Get", "Post" ],
-    //  "ServiceName": "Mssystem.Weixin.API",
-    //  //"UseServiceDiscovery": true
-    //},
-    //{
-    //  "DownstreamPathTemplate": "/api/{controller}/{action}",
-    //  "DownstreamScheme": "http",
-    //  "UpstreamPathTemplate": "/api/weixin/{controller}/{action}",
-    //  "UpstreamHttpMethod": [ "Get", "Post" ],
-    //  "AuthenticationOptions": {
-    //    "AuthenticationProviderKey": "MsSystem",
-    //    "AllowedScopes": []
-    //  },
-    //  "ServiceName": "Mssystem.Weixin.API",
-    //  //"UseServiceDiscovery": true
-    //},
-    //{
-    //  "DownstreamPathTemplate": "/{everything}",
-    //  "DownstreamScheme": "http",
-    //  "UpstreamPathTemplate": "/hub/{everything}",
-    //  "UpstreamHttpMethod": [],
-    //  "AuthenticationOptions": {
-    //    "AuthenticationProviderKey": "MsSystem",
-    //    "AllowedScopes": []
-    //  },
-    //  "ServiceName": "Mssystem.Weixin.API",
-    //  "UseServiceDiscovery": true
-    //},
+    //Weixin API
+    {
+      "DownstreamPathTemplate": "/api/weixin/{action}",
+      "DownstreamScheme": "http",
+      "UpstreamPathTemplate": "/api/wechat/weixin/{action}", //微信服务器接入
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      //"ServiceName": "Mssystem.Weixin.API",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "weixinapi",
+          "Port": 5004
+        }
+      ]
+      //"UseServiceDiscovery": true
+    },
+    {
+      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "DownstreamScheme": "http",
+      "UpstreamPathTemplate": "/api/weixin/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "MsSystem",
+        "AllowedScopes": []
+      },
+      //"ServiceName": "Mssystem.Weixin.API",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "weixinapi",
+          "Port": 5004
+        }
+      ]
+      //"UseServiceDiscovery": true
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "UpstreamPathTemplate": "/hub/{everything}",
+      "UpstreamHttpMethod": [],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "MsSystem",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "weixinapi",
+          "Port": 5004
+        }
+      ]
+      //"ServiceName": "Mssystem.Weixin.API",
+      //"UseServiceDiscovery": true
+    },
     //MsSystem WF API
     {
       "DownstreamPathTemplate": "/api/{controller}/{action}",

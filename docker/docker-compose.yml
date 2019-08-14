@@ -2,13 +2,6 @@ version: '3.4'
 
 services:
   
-  redis:
-    image: redis
-    container_name: redis
-    ports:
-      - "6379:6379"
-    restart: always
-
   mysql:
     image: mysql/mysql-server:5.7
     container_name: mysql
@@ -17,25 +10,9 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "123456"
     volumes:
-      - "./docker/mysql/conf/my.cnf:/etc/my.cnf"
-      - "./docker/mysql/init:/docker-entrypoint-initdb.d/"
+      - "/data/docker/mysql/conf/my.cnf:/etc/my.cnf"
+      - "/data/docker/mysql/init:/docker-entrypoint-initdb.d/"
     restart: always
-
-  zipkin:
-    image: openzipkin/zipkin
-    container_name: zipkin
-    environment:
-      - STORAGE_TYPE=mysql
-      - MYSQL_DB=zipkin
-      - MYSQL_USER=root
-      - MYSQL_PASS=123456
-      - MYSQL_TCP_PORT=3306
-      - MYSQL_HOST=mysql
-      - JAVA_OPTS=-Xms128m -Xmx256m
-    ports:
-      - "9411:9411"
-    depends_on:
-      - mysql
 
   rabbitmq:
     image: rabbitmq:3.7-management
@@ -49,6 +26,7 @@ services:
       - "5672:5672"
 
   gateway:
+    image: registry.cn-hangzhou.aliyuncs.com/wangmaosheng/gateway
     container_name: gateway
     ports:
       - "5000:5000"
@@ -58,59 +36,45 @@ services:
       - oaapi
       - sysapi
       - wfapi
-      - weixinapi
 
   identity:
+    image: registry.cn-hangzhou.aliyuncs.com/wangmaosheng/identity
     container_name: identity
     ports:
       - "5200:5200"
     depends_on:
       - mysql
-      - zipkin
-      - redis
-      - rabbitmq
-
-  sysapi:
-    container_name: sysapi
-    ports:
-      - "5002:5002"
-    depends_on:
-      - mysql
-      - zipkin
-      - redis
-      - rabbitmq
-
-  wfapi:
-    container_name: wfapi
-    ports:
-      - "5003:5003"
-    depends_on:
-      - mysql
-      - zipkin
-      - redis
-      - rabbitmq
-
-  weixinapi:
-    container_name: weixinapi
-    ports:
-      - "5004:5004"
-    depends_on:
-      - mysql
-      - zipkin
-      - redis
       - rabbitmq
 
   oaapi:
+    image: registry.cn-hangzhou.aliyuncs.com/wangmaosheng/oaapi
     container_name: oaapi
     ports:
       - "5006:5006"
     depends_on:
       - mysql
-      - zipkin
-      - redis
+      - rabbitmq
+
+  sysapi:
+    image: registry.cn-hangzhou.aliyuncs.com/wangmaosheng/sysapi
+    container_name: sysapi
+    ports:
+      - "5002:5002"
+    depends_on:
+      - mysql
+      - rabbitmq
+
+  wfapi:
+    image: registry.cn-hangzhou.aliyuncs.com/wangmaosheng/wfapi
+    container_name: wfapi
+    ports:
+      - "5003:5003"
+    depends_on:
+      - mysql
       - rabbitmq
 
   web:
+    image: registry.cn-hangzhou.aliyuncs.com/wangmaosheng/web
     container_name: web
     ports:
       - "8000:8000"

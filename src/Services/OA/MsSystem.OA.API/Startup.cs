@@ -41,11 +41,12 @@ namespace MsSystem.OA.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
+
             services.Configure<AppSettings>(Configuration);
             IOptions<AppSettings> appSettings = services.BuildServiceProvider().GetService<IOptions<AppSettings>>();
 
             services.AddCustomMvc(appSettings).AddHttpClientServices();
-            //services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
             var container = new ContainerBuilder();
             container.Populate(services);
             return new AutofacServiceProvider(container.Build());
@@ -53,6 +54,7 @@ namespace MsSystem.OA.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseZipkin();
             loggerFactory.AddNLog();
             if (env.IsDevelopment())
             {
@@ -73,7 +75,6 @@ namespace MsSystem.OA.API
 
             app.UseAuthentication();
             app.UseMvc();
-            //app.UseZipkin();
             //app.UseServiceRegistration(new ServiceCheckOptions
             //{
             //    HealthCheckUrl = "/api/HealthCheck/ping"

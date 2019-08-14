@@ -32,6 +32,8 @@ namespace MsSystem.Sys.API
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
 
+            services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
+
             //services.AddServiceRegistration();
 
             services.AddResponseCompression();
@@ -72,7 +74,6 @@ namespace MsSystem.Sys.API
 
             #endregion
 
-            //services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
 
 
             services.AddMvc(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
@@ -97,6 +98,8 @@ namespace MsSystem.Sys.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseZipkin();
+
             loggerFactory.AddNLog();
             if (env.IsDevelopment())
             {
@@ -119,7 +122,6 @@ namespace MsSystem.Sys.API
             //{
             //    HealthCheckUrl = "api/HealthCheck/Ping"
             //});
-            //app.UseZipkin();
             app.UseAuthentication();
             app.UseMvc();
         }
