@@ -327,7 +327,7 @@
 @section scripts{
     <script>
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl("@(configuration["MsApplication:url"] + "/hub/oa/messageHub")", {
+            .withUrl("@("http://localhost:5000" + "/hub/oa/messageHub")", {
                 transport: signalR.HttpTransportType.LongPolling,
                 accessTokenFactory: () => {
                     return "Authorization", getToken();

@@ -31,7 +31,6 @@ services:
       - MYSQL_PASS=123456
       - MYSQL_TCP_PORT=3306
       - MYSQL_HOST=mysql
-      - JAVA_OPTS=-Xms128m -Xmx256m
     ports:
       - "9411:9411"
     depends_on:
