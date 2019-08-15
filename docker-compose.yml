@@ -116,3 +116,13 @@ services:
     depends_on:
       - mysql
       - gateway
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    volumes:
+      - "./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf"
+    ports:
+      - "80:80"
+    depends_on:
+      - web
