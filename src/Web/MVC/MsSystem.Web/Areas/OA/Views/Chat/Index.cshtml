@@ -211,7 +211,7 @@
             var chattinguserids = [];
             var currentUserid = "@user.UserId";
             const connection = new signalR.HubConnectionBuilder()
-                .withUrl("@(configuration["MsApplication:url"] + "/hub/oa/chatHub")", {
+                .withUrl("http://localhost:5000/hub/oa/chatHub", {
                     transport: signalR.HttpTransportType.LongPolling,
                     accessTokenFactory: () => {
                         return "Authorization", getToken();
