@@ -66,6 +66,7 @@ namespace MsSystem.Web.Areas.Sys.Infrastructure
             public static string GetAsync(string baseUri, long userid) => $"{baseUri}/User/GetAsync?userid={userid}";
             public static string GetUserDeptAsync(string baseUri, long userid) => $"{baseUri}/User/GetUserDeptAsync?userid={userid}";
             public static string LoginAsync(string baseUri) => $"{baseUri}/User/LoginAsync";
+            public static string ScanningLoginAsync(string baseUri) => $"{baseUri}/User/ScanningLoginAsync";
             public static string AddAsync(string baseUri) => $"{baseUri}/User/AddAsync";
             public static string UpdateAsync(string baseUri) => $"{baseUri}/User/UpdateAsync";
             public static string SaveUserRoleAsync(string baseUri) => $"{baseUri}/User/SaveUserRoleAsync";

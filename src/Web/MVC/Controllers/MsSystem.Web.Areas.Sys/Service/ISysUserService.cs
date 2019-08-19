@@ -44,6 +44,7 @@ namespace MsSystem.Web.Areas.Sys.Service
         /// <param name="password">密码</param>
         /// <returns></returns>
         Task<LoginResult<UserIdentity>> LoginAsync(string account, string password);
+
         Task<bool> AddAsync(UserShowDto dto);
 
         /// <summary>
@@ -132,6 +133,8 @@ namespace MsSystem.Web.Areas.Sys.Service
             var httpContent = await response.Content.ReadAsStringAsync();
             return httpContent.ToObject<LoginResult<UserIdentity>>();
         }
+
+
         public async Task<bool> AddAsync(UserShowDto dto)
         {
             var uri = API.SysUser.AddAsync(_baseUrl);
@@ -162,7 +165,7 @@ namespace MsSystem.Web.Areas.Sys.Service
         public async Task<bool> DeleteAsync(List<long> ids, long userid)
         {
             var uri = API.SysUser.DeleteAsync(_baseUrl);
-            var content = new StringContent(JsonConvert.SerializeObject(new UserDeleteDTO { Ids = ids,UserId = userid }), System.Text.Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(new UserDeleteDTO { Ids = ids, UserId = userid }), System.Text.Encoding.UTF8, "application/json");
             var response = await _apiClient.PostAsync(uri, content);
             response.EnsureSuccessStatusCode();
             string res = await response.Content.ReadAsStringAsync();
@@ -189,12 +192,47 @@ namespace MsSystem.Web.Areas.Sys.Service
         public async Task<bool> ModifyUserHeadImgAsync(long userid, string imgUrl)
         {
             var uri = API.SysUser.ModifyUserHeadImgAsync(_baseUrl);
-            var content = new StringContent(JsonConvert.SerializeObject(new ModifyUserHeadImgDTO { UserId = userid,ImgUrl = imgUrl }), System.Text.Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(new ModifyUserHeadImgDTO { UserId = userid, ImgUrl = imgUrl }), System.Text.Encoding.UTF8, "application/json");
             var response = await _apiClient.PostAsync(uri, content);
             response.EnsureSuccessStatusCode();
             string res = await response.Content.ReadAsStringAsync();
             return res.ToLower() == bool.TrueString.ToLower();
         }
 
+    }
+
+    public interface IScanningLoginService
+    {
+        /// <summary>
+        /// 扫码登录
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        Task<LoginResult<UserIdentity>> ScanningLoginAsync(string account, string accessToken);
+    }
+    public class ScanningLoginService : IScanningLoginService
+    {
+
+        private readonly HttpClient _apiClient;
+        private readonly IConfiguration _configuration;
+        private readonly string _baseUrl;
+
+        public ScanningLoginService(HttpClient httpClient, IConfiguration configuration)
+        {
+            _apiClient = httpClient;
+            _configuration = configuration;
+            _baseUrl = configuration["MsApplication:url"] + "/api/sys";
+        }
+
+        public async Task<LoginResult<UserIdentity>> ScanningLoginAsync(string account, string accessToken)
+        {
+            var uri = API.SysUser.ScanningLoginAsync(_baseUrl);
+            var content = new StringContent(JsonConvert.SerializeObject(new LoginDTO { Account = account }), System.Text.Encoding.UTF8, "application/json");
+            //_apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+            var response = await _apiClient.PostAsync(uri, content);
+            response.EnsureSuccessStatusCode();
+            var httpContent = await response.Content.ReadAsStringAsync();
+            return httpContent.ToObject<LoginResult<UserIdentity>>();
+        }
     }
 }

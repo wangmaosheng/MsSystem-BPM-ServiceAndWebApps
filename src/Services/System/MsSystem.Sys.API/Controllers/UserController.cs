@@ -35,6 +35,18 @@ namespace MsSystem.Sys.API.Controllers
         }
 
         /// <summary>
+        /// 扫码登录
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<ILoginResult<UserIdentity>> ScanningLoginAsync([FromBody]LoginDTO model)
+        {
+            return await _userService.ScanningLoginAsync(model.Account);
+        }
+
+
+        /// <summary>
         /// 获取用户列表
         /// </summary>
         /// <param name="search"></param>

@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.WebEncoders;
 using MsSystem.Utility;
 using MsSystem.Web.Areas.OA.Service;
+using MsSystem.Web.Areas.Sys.Hubs;
 using MsSystem.Web.Areas.Sys.Service;
 using MsSystem.Web.Areas.Weixin.Service;
 using MsSystem.Web.Areas.WF.Service;
@@ -47,7 +48,16 @@ namespace MsSystem.Web
                 .AddWeixinHttpClientServices()
                 .AddWfHttpClientServices()
                 .AddCustomAuthentication();
-
+            services.AddSignalR();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .SetIsOriginAllowed((host) => true)
+                    .AllowCredentials());
+            });
             //缓存
             services.AddScoped<ICachingProvider, MemoryCachingProvider>();
             //验证码
@@ -78,6 +88,7 @@ namespace MsSystem.Web
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
+            app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseStaticFiles();
             app.UseSession();
@@ -91,6 +102,10 @@ namespace MsSystem.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ScanningLoginHub>("/scanningLoginHub", options => options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
+            });
         }
 
     }
@@ -102,7 +117,18 @@ namespace MsSystem.Web
             services.Configure<WebEncoderOptions>(options => options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs));
             services.AddMvc(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter))).AddJsonOptions(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
             services.AddMemoryCache();
-            services.AddSession();
+
+            string redisHost = configuration.GetSection("RedisConfig").GetValue<string>("Connection");
+            services.AddDistributedRedisCache(options =>
+            {
+                options.Configuration = redisHost;
+            });
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromHours(2); //session活期时间
+                options.Cookie.HttpOnly = true;//设为httponly
+            });
+            //services.AddSession();
             return services;
         }
         public static IServiceCollection AddSysHttpClientServices(this IServiceCollection services)
@@ -144,6 +170,13 @@ namespace MsSystem.Web
                    .AddPolicyHandler(GetRetryPolicy())
                    .AddPolicyHandler(GetCircuitBreakerPolicy());
 
+            //services.AddScoped<IScanningLoginService, ScanningLoginService>();
+
+            services.AddHttpClient<IScanningLoginService, ScanningLoginService>()
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
 
             return services;
         }

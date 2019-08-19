@@ -15,7 +15,7 @@
     <link href="/ui/js/plugins/layer/skin/layer.css" asp-append-version="true" rel="stylesheet" />
     <link href="/ui/css/style.css" asp-append-version="true" rel="stylesheet">
     <link href="/ui/css/common.css" asp-append-version="true" rel="stylesheet">
-    <link href="/ui/css/login.min.css" asp-append-version="true" rel="stylesheet">
+    <link href="/ui/css/login.css" asp-append-version="true" rel="stylesheet">
     <!--[if lt IE 9]>
     <meta http-equiv="refresh" content="0;/error/ie" />
     <![endif]-->
@@ -37,6 +37,10 @@
                 </div>
             </div>
             <div class="col-sm-5">
+                <div class="qrcode-tab">
+                    <i class="fa fa-qrcode"></i>
+                </div>
+                <div class="qrcode-main" id="qrcode"></div>
                 <noscript>
                     <div style="font-size:15px;margin-bottom:20px;">
                         您的浏览器未启用Javascript，无法进行登录。
@@ -67,13 +71,58 @@
         </div>
     </div>
     <script src="/ui/js/jquery.min.js"></script>
+    <script src="/ui/js/jquery-extension.js"></script>
+    <script src="/lib/signalr/dist/browser/signalr.min.js"></script>
     <script src="/ui/js/plugins/polyfill/polyfill.min.js"></script>
     <script src="/ui/js/axios.min.js"></script>
     <script src="/ui/js/plugins/validate/jquery.validate.min.js"></script>
     <script src="/ui/js/plugins/validate/messages_zh.min.js"></script>
     <script src="/ui/js/plugins/layer/layer.min.js"></script>
+    <script src="/ui/js/plugins/qrcode/qrcode.js"></script>
     <script>
+        var code = $.getRandomGuid();;
         $(function () {
+            var qrcode;
+            var st;
+            $('.qrcode-tab').on('click', function () {
+                $(this).find('i').toggle();
+                $('.qrcode-main').toggle();
+                var display = $('.qrcode-main').css('display');
+                if (display == 'none') {
+                    qrcode.clear();
+                    clearInterval(st);
+                } else {
+                    if (qrcode == undefined) {
+                        qrcode = new QRCode("qrcode", {
+                            width: 160,
+                            height: 160,
+                            colorDark: "#000000",
+                            colorLight: "#ffffff",
+                            correctLevel: QRCode.CorrectLevel.H
+                        });
+                        qrcode.makeCode("http://localhost:8000/Sys/User/ScanningLogin?code=" + code);
+                    } else {
+                        resetQrCode();
+                    }
+                    if (st != undefined) {
+                        clearInterval(st)
+                    }
+                    st = setInterval(function () {
+                        resetQrCode();
+                    }, 10 * 1000);
+                }
+            })
+
+            function resetQrCode() {
+                qrcode.clear();
+                code = loadQrCOde();
+                qrcode.makeCode("http://localhost:8000/Sys/User/ScanningLogin?code=" + code);
+            }
+
+
+            $('.btn-success').click(function () {
+                login();
+            });
             document.onkeydown = function (event) {
                 var e = event || window.event || arguments.callee.caller.arguments[0];
                 if (e && e.keyCode == 13) {
@@ -100,10 +149,22 @@
                     }
                 });
             }
-            $('.btn-success').click(function () {
-                login();
-            });
         })
+
+        const connection = new signalR.HubConnectionBuilder().withUrl("/scanningLoginHub").build();
+        connection.start().then(function () {
+            connection.invoke('InitMessage', code);
+        }).catch(function (err) {
+            return console.error(err.toString());
+            });
+        connection.on("HomePage", function () {
+            location.href = "/Sys/User/Qr?code=" + code;
+        });
+        function loadQrCOde() {
+            code = $.getRandomGuid();
+            connection.invoke('InitMessage', code);
+            return code;
+        }
     </script>
 </body>
 </html>

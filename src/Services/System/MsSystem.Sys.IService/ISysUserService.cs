@@ -19,7 +19,14 @@ namespace MsSystem.Sys.IService
         /// <param name="password">密码</param>
         /// <returns></returns>
         Task<ILoginResult<UserIdentity>> LoginAsync(string account, string password);
-        
+
+        /// <summary>
+        /// 扫码登录
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        Task<ILoginResult<UserIdentity>> ScanningLoginAsync(string account);
+
         /// <summary>
         /// 获取用户列表
         /// </summary>

@@ -74,6 +74,30 @@ namespace MsSystem.Sys.Service
 
 
         /// <summary>
+        /// 扫码登录
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        public async Task<ILoginResult<UserIdentity>> ScanningLoginAsync(string account)
+        {
+            ILoginResult<UserIdentity> loginResult = new LoginResult<UserIdentity>();
+            account = account.TrimBlank();
+            SysUser dbuser = await _databaseFixture.Db.SysUser.FindAsync(m => m.IsDel == 0 && m.Account == account);
+            _logJobs.LoginLog(dbuser.UserId, dbuser.UserName);
+            loginResult.User = new UserIdentity
+            {
+                UserId = dbuser.UserId,
+                UserName = dbuser.UserName,
+                HeadImg = dbuser.HeadImg,
+                Sex = UserSex.Unknown,
+                CreateTime = dbuser.CreateTime.ToDateTime()
+            };
+            loginResult.LoginStatus = LoginStatus.Success;
+            return loginResult;
+        }
+
+
+        /// <summary>
         /// 获取用户列表
         /// </summary>
         /// <param name="search"></param>

@@ -334,7 +334,6 @@
                 }
             }).build();
         connection.on("ReceiveMessage", function (data) {
-            debugger;
             document.getElementById('messageTipNums').textContent = parseInt(document.getElementById('messageTipNums').textContent) + 1;
             var html = '';
             html += '<li class="m-t-xs">';

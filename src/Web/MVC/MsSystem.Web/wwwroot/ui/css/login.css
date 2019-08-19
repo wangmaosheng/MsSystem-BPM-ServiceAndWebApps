@@ -91,3 +91,41 @@ body.signin {
         width:auto;
     }
 }
+
+.qrcode-tab {
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    border: 16px solid;
+    right: 15px;
+    border-color: #fff #fff transparent transparent;
+    opacity: 0.8;
+    cursor: pointer;
+    z-index:10;
+}
+.qrcode-tab i {
+    width: 10px;
+    height: 10px;
+    color: #000;
+    font-size: 16px;
+    position: absolute;
+    top: -14px;
+    right: -10px;
+}
+.qrcode-main {
+    width: 91%;
+    height: 100%;
+    position: absolute;
+    background: #fff;
+    opacity: 0.8;
+    border: none;
+    z-index: 9;
+    display: none;
+    text-align:center;
+}
+.qrcode-main img {
+    display: inline-block !important;
+    position: relative;
+    top: 20%;
+    cursor:pointer;
+}
