@@ -7,9 +7,18 @@ Page({
    */
   data: {
     imgs: [
-      'http://img1.ph.126.net/cklMeYA02CjMLCfn7Vde0Q==/1600466717677148080.jpg',
-      'http://img1.ph.126.net/cklMeYA02CjMLCfn7Vde0Q==/1600466717677148080.jpg',
-      'http://img1.ph.126.net/cklMeYA02CjMLCfn7Vde0Q==/1600466717677148080.jpg',
+      {
+        id:1,
+        src:'http://img1.ph.126.net/cklMeYA02CjMLCfn7Vde0Q==/1600466717677148080.jpg'
+      },
+      {
+        id: 1,
+        src: 'http://img1.ph.126.net/cklMeYA02CjMLCfn7Vde0Q==/1600466717677148080.jpg'
+      },
+      {
+        id: 1,
+        src: 'http://img1.ph.126.net/cklMeYA02CjMLCfn7Vde0Q==/1600466717677148080.jpg'
+      },
     ],
     indicatorDots: true,
     autoplay: true,
@@ -22,6 +31,28 @@ Page({
    */
   onLoad: function (options) {
     
+  },
+
+  scanCode:function(){
+    wx.scanCode({
+      success(res) {
+        var url = res.result + "&account=wms";
+        console.info(url);
+        wx.request({
+          url: url,
+          method: "GET",
+          success: (response) => {
+            console.info(response);
+          },
+          fail: function () {
+            debugger;
+          },
+          complete: function () {
+            wx.hideLoading();
+          }
+        })
+      }
+    });
   },
 
   /**

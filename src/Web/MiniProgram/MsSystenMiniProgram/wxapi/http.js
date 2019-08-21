@@ -45,8 +45,6 @@ const sys = {
     request('/sys/Log/GetLasterDataAsync', 'GET', true, data, successCallback, failCallback);
   }
 };
-
-
 module.exports = {
   request,
   login,

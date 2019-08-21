@@ -3,7 +3,10 @@
     "pages/start/start",
     "pages/main/index",
     "pages/index/index",
-    "pages/sys/heartbeat/heartbeat"
+    
+    "pages/sys/heartbeat/heartbeat",
+
+    "pages/oa/main/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -39,4 +42,4 @@
       }
     ]
   }
-} 
+}

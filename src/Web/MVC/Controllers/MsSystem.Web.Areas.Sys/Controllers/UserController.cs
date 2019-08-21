@@ -140,36 +140,29 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ScanningLogin(string account, string code)
         {
-            try
+            //判断code是否是本地生成，并校验是否超时
+            //string str = AESSecurity.AESDecrypt(code, AESKey);
+            //var array = str.Split('&');
+            //long ts = array[1].ToInt64();
+            //if (DateTime.Now.AddMinutes(3).ToTimeStamp() > ts)
+            //{
+            //    return Ok("二维码失效");
+            //}
+            //string qrcode = array[0];
+            string qrcode = code;
+            StringValues accessToken = "";
+            HttpContext.Request.Headers.TryGetValue("Authorization", out accessToken);
+            var res = await _scanningLoginService.ScanningLoginAsync(account, accessToken);
+            if (res.LoginStatus == LoginStatus.Success)
             {
-                //判断code是否是本地生成，并校验是否超时
-                //string str = AESSecurity.AESDecrypt(code, AESKey);
-                //var array = str.Split('&');
-                //long ts = array[1].ToInt64();
-                //if (DateTime.Now.AddMinutes(3).ToTimeStamp() > ts)
-                //{
-                //    return Ok("二维码失效");
-                //}
-                //string qrcode = array[0];
-                string qrcode = code;
-                StringValues accessToken = "";
-                HttpContext.Request.Headers.TryGetValue("Authorization", out accessToken);
-                var res = await _scanningLoginService.ScanningLoginAsync(account, accessToken);
-                if (res.LoginStatus == LoginStatus.Success)
-                {
-                    //通知页面跳转
-                    var msg = SignalRMessageGroups.UserGroups.FirstOrDefault(m => m.QrCode == qrcode);
-                    msg.UserId = res.User.UserId;
-                    msg.JSON = JsonConvert.SerializeObject(res);
-                    SignalRMessageGroups.Clear(qrcode, msg.UserId);
-                    await _hubContext.Clients.Client(msg.ConnectionId).SendAsync("HomePage");
-                }
-                return Ok(res);
+                //通知页面跳转
+                var msg = SignalRMessageGroups.UserGroups.FirstOrDefault(m => m.QrCode == qrcode && m.UserId == 0);
+                msg.UserId = res.User.UserId;
+                msg.JSON = JsonConvert.SerializeObject(res);
+                SignalRMessageGroups.Clear(qrcode, msg.UserId);
+                await _hubContext.Clients.Client(msg.ConnectionId).SendAsync("HomePage", msg.QrCode);
             }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return Ok(res);
         }
 
         [HttpGet]
@@ -180,7 +173,8 @@ namespace MsSystem.Web.Areas.Sys.Controllers
             {
                 return RedirectToAction("Login");
             }
-            var msg = SignalRMessageGroups.UserGroups.FirstOrDefault(m => m.QrCode == code);
+            SignalRMessageGroups.Clear();
+            var msg = SignalRMessageGroups.UserGroups.FirstOrDefault(m => m.QrCode == code && m.UserId > 0);
             if (msg == null)
             {
                 return RedirectToAction("Login");

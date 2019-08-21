@@ -18,10 +18,14 @@ namespace MsSystem.Utility
         public static void Clear(string currentCode,long userid)
         {
             Clear();
-            var list = UserGroups.Where(m => m.QrCode != currentCode && m.UserId == userid);
-            foreach (var item in list)
+            //var list = UserGroups.Where(m => m.QrCode != currentCode && m.UserId == userid);
+            for (int i = 0; i < UserGroups.Count(); i++)
             {
-                UserGroups.Remove(item);
+                var item = UserGroups[i];
+                if (item.QrCode != currentCode && item.UserId == userid)
+                {
+                    UserGroups.Remove(item);
+                }
             }
         }
 
@@ -30,14 +34,23 @@ namespace MsSystem.Utility
         /// </summary>
         public static void Clear()
         {
-            foreach (var item in UserGroups)
+            for (int i = 0; i < UserGroups.Count; i++)
             {
+                var item = UserGroups[i];
                 var time = item.CreateTime.ToDateTime().AddMinutes(5);
                 if (time < DateTime.Now)
                 {
                     UserGroups.Remove(item);
                 }
             }
+            //foreach (var item in UserGroups)
+            //{
+            //    var time = item.CreateTime.ToDateTime().AddMinutes(5);
+            //    if (time < DateTime.Now)
+            //    {
+            //        UserGroups.Remove(item);
+            //    }
+            //}
         }
     }
 }

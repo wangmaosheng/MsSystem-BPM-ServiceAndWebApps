@@ -1,5 +1,4 @@
 const TOKEN=require('../../wxapi/token.js')
-const WXAPI = require('../../wxapi/main')
 const HTTP = require('../../wxapi/http.js')
 var app = getApp();
 Page({
@@ -61,14 +60,14 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    console.info('onShow');
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    console.info('onHide');
   },
 
   /**
@@ -107,9 +106,10 @@ Page({
     if (!e.detail.userInfo) {
       return;
     }
+    var that = this;
     if (app.globalData.isConnected) {
       wx.setStorageSync('userInfo', e.detail.userInfo)
-      this.login();
+      that.login();
     } else {
       wx.showToast({
         title: '当前无网络',
@@ -157,10 +157,10 @@ Page({
     })
   },
   registerUser: function () {
-    let that = this;
+    var that = this;
     wx.login({
       success: function (res) {
-        let code = res.code; // 微信登录接口返回的 code 参数，下面注册接口需要用到
+        var code = res.code; // 微信登录接口返回的 code 参数，下面注册接口需要用到
         wx.getUserInfo({
           success: function (res) {
             HTTP.register({ code: code, rawData: res.rawData }, function (response) {

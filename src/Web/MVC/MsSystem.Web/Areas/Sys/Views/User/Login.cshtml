@@ -100,7 +100,7 @@
                             colorLight: "#ffffff",
                             correctLevel: QRCode.CorrectLevel.H
                         });
-                        qrcode.makeCode("http://localhost:8000/Sys/User/ScanningLogin?code=" + code);
+                        qrcode.makeCode("http://10.0.75.1:8000/Sys/User/ScanningLogin?code=" + code);
                     } else {
                         resetQrCode();
                     }
@@ -116,7 +116,7 @@
             function resetQrCode() {
                 qrcode.clear();
                 code = loadQrCOde();
-                qrcode.makeCode("http://localhost:8000/Sys/User/ScanningLogin?code=" + code);
+                qrcode.makeCode("http://10.0.75.1:8000/Sys/User/ScanningLogin?code=" + code);
             }
 
 
@@ -157,8 +157,8 @@
         }).catch(function (err) {
             return console.error(err.toString());
             });
-        connection.on("HomePage", function () {
-            location.href = "/Sys/User/Qr?code=" + code;
+        connection.on("HomePage", function (c) {
+            location.href = "/Sys/User/Qr?code=" + c;
         });
         function loadQrCOde() {
             code = $.getRandomGuid();

@@ -1,0 +1,4 @@
+
+<view class="button-wrap">
+    <wxc-button size="normal" type="primary" value="测试">csss</wxc-button>
+</view>
