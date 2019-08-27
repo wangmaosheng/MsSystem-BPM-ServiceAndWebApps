@@ -25,9 +25,9 @@ namespace MsSystem.WF.Repository
             };
             int offset = pageSize * (pageIndex - 1);
             string sql = $"SELECT ff.FormId,ff.FormName,t.`FlowName`,ff.FormType,ff.CreateTime FROM `wf_workflow_form` ff  " +
-                $"LEFT JOIN(SELECT wf.FlowId, wf.FlowName, wf.FormId FROM `wf_workflow` wf WHERE wf.Enable= 1 GROUP BY wf.FormId) t ON t.FormId = ff.`FormId` LIMIT @offset, @pageSize";
+                $"LEFT JOIN(SELECT DISTINCT wf.FlowId, wf.FlowName, wf.FormId FROM `wf_workflow` wf WHERE wf.Enable= 1 ) t ON t.FormId = ff.`FormId` LIMIT @offset, @pageSize";
             page.Items = await this.Connection.QueryAsync<FormPageDto>(sql, new { offset = offset, pageSize = pageSize });
-            page.TotalItems = await this.Connection.ExecuteScalarAsync<int>("SELECT COUNT(1) FROM `wf_workflow_form` ff LEFT JOIN(SELECT wf.FlowId, wf.FlowName, wf.FormId FROM `wf_workflow` wf WHERE wf.Enable = 1 GROUP BY wf.FormId) t ON t.FormId = ff.`FormId` ");
+            page.TotalItems = await this.Connection.ExecuteScalarAsync<int>("SELECT COUNT(1) FROM `wf_workflow_form` ff LEFT JOIN(SELECT DISTINCT wf.FlowId, wf.FlowName, wf.FormId FROM `wf_workflow` wf WHERE wf.Enable = 1 ) t ON t.FormId = ff.`FormId` ");
             return page;
         }
     }

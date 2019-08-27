@@ -27,12 +27,19 @@
                     layer.msg('请选择一条数据！', { icon: 2, time: 1500 });
                 }
             });
-            $('a[name=editflow]').click(function () {
-                var id = $(this).attr('data-id');
+            $('table tbody tr').on('dblclick', function () {
+                var lasttd = $(this).find('a[name=editflow]');
+                openFlow(lasttd);
+            });
+            function openFlow(obj) {
+                var id = obj.attr('data-id');
                 utils.menu.open({
                     dataUrl: '/WF/WorkFlow/Show?id=' + id,
                     menuName: '编辑流程'
                 });
+            }
+            $('a[name=editflow]').click(function () {
+                openFlow($(this));
             });
             $('#WorkFlow_Index_4').on('click', function () {
                 var ids = [];
@@ -71,9 +78,9 @@
                                     <th class="w200">流程编号</th>
                                     <th>流程名称</th>
                                     <th>流程备注</th>
+                                    <th class="w100 text-center">状态</th>
                                     <th class="w150">创建时间</th>
-                                    <th class="w50 text-center">状态</th>
-                                    <th class="w100 text-center">操作</th>
+                                    <th class="w75 text-center">操作</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -87,19 +94,19 @@
                                         <td>@item.FlowCode</td>
                                         <td>@item.FlowName</td>
                                         <td>@item.Memo</td>
-                                        <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd HH:mm:ss")</td>
                                         <td class="text-center">
                                             @if (item.Enable == 0)
                                             {
-                                                <i title="不可用" class="fa fa-trash red"></i>
+                                                <span><i title="不可用" class="fa fa-trash red"></i>不可用</span>
                                             }
                                             else
                                             {
-                                                <i title="可用" class="fa fa-check green"></i>
+                                                <span><i title="可用" class="fa fa-check green"></i>可用</span>
                                             }
                                         </td>
+                                        <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd HH:mm:ss")</td>
                                         <td class="text-center">
-                                            <a title="编辑" data-id="@item.FlowId" name="editflow"><i class="fa fa-edit"></i></a>
+                                            <a title="编辑" data-id="@item.FlowId" name="editflow">查看</a>
                                         </td>
                                     </tr>
                                 }

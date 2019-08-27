@@ -11,6 +11,9 @@
             display:inline-block;
         }
         .ztree li a.curSelectedNode{background-color:#ccc}
+        a[name=addprocess] {
+            font-size: 12px;
+        }
     </style>
 }
 @section scripts{ 
@@ -76,7 +79,7 @@
                             html += '<td>' + item.FlowName + '</td>';
                             html += '<td>' + item.CategoryName + '</td>';
                             html += '<td>' + item.FormName + '</td>';
-                            html += '<td class="text-center"><a name="addprocess" data-formname="' + item.FormName + '" data-formtype="' + item.FormType + '" data-formurl="' + item.FormUrl + '" data-flowid="' + item.FlowId + '">发起</a></td>';
+                            html += '<td class="text-center"><a name="addprocess" data-formname="' + item.FormName + '" data-formtype="' + item.FormType + '" data-formurl="' + item.FormUrl + '" data-flowid="' + item.FlowId + '">打开</a></td>';
                             html += '</tr>';
                         });
                         $('#datalist table tbody').empty().append(html);

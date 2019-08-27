@@ -17,8 +17,16 @@
                     menuName: '发起流程'
                 });
             });
+            $('table tbody tr').on('dblclick', function () {
+                var lasttd = $(this).find('a[name=showflow]');
+                openFlow(lasttd);
+            });
             $('a[name=showflow]').click(function () {
                 var _this = $(this);
+                openFlow(_this);
+            });
+            function openFlow(obj) {
+                var _this = obj;
                 var formtype = _this.attr('data-formtype');
                 var formname = _this.attr('data-formname');
                 if (formtype == 1) {
@@ -26,17 +34,17 @@
                     var formurl = _this.attr('data-formurl');
                     utils.menu.open({
                         dataUrl: formurl + "?id=" + formid,
-                        menuName: formname +'流程查看'
+                        menuName: formname + '流程查看'
                     });
                 } else if (formtype == 0) {
-                    var flowid = $(this).attr('data-flowid');
-                    var instanceid = $(this).attr('data-instanceid');
+                    var flowid = _this.attr('data-flowid');
+                    var instanceid = _this.attr('data-instanceid');
                     utils.menu.open({
                         dataUrl: "/WF/WorkFlowInstance/Process?flowid=" + flowid + "&instanceid=" + instanceid,
                         menuName: formname + '流程查看'
                     });
                 }
-            });
+            }
         });
     </script>
 }
@@ -61,7 +69,7 @@
                                     <th class="w150">流程类型</th>
                                     <th class="w100 text-center">状态</th>
                                     <th class="w150">创建时间</th>
-                                    <th class="w100 text-center">操作</th>
+                                    <th class="w75 text-center">操作</th>
                                 </tr>
                             </thead>
                             <tbody>
