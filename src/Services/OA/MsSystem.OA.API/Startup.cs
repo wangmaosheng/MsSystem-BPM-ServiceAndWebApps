@@ -24,8 +24,11 @@ using NLog.Extensions.Logging;
 using NLog.Web;
 using Polly;
 using Polly.Extensions.Http;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.IO;
 using System.Net.Http;
+using System.Reflection;
 
 namespace MsSystem.OA.API
 {
@@ -74,11 +77,20 @@ namespace MsSystem.OA.API
             });
 
             app.UseAuthentication();
+            app.UseStaticFiles();
+            string apiName = Assembly.GetExecutingAssembly().GetName().Name;
+            app.UseSwagger(options=> 
+            {
+                options.RouteTemplate = "{documentName}/swagger.json";
+            })
+            .UseSwaggerUI(options =>
+            {
+                options.ShowExtensions();
+                options.EnableValidator(null);
+                options.SwaggerEndpoint($"/{apiName}/swagger.json", $"{apiName} V1");
+            });
+
             app.UseMvc();
-            //app.UseServiceRegistration(new ServiceCheckOptions
-            //{
-            //    HealthCheckUrl = "/api/HealthCheck/ping"
-            //});
             app.UseSignalR(routes =>
             {
                 routes.MapHub<MessageHub>("/messageHub", options => options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
@@ -108,8 +120,20 @@ namespace MsSystem.OA.API
             services.AddScoped<IOaMessageService, OaMessageService>();
             services.AddScoped<IOaChatService, OaChatService>();
             services.AddAutoMapper();
+
             services.AddMvc(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
                 .AddJsonOptions(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
+
+            services.AddSwaggerGen(options =>
+            {
+                string apiName = Assembly.GetExecutingAssembly().GetName().Name;
+                options.SwaggerDoc(apiName, new Info { Title = "行政办公接口", Version = "v1" });
+                var xmlFile = $"{apiName}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
+                options.OperationFilter<AddAuthTokenHeaderParameter>();
+            });
+
             services.AddSignalR();
 
             services.AddCors(options =>

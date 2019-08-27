@@ -17,7 +17,10 @@ using MsSystem.Weixin.Repository;
 using MsSystem.Weixin.Service;
 using NLog.Extensions.Logging;
 using NLog.Web;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.IO;
+using System.Reflection;
 
 namespace MsSystem.Weixin.API
 {
@@ -82,6 +85,15 @@ namespace MsSystem.Weixin.API
             services.AddMvc(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
                 .AddJsonOptions(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
 
+            services.AddSwaggerGen(options =>
+            {
+                string apiName = Assembly.GetExecutingAssembly().GetName().Name;
+                options.SwaggerDoc(apiName, new Info { Title = "微信接口", Version = "v1" });
+                var xmlFile = $"{apiName}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
+            });
+
             services.AddAutoMapper();
 
             var container = new ContainerBuilder();
@@ -110,6 +122,18 @@ namespace MsSystem.Weixin.API
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
             app.UseAuthentication();
+            app.UseStaticFiles();
+            string apiName = Assembly.GetExecutingAssembly().GetName().Name;
+            app.UseSwagger(options =>
+            {
+                options.RouteTemplate = "{documentName}/swagger.json";
+            })
+            .UseSwaggerUI(options =>
+            {
+                options.ShowExtensions();
+                options.EnableValidator(null);
+                options.SwaggerEndpoint($"/{apiName}/swagger.json", $"{apiName} V1");
+            });
             app.UseMvc();
             app.UseSignalR(routes =>
             {
@@ -118,11 +142,6 @@ namespace MsSystem.Weixin.API
                 routes.MapHub<ChatHub>("/ChatHub", options =>
                     options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
             });
-
-            //app.UseServiceRegistration(new ServiceCheckOptions
-            //{
-            //    HealthCheckUrl= "/api/HealthCheck/ping"
-            //});
         }
     }
 }

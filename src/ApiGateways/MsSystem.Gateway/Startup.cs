@@ -7,8 +7,9 @@ using Microsoft.Extensions.Logging;
 using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using Ocelot.Provider.Consul;
 using Ocelot.Provider.Polly;
+using Swashbuckle.AspNetCore.Swagger;
+using System.Collections.Generic;
 
 namespace MsSystem.Gateway
 {
@@ -49,6 +50,11 @@ namespace MsSystem.Gateway
                 //.AddConsul()
                 .AddCacheManager(x => x.WithDictionaryHandle())
                 .AddPolly();
+            services.AddMvc();
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("MsSystem.Gateway", new Info { Title = "网关服务", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +67,19 @@ namespace MsSystem.Gateway
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
             app.UseAuthentication();
+            app.UseStaticFiles();
+            var apis = new List<string> { "MsSystem.OA.API", "MsSystem.WF.API", "MsSystem.Sys.API", "MsSystem.Weixin.API" };
+            app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.ShowExtensions();
+                options.EnableValidator(null);
+                apis.ForEach(m =>
+                {
+                    options.SwaggerEndpoint($"/{m}/swagger.json", m);
+                });
+            });
             app.UseOcelot().Wait();
         }
     }

@@ -9,13 +9,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MsSystem.Sys.API.Filters;
+using MsSystem.Sys.API.Infrastructure;
 using MsSystem.Sys.IRepository;
 using MsSystem.Sys.IService;
 using MsSystem.Sys.Repository;
 using MsSystem.Sys.Service;
 using NLog.Extensions.Logging;
 using NLog.Web;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.IO;
+using System.Reflection;
 
 namespace MsSystem.Sys.API
 {
@@ -78,6 +82,17 @@ namespace MsSystem.Sys.API
 
             services.AddMvc(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
                 .AddJsonOptions(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
+
+            services.AddSwaggerGen(options =>
+            {
+                string apiName = Assembly.GetExecutingAssembly().GetName().Name;
+                options.SwaggerDoc(apiName, new Info { Title = "权限系统", Version = "v1" });
+                var xmlFile = $"{apiName}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
+                options.OperationFilter<AddAuthTokenHeaderParameter>();
+            });
+
             services.AddAuthorization();
 
             services.AddCors(options =>
@@ -118,11 +133,21 @@ namespace MsSystem.Sys.API
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            //app.UseServiceRegistration(new ServiceCheckOptions
-            //{
-            //    HealthCheckUrl = "api/HealthCheck/Ping"
-            //});
             app.UseAuthentication();
+
+            app.UseStaticFiles();
+            string apiName = Assembly.GetExecutingAssembly().GetName().Name;
+            app.UseSwagger(options =>
+            {
+                options.RouteTemplate = "{documentName}/swagger.json";
+            })
+            .UseSwaggerUI(options =>
+            {
+                options.ShowExtensions();
+                options.EnableValidator(null);
+                options.SwaggerEndpoint($"/{apiName}/swagger.json", $"{apiName} V1");
+            });
+
             app.UseMvc();
         }
     }

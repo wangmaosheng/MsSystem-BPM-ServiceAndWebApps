@@ -23,8 +23,11 @@ using NLog.Extensions.Logging;
 using NLog.Web;
 using Polly;
 using Polly.Extensions.Http;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.IO;
 using System.Net.Http;
+using System.Reflection;
 
 namespace MsSystem.WF.API
 {
@@ -74,11 +77,19 @@ namespace MsSystem.WF.API
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
             app.UseAuthentication();
+            app.UseStaticFiles();
+            string apiName = Assembly.GetExecutingAssembly().GetName().Name;
+            app.UseSwagger(options =>
+            {
+                options.RouteTemplate = "{documentName}/swagger.json";
+            })
+            .UseSwaggerUI(options =>
+            {
+                options.ShowExtensions();
+                options.EnableValidator(null);
+                options.SwaggerEndpoint($"/{apiName}/swagger.json", $"{apiName} V1");
+            });
             app.UseMvc();
-            //app.UseServiceRegistration(new ServiceCheckOptions
-            //{
-            //    HealthCheckUrl = "/api/HealthCheck/ping"
-            //});
         }
 
     }
@@ -117,6 +128,16 @@ namespace MsSystem.WF.API
 
             services.AddMvc(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
                 .AddJsonOptions(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
+
+            services.AddSwaggerGen(options =>
+            {
+                string apiName = Assembly.GetExecutingAssembly().GetName().Name;
+                options.SwaggerDoc(apiName, new Info { Title = "工作流接口", Version = "v1" });
+                var xmlFile = $"{apiName}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
+                options.OperationFilter<AddAuthTokenHeaderParameter>();
+            });
 
             services.AddCors(options =>
             {
