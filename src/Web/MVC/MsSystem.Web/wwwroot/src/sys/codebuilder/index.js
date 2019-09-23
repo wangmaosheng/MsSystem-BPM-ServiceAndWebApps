@@ -34,15 +34,15 @@
             init: function () {
                 this.TableSearch = {
                     'Database': 'mssystem',
-                    'DataSource': '172.16.55.40',
+                    'DataSource': 'mysql',
                     'UserId': 'root',
                     'Password': '123456',
                     'TableName': null,
-                    'Namespace': 'MsSystem'
+                    'Namespace': 'MsSystem.Sys'
                 };
             },
             getTables: function () {
-                var url = '/Common/CodeBuilder/GetTables';
+                var url = '/Sys/CodeBuilder/GetTablesAsync';
                 axios.get(url, { params: vm.TableSearch }).then(function (response) {
                     var json = response.data;
                     tableTrees = $.fn.zTree.init($("#tableTrees"), setting, json);
@@ -51,24 +51,27 @@
             },
             getTableColumn: function (tablename) {
                 this.TableSearch.TableName = tablename;
-                var url = '/Common/CodeBuilder/GetTableColumns';
+                var url = '/Sys/CodeBuilder/GetTableColumnsAsync';
                 axios.get(url, { params: vm.TableSearch }).then(function (response) {
                     var res = response.data;
                     vm.TableColumn = res;
                 });
             },
-            createCode: function(type) {
+            createCode: function (type) {
+                if (tableTrees == undefined) {
+                    layer.msg("请拉取表数据！");
+                    return;
+                }
                 var nodes = tableTrees.getCheckedNodes(true);
                 var array = [];
                 for (var i = 0; i < nodes.length; i++) {
-                    if (nodes[i].level == 1) {
-                        array.push(nodes[i].name);
-                    }
+                    array.push(nodes[i].name);
                 }
                 if (array.length == 0) {
+                    layer.msg("请选择表！");
                     return;
                 }
-                var url = '/Common/CodeBuilder/CreateFile';
+                var url = '/Sys/CodeBuilder/CreateFileAsync';
                 for (var j = 0; j < array.length; j++) {
                     //请求伪造构建
                     var form = document.createElement('form');

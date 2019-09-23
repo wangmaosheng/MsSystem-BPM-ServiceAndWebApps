@@ -170,6 +170,12 @@ namespace MsSystem.Web
                    .AddPolicyHandler(GetRetryPolicy())
                    .AddPolicyHandler(GetCircuitBreakerPolicy());
 
+            services.AddHttpClient<ICodeBuilderService, CodeBuilderService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
+
             //services.AddScoped<IScanningLoginService, ScanningLoginService>();
 
             services.AddHttpClient<IScanningLoginService, ScanningLoginService>()

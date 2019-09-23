@@ -1,4 +1,5 @@
-﻿using JadeFramework.Core.Domain.Enum;
+﻿using JadeFramework.Core.Domain.CodeBuilder.MySQL;
+using JadeFramework.Core.Domain.Enum;
 using JadeFramework.Core.Extensions;
 using MsSystem.Web.Areas.Sys.ViewModel;
 
@@ -75,6 +76,12 @@ namespace MsSystem.Web.Areas.Sys.Infrastructure
             public static string SaveUserDeptAsync(string baseUri) => $"{baseUri}/User/SaveUserDeptAsync";
             public static string ModifyUserHeadImgAsync(string baseUri) => $"{baseUri}/User/ModifyUserHeadImgAsync";
 
+        }
+
+        public class CodeBuilder
+        {
+            public static string GetTablesAsync(string baseUri, TableSearch search) => $"{baseUri}/CodeBuilder/GetTablesAsync?{search.ToUrlParam()}";
+            public static string GetTableColumnsAsync(string baseUri, TableSearch search) => $"{baseUri}/CodeBuilder/GetTableColumnsAsync?{search.ToUrlParam()}";
         }
     }
 }

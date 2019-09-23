@@ -76,6 +76,8 @@ namespace MsSystem.Sys.API
 
             services.AddScoped<IWorkFlowService, WorkFlowService>();
 
+            services.AddScoped<ICodeBuilderService, CodeBuilderService>();
+
             #endregion
 
 

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using MsSystem.Web.Areas.OA.Service;
 using MsSystem.Web.Areas.OA.ViewModel;
 using MsSystem.Web.Areas.Sys.Service;
+using NLog;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,6 +26,7 @@ namespace MsSystem.Web.Controllers
             this._messageService = messageService;
             _permissionStorage = permissionStorage;
         }
+
         /// <summary>
         /// 首页
         /// </summary>
@@ -64,6 +66,20 @@ namespace MsSystem.Web.Controllers
         public IActionResult Default()
         {
             return View();
+        }
+        private readonly Logger nlog = LogManager.GetCurrentClassLogger(); //获得日志实;
+
+        public IActionResult Test()
+        {
+            try
+            {
+                nlog.Info("测试数据");
+            }
+            catch (System.Exception ex)
+            {
+                throw new System.Exception(ex.Message);
+            }
+            return Content("测试");
         }
     }
 }
