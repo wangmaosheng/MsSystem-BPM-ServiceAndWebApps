@@ -95,6 +95,10 @@ namespace MsSystem.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+    name: "TurntableRoute",
+    template: "{area:exists}/{controller=Activity}/{action=Turntable}/{id}.html");
+
+                routes.MapRoute(
                     name: "areaRoute",
                     template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
