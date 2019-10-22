@@ -78,6 +78,8 @@ namespace MsSystem.Sys.API
 
             services.AddScoped<ICodeBuilderService, CodeBuilderService>();
 
+            services.AddScoped<ISysScheduleService, SysScheduleService>();
+
             #endregion
 
 

@@ -13,6 +13,7 @@
     <ProjectReference Include="..\MsSystem.Sys.IService\MsSystem.Sys.IService.csproj" />
     <ProjectReference Include="..\MsSystem.Sys.Model\MsSystem.Sys.Model.csproj" />
     <ProjectReference Include="..\MsSystem.Sys.Repository\MsSystem.Sys.Repository.csproj" />
+    <ProjectReference Include="..\MsSystem.Sys.Schedule.Infrastructure\MsSystem.Sys.Schedule.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

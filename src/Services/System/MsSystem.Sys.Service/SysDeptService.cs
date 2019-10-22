@@ -13,8 +13,8 @@ namespace MsSystem.Sys.Service
 {
     public class SysDeptService: ISysDeptService
     {
-        private ISysDatabaseFixture _databaseFixture;
-        private ILogJobs _logJobs;
+        private readonly ISysDatabaseFixture _databaseFixture;
+        private readonly ILogJobs _logJobs;
         public SysDeptService(ISysDatabaseFixture databaseFixture, ILogJobs logJobs)
         {
             _databaseFixture = databaseFixture;

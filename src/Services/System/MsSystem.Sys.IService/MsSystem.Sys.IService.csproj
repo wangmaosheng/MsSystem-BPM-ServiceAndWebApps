@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MsSystem.Sys.Model\MsSystem.Sys.Model.csproj" />
+    <ProjectReference Include="..\MsSystem.Sys.Schedule.Infrastructure\MsSystem.Sys.Schedule.Infrastructure.csproj" />
     <ProjectReference Include="..\MsSystem.Sys.ViewModel\MsSystem.Sys.ViewModel.csproj" />
   </ItemGroup>
 

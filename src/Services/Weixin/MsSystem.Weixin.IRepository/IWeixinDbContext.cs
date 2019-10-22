@@ -12,5 +12,7 @@ namespace MsSystem.Weixin.IRepository
         IWxMenuRepository WxMenu { get; }
         IWxUserRepository WxUser { get; }
         IWxMiniprogramUserRepository WxMiniprogramUser { get; }
+        IWxSecKillRepository WxSecKillRepository { get; }
+        IWxSecKillRecordRepository WxSecKillRecordRepository { get; }
     }
 }

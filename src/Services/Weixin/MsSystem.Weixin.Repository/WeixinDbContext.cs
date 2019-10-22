@@ -41,5 +41,12 @@ namespace MsSystem.Weixin.Repository
 
         private IWxMiniprogramUserRepository _wxMiniprogramUser;
         public IWxMiniprogramUserRepository WxMiniprogramUser => _wxMiniprogramUser ?? (_wxMiniprogramUser = new WxMiniprogramUserRepository(Connection, _config));
+
+
+        private IWxSecKillRepository _wxSecKillRepository;
+        public IWxSecKillRepository WxSecKillRepository => _wxSecKillRepository ?? (_wxSecKillRepository = new WxSecKillRepository(Connection, _config));
+
+        private IWxSecKillRecordRepository _wxSecKillrecordRepository;
+        public IWxSecKillRecordRepository WxSecKillRecordRepository => _wxSecKillrecordRepository ?? (_wxSecKillrecordRepository = new WxSecKillRecordRepository(Connection, _config));
     }
 }

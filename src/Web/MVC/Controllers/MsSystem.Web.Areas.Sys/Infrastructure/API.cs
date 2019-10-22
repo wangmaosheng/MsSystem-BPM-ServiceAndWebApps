@@ -83,5 +83,16 @@ namespace MsSystem.Web.Areas.Sys.Infrastructure
             public static string GetTablesAsync(string baseUri, TableSearch search) => $"{baseUri}/CodeBuilder/GetTablesAsync?{search.ToUrlParam()}";
             public static string GetTableColumnsAsync(string baseUri, TableSearch search) => $"{baseUri}/CodeBuilder/GetTableColumnsAsync?{search.ToUrlParam()}";
         }
+
+        public static class Schedule
+        {
+            public static string GetPageListAsync(string baseUri, int pageIndex, int pageSize) => $"{baseUri}/schedule/GetPageListAsync?pageIndex={pageIndex}&pageSize={pageSize}";
+            public static string AddOrUpdateAsync(string baseUri) => $"{baseUri}/schedule/AddOrUpdateAsync";
+            public static string GetScheduleAsync(string baseUri, long id) => $"{baseUri}/schedule/GetScheduleAsync?id={id}";
+            public static string StartAsync(string baseUri) => $"{baseUri}/schedule/StartAsync";
+            public static string StopAsync(string baseUri) => $"{baseUri}/schedule/StopAsync";
+            public static string ExecuteJobAsync(string baseUri) => $"{baseUri}/schedule/ExecuteJobAsync";
+            public static string SuspendAsync(string baseUri) => $"{baseUri}/schedule/SuspendAsync";
+        }
     }
 }

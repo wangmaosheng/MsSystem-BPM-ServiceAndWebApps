@@ -15,7 +15,7 @@
             });
             $('#Home_Index_2').click(function () {
                 utils.open({
-                    content: '/Schedule/Home/Show',
+                    content: '/Sys/Schedule/Show',
                     title: '新增调度',
                     area: ['850px', '700px'],
                 });
@@ -27,20 +27,20 @@
                     title: '调度明细',
                     area: ['900px', '650px'],
                     maxmin: true,
-                    content: '/Schedule/Home/Show?id=' + id,
+                    content: '/Sys/Schedule/Show?id=' + id,
                 });
             });
             $('button[name=schedulestart]').click(function () {
-                excuteHander($(this).parent().attr('data-id'), '/Schedule/Home/StartAsync');
+                excuteHander($(this).parent().attr('data-id'), '/Sys/Schedule/StartAsync');
             });
             $('button[name=schedulestop]').click(function () {
-                excuteHander($(this).parent().attr('data-id'), '/Schedule/Home/StopAsync');
+                excuteHander($(this).parent().attr('data-id'), '/Sys/Schedule/StopAsync');
             });
             $('button[name=scheduleexecute]').click(function () {
-                excuteHander($(this).parent().attr('data-id'), '/Schedule/Home/ExecuteJobAsync');
+                excuteHander($(this).parent().attr('data-id'), '/Sys/Schedule/ExecuteJobAsync');
             });
             $('button[name=schedulesuspend]').click(function () {
-                excuteHander($(this).parent().attr('data-id'), '/Schedule/Home/SuspendAsync');
+                excuteHander($(this).parent().attr('data-id'), '/Sys/Schedule/SuspendAsync');
             });
             function excuteHander(id, url) {
                 $.ajax({

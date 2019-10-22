@@ -18,6 +18,7 @@ namespace MsSystem.Sys.IRepository
         ISysLeaderRepository SysLeader { get; }
         ISysDeptLeaderRepository SysDeptLeader { get; }
         ISysWorkflowsqlRepository SysWorkflowsql { get; }
+        ISysScheduleRepository SysSchedule { get; }
     }
     public interface ISysLogDbContext : IDapperDbContext
     {

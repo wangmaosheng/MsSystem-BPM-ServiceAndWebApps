@@ -37,7 +37,7 @@
                         type: 'POST',
                         dataType: 'JSON',
                         data: { data: data },
-                        url: '/Schedule/Home/SaveAsync',
+                        url: '/Sys/Schedule/SaveAsync',
                         success: function (data) {
                             if (data) {
                                 layer.msg('操作成功！', { icon: 1, time: 2000 }, function () {
@@ -58,7 +58,7 @@
                     title: '定时任务参数设置',
                     maxmin: true,
                     area: ['700px', '550px'],
-                    content: '/Schedule/Home/Cron',
+                    content: '/Sys/Schedule/Cron',
                 });
             });
         });
