@@ -11,15 +11,15 @@
                 pageSizeName: 'PageSize'
             });
             $('#Message_Index_2').on('click', function () {
-                utils.menu.open({
+                utils.open({
                     menuName: '新增消息',
                     dataUrl: '/OA/Message/Show'
                 });
             });
-            $('#MessageIndex_3').on('click', function () {
+            $('#Message_Index_3').on('click', function () {
                 var arrid = $('.ibox-content table tbody tr td input[type=checkbox]:checked');
                 if (arrid.length == 1) {
-                    utils.menu.open({
+                    utils.open({
                         menuName: '编辑消息',
                         dataUrl: '/OA/Message/Show?id=' + arrid.val()
                     });
@@ -45,14 +45,14 @@
             });
             $('.ibox-content table tbody tr').dblclick(function () {
                 var id = $(this).find('td input[type=checkbox]').val();
-                utils.menu.open({
+                utils.open({
                     menuName: '消息查看',
                     dataUrl: '/OA/Message/Show?id=' + id
                 });
             });
             $('a[name=getshow]').click(function () {
                 var id = $(this).attr('data-id');
-                utils.menu.open({
+                utils.open({
                     menuName: '消息查看',
                     dataUrl: '/OA/Message/Show?id=' + id
                 });

@@ -42,12 +42,6 @@
             "MessageType": msgtypeList,
             "UserType": usertypeList
         },
-        created: function () {
-            $('.summernote').summernote({
-                height: 200,
-                lang: 'zh-CN'
-            });
-        },
         mounted: function () {
             this.init();
         },

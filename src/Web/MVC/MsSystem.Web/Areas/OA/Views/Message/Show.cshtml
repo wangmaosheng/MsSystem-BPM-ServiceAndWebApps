@@ -29,7 +29,7 @@
     <script>
         var msgtypeList = JSON.parse('@Html.Raw(msgJson)');
         var usertypeList = JSON.parse('@Html.Raw(userTypeJson)');
-        seajs.use("@Url.Content("/src/oa/message/show.js")");
+        seajs.use("/src/oa/message/show.js");
     </script>
 }
 <div class="show-content" id="msapp" v-cloak>
