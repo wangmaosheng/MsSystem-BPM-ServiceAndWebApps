@@ -189,7 +189,7 @@
                 width: 38px;
                 height: 38px;
                 display: inline-block;
-                line-height: 38px;
+                line-height: 36px;
                 border-radius: 50%;
                 background: #0e9aef;
                 box-shadow: 0px 0px 5px #0e9aef;
@@ -209,6 +209,7 @@
     <script src="/lib/signalr/dist/browser/signalr.min.js"></script>
     <script>
         $(function () {
+            $('.pace.pace-active').remove();
             var chattinguserids = [];
             var currentUserid = "@user.UserId";
             const connection = new signalR.HubConnectionBuilder()
@@ -556,7 +557,7 @@
                                 <div class="form-group">
                                     <textarea class="form-control message-input" name="message"></textarea>
                                 </div>
-                                <button class="btn btn-primary" id="sendMessage">发送</button>
+                                <button class="btn btn-primary" id="sendMessage" title="可回车发送">发送</button>
                             </div>
                         </div>
                         <div class="clear"></div>
