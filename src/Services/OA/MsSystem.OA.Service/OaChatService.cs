@@ -29,5 +29,15 @@ namespace MsSystem.OA.Service
             return await _databaseFixture.Db.OaChat.GetChatListAsync(model);
         }
 
+        /// <summary>
+        /// 获取用户未读消息
+        /// </summary>
+        /// <param name="userId"用户id></param>
+        /// <returns></returns>
+        public async Task<List<ChatUserListDto>> GetUnReadListAsync(long userId)
+        {
+            return await _databaseFixture.Db.OaChat.GetUnReadListAsync(userId);
+        }
+
     }
 }

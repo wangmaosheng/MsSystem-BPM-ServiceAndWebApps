@@ -44,7 +44,7 @@ namespace MsSystem.OA.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
+            //services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
 
             services.Configure<AppSettings>(Configuration);
             IOptions<AppSettings> appSettings = services.BuildServiceProvider().GetService<IOptions<AppSettings>>();
@@ -57,7 +57,7 @@ namespace MsSystem.OA.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            app.UseZipkin();
+            //app.UseZipkin();
             loggerFactory.AddNLog();
             if (env.IsDevelopment())
             {
@@ -96,6 +96,10 @@ namespace MsSystem.OA.API
                 routes.MapHub<MessageHub>("/messageHub", options => options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
                 routes.MapHub<ChatHub>("/chatHub", options => options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
             });
+            app.UseServiceRegistration(new ServiceCheckOptions
+            {
+                HealthCheckUrl = "api/HealthCheck/Ping"
+            });
         }
     }
     public static class ServiceCollectionExtensions
@@ -103,7 +107,7 @@ namespace MsSystem.OA.API
         public static IServiceCollection AddCustomMvc(this IServiceCollection services, IOptions<AppSettings> appSettings)
         {
             services.AddScoped<ICachingProvider, MemoryCachingProvider>();
-            //services.AddServiceRegistration();
+            services.AddServiceRegistration();
             services.AddResponseCompression();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(opt =>

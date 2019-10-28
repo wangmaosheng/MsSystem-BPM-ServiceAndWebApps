@@ -1,7 +1,5 @@
-﻿using JadeFramework.Core.Consul;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace MsSystem.Gateway
 {
@@ -13,14 +11,6 @@ namespace MsSystem.Gateway
         }
         public static IWebHost BuildWebHost(string[] args)
         {
-            //var configuration = new ConfigurationBuilder()
-            //    .AddJsonFile("appsettings.json", false, true)
-            //    .Build();
-            //var options = new ServiceDiscoveryOptions();
-            //configuration.Bind("ServiceDiscovery", options);
-            //var url = options.Service.GetUrl();
-
-
             return Microsoft.AspNetCore.WebHost.CreateDefaultBuilder(args)
                     .ConfigureAppConfiguration((hostingContext, builder) =>
                     {

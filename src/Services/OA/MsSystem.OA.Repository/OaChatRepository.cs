@@ -33,5 +33,18 @@ namespace MsSystem.OA.Repository
 
             return list.OrderBy(m => m.CreateTime).ToList();
         }
+
+        /// <summary>
+        /// 获取用户未读消息
+        /// </summary>
+        /// <param name="userId"用户id></param>
+        /// <returns></returns>
+        public async Task<List<ChatUserListDto>> GetUnReadListAsync(long userId)
+        {
+            string sql = $"select * from oa_chat where IsRead=0  and id in( select max(id) from oa_chat where Receiver = {userId} GROUP BY Sender ) ";
+            var list = await this.Connection.QueryAsync<ChatUserListDto>(sql);
+            return list.ToList();
+        }
+
     }
 }

@@ -138,7 +138,11 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MsSystem.Identity", "src\Services\Identity\MsSystem.Identity\MsSystem.Identity.csproj", "{80B2091D-5B7B-48D4-BCCB-FFEC22CB965A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsSystem.Sys.Schedule.Infrastructure", "src\Services\System\MsSystem.Sys.Schedule.Infrastructure\MsSystem.Sys.Schedule.Infrastructure.csproj", "{CA9B109E-10C0-49C0-BD9E-9D0BE28F3AC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MsSystem.Sys.Schedule.Infrastructure", "src\Services\System\MsSystem.Sys.Schedule.Infrastructure\MsSystem.Sys.Schedule.Infrastructure.csproj", "{CA9B109E-10C0-49C0-BD9E-9D0BE28F3AC9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Consul", "Consul", "{E381D6B3-AC85-49F8-85EB-E53A8F80BCFF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JadeFramework.ServiceRegistration", "src\BuildingBlocks\Consul\JadeFramework.ServiceRegistration\JadeFramework.ServiceRegistration.csproj", "{1030BECA-9EA8-444C-82BD-1B9D9EC8FDB1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -338,6 +342,10 @@ Global
 		{CA9B109E-10C0-49C0-BD9E-9D0BE28F3AC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA9B109E-10C0-49C0-BD9E-9D0BE28F3AC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA9B109E-10C0-49C0-BD9E-9D0BE28F3AC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1030BECA-9EA8-444C-82BD-1B9D9EC8FDB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1030BECA-9EA8-444C-82BD-1B9D9EC8FDB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1030BECA-9EA8-444C-82BD-1B9D9EC8FDB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1030BECA-9EA8-444C-82BD-1B9D9EC8FDB1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -407,6 +415,8 @@ Global
 		{26D6C08B-9D02-4E66-B93E-ECB48DCBAC60} = {974277C4-8432-4154-B0C5-807350316EF8}
 		{80B2091D-5B7B-48D4-BCCB-FFEC22CB965A} = {AA251917-5DC2-4221-A0D6-816ADF6E47D1}
 		{CA9B109E-10C0-49C0-BD9E-9D0BE28F3AC9} = {F30241D2-F5D0-41B6-9EC3-2149287D5C17}
+		{E381D6B3-AC85-49F8-85EB-E53A8F80BCFF} = {DD97BDF1-8894-4708-83CB-87ACF05A0917}
+		{1030BECA-9EA8-444C-82BD-1B9D9EC8FDB1} = {E381D6B3-AC85-49F8-85EB-E53A8F80BCFF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F7327476-2342-495A-A128-22D87D70072D}

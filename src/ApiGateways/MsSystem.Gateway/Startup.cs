@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Ocelot.Provider.Consul;
 using Ocelot.Provider.Polly;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Collections.Generic;
@@ -47,7 +48,7 @@ namespace MsSystem.Gateway
                     .AllowCredentials());
             });
             services.AddOcelot()
-                //.AddConsul()
+                .AddConsul()
                 .AddCacheManager(x => x.WithDictionaryHandle())
                 .AddPolly();
             services.AddMvc();

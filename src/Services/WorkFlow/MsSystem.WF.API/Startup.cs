@@ -2,7 +2,6 @@
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using JadeFramework.Cache;
-using JadeFramework.Zipkin;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -43,7 +42,7 @@ namespace MsSystem.WF.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
+            //services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
 
             services.Configure<AppSettings>(Configuration);
             IOptions<AppSettings> appSettings = services.BuildServiceProvider().GetService<IOptions<AppSettings>>();
@@ -57,7 +56,7 @@ namespace MsSystem.WF.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            app.UseZipkin();
+            //app.UseZipkin();
 
             loggerFactory.AddNLog();
             if (env.IsDevelopment())
@@ -90,6 +89,10 @@ namespace MsSystem.WF.API
                 options.SwaggerEndpoint($"/{apiName}/swagger.json", $"{apiName} V1");
             });
             app.UseMvc();
+            app.UseServiceRegistration(new ServiceCheckOptions
+            {
+                HealthCheckUrl = "api/HealthCheck/Ping"
+            });
         }
 
     }
@@ -100,7 +103,7 @@ namespace MsSystem.WF.API
             //缓存
             services.AddScoped<ICachingProvider, MemoryCachingProvider>();
             services.AddMemoryCache();
-            //services.AddServiceRegistration();
+            services.AddServiceRegistration();
             services.AddResponseCompression();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

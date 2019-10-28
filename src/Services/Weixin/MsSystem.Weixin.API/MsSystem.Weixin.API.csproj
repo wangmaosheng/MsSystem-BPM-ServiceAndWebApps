@@ -37,11 +37,11 @@
     <PackageReference Include="NLog" Version="4.5.11" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.1" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
-    <PackageReference Include="JadeFramework.ServiceRegistration" Version="1.0.1.8" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Consul\JadeFramework.ServiceRegistration\JadeFramework.ServiceRegistration.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\Zipkin\JadeFramework.Zipkin\JadeFramework.Zipkin.csproj" />
     <ProjectReference Include="..\MsSystem.Weixin.IRepository\MsSystem.Weixin.IRepository.csproj" />
     <ProjectReference Include="..\MsSystem.Weixin.IService\MsSystem.Weixin.IService.csproj" />

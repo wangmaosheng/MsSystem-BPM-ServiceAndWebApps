@@ -2,6 +2,38 @@ version: '3.4'
 
 services:
 
+  consul-agent-1: &consul-agent
+    image: consul:latest
+    container_name: consul-agent-1
+    command: "agent -retry-join consul-server-bootstrap -client 0.0.0.0"
+
+  consul-agent-2:
+    container_name: consul-agent-2
+    <<: *consul-agent
+  
+  consul-agent-3:
+    container_name: consul-agent-3
+    <<: *consul-agent
+
+  consul-server-1: &consul-server
+    container_name: consul-server-1
+    <<: *consul-agent
+    command: "agent -server -retry-join consul-server-bootstrap -client 0.0.0.0"
+
+  consul-server-2:
+    container_name: consul-server-2
+    <<: *consul-server
+
+  consul-server-bootstrap:
+    container_name: consul-server-bootstrap
+    <<: *consul-agent
+    ports:
+     - "8400:8400"
+     - "8500:8500"
+     - "8600:8600"
+     - "8600:8600/udp"
+    command: "agent -server -bootstrap-expect 3 -ui -client 0.0.0.0"
+
   redis:
     image: redis
     container_name: redis
@@ -53,11 +85,7 @@ services:
       - "5000:5000"
     depends_on:
       - mysql
-      - identity
-      - oaapi
-      - sysapi
-      - wfapi
-      - weixinapi
+      - consul-server-bootstrap
 
   identity:
     container_name: identity
@@ -68,6 +96,7 @@ services:
       - zipkin
       - redis
       - rabbitmq
+      - consul-server-bootstrap
 
   sysapi:
     container_name: sysapi
@@ -78,6 +107,7 @@ services:
       - zipkin
       - redis
       - rabbitmq
+      - consul-server-bootstrap
 
   wfapi:
     container_name: wfapi
@@ -88,6 +118,7 @@ services:
       - zipkin
       - redis
       - rabbitmq
+      - consul-server-bootstrap
 
   weixinapi:
     container_name: weixinapi
@@ -98,6 +129,7 @@ services:
       - zipkin
       - redis
       - rabbitmq
+      - consul-server-bootstrap
 
   oaapi:
     container_name: oaapi
@@ -108,6 +140,7 @@ services:
       - zipkin
       - redis
       - rabbitmq
+      - consul-server-bootstrap
 
   web:
     container_name: web

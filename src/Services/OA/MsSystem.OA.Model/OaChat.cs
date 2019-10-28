@@ -28,6 +28,12 @@ namespace MsSystem.OA.Model
         public string Message { get; set; }
 
         /// <summary>
+        /// 是否已读
+        /// 默认 0：未读，1：已读
+        /// </summary>
+        public byte IsRead { get; set; } = 0;
+
+        /// <summary>
         /// 创建时间戳
         /// </summary>
         public long CreateTime { get; set; }

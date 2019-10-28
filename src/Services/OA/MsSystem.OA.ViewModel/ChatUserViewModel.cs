@@ -97,6 +97,7 @@
         public long Sender { get; set; }
         public string Message { get; set; }
         public long Receiver { get; set; }
+        public byte IsRead { get; set; }
         public long CreateTime { get; set; }
     }
     public class ChatUserListSearchDto
@@ -105,5 +106,11 @@
         public long Receiver { get; set; }
         public int PageIndex { get; set; }
         public int PageSize { get; set; } = 20;
+    }
+
+
+    public class ChatUserInitLoadDto
+    {
+        
     }
 }
