@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using NLog.Web;
 
 namespace MsSystem.Identity
 {
@@ -13,6 +14,7 @@ namespace MsSystem.Identity
         public static IWebHost CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
+                    .UseNLog()
                     .UseStartup<Startup>()
                     .UseUrls("http://*:5200")
                     .Build();

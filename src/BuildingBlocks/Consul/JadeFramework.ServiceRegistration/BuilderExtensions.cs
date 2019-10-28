@@ -53,7 +53,7 @@
             var serviceId = $"{serviceOptions.Service.Name}_{serviceOptions.Service.Address}:{serviceOptions.Service.Port}";
             var httpCheck = new AgentServiceCheck()
             {
-                DeregisterCriticalServiceAfter = TimeSpan.FromMinutes(1),
+                DeregisterCriticalServiceAfter = TimeSpan.FromMinutes(5),
                 Interval = TimeSpan.FromSeconds(serviceOptions.Service.Interval),
                 HTTP = $"http://{serviceOptions.Service.Address}:{serviceOptions.Service.Port}/{checkOptions.HealthCheckUrl}"
             };

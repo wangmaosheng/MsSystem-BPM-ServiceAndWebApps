@@ -2,6 +2,18 @@ version: '3.4'
 
 services:
 
+  mysql:
+    image: mysql/mysql-server:5.7
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+    volumes:
+      - "./docker/mysql/conf/my.cnf:/etc/my.cnf"
+      - "./docker/mysql/init:/docker-entrypoint-initdb.d/"
+    restart: always
+
   consul-agent-1: &consul-agent
     image: consul:latest
     container_name: consul-agent-1
@@ -41,18 +53,6 @@ services:
       - "6379:6379"
     restart: always
 
-  mysql:
-    image: mysql/mysql-server:5.7
-    container_name: mysql
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: "123456"
-    volumes:
-      - "./docker/mysql/conf/my.cnf:/etc/my.cnf"
-      - "./docker/mysql/init:/docker-entrypoint-initdb.d/"
-    restart: always
-
   zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
@@ -67,6 +67,7 @@ services:
       - "9411:9411"
     depends_on:
       - mysql
+    restart: always
 
   rabbitmq:
     image: rabbitmq:3.7-management
@@ -86,6 +87,7 @@ services:
     depends_on:
       - mysql
       - consul-server-bootstrap
+    restart: always
 
   identity:
     container_name: identity
@@ -97,6 +99,7 @@ services:
       - redis
       - rabbitmq
       - consul-server-bootstrap
+    restart: always
 
   sysapi:
     container_name: sysapi
@@ -108,6 +111,7 @@ services:
       - redis
       - rabbitmq
       - consul-server-bootstrap
+    restart: always
 
   wfapi:
     container_name: wfapi
@@ -119,6 +123,7 @@ services:
       - redis
       - rabbitmq
       - consul-server-bootstrap
+    restart: always
 
   weixinapi:
     container_name: weixinapi
@@ -130,6 +135,7 @@ services:
       - redis
       - rabbitmq
       - consul-server-bootstrap
+    restart: always
 
   oaapi:
     container_name: oaapi
@@ -141,6 +147,7 @@ services:
       - redis
       - rabbitmq
       - consul-server-bootstrap
+    restart: always
 
   web:
     container_name: web
@@ -150,6 +157,7 @@ services:
       - redis
       - mysql
       - gateway
+    restart: always
 
   nginx:
     image: nginx

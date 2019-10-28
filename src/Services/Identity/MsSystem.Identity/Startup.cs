@@ -1,5 +1,4 @@
-﻿using JadeFramework.Zipkin;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,11 +35,10 @@ namespace MsSystem.Identity
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            app.UseZipkin();
-            loggerFactory.AddNLog();
+            //app.UseZipkin();
+            //loggerFactory.AddNLog();
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
                 env.ConfigureNLog("NLog.Development.config");
             }
             else
