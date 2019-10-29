@@ -14,7 +14,7 @@ namespace MsSystem.Identity
         public static IWebHost CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
-                    .UseNLog()
+                    //.UseNLog()
                     .UseStartup<Startup>()
                     .UseUrls("http://*:5200")
                     .Build();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NLog;
+using System.Threading.Tasks;
 
 namespace MsSystem.Identity.Controllers
 {
@@ -11,11 +12,14 @@ namespace MsSystem.Identity.Controllers
     public class HealthCheckController : Controller
     {
         [HttpGet]
-        public IActionResult Ping()
+        public async Task<IActionResult> Ping()
         {
-            Logger nlog = LogManager.GetCurrentClassLogger();
-            LogEventInfo logEvent = new LogEventInfo(LogLevel.Info, "consul", "心跳检测");
-            nlog.Log(logEvent);
+            //await Task.Factory.StartNew(() =>
+            //{
+            //    Logger nlog = LogManager.GetCurrentClassLogger();
+            //    LogEventInfo logEvent = new LogEventInfo(LogLevel.Info, "consul", "心跳检测");
+            //    nlog.Log(logEvent);
+            //});
             return Ok();
         }
     }

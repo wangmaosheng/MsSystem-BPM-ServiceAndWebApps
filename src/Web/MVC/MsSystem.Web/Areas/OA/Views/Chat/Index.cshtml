@@ -226,6 +226,9 @@
                 });
             //获取聊天信息
             connection.on("ReceiveChater", function (data) {
+                // 声音
+                var audio= new Audio("/src/oa/message/didi.mp3");
+                audio.play();
                 //判断是否已打开
                 var _target = $('.users-list .chat-user[data-userid=' + data.sender + ']');
                 var userlength = $('.users-list .chat-user').length;

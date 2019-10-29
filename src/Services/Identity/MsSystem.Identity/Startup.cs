@@ -37,14 +37,14 @@ namespace MsSystem.Identity
         {
             //app.UseZipkin();
             //loggerFactory.AddNLog();
-            if (env.IsDevelopment())
-            {
-                env.ConfigureNLog("NLog.Development.config");
-            }
-            else
-            {
-                env.ConfigureNLog("NLog.config");
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    env.ConfigureNLog("NLog.Development.config");
+            //}
+            //else
+            //{
+            //    env.ConfigureNLog("NLog.config");
+            //}
             app.UseMvc();
             app.UseIdentityServer();
             app.UseServiceRegistration(new ServiceCheckOptions
