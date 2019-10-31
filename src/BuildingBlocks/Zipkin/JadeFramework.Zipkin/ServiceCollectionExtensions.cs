@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using JadeFramework.Zipkin;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Resilience.Http.DependencyInjection.Extensions;
 using zipkin4net.Transport.Http;
 
-namespace JadeFramework.Zipkin
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {

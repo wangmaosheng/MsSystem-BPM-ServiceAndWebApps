@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using JadeFramework.Zipkin;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,7 +36,7 @@ namespace MsSystem.Sys.API
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
 
-            //services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
+            services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
 
             services.AddServiceRegistration();
 
@@ -116,7 +117,7 @@ namespace MsSystem.Sys.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            //app.UseZipkin();
+            app.UseZipkin();
 
             loggerFactory.AddNLog();
             if (env.IsDevelopment())

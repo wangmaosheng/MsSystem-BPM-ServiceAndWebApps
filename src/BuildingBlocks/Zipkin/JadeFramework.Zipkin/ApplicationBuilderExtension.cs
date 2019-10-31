@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using JadeFramework.Zipkin;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using zipkin4net;
@@ -8,7 +8,7 @@ using zipkin4net.Middleware;
 using zipkin4net.Tracers.Zipkin;
 using zipkin4net.Transport.Http;
 
-namespace JadeFramework.Zipkin
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ApplicationBuilderExtension
     {

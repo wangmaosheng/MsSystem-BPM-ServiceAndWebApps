@@ -12,6 +12,9 @@ COPY ["src/Services/System/MsSystem.Sys.Schedule.Infrastructure/MsSystem.Sys.Sch
 COPY ["src/Services/System/MsSystem.Sys.IRepository/MsSystem.Sys.IRepository.csproj", "src/Services/System/MsSystem.Sys.IRepository/"]
 COPY ["src/Services/System/MsSystem.Sys.Service/MsSystem.Sys.Service.csproj", "src/Services/System/MsSystem.Sys.Service/"]
 COPY ["src/Services/System/MsSystem.Sys.Repository/MsSystem.Sys.Repository.csproj", "src/Services/System/MsSystem.Sys.Repository/"]
+COPY ["src/BuildingBlocks/Zipkin/JadeFramework.Zipkin/JadeFramework.Zipkin.csproj", "src/BuildingBlocks/Zipkin/JadeFramework.Zipkin/"]
+COPY ["src/BuildingBlocks/Resilience/Resilience.Http.DependencyInjection/Resilience.Http.DependencyInjection.csproj", "src/BuildingBlocks/Resilience/Resilience.Http.DependencyInjection/"]
+COPY ["src/BuildingBlocks/Resilience/Resilience.Http/Resilience.Http.csproj", "src/BuildingBlocks/Resilience/Resilience.Http/"]
 COPY ["src/BuildingBlocks/Consul/JadeFramework.ServiceRegistration/JadeFramework.ServiceRegistration.csproj", "src/BuildingBlocks/Consul/JadeFramework.ServiceRegistration/"]
 RUN dotnet restore "src/Services/System/MsSystem.Sys.API/MsSystem.Sys.API.csproj"
 COPY . .

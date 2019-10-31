@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using JadeFramework.Zipkin;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +22,7 @@ namespace MsSystem.Identity
         public void ConfigureServices(IServiceCollection services)
         {
 
-            //services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
+            services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
 
             services.AddServiceRegistration();
             services.AddIdentityServer()
@@ -35,7 +36,7 @@ namespace MsSystem.Identity
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            //app.UseZipkin();
+            app.UseZipkin();
             //loggerFactory.AddNLog();
             //if (env.IsDevelopment())
             //{
