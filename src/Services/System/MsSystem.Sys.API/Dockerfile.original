@@ -1,8 +1,8 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-buster-slim AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS base
 WORKDIR /app
 EXPOSE 5002
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 WORKDIR /src
 COPY ["src/Services/System/MsSystem.Sys.API/MsSystem.Sys.API.csproj", "src/Services/System/MsSystem.Sys.API/"]
 COPY ["src/Services/System/MsSystem.Sys.IService/MsSystem.Sys.IService.csproj", "src/Services/System/MsSystem.Sys.IService/"]

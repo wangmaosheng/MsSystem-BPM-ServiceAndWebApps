@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Hosting;
 using NLog;
 
 namespace MsSystem.Weixin.API.Filters
@@ -12,9 +13,9 @@ namespace MsSystem.Weixin.API.Filters
     public class HttpGlobalExceptionFilter : IExceptionFilter
     {
         private readonly Logger nlog = LogManager.GetCurrentClassLogger(); //获得日志实例;
-        private readonly IHostingEnvironment _env;
+        private readonly IWebHostEnvironment _env;
 
-        public HttpGlobalExceptionFilter(IHostingEnvironment env)
+        public HttpGlobalExceptionFilter(IWebHostEnvironment env)
         {
             this._env = env;
         }

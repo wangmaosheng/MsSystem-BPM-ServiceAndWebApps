@@ -51,15 +51,15 @@ namespace MsSystem.Gateway
                 .AddConsul()
                 .AddCacheManager(x => x.WithDictionaryHandle())
                 .AddPolly();
-            services.AddMvc();
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("MsSystem.Gateway", new Info { Title = "网关服务", Version = "v1" });
-            });
+            services.AddControllers();
+            //services.AddSwaggerGen(options =>
+            //{
+            //    options.SwaggerDoc("MsSystem.Gateway", new Info { Title = "网关服务", Version = "v1" });
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app)
         {
             app.UseCors("CorsPolicy");
 
@@ -67,20 +67,26 @@ namespace MsSystem.Gateway
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
+
+            app.UseRouting();
             app.UseAuthentication();
             app.UseStaticFiles();
-            var apis = new List<string> { "MsSystem.OA.API", "MsSystem.WF.API", "MsSystem.Sys.API", "MsSystem.Weixin.API" };
-            app.UseMvc();
-            app.UseSwagger();
-            app.UseSwaggerUI(options =>
+            app.UseEndpoints(endpoints =>
             {
-                options.ShowExtensions();
-                options.EnableValidator(null);
-                apis.ForEach(m =>
-                {
-                    options.SwaggerEndpoint($"/{m}/swagger.json", m);
-                });
+                endpoints.MapControllers();
             });
+
+            //app.UseSwagger();
+            //var apis = new List<string> { "MsSystem.OA.API", "MsSystem.WF.API", "MsSystem.Sys.API", "MsSystem.Weixin.API" };
+            //app.UseSwaggerUI(options =>
+            //{
+            //    options.ShowExtensions();
+            //    options.EnableValidator(null);
+            //    apis.ForEach(m =>
+            //    {
+            //        options.SwaggerEndpoint($"/{m}/swagger.json", m);
+            //    });
+            //});
             app.UseOcelot().Wait();
         }
     }

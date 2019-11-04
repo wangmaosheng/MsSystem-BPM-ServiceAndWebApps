@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MsSystem.Weixin.API.Filters;
 using MsSystem.Weixin.API.Hubs;
@@ -34,7 +35,7 @@ namespace MsSystem.Weixin.API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddServiceRegistration();
 
@@ -82,38 +83,38 @@ namespace MsSystem.Weixin.API
                     .AllowCredentials());
             });
             services.AddSignalR();
-            services.AddMvc(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
-                .AddJsonOptions(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
+            services.AddControllers(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
+                .AddNewtonsoftJson(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
 
-            services.AddSwaggerGen(options =>
-            {
-                string apiName = Assembly.GetExecutingAssembly().GetName().Name;
-                options.SwaggerDoc(apiName, new Info { Title = "微信接口", Version = "v1" });
-                var xmlFile = $"{apiName}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                options.IncludeXmlComments(xmlPath);
-            });
+            //services.AddSwaggerGen(options =>
+            //{
+            //    string apiName = Assembly.GetExecutingAssembly().GetName().Name;
+            //    options.SwaggerDoc(apiName, new Info { Title = "微信接口", Version = "v1" });
+            //    var xmlFile = $"{apiName}.xml";
+            //    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            //    options.IncludeXmlComments(xmlPath);
+            //});
 
             services.AddAutoMapper();
 
-            var container = new ContainerBuilder();
-            container.Populate(services);
-            return new AutofacServiceProvider(container.Build());
+            //var container = new ContainerBuilder();
+            //container.Populate(services);
+            //return new AutofacServiceProvider(container.Build());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseZipkin();
 
-            loggerFactory.AddNLog();
             if (env.IsDevelopment())
             {
-                env.ConfigureNLog("NLog.Development.config");
+                app.UseDeveloperExceptionPage();
+                NLogBuilder.ConfigureNLog("NLog.Development.config");
             }
             else
             {
-                env.ConfigureNLog("NLog.config");
+                NLogBuilder.ConfigureNLog("NLog.config");
             }
             app.UseCors("CorsPolicy");
             app.UseResponseCompression();
@@ -123,19 +124,19 @@ namespace MsSystem.Weixin.API
             });
             app.UseAuthentication();
             app.UseStaticFiles();
-            string apiName = Assembly.GetExecutingAssembly().GetName().Name;
-            app.UseSwagger(options =>
-            {
-                options.RouteTemplate = "{documentName}/swagger.json";
-            })
-            .UseSwaggerUI(options =>
-            {
-                options.ShowExtensions();
-                options.EnableValidator(null);
-                options.SwaggerEndpoint($"/{apiName}/swagger.json", $"{apiName} V1");
-            });
-            app.UseMvc();
-            app.UseSignalR(routes =>
+            //string apiName = Assembly.GetExecutingAssembly().GetName().Name;
+            //app.UseSwagger(options =>
+            //{
+            //    options.RouteTemplate = "{documentName}/swagger.json";
+            //})
+            //.UseSwaggerUI(options =>
+            //{
+            //    options.ShowExtensions();
+            //    options.EnableValidator(null);
+            //    options.SwaggerEndpoint($"/{apiName}/swagger.json", $"{apiName} V1");
+            //});
+            app.UseRouting();
+            app.UseEndpoints(routes =>
             {
                 routes.MapHub<MiniProgramMessageHub>("/MiniProgramMessageHub", options =>
                     options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);

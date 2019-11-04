@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore;
+﻿using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using NLog.Web;
 
 namespace MsSystem.WF.API
@@ -8,14 +9,18 @@ namespace MsSystem.WF.API
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseNLog()
-                .UseStartup<Startup>()
-                .UseUrls("http://*:5003")
-                .UseKestrel();
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>()
+                    .UseNLog()
+                    .UseUrls("http://*:5003")
+                    .UseKestrel();
+                });
     }
 }

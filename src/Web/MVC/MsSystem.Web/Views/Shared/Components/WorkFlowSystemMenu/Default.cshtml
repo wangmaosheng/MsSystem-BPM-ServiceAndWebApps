@@ -149,9 +149,8 @@ else
     {
         <text>
         var form = document.forms[0];
-        for (var i = 0; i < form.length; i++) {
-            var element = form.elements[i];
-            element.disabled = "true";
+        for (var item in form) {
+                item.disabled = "true";
         }
         </text>
     }

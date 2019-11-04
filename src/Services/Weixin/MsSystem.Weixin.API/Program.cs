@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore;
+﻿using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using NLog.Web;
 
 namespace MsSystem.Weixin.API
@@ -8,14 +9,19 @@ namespace MsSystem.Weixin.API
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseNLog()
-                .UseStartup<Startup>()
-                .UseKestrel()
-                .UseUrls("http://*:5004");
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>()
+                    .UseNLog()
+                    .UseUrls("http://*:5004")
+                    .UseKestrel();
+                });
+
     }
 }

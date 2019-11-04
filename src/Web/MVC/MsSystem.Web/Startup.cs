@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.WebEncoders;
 using MsSystem.Utility;
@@ -39,7 +40,7 @@ namespace MsSystem.Web
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddCustomMvc(Configuration)
                 .AddHttpClientServices(Configuration)
@@ -63,26 +64,23 @@ namespace MsSystem.Web
             //验证码
             services.AddScoped<IVerificationCode, VerificationCode>();
             services.AddScoped<IPermissionStorageContainer, PermissionStorageService>();
-            var container = new ContainerBuilder();
-            container.Populate(services);
-            return new AutofacServiceProvider(container.Build());
+            //var container = new ContainerBuilder();
+            //container.Populate(services);
+            //return new AutofacServiceProvider(container.Build());
         }
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            loggerFactory.AddNLog();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
-                env.ConfigureNLog("NLog.Development.config");
+                NLogBuilder.ConfigureNLog("NLog.Development.config");
             }
             else
             {
-                app.UseExceptionHandler("/Error/Index");
-                env.ConfigureNLog("NLog.config");
+                NLogBuilder.ConfigureNLog("NLog.config");
             }
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
@@ -92,21 +90,22 @@ namespace MsSystem.Web
             app.UseAuthentication();
             app.UseStaticFiles();
             app.UseSession();
-            app.UseMvc(routes =>
+            app.UseRouting();
+            app.UseEndpoints(routes =>
             {
-                routes.MapRoute(
-    name: "TurntableRoute",
-    template: "{area:exists}/{controller=Activity}/{action=Turntable}/{id}.html");
+                routes.MapControllerRoute(
+                    name: "TurntableRoute",
+                    pattern: "{area:exists}/{controller=Activity}/{action=Turntable}/{id}.html");
 
-                routes.MapRoute(
+                routes.MapControllerRoute(
                     name: "areaRoute",
-                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-                routes.MapRoute(
+                routes.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-            app.UseSignalR(routes =>
+            app.UseEndpoints(routes =>
             {
                 routes.MapHub<ScanningLoginHub>("/scanningLoginHub", options => options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
             });
@@ -119,7 +118,9 @@ namespace MsSystem.Web
         {
             services.AddOptions();
             services.Configure<WebEncoderOptions>(options => options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs));
-            services.AddMvc(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter))).AddJsonOptions(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
+
+            services.AddControllers(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
+                .AddNewtonsoftJson(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
             services.AddMemoryCache();
 
             string redisHost = configuration.GetSection("RedisConfig").GetValue<string>("Connection");

@@ -1,8 +1,8 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-buster-slim AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS base
 WORKDIR /app
 EXPOSE 8000
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 WORKDIR /src
 COPY ["src/Web/MVC/MsSystem.Web/MsSystem.Web.csproj", "src/Web/MVC/MsSystem.Web/"]
 COPY ["src/Web/MVC/Controllers/MsSystem.Web.Areas.Sys/MsSystem.Web.Areas.Sys.csproj", "src/Web/MVC/Controllers/MsSystem.Web.Areas.Sys/"]

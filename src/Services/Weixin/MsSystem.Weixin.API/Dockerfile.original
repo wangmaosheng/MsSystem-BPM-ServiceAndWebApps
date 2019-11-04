@@ -1,8 +1,8 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-buster-slim AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS base
 WORKDIR /app
 EXPOSE 5004
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 WORKDIR /src
 COPY ["src/Services/Weixin/MsSystem.Weixin.API/MsSystem.Weixin.API.csproj", "src/Services/Weixin/MsSystem.Weixin.API/"]
 COPY ["src/Services/Weixin/MsSystem.Weixin.IRepository/MsSystem.Weixin.IRepository.csproj", "src/Services/Weixin/MsSystem.Weixin.IRepository/"]

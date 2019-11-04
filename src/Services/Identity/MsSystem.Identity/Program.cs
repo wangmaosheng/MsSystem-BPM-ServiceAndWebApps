@@ -1,24 +1,24 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using NLog.Web;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace MsSystem.Identity
 {
     public class Program
     {
+
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
-        public static IWebHost CreateWebHostBuilder(string[] args)
-        {
-            return WebHost.CreateDefaultBuilder(args)
-                    //.UseNLog()
-                    .UseStartup<Startup>()
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>()
                     .UseUrls("http://*:5200")
-                    .Build();
-        }
+                    .UseKestrel();
+                });
 
     }
 }

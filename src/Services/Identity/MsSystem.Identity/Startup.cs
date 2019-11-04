@@ -32,9 +32,9 @@ namespace MsSystem.Identity
                 .AddProfileService<ProfileService>();
 
 
-            services.AddMvc();
+            services.AddControllers();
         }
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             app.UseZipkin();
             //loggerFactory.AddNLog();
@@ -46,7 +46,7 @@ namespace MsSystem.Identity
             //{
             //    env.ConfigureNLog("NLog.config");
             //}
-            app.UseMvc();
+            app.UseRouting();
             app.UseIdentityServer();
             app.UseServiceRegistration(new ServiceCheckOptions
             {
