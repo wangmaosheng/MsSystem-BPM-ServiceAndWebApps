@@ -25,6 +25,11 @@ namespace MsSystem.OA.Model
         /// 用户ID
         /// </summary>
         public long UserId { get; set; }
+
+        /// <summary>
+        /// 是否已读
+        /// </summary>
+        public byte IsRead { get; set; }
     }
     public sealed class OaMessageUserMapper : ClassMapper<OaMessageUser>
     {

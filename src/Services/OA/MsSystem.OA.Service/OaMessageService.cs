@@ -1,4 +1,5 @@
-﻿using JadeFramework.Core.Domain.Entities;
+﻿using Dapper;
+using JadeFramework.Core.Domain.Entities;
 using JadeFramework.Core.Extensions;
 using MsSystem.OA.IRepository;
 using MsSystem.OA.IService;
@@ -6,6 +7,7 @@ using MsSystem.OA.Model;
 using MsSystem.OA.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -183,6 +185,24 @@ namespace MsSystem.OA.Service
             }
         }
 
+
+        private async Task InsertAllMessageUser(OaMessage message, IDbTransaction transaction)
+        {
+            var userids = await _databaseFixture.Db.Connection.QueryAsync<long>("SELECT u.UserId FROM sys_user u WHERE u.IsDel=0");
+
+            List<OaMessageUser> list = new List<OaMessageUser>();
+            foreach (var item in userids)
+            {
+                OaMessageUser messageUser = new OaMessageUser
+                {
+                    MessageId = message.Id,
+                    UserId = item
+                };
+                list.Add(messageUser);
+            }
+            await _databaseFixture.Db.OaMessageUser.BulkInsertAsync(list, transaction);
+        }
+
         public async Task<List<OaMessage>> EnableMessageAsync(List<long> ids)
         {
             using (var tran = _databaseFixture.Db.BeginTransaction())
@@ -194,10 +214,18 @@ namespace MsSystem.OA.Service
                     foreach (var item in dbmsg)
                     {
                         item.IsEnable = 1;
-                        if (item.StartTime == 0 || item.EndTime == 0)
+                        item.IsExecuted = 1;
+                        item.StartTime = 0;
+                        item.EndTime = 0;
+                        switch ((OaMessageFaceUserType)item.FaceUserType)
                         {
-                            item.IsExecuted = 1;
+                            case OaMessageFaceUserType.All:
+                                await InsertAllMessageUser(item, tran);
+                                break;
+                            default:
+                                break;
                         }
+
                     }
                     await _databaseFixture.Db.OaMessage.BulkUpdateAsync(dbmsg, tran);
                     tran.Commit();
@@ -227,17 +255,12 @@ namespace MsSystem.OA.Service
                     {
                         return null;
                     }
-                    //判断是否存在
-                    var dbread = await _databaseFixture.Db.OaMessageUserRead.FindAsync(m => m.MessageId == id && m.UserId == userid);
-                    if (dbread == null)
+                    var dbmessageusers = await _databaseFixture.Db.OaMessageUser.FindAllAsync(m => m.MessageId == id && m.UserId == userid);
+                    foreach (var item in dbmessageusers)
                     {
-                        OaMessageUserRead userRead = new OaMessageUserRead
-                        {
-                            MessageId = dbmessage.Id,
-                            UserId = userid
-                        };
-                        await _databaseFixture.Db.OaMessageUserRead.InsertAsync(userRead, tran);
+                        item.IsRead = 1;
                     }
+                    await _databaseFixture.Db.OaMessageUser.BulkUpdateAsync(dbmessageusers, tran);
                     tran.Commit();
                     return new OaMessageMyListDetail
                     {

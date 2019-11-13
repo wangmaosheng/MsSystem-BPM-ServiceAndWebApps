@@ -90,10 +90,10 @@ namespace MsSystem.WF.API
                 options.SwaggerEndpoint($"/{apiName}/swagger.json", $"{apiName} V1");
             });
             app.UseMvc();
-            app.UseServiceRegistration(new ServiceCheckOptions
-            {
-                HealthCheckUrl = "api/HealthCheck/Ping"
-            });
+            //app.UseServiceRegistration(new ServiceCheckOptions
+            //{
+            //    HealthCheckUrl = "api/HealthCheck/Ping"
+            //});
         }
 
     }
@@ -104,7 +104,7 @@ namespace MsSystem.WF.API
             //缓存
             services.AddScoped<ICachingProvider, MemoryCachingProvider>();
             services.AddMemoryCache();
-            services.AddServiceRegistration();
+            //services.AddServiceRegistration();
             services.AddResponseCompression();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

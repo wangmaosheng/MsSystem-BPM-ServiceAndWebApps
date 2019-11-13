@@ -107,15 +107,15 @@
                                 <div class="dropdown-messages-box">
                                     <div class="media-body">
                                         <a data-type="@item.Id">@item.Title</a>
-                                        <small class="text-muted right">@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd")</small>
+                                        <small class="text-muted pull-right">@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd hh:mm:ss")</small>
                                     </div>
                                 </div>
                             </li>
                             <li class="divider"></li>
                         }
-                        <li id="messageTipAll" style="display:none">
+                        <li id="messageTipAll" style="@(messagePage.Items.HasItems() ? "":"display:none")">
                             <div class="text-center link-block">
-                                <a class="J_menuItem" href="/Sys/Message/Index"><i class="fa fa-envelope"></i> <strong> 查看所有消息</strong></a>
+                                <a class="J_menuItem" href="/OA/Message/MyList"><i class="fa fa-envelope"></i> <strong> 查看所有消息</strong></a>
                             </div>
                         </li>
                     </ul>
@@ -180,13 +180,15 @@
                         <i class="fa fa-gear"></i> 主题
                     </a>
                 </li>
-                <li class=""><a data-toggle="tab" href="#tab-2">
-                    通知
-                </a>
+                <li class="">
+                    <a data-toggle="tab" href="#tab-2">
+                        通知
+                    </a>
                 </li>
-                <li><a data-toggle="tab" href="#tab-3">
-                    项目进度
-                </a>
+                <li>
+                    <a data-toggle="tab" href="#tab-3">
+                        项目进度
+                    </a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -224,8 +226,8 @@
                         </div>
                         <div class="setings-item">
                             <span>
-                    固定宽度
-                </span>
+                                固定宽度
+                            </span>
 
                             <div class="switch">
                                 <div class="onoffswitch">
@@ -240,24 +242,24 @@
                         <div class="title">皮肤选择</div>
                         <div class="setings-item default-skin nb">
                             <span class="skin-name ">
-                        <a href="#" class="s-skin-0">
-                            默认皮肤
-                        </a>
-                </span>
+                                <a href="#" class="s-skin-0">
+                                    默认皮肤
+                                </a>
+                            </span>
                         </div>
                         <div class="setings-item blue-skin nb">
                             <span class="skin-name ">
-                    <a href="#" class="s-skin-1">
-                        蓝色主题
-                    </a>
-                </span>
+                                <a href="#" class="s-skin-1">
+                                    蓝色主题
+                                </a>
+                            </span>
                         </div>
                         <div class="setings-item yellow-skin nb">
                             <span class="skin-name ">
-                    <a href="#" class="s-skin-3">
-                        黄色/紫色主题
-                    </a>
-                </span>
+                                <a href="#" class="s-skin-3">
+                                    黄色/紫色主题
+                                </a>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -333,22 +335,12 @@
                     return "Authorization", getToken();
                 }
             }).build();
+        function getLocalTime(nS) {  
+            return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');  
+        }
         connection.on("ReceiveMessage", function (data) {
-            document.getElementById('messageTipNums').textContent = parseInt(document.getElementById('messageTipNums').textContent) + 1;
-            var html = '';
-            html += '<li class="m-t-xs">';
-            html += '<div class="dropdown-messages-box">';
-            html += '<div class="media-body">';
-            html += '<a data-type="' + data.id + '">' + data.title + '</a>';
-            var oldTime = (new Date(data.createTime)).getTime();
-            var curTime = new Date(oldTime).format("yyyy-MM-dd");
-            html += '<small class="text-muted right">' + curTime + '</small>';
-            html += '</div>';
-            html += '</div>';
-            html += '</li>';
-            html += '<li class="divider"></li>';
-            $('#messageTipContent').prepend(html);
-            $('#messageTipAll').show();
+            debugger;
+            fillMsg(data.id, data.title, data.createTime);
         });
         connection.start().then(function () {
             connection.invoke('InitMessage', '@user.UserId');
@@ -361,6 +353,21 @@
 
         function getToken() {
             return '@tokenClient.GetToken().Result';
+        }
+
+        function fillMsg(id,title,createTime) {
+            document.getElementById('messageTipNums').textContent = parseInt(document.getElementById('messageTipNums').textContent) + 1;
+            var html = '<li class="m-t-xs">';
+            html += '<div class="dropdown-messages-box">';
+            html += '<div class="media-body">';
+            html += '<a data-type="' + id + '">' + title + '</a>';
+            html += '<small class="text-muted pull-right">' + $.unixToDate(createTime, true) + '</small>';
+            html += '</div>';
+            html += '</div>';
+            html += '</li>';
+            html += '<li class="divider"></li>';
+            $('#messageTipContent').prepend(html);
+            $('#messageTipAll').show();
         }
     </script>
 }

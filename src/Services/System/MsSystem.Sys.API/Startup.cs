@@ -38,7 +38,7 @@ namespace MsSystem.Sys.API
 
             services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
 
-            services.AddServiceRegistration();
+            //services.AddServiceRegistration();
 
             services.AddResponseCompression();
 
@@ -153,10 +153,10 @@ namespace MsSystem.Sys.API
             });
 
             app.UseMvc();
-            app.UseServiceRegistration(new ServiceCheckOptions
-            {
-                HealthCheckUrl = "api/HealthCheck/Ping"
-            });
+            //app.UseServiceRegistration(new ServiceCheckOptions
+            //{
+            //    HealthCheckUrl = "api/HealthCheck/Ping"
+            //});
         }
     }
 }

@@ -19,23 +19,6 @@ services:
     container_name: consul-agent-1
     command: "agent -retry-join consul-server-bootstrap -client 0.0.0.0"
 
-  consul-agent-2:
-    container_name: consul-agent-2
-    <<: *consul-agent
-  
-  consul-agent-3:
-    container_name: consul-agent-3
-    <<: *consul-agent
-
-  consul-server-1: &consul-server
-    container_name: consul-server-1
-    <<: *consul-agent
-    command: "agent -server -retry-join consul-server-bootstrap -client 0.0.0.0"
-
-  consul-server-2:
-    container_name: consul-server-2
-    <<: *consul-server
-
   consul-server-bootstrap:
     container_name: consul-server-bootstrap
     <<: *consul-agent
@@ -44,7 +27,7 @@ services:
      - "8500:8500"
      - "8600:8600"
      - "8600:8600/udp"
-    command: "agent -server -bootstrap-expect 3 -ui -client 0.0.0.0"
+    command: "agent -server -bootstrap-expect 1 -ui -client 0.0.0.0"
 
   redis:
     image: redis
@@ -81,15 +64,16 @@ services:
       - "5672:5672"
 
   gateway:
+    image: wangms/mssystemgateway:20191111071539
     container_name: gateway
     ports:
       - "5000:5000"
     depends_on:
-      - mysql
       - consul-server-bootstrap
     restart: always
 
   identity:
+    image: wangms/mssystemidentity:20191111070628
     container_name: identity
     ports:
       - "5200:5200"
@@ -102,6 +86,7 @@ services:
     restart: always
 
   sysapi:
+    image: wangms/mssystemsysapi:20191111073855
     container_name: sysapi
     ports:
       - "5002:5002"
@@ -114,6 +99,7 @@ services:
     restart: always
 
   wfapi:
+    image: wangms/mssystemwfapi:20191111074959
     container_name: wfapi
     ports:
       - "5003:5003"
@@ -126,6 +112,7 @@ services:
     restart: always
 
   weixinapi:
+    image: wangms/mssystemweixinapi:20191111065044
     container_name: weixinapi
     ports:
       - "5004:5004"
@@ -154,8 +141,8 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - redis
       - mysql
+      - redis
       - gateway
     restart: always
 

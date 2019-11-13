@@ -65,7 +65,7 @@ namespace MsSystem.OA.API.Controllers
         /// <summary>
         /// 使消息可用
         /// </summary>
-        /// <param name="ids"></param>
+        /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost]
         public async Task<bool> EnableMessageAsync([FromBody]MessageEnableDTO dto)

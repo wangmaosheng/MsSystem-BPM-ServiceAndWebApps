@@ -23,8 +23,6 @@ namespace MsSystem.OA.Repository
 
         private IOaMessageRepository _oaMessage;
         public IOaMessageRepository OaMessage => _oaMessage ?? (_oaMessage = new OaMessageRepository(Connection, _config));
-        private IOaMessageUserReadRepository _messageUserRead;
-        public IOaMessageUserReadRepository OaMessageUserRead => _messageUserRead ?? (_messageUserRead = new OaMessageUserReadRepository(Connection, _config));
         private IOaMessageUserRepository _messageUser;
         public IOaMessageUserRepository OaMessageUser => _messageUser ?? (_messageUser = new OaMessageUserRepository(Connection, _config));
 

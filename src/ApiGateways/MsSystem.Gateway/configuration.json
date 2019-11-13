@@ -1,12 +1,7 @@
 ﻿{
   "GlobalConfiguration": {
     "RequestIdKey": "OcRequestId",
-    "AdministrationPath": "/administration",
-    "ServiceDiscoveryProvider": {
-      "Host": "consul-server-bootstrap",
-      "Port": 8500,
-      "Type": "Consul"
-    }
+    "AdministrationPath": "/administration"
   },
   "ReRoutes": [
     // identity center
@@ -15,16 +10,24 @@
       "DownstreamScheme": "http",
       "UpstreamPathTemplate": "/connect/token",
       "UpstreamHttpMethod": [ "Post" ],
-      "UseServiceDiscovery": true,
-      "ServiceName": "identity"
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "identity",
+          "Port": 5200
+        }
+      ]
     },
     {
       "DownstreamPathTemplate": "/.well-known/openid-configuration",
       "DownstreamScheme": "http",
       "UpstreamPathTemplate": "/.well-known/openid-configuration",
       "UpstreamHttpMethod": [ "get" ],
-      "UseServiceDiscovery": true,
-      "ServiceName": "identity"
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "identity",
+          "Port": 5200
+        }
+      ]
     },
     //signalr
     {
@@ -36,8 +39,12 @@
         "AuthenticationProviderKey": "MsSystem",
         "AllowedScopes": []
       },
-      "UseServiceDiscovery": true,
-      "ServiceName": "oaapi"
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "oaapi",
+          "Port": 5006
+        }
+      ]
     },
     //MsSystem.Sys.API
     {
@@ -49,16 +56,24 @@
         "AuthenticationProviderKey": "MsSystem",
         "AllowedScopes": []
       },
-      "UseServiceDiscovery": true,
-      "ServiceName": "sysapi"
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "sysapi",
+          "Port": 5002
+        }
+      ]
     },
     {
       "DownstreamPathTemplate": "/MsSystem.Sys.API/swagger.json",
       "DownstreamScheme": "http",
       "UpstreamPathTemplate": "/MsSystem.Sys.API/swagger.json",
       "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ],
-      "UseServiceDiscovery": true,
-      "ServiceName": "sysapi"
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "sysapi",
+          "Port": 5002
+        }
+      ]
     },
     //Weixin API
     {
@@ -66,16 +81,24 @@
       "DownstreamScheme": "http",
       "UpstreamPathTemplate": "/api/wechat/weixin/{action}", //微信服务器接入
       "UpstreamHttpMethod": [ "Get", "Post" ],
-      "UseServiceDiscovery": true,
-      "ServiceName": "weixinapi"
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "weixinapi",
+          "Port": 5004
+        }
+      ]
     },
     {
       "DownstreamPathTemplate": "/MsSystem.Weixin.API/swagger.json",
       "DownstreamScheme": "http",
       "UpstreamPathTemplate": "/MsSystem.Weixin.API/swagger.json",
       "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ],
-      "UseServiceDiscovery": true,
-      "ServiceName": "weixinapi"
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "weixinapi",
+          "Port": 5004
+        }
+      ]
     },
     {
       "DownstreamPathTemplate": "/api/{controller}/{action}",
@@ -86,8 +109,12 @@
         "AuthenticationProviderKey": "MsSystem",
         "AllowedScopes": []
       },
-      "UseServiceDiscovery": true,
-      "ServiceName": "weixinapi"
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "weixinapi",
+          "Port": 5004
+        }
+      ]
     },
     {
       "DownstreamPathTemplate": "/{everything}",
@@ -98,8 +125,12 @@
         "AuthenticationProviderKey": "MsSystem",
         "AllowedScopes": []
       },
-      "UseServiceDiscovery": true,
-      "ServiceName": "weixinapi"
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "weixinapi",
+          "Port": 5004
+        }
+      ]
     },
     //MsSystem WF API
     {
@@ -111,16 +142,24 @@
         "AuthenticationProviderKey": "MsSystem",
         "AllowedScopes": []
       },
-      "UseServiceDiscovery": true,
-      "ServiceName": "wfapi"
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "wfapi",
+          "Port": 5003
+        }
+      ]
     },
     {
       "DownstreamPathTemplate": "/MsSystem.WF.API/swagger.json",
       "DownstreamScheme": "http",
       "UpstreamPathTemplate": "/MsSystem.WF.API/swagger.json",
       "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ],
-      "UseServiceDiscovery": true,
-      "ServiceName": "wfapi"
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "wfapi",
+          "Port": 5003
+        }
+      ]
     },
     //MsSystem.OA.API
     {
@@ -132,16 +171,24 @@
         "AuthenticationProviderKey": "MsSystem",
         "AllowedScopes": []
       },
-      "UseServiceDiscovery": true,
-      "ServiceName": "oaapi"
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "oaapi",
+          "Port": 5006
+        }
+      ]
     },
     {
       "DownstreamPathTemplate": "/MsSystem.OA.API/swagger.json",
       "DownstreamScheme": "http",
       "UpstreamPathTemplate": "/MsSystem.OA.API/swagger.json",
       "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ],
-      "UseServiceDiscovery": true,
-      "ServiceName": "oaapi"
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "oaapi",
+          "Port": 5006
+        }
+      ]
     }
   ]
 }

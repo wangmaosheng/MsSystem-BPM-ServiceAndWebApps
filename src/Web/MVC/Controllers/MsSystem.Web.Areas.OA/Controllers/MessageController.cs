@@ -130,6 +130,29 @@ namespace MsSystem.Web.Areas.OA.Controllers
         }
 
         /// <summary>
+        /// 获取首页消息
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> HomeMessage()
+        {
+            OaMessageMyListSearch search = new OaMessageMyListSearch();
+            if (search.PageIndex == 0)
+            {
+                search.PageIndex = 1;
+            }
+            if (search.PageSize == 0)
+            {
+                search.PageSize = 10;
+            }
+            search.IsRead = 0;
+            search.UserId = UserIdentity.UserId;
+            var page = await _messageService.MyListAsync(search);
+            return Ok(page);
+        }
+
+
+
+        /// <summary>
         /// 消息明细
         /// </summary>
         /// <param name="id"></param>

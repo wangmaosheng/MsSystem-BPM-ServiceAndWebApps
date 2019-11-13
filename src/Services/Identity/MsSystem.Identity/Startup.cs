@@ -24,7 +24,7 @@ namespace MsSystem.Identity
 
             services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
 
-            services.AddServiceRegistration();
+            //services.AddServiceRegistration();
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
                 .AddInMemoryApiResources(Config.GetApiResources())
@@ -48,10 +48,10 @@ namespace MsSystem.Identity
             //}
             app.UseMvc();
             app.UseIdentityServer();
-            app.UseServiceRegistration(new ServiceCheckOptions
-            {
-                HealthCheckUrl = "api/HealthCheck/Ping"
-            });
+            //app.UseServiceRegistration(new ServiceCheckOptions
+            //{
+            //    HealthCheckUrl = "api/HealthCheck/Ping"
+            //});
         }
     }
 }

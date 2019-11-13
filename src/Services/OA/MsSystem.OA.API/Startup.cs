@@ -96,10 +96,10 @@ namespace MsSystem.OA.API
                 routes.MapHub<MessageHub>("/messageHub", options => options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
                 routes.MapHub<ChatHub>("/chatHub", options => options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
             });
-            app.UseServiceRegistration(new ServiceCheckOptions
-            {
-                HealthCheckUrl = "api/HealthCheck/Ping"
-            });
+            //app.UseServiceRegistration(new ServiceCheckOptions
+            //{
+            //    HealthCheckUrl = "api/HealthCheck/Ping"
+            //});
         }
     }
     public static class ServiceCollectionExtensions
@@ -107,7 +107,7 @@ namespace MsSystem.OA.API
         public static IServiceCollection AddCustomMvc(this IServiceCollection services, IOptions<AppSettings> appSettings)
         {
             services.AddScoped<ICachingProvider, MemoryCachingProvider>();
-            services.AddServiceRegistration();
+            //services.AddServiceRegistration();
             services.AddResponseCompression();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(opt =>
