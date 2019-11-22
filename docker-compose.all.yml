@@ -14,11 +14,42 @@ services:
       - "./docker/mysql/init:/docker-entrypoint-initdb.d/"
     restart: always
 
+  consul-agent-1: &consul-agent
+    image: consul:latest
+    container_name: consul-agent-1
+    command: "agent -retry-join consul-server-bootstrap -client 0.0.0.0"
+
+  consul-server-bootstrap:
+    container_name: consul-server-bootstrap
+    <<: *consul-agent
+    ports:
+     - "8400:8400"
+     - "8500:8500"
+     - "8600:8600"
+     - "8600:8600/udp"
+    command: "agent -server -bootstrap-expect 1 -ui -client 0.0.0.0"
+
   redis:
     image: redis
     container_name: redis
     ports:
       - "6379:6379"
+    restart: always
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    environment:
+      - STORAGE_TYPE=mysql
+      - MYSQL_DB=zipkin
+      - MYSQL_USER=root
+      - MYSQL_PASS=123456
+      - MYSQL_TCP_PORT=3306
+      - MYSQL_HOST=mysql
+    ports:
+      - "9411:9411"
+    depends_on:
+      - mysql
     restart: always
 
   rabbitmq:
@@ -36,6 +67,8 @@ services:
     container_name: gateway
     ports:
       - "5000:5000"
+    depends_on:
+      - consul-server-bootstrap
     restart: always
 
   identity:
@@ -44,8 +77,10 @@ services:
       - "5200:5200"
     depends_on:
       - mysql
+      - zipkin
       - redis
       - rabbitmq
+      - consul-server-bootstrap
     restart: always
 
   sysapi:
@@ -54,8 +89,10 @@ services:
       - "5002:5002"
     depends_on:
       - mysql
+      - zipkin
       - redis
       - rabbitmq
+      - consul-server-bootstrap
     restart: always
 
   wfapi:
@@ -64,8 +101,10 @@ services:
       - "5003:5003"
     depends_on:
       - mysql
+      - zipkin
       - redis
       - rabbitmq
+      - consul-server-bootstrap
     restart: always
 
   weixinapi:
@@ -74,8 +113,10 @@ services:
       - "5004:5004"
     depends_on:
       - mysql
+      - zipkin
       - redis
       - rabbitmq
+      - consul-server-bootstrap
     restart: always
 
   oaapi:
@@ -84,8 +125,10 @@ services:
       - "5006:5006"
     depends_on:
       - mysql
+      - zipkin
       - redis
       - rabbitmq
+      - consul-server-bootstrap
     restart: always
 
   web:

@@ -9,15 +9,15 @@ Page({
     imgs: [
       {
         id:1,
-        src:'http://img1.ph.126.net/cklMeYA02CjMLCfn7Vde0Q==/1600466717677148080.jpg'
+        src:'../../images/public/1.jpg'
       },
       {
         id: 1,
-        src: 'http://img1.ph.126.net/cklMeYA02CjMLCfn7Vde0Q==/1600466717677148080.jpg'
+        src: '../../images/public/1.jpg'
       },
       {
         id: 1,
-        src: 'http://img1.ph.126.net/cklMeYA02CjMLCfn7Vde0Q==/1600466717677148080.jpg'
+        src: '../../images/public/1.jpg'
       },
     ],
     indicatorDots: true,
@@ -44,7 +44,7 @@ Page({
           success: (response) => {
             console.info(response);
           },
-          fail: function () {
+          fail: function (err) {
             debugger;
           },
           complete: function () {

@@ -22,7 +22,7 @@ namespace MsSystem.Identity
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
+            //services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
 
             //services.AddServiceRegistration();
             services.AddIdentityServer()
@@ -36,7 +36,7 @@ namespace MsSystem.Identity
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            app.UseZipkin();
+            //app.UseZipkin();
             //loggerFactory.AddNLog();
             //if (env.IsDevelopment())
             //{

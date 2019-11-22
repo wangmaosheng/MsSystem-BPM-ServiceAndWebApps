@@ -1,85 +1,10 @@
-﻿@model List<ResourceTreeViewModel>
-@{
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    UserIdentity user = ViewBag.User;
     var messagePage = ViewBag.MessagePage as Page<MsSystem.Web.Areas.OA.Model.OaMessageMyList>;
 }
 <!--左侧导航开始-->
-<nav class="navbar-default navbar-static-side" role="navigation">
-    <div class="nav-close">
-        <i class="fa fa-times-circle"></i>
-    </div>
-    <div class="sidebar-collapse">
-        <ul class="nav" id="side-menu">
-            <li class="nav-header">
-                <div class="dropdown profile-element">
-                    <span><img title="@user.UserName" alt="@user.UserName" class="img-circle" style="width:65px;" src="@user.HeadImg" /></span>
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <span class="clear">
-                            <span class="text-muted text-xs block"><strong class="font-bold">@user.UserName</strong><b class="caret"></b></span>
-                        </span>
-                    </a>
-                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                        <li>
-                            <a class="J_menuItem" href="/Sys/User/Image">修改头像</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="/Sys/User/Show?id=@user.UserId">基本信息</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="/sys/user/logout">安全退出</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="logo-element">
-                    MS
-                </div>
-            </li>
-            @foreach (var item in Model)
-            {
-                <li>
-                    <a>
-                        <i class="@item.Icon"></i>
-                        <span class="nav-label">@item.ResourceName</span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    @if (item.Children.HasItems())
-                    {
-                        <ul class="nav nav-second-level">
-                            @foreach (var item2 in item.Children)
-                            {
-                                <li>
-                                    @if (item2.Children.HasItems())
-                                    {
-                                        <a class="J_menuItem">
-                                            <i class="@item2.Icon"></i>
-                                            <span class="nav-label">@item2.ResourceName</span>
-                                            <span class="fa arrow"></span>
-                                        </a>
-                                        <ul class="nav nav-third-level">
-                                            @foreach (var item3 in item2.Children)
-                                            {
-                                                <li>
-                                                    <a class="J_menuItem" href="@item3.ResourceUrl"><i class="@item3.Icon"></i>@item3.ResourceName</a>
-                                                </li>
-                                            }
-                                        </ul>
-                                    }
-                                    else
-                                    {
-                                        <a class="J_menuItem" href="@item2.ResourceUrl"><i class="@item2.Icon"></i>@item2.ResourceName</a>
-                                    }
-                                </li>
-                            }
-                        </ul>
-                    }
-                </li>
-            }
-        </ul>
+@await Component.InvokeAsync("LeftMenu")
 
-    </div>
-</nav>
 <!--左侧导航结束-->
 <!--右侧部分开始-->
 <div id="page-wrapper" class="gray-bg dashbard-1">
@@ -106,7 +31,7 @@
                             <li class="m-t-xs">
                                 <div class="dropdown-messages-box">
                                     <div class="media-body">
-                                        <a data-type="@item.Id">@item.Title</a>
+                                        <a data-type="@item.MsgType">@item.Title</a>
                                         <small class="text-muted pull-right">@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd hh:mm:ss")</small>
                                     </div>
                                 </div>
@@ -335,15 +260,15 @@
                     return "Authorization", getToken();
                 }
             }).build();
-        function getLocalTime(nS) {  
-            return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');  
+        function getLocalTime(nS) {
+            return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');
         }
         connection.on("ReceiveMessage", function (data) {
             debugger;
             fillMsg(data.id, data.title, data.createTime);
         });
         connection.start().then(function () {
-            connection.invoke('InitMessage', '@user.UserId');
+            connection.invoke('InitMessage', $('img[name=userinfo]').attr('data-userid'));
         }).catch(function (err) {
             return console.error(err.toString());
             });

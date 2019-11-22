@@ -3,10 +3,10 @@
     "pages/start/start",
     "pages/main/index",
     "pages/index/index",
-    
     "pages/sys/heartbeat/heartbeat",
-
-    "pages/oa/main/index"
+    "pages/oa/main/index",
+    "pages/beauty/index/index",
+    "pages/beauty/image/image"
   ],
   "window": {
     "backgroundTextStyle": "light",

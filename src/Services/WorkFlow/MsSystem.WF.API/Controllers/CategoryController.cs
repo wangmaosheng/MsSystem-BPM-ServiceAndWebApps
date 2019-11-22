@@ -28,7 +28,7 @@ namespace MsSystem.WF.API.Controllers
         [HttpGet]
         public async Task<List<CategoryTreeListDto>> GetTreeListAsync()
         {
-            await capPublisher.PublishAsync("WorkFlowStatusChanged", DateTime.Now);
+            //await capPublisher.PublishAsync("WorkFlowStatusChanged", DateTime.Now);
             return await categoryService.GetTreeListAsync();
         }
 

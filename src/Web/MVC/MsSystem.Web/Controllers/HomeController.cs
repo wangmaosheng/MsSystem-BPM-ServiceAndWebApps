@@ -34,29 +34,39 @@ namespace MsSystem.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            ViewBag.User = this.UserIdentity;
-            //读取左侧菜单
-            var resources = await _resourceService.GetLeftTreeAsync(UserIdentity.UserId);
-            if (resources.Any())
+            var messagePage = await _messageService.MyListAsync(new OaMessageMyListSearch()
             {
-                //获取消息
-                var messagePage = await _messageService.MyListAsync(new OaMessageMyListSearch()
-                {
-                    IsDel = 0,
-                    IsRead = 0,
-                    PageIndex = 1,
-                    PageSize = 10,
-                    UserId = UserIdentity.UserId
-                });
-                ViewBag.MessagePage = messagePage;
-                //读取该用户全部操作权限并缓存
-                await _permissionStorage.InitAsync();
-                return View(resources);
-            }
-            else
-            {
-                return Redirect("/error/nomenu");
-            }
+                IsDel = 0,
+                IsRead = 0,
+                PageIndex = 1,
+                PageSize = 10,
+                UserId = UserIdentity.UserId
+            });
+            ViewBag.MessagePage = messagePage;
+            return View();
+            //ViewBag.User = this.UserIdentity;
+            ////读取左侧菜单
+            //var resources = await _resourceService.GetLeftTreeAsync(UserIdentity.UserId);
+            //if (resources.Any())
+            //{
+            //    //获取消息
+            //    var messagePage = await _messageService.MyListAsync(new OaMessageMyListSearch()
+            //    {
+            //        IsDel = 0,
+            //        IsRead = 0,
+            //        PageIndex = 1,
+            //        PageSize = 10,
+            //        UserId = UserIdentity.UserId
+            //    });
+            //    ViewBag.MessagePage = messagePage;
+            //    //读取该用户全部操作权限并缓存
+            //    await _permissionStorage.InitAsync();
+            //    return View(resources);
+            //}
+            //else
+            //{
+            //    return Redirect("/error/nomenu");
+            //}
         }
         /// <summary>
         /// 默认打开页面
