@@ -43,9 +43,3 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
 
-  web:
-    build:
-      context: .
-      dockerfile: src/Web/MVC/MsSystem.Web/Dockerfile
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development

@@ -2,18 +2,6 @@ version: '3.4'
 
 services:
 
-  mysql:
-    image: mysql/mysql-server:5.7
-    container_name: mysql
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: "123456"
-    volumes:
-      - "./docker/mysql/conf/my.cnf:/etc/my.cnf"
-      - "./docker/mysql/init:/docker-entrypoint-initdb.d/"
-    restart: always
-
   redis:
     image: redis
     container_name: redis
@@ -43,7 +31,6 @@ services:
     ports:
       - "5200:5200"
     depends_on:
-      - mysql
       - redis
       - rabbitmq
     restart: always
@@ -53,7 +40,6 @@ services:
     ports:
       - "5002:5002"
     depends_on:
-      - mysql
       - redis
       - rabbitmq
     restart: always
@@ -63,7 +49,6 @@ services:
     ports:
       - "5003:5003"
     depends_on:
-      - mysql
       - redis
       - rabbitmq
     restart: always
@@ -73,7 +58,6 @@ services:
     ports:
       - "5004:5004"
     depends_on:
-      - mysql
       - redis
       - rabbitmq
     restart: always
@@ -83,17 +67,6 @@ services:
     ports:
       - "5006:5006"
     depends_on:
-      - mysql
       - redis
       - rabbitmq
-    restart: always
-
-  web:
-    container_name: web
-    ports:
-      - "8000:8000"
-    depends_on:
-      - mysql
-      - redis
-      - gateway
     restart: always

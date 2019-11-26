@@ -25,8 +25,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <summary>
         /// 登录
         /// </summary>
-        /// <param name="account"></param>
-        /// <param name="password"></param>
+        /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
         public async Task<ILoginResult<UserIdentity>> LoginAsync([FromBody]LoginDTO model)
@@ -37,7 +36,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <summary>
         /// 扫码登录
         /// </summary>
-        /// <param name="account"></param>
+        /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
         public async Task<ILoginResult<UserIdentity>> ScanningLoginAsync([FromBody]LoginDTO model)

@@ -69,7 +69,7 @@
                                     <th class="w150">流程类型</th>
                                     <th class="w100 text-center">状态</th>
                                     <th class="w150">创建时间</th>
-                                    <th class="w75 text-center">操作</th>
+                                    <th class="w100 text-center">操作</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -87,18 +87,23 @@
                                         <td class="text-center">@Html.Raw(HtmlExtensions.ToWorkFlowInstanceStatusIcon(item.IsFinish,item.Status))</td>
                                         <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd hh:mm:ss")</td>
                                         <td class="text-center">
+                                            @if (item.IsFinish == 0 && (WorkFlowStatus)item.Status == WorkFlowStatus.Running)
+                                            {
+                                                <a>催办</a>
+                                                <span>/</span>
+                                            }
                                             @switch ((WorkFlowFormType)item.FormType)
                                             {
                                                 case WorkFlowFormType.System:
-                                                    <a name="showflow" data-formtype="@item.FormType" 
-                                                       data-formid="@item.FormData" 
+                                                    <a name="showflow" data-formtype="@item.FormType"
+                                                       data-formid="@item.FormData"
                                                        data-formname="@item.FormName"
                                                        data-formurl="@item.FormUrl">查看</a>
                                                     break;
                                                 case WorkFlowFormType.Custom:
-                                                    <a name="showflow" data-formtype="@item.FormType"  
-                                                       data-formname="@item.FormName" 
-                                                       data-flowid="@item.FlowId" 
+                                                    <a name="showflow" data-formtype="@item.FormType"
+                                                       data-formname="@item.FormName"
+                                                       data-flowid="@item.FlowId"
                                                        data-instanceid="@item.InstanceId">查看</a>
                                                     break;
                                             }
