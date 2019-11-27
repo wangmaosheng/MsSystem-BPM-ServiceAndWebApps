@@ -123,7 +123,7 @@ namespace MsSystem.Web
                 .AddNewtonsoftJson(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
             services.AddMemoryCache();
 
-            string redisHost = configuration.GetSection("RedisConfig").GetValue<string>("Connection");
+            string redisHost = configuration.GetSection("RedisConfig").GetSection("Redis_Default").GetValue<string>("Connection");
             services.AddDistributedRedisCache(options =>
             {
                 options.Configuration = redisHost;

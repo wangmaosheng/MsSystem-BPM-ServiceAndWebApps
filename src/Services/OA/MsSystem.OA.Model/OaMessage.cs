@@ -19,13 +19,13 @@ namespace MsSystem.OA.Model
 
         /// <summary>
         /// 消息类型
-        /// <see cref="SysMessageType"/>
+        /// <see cref="OaMessageType"/>
         /// </summary>
         public int MsgType { get; set; }
 
         /// <summary>
         /// 面向人员类型
-        /// <see cref="SysMessageFaceUserType"/>
+        /// <see cref="OaMessageFaceUserType"/>
         /// </summary>
         public byte FaceUserType { get; set; }
 

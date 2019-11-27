@@ -37,9 +37,9 @@ namespace MsSystem.Weixin.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddServiceRegistration();
+            //services.AddServiceRegistration();
 
-            services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
+            //services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
 
             services.AddResponseCompression();
 
@@ -105,7 +105,7 @@ namespace MsSystem.Weixin.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseZipkin();
+            //app.UseZipkin();
 
             if (env.IsDevelopment())
             {
@@ -143,10 +143,10 @@ namespace MsSystem.Weixin.API
                 routes.MapHub<ChatHub>("/ChatHub", options =>
                     options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
             });
-            app.UseServiceRegistration(new ServiceCheckOptions
-            {
-                HealthCheckUrl = "api/HealthCheck/Ping"
-            });
+            //app.UseServiceRegistration(new ServiceCheckOptions
+            //{
+            //    HealthCheckUrl = "api/HealthCheck/Ping"
+            //});
         }
     }
 }

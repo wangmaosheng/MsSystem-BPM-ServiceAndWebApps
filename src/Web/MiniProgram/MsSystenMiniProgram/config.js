@@ -9,7 +9,7 @@ module.exports = {
     client_secret: "123",
     grant_type: "client_credentials",
     scopes: "mssystem_api",
-    url: "http://10.0.75.1:5000",
+    url: "http://localhost:5000",
     tokenurl: "/connect/token",
     tokenkey: 'GATEWAYTOKEN',
     tokenTimeKey: "GATEWAYTOKENexpiredTime",

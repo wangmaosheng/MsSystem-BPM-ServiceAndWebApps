@@ -26,6 +26,12 @@
 </view>
 <view class='grid'>
     <view class='itemgrids'>
+
+        <navigator url='../beauty/index/index' class='itemgrid' hovor-class='itemgrid_active'>
+            <image class='itemgrid_icon' src='../../images/public/heartbeat.png'></image>
+            <view class='itemgrid_label'>美女图片</view>
+        </navigator>
+
         <navigator url='../oa/main/index' class='itemgrid' hovor-class='itemgrid_active'>
             <image class='itemgrid_icon' src='../../images/oa.png'></image>
             <view class='itemgrid_label'>OA系统</view>
@@ -34,16 +40,14 @@
             <image class='itemgrid_icon' src='../../images/public/heartbeat.png'></image>
             <view class='itemgrid_label'>系统心跳检查</view>
         </navigator>
+
         <view class='itemgrid' hovor-class='itemgrid_active'  bindtap='scanCode'>
             <image class='itemgrid_icon' src='../../images/oa.png'></image>
             <view class='itemgrid_label'>
               扫码登录
             </view>
         </view>
-        <navigator url='' class='itemgrid' hovor-class='itemgrid_active'>
-            <image class='itemgrid_icon' src='../../images/oa.png'></image>
-            <view class='itemgrid_label'>文体数码</view>
-        </navigator>
+
         <navigator url='' class='itemgrid' hovor-class='itemgrid_active'>
             <image class='itemgrid_icon' src='../../images/oa.png'></image>
             <view class='itemgrid_label'>闲置服饰</view>

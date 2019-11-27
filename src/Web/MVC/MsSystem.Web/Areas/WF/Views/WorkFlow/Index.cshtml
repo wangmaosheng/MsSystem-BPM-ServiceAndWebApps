@@ -76,8 +76,9 @@
                                     <th class="w50"><input type="checkbox" id="ms_checkall" class="i-checks" /></th>
                                     <th class="w300">流程ID</th>
                                     <th class="w200">流程编号</th>
-                                    <th>流程名称</th>
-                                    <th>流程备注</th>
+                                    <th style="min-width:70px">流程名称</th>
+                                    <th style="min-width:70px">流程备注</th>
+                                    <th class="w100 text-center">流程版本</th>
                                     <th class="w100 text-center">状态</th>
                                     <th class="w150">创建时间</th>
                                     <th class="w75 text-center">操作</th>
@@ -94,6 +95,7 @@
                                         <td>@item.FlowCode</td>
                                         <td>@item.FlowName</td>
                                         <td>@item.Memo</td>
+                                        <td class="text-center">@item.FlowVersion</td>
                                         <td class="text-center">
                                             @if (item.Enable == 0)
                                             {

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MsSystem.Sys.IService;
 using MsSystem.Sys.ViewModel;
-using NLog;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

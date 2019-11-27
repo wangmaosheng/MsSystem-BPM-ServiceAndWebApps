@@ -1,6 +1,20 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : docker mysql
+ Source Server Type    : MySQL
+ Source Server Version : 50727
+ Source Host           : localhost:3306
+ Source Schema         : mssystemoa
+
+ Target Server Type    : MySQL
+ Target Server Version : 50727
+ File Encoding         : 65001
+
+ Date: 13/11/2019 10:58:06
+*/
 CREATE DATABASE /*!32312 IF NOT EXISTS*/`mssystemoa` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `mssystemoa`;
-
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -15,7 +29,7 @@ CREATE TABLE `oa_chat`  (
   `Receiver` bigint(20) NOT NULL COMMENT '接收方',
   `CreateTime` bigint(20) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 144 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of oa_chat
@@ -111,7 +125,7 @@ CREATE TABLE `oa_message`  (
 -- ----------------------------
 -- Records of oa_message
 -- ----------------------------
-INSERT INTO `oa_message` VALUES (1, 1, 0, '测试', 1, 'tab', NULL, '测试', 1, 1558945580, 1558945580, 1, 0, 0, 1, 1555213291);
+INSERT INTO `oa_message` VALUES (1, 1, 0, '测试', 1, 'tab', NULL, '测试', 1, 0, 0, 1, 0, 0, 1, 1555213291);
 INSERT INTO `oa_message` VALUES (2, 0, 0, '测试2', 1, 'blank', NULL, NULL, 1, 0, 0, 1, 0, 0, 1, 1555315893);
 
 -- ----------------------------
@@ -122,28 +136,11 @@ CREATE TABLE `oa_message_user`  (
   `Id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `MessageId` bigint(20) NOT NULL COMMENT '消息ID',
   `UserId` bigint(20) NOT NULL COMMENT '用户ID',
+  `IsRead` tinyint(4) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否已读',
   PRIMARY KEY (`Id`) USING BTREE,
   INDEX `MessageId`(`MessageId`) USING BTREE,
   CONSTRAINT `oa_message_user_ibfk_1` FOREIGN KEY (`MessageId`) REFERENCES `oa_message` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '消息用户关系表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for oa_message_user_read
--- ----------------------------
-DROP TABLE IF EXISTS `oa_message_user_read`;
-CREATE TABLE `oa_message_user_read`  (
-  `Id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `MessageId` bigint(20) NOT NULL COMMENT '消息ID',
-  `UserId` bigint(20) NOT NULL COMMENT '用户ID',
-  PRIMARY KEY (`Id`) USING BTREE,
-  INDEX `MessageId`(`MessageId`) USING BTREE,
-  CONSTRAINT `oa_message_user_read_ibfk_1` FOREIGN KEY (`MessageId`) REFERENCES `oa_message` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户消息已读表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of oa_message_user_read
--- ----------------------------
-INSERT INTO `oa_message_user_read` VALUES (1, 1, 1);
 
 -- ----------------------------
 -- Table structure for oa_work
@@ -205,3 +202,49 @@ CREATE TABLE `oa_workflowsql`  (
 -- ----------------------------
 INSERT INTO `oa_workflowsql` VALUES ('oa_leaveLessThenThreeDays', 'SELECT ol.`Id` FROM `oa_leave` ol WHERE ol.`Days`<=3 AND ol.`CreateUserId`=@userid AND ol.`Id`=@formid', 'userid,formid', 1, 1, '请假时间小于等于三天判断', 1, 1);
 INSERT INTO `oa_workflowsql` VALUES ('oa_leaveMoreThenThreeDays', 'SELECT ol.`Id` FROM `oa_leave` ol WHERE ol.`Days` > 3 AND ol.`CreateUserId`=@userid AND ol.`Id`=@formid', 'userid,formid', 1, 1, '请假时间大于三天判断', 1, 1);
+
+-- ----------------------------
+-- Table structure for sys_user
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user`;
+CREATE TABLE `sys_user`  (
+  `UserId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `Account` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '登录账号',
+  `UserName` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户名',
+  `JobNumber` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '工号',
+  `Password` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
+  `HeadImg` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '头像地址',
+  `IsDel` tinyint(4) NOT NULL DEFAULT 0 COMMENT '是否删除 1:是，0：否',
+  `CreateUserId` bigint(20) NOT NULL COMMENT '创建人ID',
+  `CreateTime` bigint(20) NOT NULL COMMENT '创建时间',
+  `UpdateUserId` bigint(20) NULL DEFAULT NULL COMMENT '更新人',
+  `UpdateTime` bigint(20) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`UserId`) USING BTREE,
+  INDEX `Account`(`Account`) USING BTREE,
+  INDEX `JobNumber`(`JobNumber`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表（作用于全部系统）' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_user
+-- ----------------------------
+INSERT INTO `sys_user` VALUES (1, 'wms', 'wms', '20180101', '40BD001563085FC35165329EA1FF5C5ECBDBBEEF', '/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg', 0, 1, 12, 1, 1542809506);
+INSERT INTO `sys_user` VALUES (4, 'wangwu', '王五123', '20180102', '40BD001563085FC35165329EA1FF5C5ECBDBBEEF', '/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg', 0, 0, 1498571322, 1, 1560497334);
+INSERT INTO `sys_user` VALUES (5, 'zhangsan', '张三', '20180103', '40BD001563085FC35165329EA1FF5C5ECBDBBEEF', '/uploadfile/1ca449c6-24ed-4b78-a032-6005990ff707.jpeg', 0, 0, 1499750510, 1, 1538660578);
+INSERT INTO `sys_user` VALUES (6, 'lisi', '李四aa', '20180104', '40BD001563085FC35165329EA1FF5C5ECBDBBEEF', '/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg', 0, 0, 1499750523, NULL, NULL);
+INSERT INTO `sys_user` VALUES (7, '123', '123', '20180105', '40BD001563085FC35165329EA1FF5C5ECBDBBEEF', '/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg', 0, 0, 1499750534, 1, 1557909906);
+INSERT INTO `sys_user` VALUES (8, '321', '321', '20180106', '40BD001563085FC35165329EA1FF5C5ECBDBBEEF', '/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg', 1, 0, 1499750544, NULL, NULL);
+INSERT INTO `sys_user` VALUES (9, '1234', '1234', '20180107', '40BD001563085FC35165329EA1FF5C5ECBDBBEEF', '/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg', 1, 0, 1499750555, NULL, NULL);
+INSERT INTO `sys_user` VALUES (10, '1234', '1234', '20180108', '40BD001563085FC35165329EA1FF5C5ECBDBBEEF', '/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg', 1, 0, 1499750555, NULL, NULL);
+INSERT INTO `sys_user` VALUES (11, 'asd', 'asd', '20180109', '40BD001563085FC35165329EA1FF5C5ECBDBBEEF', '/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg', 1, 0, 1499750583, NULL, NULL);
+INSERT INTO `sys_user` VALUES (12, 'asd', 'asd', '20180110', '40BD001563085FC35165329EA1FF5C5ECBDBBEEF', '/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg', 1, 0, 1499750584, NULL, NULL);
+INSERT INTO `sys_user` VALUES (13, 'aaa', 'aaa', '20180111', '40BD001563085FC35165329EA1FF5C5ECBDBBEEF', '/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg', 1, 0, 1499750592, NULL, NULL);
+INSERT INTO `sys_user` VALUES (14, 'aaa', 'aaa', '20180112', '40BD001563085FC35165329EA1FF5C5ECBDBBEEF', '/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg', 1, 0, 1499750592, NULL, NULL);
+INSERT INTO `sys_user` VALUES (15, 'bbb', 'bbb', '20180113', '40BD001563085FC35165329EA1FF5C5ECBDBBEEF', '/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg', 1, 0, 1501310757, NULL, NULL);
+INSERT INTO `sys_user` VALUES (16, 'ccc', 'ccc', '20180114', '40BD001563085FC35165329EA1FF5C5ECBDBBEEF', '/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg', 1, 0, 1501310765, NULL, NULL);
+INSERT INTO `sys_user` VALUES (17, 'ddd', 'ddd', '20180115', '40BD001563085FC35165329EA1FF5C5ECBDBBEEF', '/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg', 1, 0, 1501310778, NULL, NULL);
+INSERT INTO `sys_user` VALUES (18, 'eee', 'eee', '20180116', '40BD001563085FC35165329EA1FF5C5ECBDBBEEF', '/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg', 1, 0, 1501310789, NULL, NULL);
+INSERT INTO `sys_user` VALUES (19, 'asd', 'asd', '20180117', '40BD001563085FC35165329EA1FF5C5ECBDBBEEF', '/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg', 1, 0, 1509869141, NULL, NULL);
+INSERT INTO `sys_user` VALUES (20, '123', '123', '2018102098', 'A93C168323147D1135503939396CAC628DC194C5', '/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg', 1, 0, 1539993966, NULL, NULL);
+INSERT INTO `sys_user` VALUES (21, 'cs', 'cs', '2019041302', '40BD001563085FC35165329EA1FF5C5ECBDBBEEF', '/uploadfile/342bd59b-edf4-48cf-aa27-d13e5a0b70df.jpeg', 1, 0, 1555123202, NULL, NULL);
+
+SET FOREIGN_KEY_CHECKS = 1;

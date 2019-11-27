@@ -20,6 +20,8 @@
 }
 <div class="btn-group btn-group-sm noprint" id="flowmenus">
     <input type="hidden" asp-for="InstanceId" />
+    <input type="hidden" value="@Model.FlowData.IsFinish" name="isFinish" />
+    <input type="hidden" value="@Model.FlowData.Status" name="flowStatus" />
     @foreach (var item in Model.Menus)
     {
         var buttonType = (WorkFlowMenu)item;

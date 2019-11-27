@@ -22,9 +22,9 @@ namespace MsSystem.Identity
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
+            //services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
 
-            services.AddServiceRegistration();
+            //services.AddServiceRegistration();
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
                 .AddInMemoryApiResources(Config.GetApiResources())
@@ -36,7 +36,7 @@ namespace MsSystem.Identity
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            app.UseZipkin();
+            //app.UseZipkin();
             //loggerFactory.AddNLog();
             //if (env.IsDevelopment())
             //{
@@ -48,10 +48,10 @@ namespace MsSystem.Identity
             //}
             app.UseRouting();
             app.UseIdentityServer();
-            app.UseServiceRegistration(new ServiceCheckOptions
-            {
-                HealthCheckUrl = "api/HealthCheck/Ping"
-            });
+            //app.UseServiceRegistration(new ServiceCheckOptions
+            //{
+            //    HealthCheckUrl = "api/HealthCheck/Ping"
+            //});
         }
     }
 }

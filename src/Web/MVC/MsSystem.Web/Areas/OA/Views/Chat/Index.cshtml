@@ -1,23 +1,27 @@
-﻿@{
+﻿@using Microsoft.Extensions.Configuration;
+@{
     ViewData["Title"] = "聊天";
     Layout = "~/Views/Shared/_LayoutJQ.cshtml";
     UserIdentity user = ViewBag.User;
 }
 @inject MsSystem.Web.Infrastructure.TokenClient tokenClient
 @inject Microsoft.Extensions.Configuration.IConfiguration configuration
-@section css{ 
+@section css{
     <style>
         body {
-            background:#fff !important;
+            background: #fff !important;
         }
-        .ibox-content{
-            border:none !important;
+
+        .ibox-content {
+            border: none !important;
         }
+
         .chat-main {
             display: inline-block;
             background: #eee;
             border-radius: 3px;
         }
+
         .chat-main-left {
             width: 200px;
             float: left;
@@ -27,6 +31,7 @@
             box-shadow: 0px 0px 10px #ddd;
             border-right: none;
         }
+
         .chat-main-right {
             width: 600px;
             float: left;
@@ -36,19 +41,22 @@
             border-radius: 3px;
         }
 
-        .chat-users{
-            margin-left:0px;
-            height:550px;
+        .chat-users {
+            margin-left: 0px;
+            height: 550px;
         }
+
         .chat-user {
             cursor: pointer;
             margin: 10px;
             border-radius: 3px;
         }
-        .chat-user.active {
-            background: #fff;
-            border-radius: 4px;
-        }
+
+            .chat-user.active {
+                background: #fff;
+                border-radius: 4px;
+            }
+
         .currentUser {
             background: #eee;
             font-size: 12px;
@@ -59,11 +67,13 @@
             font-weight: bold;
             opacity: .8;
         }
-        .currentUser img{
-            width:45px;
-            height:45px;
-            margin-left:10px;
-        }
+
+            .currentUser img {
+                width: 45px;
+                height: 45px;
+                margin-left: 10px;
+            }
+
         .message-count {
             background: red;
             color: #fff;
@@ -75,6 +85,7 @@
             margin: 2px;
             line-height: 15px;
         }
+
         .chatim {
             position: absolute;
             right: 0px;
@@ -83,50 +94,63 @@
             border-radius: 3px;
             bottom: 0px;
         }
+
             .chatim.active {
                 box-shadow: 0px 0px 10px #eee;
                 border: 1px solid #eee;
             }
+
         .chatim-title {
             height: 55px;
             line-height: 55px;
             background: #eee;
             padding-left: 10px;
         }
+
         .chatim-body {
             height: 450px;
             overflow-y: auto;
         }
+
         .chatim-userbox {
             margin: 10px;
         }
-        .chatim-userbox-category{
-            cursor:pointer;
+
+        .chatim-userbox-category {
+            cursor: pointer;
         }
-        .chatim-userbox-online a{
-            color:#333;
+
+        .chatim-userbox-online a {
+            color: #333;
         }
-        .chatim-userbox-notonline a{
-            color:#ddd;
+
+        .chatim-userbox-notonline a {
+            color: #ddd;
         }
+
         .chatim ul {
             list-style: none;
             margin: 0px;
             padding: 0px;
         }
-        .chatim ul li{
-            cursor:pointer;
-            margin:10px;
-        }
+
+            .chatim ul li {
+                cursor: pointer;
+                margin: 10px;
+            }
+
         .chat-user:not(.active):hover {
             background: #fff;
         }
-        .chat-user a{
-            margin-left:10px;
+
+        .chat-user a {
+            margin-left: 10px;
         }
+
         .chat-user-name {
             text-align: left;
         }
+
             .chat-user-name .chat-close {
                 width: 16px;
                 height: 16px;
@@ -139,20 +163,24 @@
                 position: relative;
                 text-align: center;
                 float: right;
-                display:none;
+                display: none;
             }
+
             .chat-user-name:hover .chat-close {
                 display: inline-block;
                 background: #FF0000;
             }
+
         .chatim-user img {
             width: 35px;
             height: 35px;
         }
-        .message-input{
-            border-right:none;
-            border-left:none;
+
+        .message-input {
+            border-right: none;
+            border-left: none;
         }
+
         #sendMessage {
             position: relative;
             top: -35px;
@@ -160,28 +188,34 @@
             border-radius: 0px;
             width: 70px;
         }
-        .chatim-title-username{
-            font-size:16px;
-            font-weight:bold;
-            margin:0px 10px;
+
+        .chatim-title-username {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0px 10px;
         }
-        .chatim-title img{
-            width:40px;
-            height:40px;
-            margin-top:-3px;
+
+        .chatim-title img {
+            width: 40px;
+            height: 40px;
+            margin-top: -3px;
         }
-        .chatim-user span{
-            margin:0px 10px;
+
+        .chatim-user span {
+            margin: 0px 10px;
         }
+
         .chatim-userbox-category span {
             width: 12px;
             display: inline-block;
             font-size: 14px;
         }
-        .chatim-footer{
-            text-align:center;
-            padding-bottom:10px;
+
+        .chatim-footer {
+            text-align: center;
+            padding-bottom: 10px;
         }
+
             .chatim-footer a {
                 font-size: 18px;
                 color: #fff;
@@ -195,14 +229,16 @@
                 box-shadow: 0px 0px 5px #0e9aef;
                 text-align: center;
             }
+
         .more-msg {
             font-size: 12px;
             color: #4ea9e9;
         }
-        .more-msg:hover{
-            text-decoration:underline;
-            color: #4ea9e9;
-        }
+
+            .more-msg:hover {
+                text-decoration: underline;
+                color: #4ea9e9;
+            }
     </style>
 }
 @section scripts{
@@ -213,7 +249,7 @@
             var chattinguserids = [];
             var currentUserid = "@user.UserId";
             const connection = new signalR.HubConnectionBuilder()
-                .withUrl("http://localhost:5000/hub/oa/chatHub", {
+                .withUrl("@(configuration.GetSection("MsApplication").GetValue<string>("url") + "/hub/oa/chatHub")", {
                     transport: signalR.HttpTransportType.LongPolling,
                     accessTokenFactory: () => {
                         return "Authorization", getToken();

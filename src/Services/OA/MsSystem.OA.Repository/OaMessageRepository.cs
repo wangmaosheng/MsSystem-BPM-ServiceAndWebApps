@@ -46,25 +46,32 @@ namespace MsSystem.OA.Repository
             string sqlwhere = " ";
             if (search.IsRead == 1)
             {
-                sqlwhere += "AND om.IsRead=1 ";
+                sqlwhere += "AND omu.IsRead=1 ";
             }
             else if (search.IsRead == 0)
             {
-                sqlwhere += "AND om.IsRead=0 ";
+                sqlwhere += "AND omu.IsRead=0 ";
             }
 
-            string sql = $@"SELECT * FROM ( SELECT om.`Id`,om.`MsgType`,om.`TargetType`,om.`Title`,om.`IsLocal`,om.`Link`,om.`CreateTime`,(omur.`Id` > 0) AS IsRead  FROM oa_message om
-LEFT JOIN oa_message_user_read omur ON omur.`MessageId`=om.`Id` AND omur.`UserId`= @userid
-WHERE om.`IsEnable`=1 AND om.`IsDel`=0 AND om.`FaceUserType`=0 ) om WHERE 1=1  {sqlwhere}
-ORDER BY om.`CreateTime` DESC LIMIT @offset,@pageSize";
+            string sql = $@"SELECT om.`Id`,om.`MsgType`,om.`TargetType`,om.`Title`,om.`IsLocal`,om.`Link`,om.`CreateTime`,omu.IsRead FROM oa_message_user omu
+INNER JOIN oa_message om ON om.Id=omu.MessageId
+WHERE omu.Id in(
+SELECT MAX(omu2.Id) Id FROM oa_message_user omu2 WHERE omu2.UserId=@userid GROUP BY omu2.MessageId
+)
+{sqlwhere}
+ORDER BY om.CreateTime DESC
+LIMIT @offset,@pageSize
+";
 
 
             page.Items = await this.Connection.QueryAsync<OaMessageMyList>(sql, new { userid = search.UserId, offset = search.OffSet(), pageSize = search.PageSize });
 
-            page.TotalItems = await this.ExecuteScalarAsync<int>($@"SELECT COUNT(1) FROM 
-( SELECT om.`Id`,om.`MsgType`,om.`TargetType`,om.`Title`,om.`IsLocal`,om.`Link`,om.`CreateTime`,(omur.`Id` > 0) AS IsRead  FROM oa_message om
-LEFT JOIN oa_message_user_read omur ON omur.`MessageId`=om.`Id` AND omur.`UserId`= @userid
-WHERE om.`IsEnable`=1 AND om.`IsDel`=0 AND om.`FaceUserType`=0 ) om WHERE 1=1  {sqlwhere}", new { userid = search.UserId });
+            page.TotalItems = await this.ExecuteScalarAsync<int>($@"SELECT COUNT(omu.Id) FROM oa_message_user omu
+                    INNER JOIN oa_message om ON om.Id=omu.MessageId
+                    WHERE omu.Id in(
+                    SELECT MAX(omu2.Id) Id FROM oa_message_user omu2 WHERE omu2.UserId=@userid GROUP BY omu2.MessageId
+                    )
+                    {sqlwhere}", new { userid = search.UserId });
 
             return page;
         }

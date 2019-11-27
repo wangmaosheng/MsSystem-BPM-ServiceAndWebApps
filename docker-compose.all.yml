@@ -1,0 +1,142 @@
+version: '3.4'
+
+services:
+
+  mysql:
+    image: mysql/mysql-server:5.7
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+    volumes:
+      - "./docker/mysql/conf/my.cnf:/etc/my.cnf"
+      - "./docker/mysql/init:/docker-entrypoint-initdb.d/"
+    restart: always
+
+  consul-agent-1: &consul-agent
+    image: consul:latest
+    container_name: consul-agent-1
+    command: "agent -retry-join consul-server-bootstrap -client 0.0.0.0"
+
+  consul-server-bootstrap:
+    container_name: consul-server-bootstrap
+    <<: *consul-agent
+    ports:
+     - "8400:8400"
+     - "8500:8500"
+     - "8600:8600"
+     - "8600:8600/udp"
+    command: "agent -server -bootstrap-expect 1 -ui -client 0.0.0.0"
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    environment:
+      - STORAGE_TYPE=mysql
+      - MYSQL_DB=zipkin
+      - MYSQL_USER=root
+      - MYSQL_PASS=123456
+      - MYSQL_TCP_PORT=3306
+      - MYSQL_HOST=mysql
+    ports:
+      - "9411:9411"
+    depends_on:
+      - mysql
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq:3.7-management
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    restart: always
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+  gateway:
+    container_name: gateway
+    ports:
+      - "5000:5000"
+    depends_on:
+      - consul-server-bootstrap
+    restart: always
+
+  identity:
+    container_name: identity
+    ports:
+      - "5200:5200"
+    depends_on:
+      - mysql
+      - zipkin
+      - redis
+      - rabbitmq
+      - consul-server-bootstrap
+    restart: always
+
+  sysapi:
+    container_name: sysapi
+    ports:
+      - "5002:5002"
+    depends_on:
+      - mysql
+      - zipkin
+      - redis
+      - rabbitmq
+      - consul-server-bootstrap
+    restart: always
+
+  wfapi:
+    container_name: wfapi
+    ports:
+      - "5003:5003"
+    depends_on:
+      - mysql
+      - zipkin
+      - redis
+      - rabbitmq
+      - consul-server-bootstrap
+    restart: always
+
+  weixinapi:
+    container_name: weixinapi
+    ports:
+      - "5004:5004"
+    depends_on:
+      - mysql
+      - zipkin
+      - redis
+      - rabbitmq
+      - consul-server-bootstrap
+    restart: always
+
+  oaapi:
+    container_name: oaapi
+    ports:
+      - "5006:5006"
+    depends_on:
+      - mysql
+      - zipkin
+      - redis
+      - rabbitmq
+      - consul-server-bootstrap
+    restart: always
+
+  web:
+    container_name: web
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+      - redis
+      - gateway
+    restart: always
