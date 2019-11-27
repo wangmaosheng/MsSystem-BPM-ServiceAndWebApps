@@ -19,7 +19,7 @@
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.1" />
     <PackageReference Include="NLog" Version="4.5.11" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.1" />
-    <PackageReference Include="JadeFramework.ServiceRegistration" Version="1.0.1.8" />
+    <PackageReference Include="JadeFramework.ServiceRegistration" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>

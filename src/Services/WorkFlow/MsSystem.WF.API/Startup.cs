@@ -2,7 +2,6 @@
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using JadeFramework.Cache;
-using JadeFramework.Zipkin;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

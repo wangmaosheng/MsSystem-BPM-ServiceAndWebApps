@@ -121,14 +121,14 @@ namespace MsSystem.Web
             services.Configure<WebEncoderOptions>(options => options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs));
             services.AddMvc(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter))).AddJsonOptions(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
 
-            //services.AddDistributedMemoryCache();
+            services.AddDistributedMemoryCache();
             services.AddMemoryCache();
 
-            string redisHost = configuration.GetSection("RedisConfig").GetSection("Redis_Default").GetValue<string>("Connection");
-            services.AddDistributedRedisCache(options =>
-            {
-                options.Configuration = redisHost;
-            });
+            //string redisHost = configuration.GetSection("RedisConfig").GetSection("Redis_Default").GetValue<string>("Connection");
+            //services.AddDistributedRedisCache(options =>
+            //{
+            //    options.Configuration = redisHost;
+            //});
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromHours(2); //session活期时间

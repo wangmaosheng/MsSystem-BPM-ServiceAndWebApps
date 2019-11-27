@@ -36,13 +36,11 @@
     <PackageReference Include="MySql.Data" Version="8.0.13" />
     <PackageReference Include="NLog" Version="4.5.11" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.1" />
-    <PackageReference Include="JadeFramework.Cache" Version="1.0.1.2" />
+    <PackageReference Include="JadeFramework.Cache" Version="1.0.1.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\BuildingBlocks\Consul\JadeFramework.ServiceRegistration\JadeFramework.ServiceRegistration.csproj" />
-    <ProjectReference Include="..\..\..\BuildingBlocks\Zipkin\JadeFramework.Zipkin\JadeFramework.Zipkin.csproj" />
     <ProjectReference Include="..\MsSystem.OA.IService\MsSystem.OA.IService.csproj" />
     <ProjectReference Include="..\MsSystem.OA.Repository\MsSystem.OA.Repository.csproj" />
     <ProjectReference Include="..\MsSystem.OA.Service\MsSystem.OA.Service.csproj" />

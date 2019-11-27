@@ -36,6 +36,7 @@ services:
       dockerfile: src/Services/WorkFlow/MsSystem.WF.API/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+
   oaapi:
     build:
       context: .

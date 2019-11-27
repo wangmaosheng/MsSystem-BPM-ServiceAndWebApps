@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
-    <PackageReference Include="JadeFramework.Dapper" Version="1.0.1.4" />
+    <PackageReference Include="JadeFramework.Dapper" Version="1.0.1.6" />
   </ItemGroup>
 
   <ItemGroup>
