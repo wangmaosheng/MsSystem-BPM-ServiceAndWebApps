@@ -1,7 +1,4 @@
-﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using AutoMapper;
-using JadeFramework.Zipkin;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,19 +6,13 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using MsSystem.Weixin.API.Filters;
 using MsSystem.Weixin.API.Hubs;
 using MsSystem.Weixin.IRepository;
 using MsSystem.Weixin.IService;
 using MsSystem.Weixin.Repository;
 using MsSystem.Weixin.Service;
-using NLog.Extensions.Logging;
 using NLog.Web;
-using Swashbuckle.AspNetCore.Swagger;
-using System;
-using System.IO;
-using System.Reflection;
 
 namespace MsSystem.Weixin.API
 {
@@ -136,6 +127,10 @@ namespace MsSystem.Weixin.API
             //    options.SwaggerEndpoint($"/{apiName}/swagger.json", $"{apiName} V1");
             //});
             app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
             app.UseEndpoints(routes =>
             {
                 routes.MapHub<MiniProgramMessageHub>("/MiniProgramMessageHub", options =>

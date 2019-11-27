@@ -1,26 +1,16 @@
-﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using JadeFramework.Zipkin;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using MsSystem.Sys.API.Filters;
-using MsSystem.Sys.API.Infrastructure;
 using MsSystem.Sys.IRepository;
 using MsSystem.Sys.IService;
 using MsSystem.Sys.Repository;
 using MsSystem.Sys.Service;
-using NLog.Extensions.Logging;
 using NLog.Web;
-using Swashbuckle.AspNetCore.Swagger;
-using System;
-using System.IO;
-using System.Reflection;
 
 namespace MsSystem.Sys.API
 {
@@ -37,9 +27,9 @@ namespace MsSystem.Sys.API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
+            //services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
 
-            services.AddServiceRegistration();
+            //services.AddServiceRegistration();
 
             services.AddResponseCompression();
 
@@ -59,12 +49,12 @@ namespace MsSystem.Sys.API
 
             #endregion
 
-            #region BLL
 
+            #region BLL
 
             services.AddScoped<ISysDbContext, SysDbContext>();
             services.AddScoped<ISysLogDbContext, SysLogDbContext>();
-            services.AddScoped<ISysDatabaseFixture,SysDatabaseFixture>();
+            services.AddScoped<ISysDatabaseFixture, SysDatabaseFixture>();
 
             services.AddScoped<ILogJobs, LogJobs>();
             services.AddScoped<ISysLogService, SysLogService>();
@@ -76,15 +66,15 @@ namespace MsSystem.Sys.API
             services.AddScoped<ISysDeptService, SysDeptService>();
 
             services.AddScoped<IWorkFlowService, WorkFlowService>();
-
             services.AddScoped<ICodeBuilderService, CodeBuilderService>();
-
             services.AddScoped<ISysScheduleService, SysScheduleService>();
 
             #endregion
 
             services.AddControllers(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
-                .AddNewtonsoftJson(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
+                .AddControllersAsServices()
+                .AddNewtonsoftJson(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver())//修改默认首字母为大写
+                .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
 
             //services.AddSwaggerGen(options =>
             //{
@@ -108,15 +98,21 @@ namespace MsSystem.Sys.API
                     .AllowCredentials());
             });
 
+            services.AddOptions();
+
             //var container = new ContainerBuilder();
             //container.Populate(services);
+
+            ////container.RegisterModule(new MediatorModule());
+            ////container.RegisterModule(new ApplicationModule(Configuration["ConnectionString"]));
+
             //return new AutofacServiceProvider(container.Build());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseZipkin();
+            //app.UseZipkin();
 
             if (env.IsDevelopment())
             {
@@ -135,7 +131,7 @@ namespace MsSystem.Sys.API
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-
+            app.UseRouting();
             app.UseAuthentication();
 
             app.UseStaticFiles();
@@ -150,12 +146,21 @@ namespace MsSystem.Sys.API
             //    options.EnableValidator(null);
             //    options.SwaggerEndpoint($"/{apiName}/swagger.json", $"{apiName} V1");
             //});
-
-            app.UseRouting();
-            app.UseServiceRegistration(new ServiceCheckOptions
+            app.UseEndpoints(endpoints =>
             {
-                HealthCheckUrl = "api/HealthCheck/Ping"
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "api/{controller=Home}/{action=Index}/{id?}");
             });
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapDefaultControllerRoute();
+            //    endpoints.MapControllers();
+            //});
+            //app.UseServiceRegistration(new ServiceCheckOptions
+            //{
+            //    HealthCheckUrl = "api/HealthCheck/Ping"
+            //});
         }
     }
 }

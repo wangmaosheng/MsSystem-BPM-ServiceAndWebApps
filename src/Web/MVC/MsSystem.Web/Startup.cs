@@ -1,6 +1,4 @@
-﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using JadeFramework.Cache;
+﻿using JadeFramework.Cache;
 using JadeFramework.Core.Domain.Container;
 using JadeFramework.Core.Security;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -11,7 +9,6 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.WebEncoders;
 using MsSystem.Utility;
 using MsSystem.Web.Areas.OA.Service;
@@ -20,7 +17,6 @@ using MsSystem.Web.Areas.Sys.Service;
 using MsSystem.Web.Areas.Weixin.Service;
 using MsSystem.Web.Areas.WF.Service;
 using MsSystem.Web.Infrastructure;
-using NLog.Extensions.Logging;
 using NLog.Web;
 using Polly;
 using Polly.Extensions.Http;
@@ -119,7 +115,7 @@ namespace MsSystem.Web
             services.AddOptions();
             services.Configure<WebEncoderOptions>(options => options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs));
 
-            services.AddControllers(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
+            services.AddControllersWithViews(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
                 .AddNewtonsoftJson(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
             services.AddMemoryCache();
 

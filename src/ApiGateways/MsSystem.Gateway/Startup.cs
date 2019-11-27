@@ -48,7 +48,7 @@ namespace MsSystem.Gateway
                     .AllowCredentials());
             });
             services.AddOcelot()
-                .AddConsul()
+                //.AddConsul()
                 .AddCacheManager(x => x.WithDictionaryHandle())
                 .AddPolly();
             services.AddControllers();

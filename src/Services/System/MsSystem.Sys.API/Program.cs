@@ -1,4 +1,4 @@
-﻿using Autofac.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using NLog.Web;
@@ -9,18 +9,33 @@ namespace MsSystem.Sys.API
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            try
+            {
+                BuildWebHost(args).Run();
+            }
+            catch (System.Exception ex)
+            {
+                throw new System.Exception(ex.Message);
+            }
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>()
-                    .UseNLog()
-                    .UseUrls("http://*:5002")
-                    .UseKestrel();
-                });
+
+        private static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .UseNLog()
+                .UseUrls("http://*:5002")
+                .UseKestrel()
+                .Build();
+        //public static IHostBuilder CreateHostBuilder(string[] args) =>
+        //    Host.CreateDefaultBuilder(args)
+        //        //.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+        //        .ConfigureWebHostDefaults(webBuilder =>
+        //        {
+        //            webBuilder.UseStartup<Startup>()
+        //            .UseNLog()
+        //            .UseUrls("http://*:5002")
+        //            .UseKestrel();
+        //        });
     }
 }

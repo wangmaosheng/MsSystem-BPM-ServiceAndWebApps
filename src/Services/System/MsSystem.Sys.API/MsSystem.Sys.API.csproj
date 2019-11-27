@@ -28,7 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Connections.Abstractions" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.2.0" />
@@ -44,8 +43,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\BuildingBlocks\Consul\JadeFramework.ServiceRegistration\JadeFramework.ServiceRegistration.csproj" />
-    <ProjectReference Include="..\..\..\BuildingBlocks\Zipkin\JadeFramework.Zipkin\JadeFramework.Zipkin.csproj" />
     <ProjectReference Include="..\MsSystem.Sys.IRepository\MsSystem.Sys.IRepository.csproj" />
     <ProjectReference Include="..\MsSystem.Sys.IService\MsSystem.Sys.IService.csproj" />
     <ProjectReference Include="..\MsSystem.Sys.Model\MsSystem.Sys.Model.csproj" />

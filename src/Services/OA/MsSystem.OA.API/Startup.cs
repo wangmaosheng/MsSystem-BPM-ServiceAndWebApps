@@ -1,8 +1,5 @@
-﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using AutoMapper;
+﻿using AutoMapper;
 using JadeFramework.Cache;
-using JadeFramework.Zipkin;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,11 +20,8 @@ using MsSystem.OA.ViewModel;
 using NLog.Web;
 using Polly;
 using Polly.Extensions.Http;
-using Swashbuckle.AspNetCore.Swagger;
 using System;
-using System.IO;
 using System.Net.Http;
-using System.Reflection;
 
 namespace MsSystem.OA.API
 {
@@ -42,7 +36,7 @@ namespace MsSystem.OA.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
+            //services.AddZipkin(Configuration.GetSection(nameof(ZipkinOptions)));
 
             services.Configure<AppSettings>(Configuration);
             IOptions<AppSettings> appSettings = services.BuildServiceProvider().GetService<IOptions<AppSettings>>();
@@ -54,7 +48,7 @@ namespace MsSystem.OA.API
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseZipkin();
+            //app.UseZipkin();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -87,15 +81,19 @@ namespace MsSystem.OA.API
             //});
 
             app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
             app.UseEndpoints(routes =>
             {
                 routes.MapHub<MessageHub>("/messageHub", options => options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
                 routes.MapHub<ChatHub>("/chatHub", options => options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
             });
-            app.UseServiceRegistration(new ServiceCheckOptions
-            {
-                HealthCheckUrl = "api/HealthCheck/Ping"
-            });
+            //app.UseServiceRegistration(new ServiceCheckOptions
+            //{
+            //    HealthCheckUrl = "api/HealthCheck/Ping"
+            //});
         }
     }
     public static class ServiceCollectionExtensions
@@ -103,7 +101,7 @@ namespace MsSystem.OA.API
         public static IServiceCollection AddCustomMvc(this IServiceCollection services, IOptions<AppSettings> appSettings)
         {
             services.AddScoped<ICachingProvider, MemoryCachingProvider>();
-            services.AddServiceRegistration();
+            //services.AddServiceRegistration();
             services.AddResponseCompression();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(opt =>

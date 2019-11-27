@@ -41,8 +41,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\BuildingBlocks\Consul\JadeFramework.ServiceRegistration\JadeFramework.ServiceRegistration.csproj" />
-    <ProjectReference Include="..\..\..\BuildingBlocks\Zipkin\JadeFramework.Zipkin\JadeFramework.Zipkin.csproj" />
     <ProjectReference Include="..\MsSystem.Weixin.IRepository\MsSystem.Weixin.IRepository.csproj" />
     <ProjectReference Include="..\MsSystem.Weixin.IService\MsSystem.Weixin.IService.csproj" />
     <ProjectReference Include="..\MsSystem.Weixin.Repository\MsSystem.Weixin.Repository.csproj" />
