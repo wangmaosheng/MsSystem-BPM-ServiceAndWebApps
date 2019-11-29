@@ -42,6 +42,14 @@
                 font-size: 12px;
                 font-style: normal;
             }
+
+            .todo-title a{
+                font-size:12px;
+            }
+            .todo-title a cite{
+                font-style:normal;
+            }
+            .todo-title a i{margin-left:2px;}
     </style>
 }
 @section scripts{ 
@@ -52,11 +60,15 @@
                 this.todoList();
             },
             shortcut: function () {
-                $('.shortcut-ui li').on('click', 'a', function () {
+                $('.shortcut-ui li,.todo-title').on('click', 'a', function () {
                     var url = $(this).attr('data-href');
+                    var menuName = $(this).find('cite').attr('title');
+                    if (menuName == null) {
+                        menuName = $(this).find('cite').text();
+                    }
                     utils.menu.open({
                         dataUrl: url,
-                        menuName: $(this).find('cite').text()
+                        menuName: menuName
                     });
                 });
             },
@@ -150,8 +162,9 @@
         </div>
         <div class="col-sm-6 col-md-6 col-lg-4">
             <div class="ibox float-e-margins">
-                <div class="ibox-title">
+                <div class="ibox-title todo-title">
                     <span class="label label-danger pull-right" id="todolistCount"></span>
+                    <a class="pull-right" href="javascript:void(0)" data-href="/WF/WorkFlowInstance/TodoList"><cite title="我的待办">全部</cite><i class="fa fa-angle-double-right"></i></a>
                     <h5>待办事项</h5>
                 </div>
                 <div class="ibox-content">

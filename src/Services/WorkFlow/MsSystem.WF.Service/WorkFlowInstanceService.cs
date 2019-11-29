@@ -367,11 +367,14 @@ namespace MsSystem.WF.Service
                 }
                 else
                 {
-                    nodes.Add(new FlowNode
+                    if (!nodes.Any(m=>m.Id == item.NodeId))
                     {
-                        Id = item.NodeId,
-                        Name = item.NodeName
-                    });
+                        nodes.Add(new FlowNode
+                        {
+                            Id = item.NodeId,
+                            Name = item.NodeName
+                        });
+                    }
                 }
             }
             return nodes;
