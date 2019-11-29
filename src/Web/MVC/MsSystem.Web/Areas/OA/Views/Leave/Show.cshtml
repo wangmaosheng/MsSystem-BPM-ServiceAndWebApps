@@ -96,7 +96,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-xs-3 col-sm-3 control-label">请假标题：</label>
+                        <label class="col-xs-3 col-sm-3 control-label"><span class="red">*</span>请假标题：</label>
                         <div class="col-xs-9 col-sm-9">
                             <input type="text" asp-for="Title" class="form-control required">
                         </div>
@@ -115,17 +115,17 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-xs-3 col-sm-3 control-label">开始时间：</label>
+                        <label class="col-xs-3 col-sm-3 control-label"><span class="red">*</span>开始时间：</label>
                         <div class="col-xs-3 col-sm-3">
                             <input type="text" class="form-control w150 required" name="StartTime" value="@Model.StartTime.ToString("yyyy-MM-dd")" id="StartTime" />
                         </div>
-                        <label class="col-xs-2 col-sm-2 control-label">结束时间：</label>
+                        <label class="col-xs-2 col-sm-2 control-label"><span class="red">*</span>结束时间：</label>
                         <div class="col-xs-4 col-sm-4">
                             <input type="text" class="form-control w150 required" name="EndTime" value="@Model.EndTime.ToString("yyyy-MM-dd")" id="EndTime" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-xs-3 col-sm-3 control-label">请假原因：</label>
+                        <label class="col-xs-3 col-sm-3 control-label"><span class="red">*</span>请假原因：</label>
                         <div class="col-xs-9 col-sm-9">
                             <textarea asp-for="Reason" class="form-control required"></textarea>
                         </div>

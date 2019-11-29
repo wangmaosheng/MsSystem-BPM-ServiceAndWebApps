@@ -46,7 +46,13 @@
                 }
             }
             $('a[name=userUrge]').on('click', function () {
+                $('#myModal').modal('show');
+            });
+            $('#saveModal').click(function () {
                 layer.confirm('确认提示对方催办吗？', { icon: 3, title: '提示' }, function (index) {
+
+
+
                     //axios.post('/Sys/User/Delete', ids).then(function (response) {
                     //    utils.permission.authResponse(response);
                     //});
@@ -123,6 +129,34 @@
                     </div>
                 </div>
                 <div class="jquery-pager" data-pageindex="@Model.PageIndex" data-pagesize="@Model.PageSize" data-datacount="@Model.TotalItems"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="myModal" style="overflow: auto;" tabindex="-1" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+                <h4 class="modal-title">催办</h4>
+            </div>
+            <div class="modal-body ui-front">
+                <span>催办信息：</span>
+                <textarea class="form-control" style="min-height: 150px; margin:10px 0px">请审批流程</textarea>
+
+                <div style="margin:15px 0;">
+                    <span>通知方式：</span>
+                    <label style="cursor:pointer"><input type="checkbox" checked="checked" name="SendSignalr" />内部消息</label>
+                    <label style="margin-left:20px" title="暂不支持"><input type="checkbox" name="SendEMail" disabled readonly />邮件提示</label>
+                    <label style="margin-left:20px" title="暂不支持"><input type="checkbox" name="SendSMS" disabled readonly />短信提示</label>
+                </div>
+
+                <div class="btn-group btn-group-sm">
+                    <button class="btn btn-sm btn-permission btn-permission-search" id="saveModal"><i class="fa fa-location-arrow"></i><span class="ml5">立即催办</span></button>
+                    <button type="button" class="btn btn-sm btn-permission" data-dismiss="modal"><i class="fa fa-mail-reply"></i><span class="ml5">关闭</span></button>
+                </div>
             </div>
         </div>
     </div>

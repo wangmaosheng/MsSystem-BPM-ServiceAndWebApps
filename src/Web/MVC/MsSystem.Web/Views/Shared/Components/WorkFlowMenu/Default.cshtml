@@ -304,6 +304,9 @@ else
     {
     <text>
     var get_modal = function (menutype, content, tipmsg) {
+        if (tipmsg == undefined) {
+            tipmsg = "";
+        }
         var html = '<div class="modal" style="overflow: auto;" tabindex="-1">';
         html += '       <div class="modal-dialog">';
         html += '           <div class="modal-content">';
@@ -396,6 +399,9 @@ else
     {
     <text>
     var back_modal = function (menutype, content, tipmsg) {
+        if (tipmsg == undefined) {
+            tipmsg = "";
+        }
         var html = '<div class="modal" style="overflow: auto;" tabindex="-1">';
         html += '	    <div class="modal-dialog">';
         html += '		    <div class="modal-content">';
