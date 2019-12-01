@@ -40,6 +40,11 @@ namespace MsSystem.OA.Model
         public byte IsLocal { get; set; }
 
         /// <summary>
+        /// 是否是系统自己创建消息
+        /// </summary>
+        public byte IsSystem { get; set; }
+
+        /// <summary>
         /// 跳转方式
         /// </summary>
         public string TargetType { get; set; }

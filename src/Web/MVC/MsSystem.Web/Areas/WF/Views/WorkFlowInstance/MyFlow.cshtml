@@ -140,17 +140,18 @@
         <div class="modal-content">
             <div class="modal-header">
                 <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
-                <h4 class="modal-title">催办</h4>
+                <h4 class="modal-title">催办提醒</h4>
             </div>
             <div class="modal-body ui-front">
                 <span>催办信息：</span>
-                <textarea class="form-control" style="min-height: 150px; margin:10px 0px">请审批流程</textarea>
+                <textarea class="form-control" style="min-height: 150px;max-width:100%;min-width:100%; margin:10px 0px">请审批流程</textarea>
 
                 <div style="margin:15px 0;">
                     <span>通知方式：</span>
                     <label style="cursor:pointer"><input type="checkbox" checked="checked" name="SendSignalr" />内部消息</label>
                     <label style="margin-left:20px" title="暂不支持"><input type="checkbox" name="SendEMail" disabled readonly />邮件提示</label>
                     <label style="margin-left:20px" title="暂不支持"><input type="checkbox" name="SendSMS" disabled readonly />短信提示</label>
+                    <label style="margin-left:20px" title="暂不支持"><input type="checkbox" name="SendWeChat" disabled readonly />企业微信</label>
                 </div>
 
                 <div class="btn-group btn-group-sm">
