@@ -85,6 +85,7 @@ namespace MsSystem.Web.Areas.Sys.Infrastructure
         {
             StringBuilder sb = Init(search.CreateUser);
             sb.AppendLine("using JadeFramework.Core.Dapper;");
+            sb.AppendLine("using System;");
             sb.AppendLine("using System.ComponentModel.DataAnnotations;");
             sb.AppendLine("using System.ComponentModel.DataAnnotations.Schema;");
             sb.AppendLine();
@@ -170,7 +171,7 @@ namespace MsSystem.Web.Areas.Sys.Infrastructure
             sb.AppendLine("    /// <summary>");
             sb.AppendLine($"    /// {table.TABLE_COMMENT} 仓储接口");
             sb.AppendLine("    /// </summary>");
-            sb.AppendLine($"    public class I{table.TABLE_NAME.ToHump()}Repository : IDapperRepository<{table.TABLE_NAME.ToHump()}>");
+            sb.AppendLine($"    public interface I{table.TABLE_NAME.ToHump()}Repository : IDapperRepository<{table.TABLE_NAME.ToHump()}>");
             sb.AppendLine("    {");
             sb.AppendLine("    }");
             sb.AppendLine("}");
