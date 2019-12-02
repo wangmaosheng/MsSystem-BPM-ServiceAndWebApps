@@ -46,6 +46,7 @@ namespace MsSystem.OA.Model
 
         /// <summary>
         /// 跳转方式
+        /// blank tab
         /// </summary>
         public string TargetType { get; set; }
 
@@ -120,8 +121,8 @@ namespace MsSystem.OA.Model
     {
         [Description("全部人员")]
         All = 0,
-        //[Description("某些人")]
-        //Users = 1,
+        [Description("某些人")]
+        Users = 1,
         //[Description("某些角色")]
         //Roles = 2
     }

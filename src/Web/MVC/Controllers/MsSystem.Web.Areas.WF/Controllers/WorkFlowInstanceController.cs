@@ -209,5 +209,16 @@ namespace MsSystem.Web.Areas.WF.Controllers
             var instance = await _workFlowInstanceService.GetFlowImageAsync(flowid, instanceId);
             return View(instance);
         }
+
+        /// <summary>
+        /// 流程催办
+        /// </summary>
+        /// <param name="urge"></param>
+        /// <returns></returns>
+        public async Task<WorkFlowResult> UrgeAsync([FromBody]UrgeDto urge)
+        {
+            urge.Sender = UserIdentity.UserId.ToString();
+            return await _workFlowInstanceService.UrgeAsync(urge);
+        }
     }
 }

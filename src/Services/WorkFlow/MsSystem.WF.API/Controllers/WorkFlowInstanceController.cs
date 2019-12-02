@@ -1,10 +1,14 @@
 ﻿using JadeFramework.Core.Domain.Entities;
+using JadeFramework.Core.Extensions;
 using JadeFramework.WorkFlow;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MsSystem.WF.IService;
+using MsSystem.WF.Model;
 using MsSystem.WF.ViewModel;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MsSystem.WF.API.Controllers
@@ -16,10 +20,12 @@ namespace MsSystem.WF.API.Controllers
     public class WorkFlowInstanceController : ControllerBase
     {
         private readonly IWorkFlowInstanceService _workFlowInstanceService;
+        private readonly IConfigService _configService;
 
-        public WorkFlowInstanceController(IWorkFlowInstanceService workFlowInstanceService)
+        public WorkFlowInstanceController(IWorkFlowInstanceService workFlowInstanceService, IConfigService configService)
         {
             this._workFlowInstanceService = workFlowInstanceService;
+            this._configService = configService;
         }
 
         /// <summary>
@@ -145,6 +151,72 @@ namespace MsSystem.WF.API.Controllers
         public async Task<WorkFlowImageDto> GetFlowImageAsync(Guid flowid, Guid? instanceId)
         {
             return await _workFlowInstanceService.GetFlowImageAsync(flowid, instanceId);
+        }
+
+        /// <summary>
+        /// 流程催办
+        /// </summary>
+        /// <param name="urge"></param>
+        [HttpPost]
+        public async Task<WorkFlowResult> UrgeAsync([FromBody]UrgeDto urge)
+        {
+            var workflowResult = await _workFlowInstanceService.UrgeAsync(urge);
+            if (!workflowResult.Result)
+            {
+                return workflowResult;
+            }
+            var urgeTypeArray = urge.UrgeType.Split(',').Where(m => !string.IsNullOrEmpty(m));
+            List<long> urgeUserList = workflowResult.Data.ToString().Split(',')
+                .Where(m => !string.IsNullOrEmpty(m))
+                .Select(m => Convert.ToInt64(m)).ToList();
+            MessagePushSomBodyDTO model = new MessagePushSomBodyDTO
+            {
+                UserIds = urgeUserList,
+                Title = urge.Title,
+                MsgJson = urge.UrgeContent,
+                Sender = urge.Sender.ToInt64(),
+                Link = urge.Link
+            };
+            foreach (var item in urgeTypeArray)
+            {
+                UrgeType urgeType = (UrgeType)item.ToInt32();
+                switch (urgeType)
+                {
+                    case UrgeType.EMail:
+                        UrgeSendEMail();
+                        break;
+                    case UrgeType.SMS:
+                        UrgeSendSMS();
+                        break;
+                    case UrgeType.WeChat:
+                        UrgeSendWeChat();
+                        break;
+                    case UrgeType.SignalR:
+                    default:
+                        await UrgeSendSignalR(model);
+                        break;
+                }
+            }
+
+
+            return WorkFlowResult.Success();
+        }
+
+        protected async Task UrgeSendSignalR(MessagePushSomBodyDTO model)
+        {
+            await _configService.UrgeSendSignalR(model);
+        }
+        protected void UrgeSendEMail()
+        {
+
+        }
+        protected void UrgeSendSMS()
+        {
+
+        }
+        protected void UrgeSendWeChat()
+        {
+
         }
     }
 }

@@ -9,6 +9,7 @@
 using JadeFramework.Core.Dapper;
 using JadeFramework.WorkFlow;
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -27,14 +28,19 @@ namespace MsSystem.WF.Model
         public Guid Id { get; set; }
 
         /// <summary>
-        /// 流程id
+        /// 流程实例id
         /// </summary>
-        public Guid FlowId { get; set; }
+        public Guid InstanceId { get; set; }
 
         /// <summary>
         /// 当前节点id
         /// </summary>
         public Guid NodeId { get; set; }
+
+        /// <summary>
+        /// 节点名称
+        /// </summary>
+        public string NodeName { get; set; }
 
         /// <summary>
         /// 发送人
@@ -47,14 +53,16 @@ namespace MsSystem.WF.Model
         public string UrgeUser { get; set; }
 
         /// <summary>
+        /// 催办类型
+        /// <see cref="MsSystem.WF.Model.UrgeType"/>
+        /// ex: 0,1,2,3
+        /// </summary>
+        public string UrgeType { get; set; }
+
+        /// <summary>
         /// 催办信息
         /// </summary>
         public string UrgeContent { get; set; }
-
-        /// <summary>
-        /// 催办次数
-        /// </summary>
-        public byte UrgeTimes { get; set; }
 
     }
     public class WfWorkflowUrgeMapper : ClassMapper<WfWorkflowUrge>
@@ -65,5 +73,24 @@ namespace MsSystem.WF.Model
             AutoMap();
         }
     }
+
+    /// <summary>
+    /// 催办类型
+    /// </summary>
+    public enum UrgeType
+    {
+        /// <summary>
+        /// SignalR 内部消息
+        /// </summary>
+        [Description("内部消息")]
+        SignalR = 0,
+        [Description("邮件提示")]
+        EMail = 1,
+        [Description("短信提示")]
+        SMS = 2,
+        [Description("企业微信")]
+        WeChat = 3
+    }
+
 }
 

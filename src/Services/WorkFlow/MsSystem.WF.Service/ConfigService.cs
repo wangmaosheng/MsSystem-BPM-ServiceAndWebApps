@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using DnsClient;
 
 namespace MsSystem.WF.Service
 {
@@ -91,6 +90,19 @@ namespace MsSystem.WF.Service
             string res = await response.Content.ReadAsStringAsync();
             Guid? finalnodeid = JsonConvert.DeserializeObject<Guid?>(res);
             return finalnodeid;
+        }
+
+        /// <summary>
+        /// //对某些人进行消息推送并入库
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task UrgeSendSignalR(MessagePushSomBodyDTO model)
+        {
+            string url = string.Format(_appSettings.Value.MsApplication.url + _appSettings.Value.WorkFlow.UrgeSendSignalR);
+            var content = new StringContent(model.ToJson(), System.Text.Encoding.UTF8, "application/json");
+            var response = await _apiClient.PostAsync(url, content);
+            response.EnsureSuccessStatusCode();
         }
     }
 }

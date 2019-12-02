@@ -27,6 +27,7 @@ namespace MsSystem.WF.ViewModel
         public string GetUserIds { get; set; }
         public string GetFlowNodeInfo { get; set; }
         public string GetFinalNodeId { get; set; }
+        public string UrgeSendSignalR { get; set; }
     }
     public class MsApplication
     {

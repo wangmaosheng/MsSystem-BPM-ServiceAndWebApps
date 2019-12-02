@@ -1584,5 +1584,38 @@ namespace MsSystem.WF.Service
 
         #endregion
 
+        /// <summary>
+        /// 流程催办
+        /// </summary>
+        /// <param name="urge"></param>
+        /// <returns></returns>
+        public async Task<WorkFlowResult> UrgeAsync(UrgeDto urge)
+        {
+            WfWorkflowUrge workflowUrge = new WfWorkflowUrge
+            {
+                CreateUserId = urge.Sender,
+                Sender = urge.Sender,
+                InstanceId = urge.InstanceId,
+                UrgeContent = urge.UrgeContent,
+                UrgeType = urge.UrgeType,
+                Id = Guid.NewGuid()
+            };
+
+            var instance = await databaseFixture.Db.WorkflowInstance.FindByIdAsync(urge.InstanceId);
+            workflowUrge.NodeId = instance.ActivityId;
+            workflowUrge.NodeName = instance.ActivityName;
+            workflowUrge.UrgeUser = instance.MakerList;
+
+            bool res = await databaseFixture.Db.WfWorkflowUrge.InsertAsync(workflowUrge);
+            if (res)
+            {
+                return WorkFlowResult.Success("", workflowUrge.UrgeUser);
+            }
+            else
+            {
+                return WorkFlowResult.Error("insert error");
+            }
+        }
+
     }
 }

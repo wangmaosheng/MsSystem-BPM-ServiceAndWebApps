@@ -32,7 +32,7 @@
                             <li class="m-t-xs">
                                 <div class="dropdown-messages-box">
                                     <div class="media-body">
-                                        <a data-type="@item.MsgType">@item.Title</a>
+                                        <a data-id="@item.Id" data-type="@item.MsgType" data-link="@item.Link">@item.Title</a>
                                         <small class="text-muted pull-right">@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd hh:mm:ss")</small>
                                     </div>
                                 </div>
@@ -266,7 +266,11 @@
         }
         connection.on("ReceiveMessage", function (data) {
             debugger;
-            fillMsg(data.id, data.title, data.createTime);
+            if (data.isSystem != 1) {
+                data.isSystem = 0;
+                data.link = '';
+            }
+            fillMsg(data);
         });
         connection.start().then(function () {
             connection.invoke('InitMessage', $('img[name=userinfo]').attr('data-userid'));
@@ -281,13 +285,13 @@
             return '@tokenClient.GetToken().Result';
         }
 
-        function fillMsg(id,title,createTime) {
+        function fillMsg(data) {
             document.getElementById('messageTipNums').textContent = parseInt(document.getElementById('messageTipNums').textContent) + 1;
             var html = '<li class="m-t-xs">';
             html += '<div class="dropdown-messages-box">';
             html += '<div class="media-body">';
-            html += '<a data-type="' + id + '">' + title + '</a>';
-            html += '<small class="text-muted pull-right">' + $.unixToDate(createTime, true) + '</small>';
+            html += '<a data-id="' + data.id + '" data-issystem="' + data.isSystem + '" data-link="' + data.link + '">' + data.title + '</a>';
+            html += '<small class="text-muted pull-right">' + $.unixToDate(data.createTime, true) + '</small>';
             html += '</div>';
             html += '</div>';
             html += '</li>';
@@ -295,5 +299,24 @@
             $('#messageTipContent').prepend(html);
             $('#messageTipAll').show();
         }
+
+        $(function () {
+            $('#messageTipContent').on('click', 'li.m-t-xs .dropdown-messages-box .media-body a', function () {
+                var link = $(this).attr('data-link');
+                var messageid = $(this).attr('data-id');
+                $(this).parent().parent().parent().remove();
+                removeMsg(messageid);
+                document.getElementById('messageTipNums').textContent = parseInt(document.getElementById('messageTipNums').textContent) - 1;
+                window.open(link);
+            });
+            function removeMsg(messageid) {
+                var model = {
+                    'MessageId': messageid
+                };
+                axios.post('/OA/Message/ReadMessageAsync', model).then(function (response) {
+                    utils.permission.authResponse(response);
+                });
+            }
+        });
     </script>
 }

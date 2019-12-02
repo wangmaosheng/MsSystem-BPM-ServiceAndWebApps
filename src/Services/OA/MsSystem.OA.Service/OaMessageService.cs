@@ -277,5 +277,74 @@ namespace MsSystem.OA.Service
                 }
             }
         }
+
+        public async Task<bool> ReadMessageAsync(OaMessageReadDto message)
+        {
+            var dbmessageUser = await _databaseFixture.Db.OaMessageUser.FindAsync(m => m.MessageId == message.MessageId && m.UserId == message.UserId);
+            if (dbmessageUser != null)
+            {
+                dbmessageUser.IsRead = 1;
+                await _databaseFixture.Db.OaMessageUser.UpdateAsync(dbmessageUser);
+                return true;
+            }
+            else 
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 对 某些人进行消息推送并入库
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<int> PushSomeBodyAndInsertDbAsync(MessagePushSomBodyDTO model)
+        {
+            using (var tran= _databaseFixture.Db.BeginTransaction())
+            {
+                try
+                {
+                    OaMessage message = new OaMessage
+                    {
+                        Content = model.MsgJson,
+                        CreateTime = DateTime.Now.ToTimeStamp(),
+                        IsDel = 0,
+                        IsEnable = 1,
+                        IsExecuted = 0,
+                        IsLocal = 1,
+                        IsSystem = 1,
+                        Link = model.Link,
+                        CreateUserId = model.Sender,
+                        MakerUserId = model.Sender,
+                        EndTime = 0,
+                        StartTime = 0,
+                        FaceUserType = (byte)OaMessageFaceUserType.Users,
+                        MsgType = (int)OaMessageType.Push,
+                        TargetType = "tab",
+                        Title = model.Title
+                    };
+                    int id = await _databaseFixture.Db.OaMessage.InsertReturnIdAsync(message, tran);
+                    foreach (var item in model.UserIds)
+                    {
+                        OaMessageUser messageUser = new OaMessageUser
+                        {
+                            MessageId = id,
+                            UserId = item,
+                            IsRead = 0
+                        };
+                        await _databaseFixture.Db.OaMessageUser.InsertAsync(messageUser, tran);
+                    }
+                    tran.Commit();
+                    return id;
+
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    return 0;
+                }
+            }
+        }
+
     }
 }

@@ -20,6 +20,7 @@ namespace MsSystem.Web.Areas.OA.Service
         Task<bool> EnableMessageAsync(MessageEnableDTO dto);
         Task<Page<OaMessageMyList>> MyListAsync(OaMessageMyListSearch search);
         Task<OaMessageMyListDetail> MyListDetailAsync(long id, long userid);
+        Task<bool> ReadMessageAsync(OaMessageReadDto message);
     }
     public class OaMessageService : IOaMessageService
     {
@@ -99,5 +100,16 @@ namespace MsSystem.Web.Areas.OA.Service
             var responseString = await _apiClient.GetStringAsync(uri);
             return responseString.ToObject<OaMessageMyListDetail>();
         }
+
+        public async Task<bool> ReadMessageAsync(OaMessageReadDto message)
+        {
+            var uri = API.OaMessage.ReadMessageAsync(_baseUrl);
+            var content = new StringContent(JsonConvert.SerializeObject(message), System.Text.Encoding.UTF8, "application/json");
+            var response = await _apiClient.PostAsync(uri, content);
+            response.EnsureSuccessStatusCode();
+            string res = await response.Content.ReadAsStringAsync();
+            return res.ToLower() == bool.TrueString.ToLower();
+        }
+
     }
 }

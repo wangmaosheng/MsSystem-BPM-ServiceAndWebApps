@@ -171,4 +171,10 @@ namespace MsSystem.OA.ViewModel
         /// </summary>
         public long CreateTime { get; set; }
     }
+
+    public class OaMessageReadDto
+    {
+        public int MessageId { get; set; }
+        public long UserId { get; set; }
+    }
 }

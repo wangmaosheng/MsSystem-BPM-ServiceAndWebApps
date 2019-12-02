@@ -163,5 +163,17 @@ namespace MsSystem.Web.Areas.OA.Controllers
             return View(res);
         }
 
+        /// <summary>
+        /// 消息已读
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<bool> ReadMessageAsync([FromBody]OaMessageReadDto message)
+        {
+            message.UserId = UserIdentity.UserId;
+            var res = await _messageService.ReadMessageAsync(message);
+            return res;
+        }
     }
 }

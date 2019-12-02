@@ -94,6 +94,8 @@ namespace MsSystem.Web.Areas.WF.Service
         /// <param name="instanceId">实例ID</param>
         /// <returns></returns>
         Task<WorkFlowImageDto> GetFlowImageAsync(Guid flowid, Guid? instanceId);
+
+        Task<WorkFlowResult> UrgeAsync(UrgeDto urge);
     }
 
     public class WorkFlowInstanceService : IWorkFlowInstanceService
@@ -206,6 +208,15 @@ namespace MsSystem.Web.Areas.WF.Service
             return responseString.ToObject<WorkFlowImageDto>();
         }
 
+        public async Task<WorkFlowResult> UrgeAsync(UrgeDto urge)
+        {
+            var uri = API.WorkFlowInstance.UrgeAsync(_baseUrl);
+            var content = new StringContent(JsonConvert.SerializeObject(urge), System.Text.Encoding.UTF8, "application/json");
+            var response = await _apiClient.PostAsync(uri, content);
+            response.EnsureSuccessStatusCode();
+            string res = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<WorkFlowResult>(res);
+        }
 
     }
 }

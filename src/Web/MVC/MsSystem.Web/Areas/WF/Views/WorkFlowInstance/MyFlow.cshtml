@@ -46,16 +46,34 @@
                 }
             }
             $('a[name=userUrge]').on('click', function () {
+                var instanceid = $(this).attr('data-instanceid');
+                $('input[name=instanceid]').val(instanceid);
                 $('#myModal').modal('show');
             });
             $('#saveModal').click(function () {
                 layer.confirm('确认提示对方催办吗？', { icon: 3, title: '提示' }, function (index) {
-
-
-
-                    //axios.post('/Sys/User/Delete', ids).then(function (response) {
-                    //    utils.permission.authResponse(response);
-                    //});
+                    var instanceid = $('input[name=instanceid]').val();
+                    var _this = $('a[name="showflow"][data-instanceid=' + instanceid + ']');
+                    var formtype = _this.attr('data-formtype');
+                    var url = '';
+                    if (formtype == 1) {
+                        var formid = _this.attr('data-formid');
+                        var formurl = _this.attr('data-formurl');
+                        url = formurl + "?id=" + formid;
+                    } else if (formtype == 0) {
+                        var flowid = _this.attr('data-flowid');
+                        url = "/WF/WorkFlowInstance/Process?flowid=" + flowid + "&instanceid=" + instanceid;
+                    }
+                    var model = {
+                        'InstanceId': instanceid,
+                        'UrgeType': "0,",
+                        'UrgeContent': $('textarea[name=UrgeContent]').text(),
+                        'Link': url,
+                        'Title':'流程催办'
+                    };
+                    axios.post('/WF/WorkFlowInstance/UrgeAsync', model).then(function (response) {
+                        utils.permission.authResponse(response);
+                    });
                     window.location.reload(true);
                 });
             });
@@ -103,13 +121,13 @@
                                         <td class="text-center">
                                             @if (item.IsFinish == 0 && (WorkFlowStatus)item.Status == WorkFlowStatus.Running)
                                             {
-                                                <a name="userUrge">催办</a>
+                                                <a name="userUrge" data-instanceid="@item.InstanceId">催办</a>
                                                 <span>/</span>
                                             }
                                             @switch ((WorkFlowFormType)item.FormType)
                                             {
                                                 case WorkFlowFormType.System:
-                                                    <a name="showflow" data-formtype="@item.FormType"
+                                                    <a name="showflow" data-instanceid="@item.InstanceId" data-formtype="@item.FormType"
                                                        data-formid="@item.FormData"
                                                        data-formname="@item.FormName"
                                                        data-formurl="@item.FormUrl">查看</a>
@@ -143,8 +161,9 @@
                 <h4 class="modal-title">催办提醒</h4>
             </div>
             <div class="modal-body ui-front">
+                <input type="hidden" name="instanceid" value="" />
                 <span>催办信息：</span>
-                <textarea class="form-control" style="min-height: 150px;max-width:100%;min-width:100%; margin:10px 0px">请审批流程</textarea>
+                <textarea class="form-control" name="UrgeContent" maxlength="30" style="min-height: 150px;max-width:100%;min-width:100%; margin:10px 0px">请审批流程</textarea>
 
                 <div style="margin:15px 0;">
                     <span>通知方式：</span>

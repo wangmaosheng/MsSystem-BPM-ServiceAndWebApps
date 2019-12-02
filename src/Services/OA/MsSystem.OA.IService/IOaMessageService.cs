@@ -16,5 +16,14 @@ namespace MsSystem.OA.IService
         Task<List<OaMessage>> EnableMessageAsync(List<long> ids);
         Task<Page<OaMessageMyList>> MyListAsync(OaMessageMyListSearch search);
         Task<OaMessageMyListDetail> MyListDetailAsync(long id, long userid);
+
+        Task<bool> ReadMessageAsync(OaMessageReadDto message);
+
+        /// <summary>
+        /// 对 某些人进行消息推送并入库
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        Task<int> PushSomeBodyAndInsertDbAsync(MessagePushSomBodyDTO model);
     }
 }
