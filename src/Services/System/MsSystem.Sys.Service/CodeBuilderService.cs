@@ -14,7 +14,7 @@ namespace MsSystem.Sys.Service
     {
         public string GetConnectionString(TableSearch search)
         {
-            string connectionString = $@"Server={search.DataSource};User Id={search.UserId};Password={search.Password};Database={search.Database};Character Set=utf8;SslMode=none";
+            string connectionString = $"Server={search.DataSource};User Id={search.UserId};Password={search.Password};Database={search.Database};Character Set=utf8;SslMode=none";
             return connectionString;
         }
 

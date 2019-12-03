@@ -1,26 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MsSystem.OA.ViewModel
+namespace MsSystem.WF.ViewModel
 {
-    public class PushAllDTO
+    public class UrgeDto
     {
-        public long MessageId { get; set; }
+        /// <summary>
+        /// 流程实例id
+        /// </summary>
+        public Guid InstanceId { get; set; }
+
+        /// <summary>
+        /// 发送人
+        /// </summary>
+        public string Sender { get; set; }
+
+        /// <summary>
+        /// 催办类型
+        /// </summary>
+        public string UrgeType { get; set; }
+
+        /// <summary>
+        /// 催办信息
+        /// </summary>
+        public string UrgeContent { get; set; }
+        public string Link { get; set; }
         public string Title { get; set; }
-        public DateTime PublishTime { get; set; }
     }
 
-    public class MessagePushDTO
-    {
-        public long UserId { get; set; }
-        public string GroupName { get; set; }
-        public string MsgJson { get; set; }
-    }
-    public class MessageGroupPushDTO
-    {
-        public string GroupName { get; set; }
-        public string MsgJson { get; set; }
-    }
 
     public class MessagePushSomBodyDTO
     {

@@ -27,7 +27,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
-    <PackageReference Include="JadeFramework.Core" Version="1.0.2" />
+    <PackageReference Include="JadeFramework.Core" Version="1.0.2.3" />
 
   </ItemGroup>
 

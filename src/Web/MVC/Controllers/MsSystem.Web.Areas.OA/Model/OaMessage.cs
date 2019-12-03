@@ -169,8 +169,8 @@ namespace MsSystem.Web.Areas.OA.Model
     {
         [Description("全部人员")]
         All = 0,
-        //[Description("某些人")]
-        //Users = 1,
+        [Description("某些人")]
+        Users = 1,
         //[Description("某些角色")]
         //Roles = 2
     }

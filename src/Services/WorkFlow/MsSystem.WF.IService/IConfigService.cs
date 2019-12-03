@@ -27,5 +27,12 @@ namespace MsSystem.WF.IService
         /// <param name="model">连线条件字典集合</param>
         /// <returns></returns>
         Task<Guid?> GetFinalNodeId(string sysname, FlowLineFinalNodeDto model);
+
+        /// <summary>
+        /// //对某些人进行消息推送并入库
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        Task UrgeSendSignalR(MessagePushSomBodyDTO model);
     }
 }

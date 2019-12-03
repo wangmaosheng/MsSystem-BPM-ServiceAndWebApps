@@ -6,13 +6,19 @@
     public static class MessageDefault
     {
         /// <summary>
-        /// 全员推送消息
+        /// 接受消息
         /// </summary>
         public static string ReceiveMessage = "ReceiveMessage";
 
         /// <summary>
-        /// 对某人推送
+        /// 对某人推送【暂未实现】
         /// </summary>
         public static string ReceiveAnyOne = "ReceiveAnyOne";
+
+        /// <summary>
+        /// 分组名称
+        /// </summary>
+
+        public static string GroupName = "MessageHubGroup";
     }
 }

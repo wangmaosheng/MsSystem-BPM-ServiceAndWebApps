@@ -88,5 +88,12 @@ namespace MsSystem.WF.IService
         /// <param name="instanceId">实例ID</param>
         /// <returns></returns>
         Task<WorkFlowImageDto> GetFlowImageAsync(Guid flowid, Guid? instanceId);
+
+        /// <summary>
+        /// 流程催办
+        /// </summary>
+        /// <param name="urge"></param>
+        /// <returns></returns>
+        Task<WorkFlowResult> UrgeAsync(UrgeDto urge);
     }
 }

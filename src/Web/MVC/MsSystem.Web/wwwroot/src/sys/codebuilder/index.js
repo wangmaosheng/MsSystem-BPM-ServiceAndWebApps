@@ -25,7 +25,8 @@
         el: '#msapp',
         data: {
             'TableSearch': {},
-            'TableColumn': []
+            'TableColumn': [],
+            'TableName': null
         },
         mounted: function() {
             this.init();
@@ -34,7 +35,7 @@
             init: function () {
                 this.TableSearch = {
                     'Database': 'mssystem',
-                    'DataSource': 'mysql',
+                    'DataSource': '192.168.178.81',
                     'UserId': 'root',
                     'Password': '123456',
                     'TableName': null,
@@ -55,6 +56,7 @@
                 axios.get(url, { params: vm.TableSearch }).then(function (response) {
                     var res = response.data;
                     vm.TableColumn = res;
+                    vm.TableName = res[0].TABLE_NAME;
                 });
             },
             createCode: function (type) {

@@ -105,4 +105,11 @@ namespace MsSystem.Web.Areas.OA.ViewModel
         public int? IsRead { get; set; }
     }
 
+
+    public class OaMessageReadDto
+    {
+        public int MessageId { get; set; }
+        public long UserId { get; set; }
+
+    }
 }

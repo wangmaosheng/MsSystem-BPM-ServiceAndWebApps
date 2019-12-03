@@ -1,11 +1,8 @@
-﻿using JadeFramework.Zipkin;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NLog.Extensions.Logging;
-using NLog.Web;
 
 namespace MsSystem.Identity
 {

@@ -40,7 +40,13 @@ namespace MsSystem.OA.Model
         public byte IsLocal { get; set; }
 
         /// <summary>
+        /// 是否是系统自己创建消息
+        /// </summary>
+        public byte IsSystem { get; set; }
+
+        /// <summary>
         /// 跳转方式
+        /// blank tab
         /// </summary>
         public string TargetType { get; set; }
 
@@ -115,8 +121,8 @@ namespace MsSystem.OA.Model
     {
         [Description("全部人员")]
         All = 0,
-        //[Description("某些人")]
-        //Users = 1,
+        [Description("某些人")]
+        Users = 1,
         //[Description("某些角色")]
         //Roles = 2
     }

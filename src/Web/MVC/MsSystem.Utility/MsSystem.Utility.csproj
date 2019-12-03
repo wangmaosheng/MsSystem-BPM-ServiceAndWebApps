@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JadeFramework.Core" Version="1.0.2" />
-    <PackageReference Include="JadeFramework.Cache" Version="1.0.1.2" />
-    <PackageReference Include="JadeFramework.Core.Mvc" Version="1.0.1.4" />
+    <PackageReference Include="JadeFramework.Core" Version="1.0.2.3" />
+    <PackageReference Include="JadeFramework.Cache" Version="1.0.1.4" />
+    <PackageReference Include="JadeFramework.Core.Mvc" Version="1.0.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.0" />
     <PackageReference Include="ZKWeb.System.Drawing" Version="4.0.1" />

@@ -304,11 +304,14 @@ else
     {
     <text>
     var get_modal = function (menutype, content, tipmsg) {
+        if (tipmsg == undefined) {
+            tipmsg = "";
+        }
         var html = '<div class="modal" style="overflow: auto;" tabindex="-1">';
         html += '       <div class="modal-dialog">';
         html += '           <div class="modal-content">';
         html += '               <div class="modal-header">';
-        html += '                   <a type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</a>';
+        html += '                   <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>';
         html += '                   <h4 class="modal-title">【@Model.FlowName】'+ menutype + ' 审批意见</h4>';
         html += '               </div>';
         html += '               <div class="modal-body ui-front">';
@@ -396,11 +399,14 @@ else
     {
     <text>
     var back_modal = function (menutype, content, tipmsg) {
+        if (tipmsg == undefined) {
+            tipmsg = "";
+        }
         var html = '<div class="modal" style="overflow: auto;" tabindex="-1">';
         html += '	    <div class="modal-dialog">';
         html += '		    <div class="modal-content">';
         html += '		        <div class="modal-header">';
-        html += '				    <a type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</a>';
+        html += '				    <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>';
         html += '				    <h4 class="modal-title">【@Model.FlowName】' + menutype + ' 审批意见</h4>';
         html += '			    </div>';
         html += '			    <div class="modal-body ui-front">退回节点：';
@@ -461,7 +467,7 @@ else
         html += '	    <div class="modal-dialog">';
         html += '		    <div class="modal-content">';
         html += '			    <div class="modal-header">';
-        html += '				    <a type="button" class="close"';
+        html += '				    <a class="close"';
         html += '					    data-dismiss="modal" aria-hidden="true">&times;</a>';
         html += '				    <h4 class="modal-title">审批意见</h4>';
         html += '			    </div>';
@@ -518,7 +524,7 @@ else
                 case 5:
                     return "fa fa-reply-all red";
                 case 7:
-                    return "fa fa-rotate-left";
+                    return "fa fa-rotate-left red";
                 case 9:
                     return "fa fa-eye green";
                 default:

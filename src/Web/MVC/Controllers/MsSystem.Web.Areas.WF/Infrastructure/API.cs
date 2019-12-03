@@ -56,6 +56,9 @@ namespace MsSystem.Web.Areas.WF.Infrastructure
             public static string ProcessTransitionFlowAsync(string baseUri) => $"{baseUri}/WorkFlowInstance/ProcessTransitionFlowAsync";
             public static string GetFlowImageAsync(string baseUri, Guid flowid, Guid? instanceId)
                 => $"{baseUri}/WorkFlowInstance/GetFlowImageAsync?flowid={flowid.ToString()}&InstanceId={instanceId?.ToString()}";
+
+            public static string UrgeAsync(string baseUri) => $"{baseUri}/WorkFlowInstance/UrgeAsync";
+
         }
         public static class WorkFlow
         {

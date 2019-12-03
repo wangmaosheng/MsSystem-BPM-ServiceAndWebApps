@@ -48,5 +48,10 @@ namespace MsSystem.WF.Repository
 
         private IWfWorkflowNoticeRepository _wfWorkflowNotice;
         public IWfWorkflowNoticeRepository WfWorkflowNotice => _wfWorkflowNotice ?? (_wfWorkflowNotice = new WfWorkflowNoticeRepository(Connection, _config));
+
+
+        private IWfWorkflowUrgeRepository _wfWorkflowUrge;
+        public IWfWorkflowUrgeRepository WfWorkflowUrge => _wfWorkflowUrge ?? (_wfWorkflowUrge = new WfWorkflowUrgeRepository(Connection, _config));
+
     }
 }

@@ -11,6 +11,7 @@ using MsSystem.OA.ViewModel;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using JadeFramework.Core.Extensions;
 
 namespace MsSystem.OA.API.Controllers
 {
@@ -92,6 +93,11 @@ namespace MsSystem.OA.API.Controllers
             return await _messageService.MyListDetailAsync(id, userid);
         }
 
+        [HttpPost]
+        public async Task<bool> ReadMessageAsync([FromBody]OaMessageReadDto message)
+        {
+            return await _messageService.ReadMessageAsync(message);
+        }
 
 
 
@@ -144,6 +150,43 @@ namespace MsSystem.OA.API.Controllers
                 await _hubContext.Clients.Client(item.ConnectionId).SendAsync(model.GroupName, model.MsgJson);
             }
             return Ok();
+        }
+
+        /// <summary>
+        /// 对 某些人进行消息推送并入库
+        /// 【只针对首页消息提示】
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> PushSomeBodyAndInsertDbAsync([FromBody]MessagePushSomBodyDTO model)
+        {
+            if (model == null)
+            {
+                return Forbid();
+            }
+
+            //入库操作
+            int messageid = await _messageService.PushSomeBodyAndInsertDbAsync(model);
+            if (messageid == 0)
+            {
+                return Forbid();
+            }
+            //消息推送操作
+            var users = SignalRMessageGroups.UserGroups.Where(m => model.UserIds.Contains(m.UserId) && m.GroupName == MessageDefault.GroupName).ToList();
+            foreach (var item in users)
+            {
+                await _hubContext.Clients.Client(item.ConnectionId).SendAsync(MessageDefault.ReceiveMessage, new
+                {
+                    id = messageid,
+                    Title = model.Title + ":【" + model.MsgJson + "】",
+                    model.Link,
+                    IsSystem = 1,
+                    CreateTime = DateTime.Now.ToTimeStamp()
+                });
+            }
+            return Ok();
+
         }
 
         #endregion

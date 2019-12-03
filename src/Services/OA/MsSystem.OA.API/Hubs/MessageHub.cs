@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using MsSystem.OA.API.Infrastructure;
 using MsSystem.OA.ViewModel;
 using System;
 using System.Linq;
@@ -21,8 +22,8 @@ namespace MsSystem.OA.API.Hubs
 
         public override async Task OnDisconnectedAsync(Exception ex)
         {
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, "MessageHubGroup");
-            var curUser = SignalRMessageGroups.UserGroups.FirstOrDefault(m => m.ConnectionId == Context.ConnectionId && m.GroupName == "MessageHubGroup");
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, MessageDefault.GroupName);
+            var curUser = SignalRMessageGroups.UserGroups.FirstOrDefault(m => m.ConnectionId == Context.ConnectionId && m.GroupName == MessageDefault.GroupName);
             if (curUser != null)
             {
                 SignalRMessageGroups.UserGroups.Remove(curUser);
@@ -33,8 +34,8 @@ namespace MsSystem.OA.API.Hubs
 
         public async Task InitMessage(long userid)
         {
-            await Groups.AddToGroupAsync(Context.ConnectionId, "MessageHubGroup");
-            var curUser = SignalRMessageGroups.UserGroups.FirstOrDefault(m => m.UserId == userid && m.GroupName == "MessageHubGroup");
+            await Groups.AddToGroupAsync(Context.ConnectionId, MessageDefault.GroupName);
+            var curUser = SignalRMessageGroups.UserGroups.FirstOrDefault(m => m.UserId == userid && m.GroupName == MessageDefault.GroupName);
             if (curUser != null)
             {
                 SignalRMessageGroups.UserGroups.Remove(curUser);
@@ -42,7 +43,7 @@ namespace MsSystem.OA.API.Hubs
             SignalRMessageGroups.UserGroups.Add(new SignalRMessageGroups
             {
                 ConnectionId = Context.ConnectionId,
-                GroupName = "MessageHubGroup",
+                GroupName = MessageDefault.GroupName,
                 UserId = userid
             });
         }

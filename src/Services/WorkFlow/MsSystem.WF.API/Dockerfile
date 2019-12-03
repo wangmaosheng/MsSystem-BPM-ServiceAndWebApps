@@ -11,10 +11,6 @@ COPY ["src/Services/WorkFlow/MsSystem.WF.ViewModel/MsSystem.WF.ViewModel.csproj"
 COPY ["src/Services/WorkFlow/MsSystem.WF.IRepository/MsSystem.WF.IRepository.csproj", "src/Services/WorkFlow/MsSystem.WF.IRepository/"]
 COPY ["src/Services/WorkFlow/MsSystem.WF.Service/MsSystem.WF.Service.csproj", "src/Services/WorkFlow/MsSystem.WF.Service/"]
 COPY ["src/Services/WorkFlow/MsSystem.WF.IService/MsSystem.WF.IService.csproj", "src/Services/WorkFlow/MsSystem.WF.IService/"]
-COPY ["src/BuildingBlocks/Zipkin/JadeFramework.Zipkin/JadeFramework.Zipkin.csproj", "src/BuildingBlocks/Zipkin/JadeFramework.Zipkin/"]
-COPY ["src/BuildingBlocks/Resilience/Resilience.Http.DependencyInjection/Resilience.Http.DependencyInjection.csproj", "src/BuildingBlocks/Resilience/Resilience.Http.DependencyInjection/"]
-COPY ["src/BuildingBlocks/Resilience/Resilience.Http/Resilience.Http.csproj", "src/BuildingBlocks/Resilience/Resilience.Http/"]
-COPY ["src/BuildingBlocks/Consul/JadeFramework.ServiceRegistration/JadeFramework.ServiceRegistration.csproj", "src/BuildingBlocks/Consul/JadeFramework.ServiceRegistration/"]
 RUN dotnet restore "src/Services/WorkFlow/MsSystem.WF.API/MsSystem.WF.API.csproj"
 COPY . .
 WORKDIR "/src/src/Services/WorkFlow/MsSystem.WF.API"
