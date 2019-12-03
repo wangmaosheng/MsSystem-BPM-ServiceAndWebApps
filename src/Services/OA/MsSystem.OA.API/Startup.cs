@@ -133,7 +133,6 @@ namespace MsSystem.OA.API
             //    options.OperationFilter<AddAuthTokenHeaderParameter>();
             //});
 
-            services.AddSignalR();
 
             services.AddCors(options =>
             {
@@ -144,6 +143,8 @@ namespace MsSystem.OA.API
                     .SetIsOriginAllowed((host) => true)
                     .AllowCredentials());
             });
+
+            services.AddSignalR();
 
             services.AddCap(x =>
             {

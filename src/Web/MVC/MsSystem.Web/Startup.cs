@@ -45,7 +45,6 @@ namespace MsSystem.Web
                 .AddWeixinHttpClientServices()
                 .AddWfHttpClientServices()
                 .AddCustomAuthentication();
-            services.AddSignalR();
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
@@ -55,6 +54,7 @@ namespace MsSystem.Web
                     .SetIsOriginAllowed((host) => true)
                     .AllowCredentials());
             });
+            services.AddSignalR();
             //缓存
             services.AddScoped<ICachingProvider, MemoryCachingProvider>();
             //验证码

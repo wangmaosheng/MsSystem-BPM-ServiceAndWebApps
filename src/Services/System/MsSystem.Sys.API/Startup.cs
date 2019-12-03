@@ -72,7 +72,6 @@ namespace MsSystem.Sys.API
             #endregion
 
             services.AddControllers(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
-                .AddControllersAsServices()
                 .AddNewtonsoftJson(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver())//修改默认首字母为大写
                 .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
 

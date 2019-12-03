@@ -273,7 +273,8 @@
             fillMsg(data);
         });
         connection.start().then(function () {
-            connection.invoke('InitMessage', $('img[name=userinfo]').attr('data-userid'));
+            //connection.invoke('InitMessage', $('img[name=userinfo]').attr('data-userid'));
+            connection.invoke('InitMessage', 1);
         }).catch(function (err) {
             return console.error(err.toString());
             });
