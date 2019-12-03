@@ -34,30 +34,35 @@ namespace MsSystem.OA.API.Controllers
         }
 
         [HttpGet]
+        [ActionName("GetPageAsync")]
         public async Task<Page<OaMessage>> GetPageAsync(int pageIndex, int pageSize)
         {
             return await _messageService.GetPageAsync(pageIndex, pageSize);
         }
 
         [HttpGet]
+        [ActionName("GetByIdAsync")]
         public async Task<MessageShowDTO> GetByIdAsync(long id)
         {
             return await _messageService.GetByIdAsync(id);
         }
 
         [HttpPost]
+        [ActionName("InsertAsync")]
         public async Task<bool> InsertAsync([FromBody]MessageShowDTO model)
         {
             return await _messageService.InsertAsync(model);
         }
 
         [HttpPost]
+        [ActionName("UpdateAsync")]
         public async Task<bool> UpdateAsync([FromBody]MessageShowDTO model)
         {
             return await _messageService.UpdateAsync(model);
         }
 
         [HttpPost]
+        [ActionName("DeleteAsync")]
         public async Task<bool> DeleteAsync([FromBody]MessageDeleteDTO dto)
         {
             return await _messageService.DeleteAsync(dto);
@@ -69,6 +74,7 @@ namespace MsSystem.OA.API.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("EnableMessageAsync")]
         public async Task<bool> EnableMessageAsync([FromBody]MessageEnableDTO dto)
         {
             var list = await _messageService.EnableMessageAsync(dto.Ids);
@@ -82,18 +88,21 @@ namespace MsSystem.OA.API.Controllers
         }
 
         [HttpGet]
+        [ActionName("MyListAsync")]
         public async Task<Page<OaMessageMyList>> MyListAsync([FromQuery]OaMessageMyListSearch search)
         {
             return await _messageService.MyListAsync(search);
         }
 
         [HttpGet]
+        [ActionName("MyListDetailAsync")]
         public async Task<OaMessageMyListDetail> MyListDetailAsync(long id, long userid)
         {
             return await _messageService.MyListDetailAsync(id, userid);
         }
 
         [HttpPost]
+        [ActionName("ReadMessageAsync")]
         public async Task<bool> ReadMessageAsync([FromBody]OaMessageReadDto message)
         {
             return await _messageService.ReadMessageAsync(message);
@@ -108,6 +117,7 @@ namespace MsSystem.OA.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("PushMessageAsync")]
         public async Task<IActionResult> PushMessageAsync([FromBody]object data)
         {
             await _hubContext.Clients.All.SendAsync(MessageDefault.ReceiveMessage, data);
@@ -119,6 +129,7 @@ namespace MsSystem.OA.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("PushAnyOneAsync")]
         public async Task<IActionResult> PushAnyOneAsync([FromBody]MessagePushDTO model)
         {
             if (model == null)
@@ -138,6 +149,7 @@ namespace MsSystem.OA.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("PushGroupAsync")]
         public async Task<IActionResult> PushGroupAsync([FromBody]MessageGroupPushDTO model)
         {
             if (model == null)
@@ -159,6 +171,7 @@ namespace MsSystem.OA.API.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("PushSomeBodyAndInsertDbAsync")]
         public async Task<IActionResult> PushSomeBodyAndInsertDbAsync([FromBody]MessagePushSomBodyDTO model)
         {
             if (model == null)

@@ -28,6 +28,7 @@ namespace MsSystem.OA.API.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("GetFlowNodeInfo")]
         public async Task<List<long>> GetFlowNodeInfo([FromBody]FlowViewModel model)
         {
             return await flowService.GetFlowNodeInfo(model);
@@ -39,6 +40,7 @@ namespace MsSystem.OA.API.Controllers
         /// <param name="model">连线条件字典集合</param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("GetFinalNodeId")]
         public async Task<Guid?> GetFinalNodeId([FromBody]FlowLineFinalNodeDto model)
         {
             return await flowService.GetFinalNodeId(model);

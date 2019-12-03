@@ -23,30 +23,35 @@ namespace MsSystem.WF.API.Controllers
         }
 
         [HttpGet]
+        [ActionName("GetPageAsync")]
         public async Task<Page<FormPageDto>> GetPageAsync(int pageIndex, int pageSize)
         {
             return await formService.GetPageAsync(pageIndex, pageSize);
         }
 
         [HttpGet]
+        [ActionName("GetFormDetailAsync")]
         public async Task<FormDetailDto> GetFormDetailAsync(Guid id)
         {
             return await formService.GetFormDetailAsync(id);
         }
 
         [HttpPost]
+        [ActionName("InsertAsync")]
         public async Task<bool> InsertAsync([FromBody]FormDetailDto model)
         {
             return await formService.InsertAsync(model);
         }
 
         [HttpPost]
+        [ActionName("UpdateAsync")]
         public async Task<bool> UpdateAsync([FromBody]FormDetailDto model)
         {
             return await formService.UpdateAsync(model);
         }
 
         [HttpGet]
+        [ActionName("GetFormTreeAsync")]
         public async Task<List<ZTree>> GetFormTreeAsync()
         {
             return await formService.GetFormTreeAsync();

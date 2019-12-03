@@ -42,9 +42,7 @@ namespace MsSystem.WF.API
             IOptions<AppSettings> appSettings = services.BuildServiceProvider().GetService<IOptions<AppSettings>>();
 
             services.AddCustomMvc(appSettings).AddHttpClientServices();
-            //var container = new ContainerBuilder();
-            //container.Populate(services);
-            //return new AutofacServiceProvider(container.Build());
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,7 +67,6 @@ namespace MsSystem.WF.API
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-            app.UseAuthentication();
             app.UseStaticFiles();
             //string apiName = Assembly.GetExecutingAssembly().GetName().Name;
             //app.UseSwagger(options =>
@@ -83,6 +80,8 @@ namespace MsSystem.WF.API
             //    options.SwaggerEndpoint($"/{apiName}/swagger.json", $"{apiName} V1");
             //});
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

@@ -31,6 +31,7 @@ namespace MsSystem.Weixin.API.Controllers
         }
 
         [HttpPost]
+        [ActionName("Login")]
         public async Task<MiniprogramLoginResult> Login([FromBody]LoginDTO login)
         {
             jscode2session data = await GetOpenIdAsync(login.Code);
@@ -57,6 +58,7 @@ namespace MsSystem.Weixin.API.Controllers
             }
         }
         [HttpPost]
+        [ActionName("Register")]
         public async Task<MiniprogramRegisterResult> Register([FromBody]RegisterDTO register)
         {
             jscode2session data = await GetOpenIdAsync(register.Code);

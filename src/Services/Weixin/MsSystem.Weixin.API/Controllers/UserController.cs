@@ -19,6 +19,7 @@ namespace MsSystem.Weixin.API.Controllers
         }
 
         [HttpPost]
+        [ActionName("SyncWxUserInfoAsync")]
         public async Task SyncWxUserInfoAsync()
         {
             await wxUserService.SyncWxUserInfoAsync();

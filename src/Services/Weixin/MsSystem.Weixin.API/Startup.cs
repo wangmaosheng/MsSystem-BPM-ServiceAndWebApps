@@ -113,7 +113,6 @@ namespace MsSystem.Weixin.API
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-            app.UseAuthentication();
             app.UseStaticFiles();
             //string apiName = Assembly.GetExecutingAssembly().GetName().Name;
             //app.UseSwagger(options =>
@@ -127,6 +126,8 @@ namespace MsSystem.Weixin.API
             //    options.SwaggerEndpoint($"/{apiName}/swagger.json", $"{apiName} V1");
             //});
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

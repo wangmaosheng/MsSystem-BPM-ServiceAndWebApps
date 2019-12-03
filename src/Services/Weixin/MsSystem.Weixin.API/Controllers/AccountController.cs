@@ -21,6 +21,7 @@ namespace MsSystem.Weixin.API.Controllers
         }
 
         [HttpGet]
+        [ActionName("GetPageAsync")]
         public async Task<Page<WxAccountListDto>> GetPageAsync(int pageIndex, int pageSize)
         {
             return await wxAccountService.GetPageAsync(pageIndex, pageSize);
@@ -34,6 +35,7 @@ namespace MsSystem.Weixin.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetAccessTokenAsync")]
         public async Task<string> GetAccessTokenAsync()
         {
             return await wxAccountService.GetAccessTokenAsync();

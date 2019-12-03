@@ -27,6 +27,7 @@ namespace MsSystem.Weixin.API.Controllers
         /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetRulePageAsync")]
         public async Task<Page<RuleListDto>> GetRulePageAsync(int pageIndex, int pageSize)
         {
             return await wxRuleService.GetRulePageAsync(pageIndex, pageSize);
@@ -38,18 +39,21 @@ namespace MsSystem.Weixin.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetRuleReplyAsync")]
         public async Task<RuleReplyDto> GetRuleReplyAsync(int id)
         {
             return await wxRuleService.GetRuleReplyAsync(id);
         }
 
         [HttpPost]
+        [ActionName("AddAsync")]
         public async Task<bool> AddAsync([FromBody]RuleReplyDto model)
         {
             return await wxRuleService.AddAsync(model);
         }
 
         [HttpPost]
+        [ActionName("UpdateAsync")]
         public async Task<bool> UpdateAsync([FromBody]RuleReplyDto model)
         {
             return await wxRuleService.UpdateAsync(model);

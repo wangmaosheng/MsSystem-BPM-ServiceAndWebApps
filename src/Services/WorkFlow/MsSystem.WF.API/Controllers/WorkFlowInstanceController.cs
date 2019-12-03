@@ -34,6 +34,7 @@ namespace MsSystem.WF.API.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("CreateInstanceAsync")]
         public async Task<WorkFlowResult> CreateInstanceAsync([FromBody]WorkFlowProcessTransition model)
         {
             return await _workFlowInstanceService.CreateInstanceAsync(model);
@@ -45,6 +46,7 @@ namespace MsSystem.WF.API.Controllers
         /// <param name="searchDto"></param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetUserTodoListAsync")]
         public async Task<Page<UserWorkFlowDto>> GetUserTodoListAsync([FromQuery]WorkFlowTodoSearchDto searchDto)
         {
             return await _workFlowInstanceService.GetUserTodoListAsync(searchDto);
@@ -57,6 +59,7 @@ namespace MsSystem.WF.API.Controllers
         /// <param name="searchDto"></param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetUserOperationHistoryAsync")]
         public async Task<Page<WorkFlowOperationHistoryDto>> GetUserOperationHistoryAsync([FromQuery]WorkFlowOperationHistorySearchDto searchDto)
         {
             return await _workFlowInstanceService.GetUserOperationHistoryAsync(searchDto);
@@ -68,6 +71,7 @@ namespace MsSystem.WF.API.Controllers
         /// <param name="addProcess"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("AddOrUpdateCustomFlowFormAsync")]
         public async Task<WorkFlowResult> AddOrUpdateCustomFlowFormAsync([FromBody]WorkFlowProcess addProcess)
         {
             return await _workFlowInstanceService.AddOrUpdateCustomFlowFormAsync(addProcess);
@@ -79,6 +83,7 @@ namespace MsSystem.WF.API.Controllers
         /// <param name="process"></param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetProcessAsync")]
         public async Task<WorkFlowProcess> GetProcessAsync([FromQuery]WorkFlowProcess process)
         {
             return await _workFlowInstanceService.GetProcessAsync(process);
@@ -90,6 +95,7 @@ namespace MsSystem.WF.API.Controllers
         /// <param name="process"></param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetProcessForSystemAsync")]
         public async Task<WorkFlowProcess> GetProcessForSystemAsync([FromQuery]SystemFlowDto model)
         {
             return await _workFlowInstanceService.GetProcessForSystemAsync(model);
@@ -103,6 +109,7 @@ namespace MsSystem.WF.API.Controllers
         /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetUserWorkFlowPageAsync")]
         public async Task<Page<UserWorkFlowDto>> GetUserWorkFlowPageAsync(int pageIndex, int pageSize, string userId)
         {
             return await _workFlowInstanceService.GetUserWorkFlowPageAsync(pageIndex, pageSize, userId);
@@ -114,6 +121,7 @@ namespace MsSystem.WF.API.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("ProcessTransitionFlowAsync")]
         public async Task<WorkFlowResult> ProcessTransitionFlowAsync([FromBody]WorkFlowProcessTransition model)
         {
             return await _workFlowInstanceService.ProcessTransitionFlowAsync(model);
@@ -124,6 +132,7 @@ namespace MsSystem.WF.API.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetFlowApprovalAsync")]
         public async Task<WorkFlowResult> GetFlowApprovalAsync([FromQuery]WorkFlowProcessTransition model)
         {
             return await _workFlowInstanceService.GetFlowApprovalAsync(model);
@@ -137,6 +146,7 @@ namespace MsSystem.WF.API.Controllers
         /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetMyApprovalHistoryAsync")]
         public async Task<Page<UserWorkFlowDto>> GetMyApprovalHistoryAsync(int pageIndex, int pageSize, string userId)
         {
             return await _workFlowInstanceService.GetMyApprovalHistoryAsync(pageIndex, pageSize, userId);
@@ -148,6 +158,7 @@ namespace MsSystem.WF.API.Controllers
         /// <param name="instanceId">实例ID</param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetFlowImageAsync")]
         public async Task<WorkFlowImageDto> GetFlowImageAsync(Guid flowid, Guid? instanceId)
         {
             return await _workFlowInstanceService.GetFlowImageAsync(flowid, instanceId);
@@ -158,6 +169,7 @@ namespace MsSystem.WF.API.Controllers
         /// </summary>
         /// <param name="urge"></param>
         [HttpPost]
+        [ActionName("UrgeAsync")]
         public async Task<WorkFlowResult> UrgeAsync([FromBody]UrgeDto urge)
         {
             var workflowResult = await _workFlowInstanceService.UrgeAsync(urge);

@@ -26,6 +26,7 @@ namespace MsSystem.WF.API.Controllers
         }
 
         [HttpGet]
+        [ActionName("GetTreeListAsync")]
         public async Task<List<CategoryTreeListDto>> GetTreeListAsync()
         {
             //await capPublisher.PublishAsync("WorkFlowStatusChanged", DateTime.Now);
@@ -33,30 +34,35 @@ namespace MsSystem.WF.API.Controllers
         }
 
         [HttpGet]
+        [ActionName("GetCategoryTreeAsync")]
         public async Task<List<ZTree>> GetCategoryTreeAsync()
         {
             return await categoryService.GetCategoryTreeAsync();
         }
 
         [HttpGet]
+        [ActionName("GetCategoryDetailAsync")]
         public async Task<CategoryDetailDto> GetCategoryDetailAsync(Guid id)
         {
             return await categoryService.GetCategoryDetailAsync(id);
         }
 
         [HttpPost]
+        [ActionName("InsertAsync")]
         public async Task<bool> InsertAsync([FromBody]CategoryDetailDto model)
         {
             return await categoryService.InsertAsync(model);
         }
 
         [HttpPost]
+        [ActionName("UpdateAsync")]
         public async Task<bool> UpdateAsync([FromBody]CategoryDetailDto model)
         {
             return await categoryService.UpdateAsync(model);
         }
 
         [HttpPost]
+        [ActionName("DeleteAsync")]
         public async Task<bool> DeleteAsync([FromBody]CategoryDeleteDto model)
         {
             return await categoryService.DeleteAsync(model);

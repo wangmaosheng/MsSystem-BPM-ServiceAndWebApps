@@ -35,6 +35,7 @@ namespace MsSystem.OA.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("GetChatUserAsync")]
         public async Task<List<ChatUserViewModel>> GetChatUserAsync([FromBody]List<long> chattinguserids)
         {
             //获取用户
@@ -66,6 +67,7 @@ namespace MsSystem.OA.API.Controllers
 
 
         [HttpGet]
+        [ActionName("GetChatListAsync")]
         public async Task<List<ChatUserListDto>> GetChatListAsync([FromQuery]ChatUserListSearchDto model)
         {
             return await _chatService.GetChatListAsync(model);

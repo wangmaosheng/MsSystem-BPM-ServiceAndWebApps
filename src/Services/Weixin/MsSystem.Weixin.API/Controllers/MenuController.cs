@@ -21,6 +21,7 @@ namespace MsSystem.Weixin.API.Controllers
         }
 
         [HttpGet]
+        [ActionName("GetTreesAsync")]
         public async Task<List<WxMenuDto>> GetTreesAsync()
         {
             return await menuService.GetTreesAsync();
