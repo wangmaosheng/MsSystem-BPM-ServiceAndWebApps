@@ -83,10 +83,11 @@ namespace MsSystem.Web
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
             app.UseCors("CorsPolicy");
-            app.UseAuthentication();
             app.UseStaticFiles();
             app.UseSession();
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(routes =>
             {
                 routes.MapControllerRoute(

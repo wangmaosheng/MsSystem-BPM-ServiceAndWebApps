@@ -66,7 +66,6 @@ namespace MsSystem.OA.API
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            app.UseAuthentication();
             app.UseStaticFiles();
             //string apiName = Assembly.GetExecutingAssembly().GetName().Name;
             //app.UseSwagger(options=> 
@@ -81,12 +80,14 @@ namespace MsSystem.OA.API
             //});
 
             app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseAuthentication();
+            app.UseAuthorization();
+            //app.UseEndpoints(endpoints =>
+            //{
+            //});
             app.UseEndpoints(routes =>
             {
+                routes.MapControllers();
                 routes.MapHub<MessageHub>("/messageHub", options => options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
                 routes.MapHub<ChatHub>("/chatHub", options => options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
             });
