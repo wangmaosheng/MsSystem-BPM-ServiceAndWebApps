@@ -152,7 +152,9 @@ else
         <text>
         var form = document.forms[0];
         for (var item in form) {
-                item.disabled = "true";
+            if ( /^\d+$/.test(item)) {
+                form[item].disabled = true;
+            }
         }
         </text>
     }

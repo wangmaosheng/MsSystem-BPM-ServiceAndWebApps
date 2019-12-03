@@ -117,7 +117,7 @@ else
     }
 }
 
-            <script type="text/javascript" on-content-loaded="true">
+<script type="text/javascript" on-content-loaded="true">
     var data='';
     @if (!string.IsNullOrEmpty(Model.FormData))
     {
@@ -161,11 +161,12 @@ else
     @if (!Model.Menus.Contains((int)WorkFlowMenu.Submit) && !Model.Menus.Contains((int)WorkFlowMenu.Save))
     {
     <text>
-    var form = document.forms[0];
-    for (var item in form) {
-            item.disabled = "true";
-    }
-
+        var form = document.forms[0];
+        for (var item in form) {
+            if ( /^\d+$/.test(item)) {
+                form[item].disabled = true;
+            }
+        }
     </text>
     }
     else
