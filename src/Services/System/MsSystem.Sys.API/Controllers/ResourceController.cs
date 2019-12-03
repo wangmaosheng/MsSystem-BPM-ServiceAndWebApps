@@ -27,6 +27,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="userid">用户ID</param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetLeftTreeAsync")]
         public async Task<List<ResourceTreeViewModel>> GetLeftTreeAsync(long userid)
         {
             return await _resourceService.GetLeftTreeAsync(userid);
@@ -38,6 +39,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="userid">用户ID</param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetUserPermissionAsync")]
         public async Task<UserPermission> GetUserPermissionAsync(long userid)
         {
             return await _resourceService.GetUserPermissionAsync(userid);
@@ -50,6 +52,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="systemId">系统ID</param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetTreeAsync")]
         public async Task<ResourceIndexViewModel> GetTreeAsync(long systemId)
         {
             return await _resourceService.GetTreeAsync(systemId);
@@ -62,6 +65,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="systemid"></param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetResourceAsync")]
         public async Task<ResourceShowViewModel> GetResourceAsync(long id, long systemid)
         {
             return await _resourceService.GetResourceAsync(id, systemid);
@@ -73,6 +77,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("AddAsync")]
         public async Task<bool> AddAsync([FromBody]ResourceShowDto dto)
         {
             return await _resourceService.AddAsync(dto);
@@ -84,6 +89,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("UpdateAsync")]
         public async Task<bool> UpdateAsync([FromBody]ResourceShowDto dto)
         {
             return await _resourceService.UpdateAsync(dto);
@@ -96,6 +102,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="userid"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("DeleteAsync")]
         public async Task<bool> DeleteAsync([FromBody]ResourceDeleteDTO dto)
         {
             return await _resourceService.DeleteAsync(dto.Ids, dto.UserId);
@@ -108,6 +115,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="roleid">角色ID</param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetBoxTreeAsync")]
         public async Task<List<ZTree>> GetBoxTreeAsync(long roleid)
         {
             return await _resourceService.GetBoxTreeAsync(roleid);
@@ -119,6 +127,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("BoxSaveAsync")]
         public async Task<bool> BoxSaveAsync([FromBody]RoleTreeDto dto)
         {
             return await _resourceService.BoxSaveAsync(dto);

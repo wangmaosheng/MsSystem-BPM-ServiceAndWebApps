@@ -29,6 +29,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="password"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("LoginAsync")]
         public async Task<ILoginResult<UserIdentity>> LoginAsync([FromBody]LoginDTO model)
         {
             return await _userService.LoginAsync(model.Account, model.Password);
@@ -40,6 +41,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="account"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("ScanningLoginAsync")]
         public async Task<ILoginResult<UserIdentity>> ScanningLoginAsync([FromBody]LoginDTO model)
         {
             return await _userService.ScanningLoginAsync(model.Account);
@@ -52,18 +54,21 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="search"></param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetUserPageAsync")]
         public async Task<UserIndexViewModel> GetUserPageAsync([FromQuery]UserIndexSearch search)
         {
             return await _userService.GetUserPageAsync(search);
         }
 
         [HttpGet]
+        [ActionName("GetAsync")]
         public async Task<UserShowDto> GetAsync(long userid)
         {
             return await _userService.GetAsync(userid);
         }
 
         [HttpPost]
+        [ActionName("AddAsync")]
         public async Task<bool> AddAsync([FromBody]UserShowDto dto)
         {
             return await _userService.AddAsync(dto);
@@ -75,12 +80,14 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("UpdateAsync")]
         public async Task<bool> UpdateAsync([FromBody]UserShowDto dto)
         {
             return await _userService.UpdateAsync(dto);
         }
 
         [HttpPost]
+        [ActionName("SaveUserRoleAsync")]
         public async Task<bool> SaveUserRoleAsync([FromBody]RoleBoxDto dto)
         {
             return await _userService.SaveUserRoleAsync(dto);
@@ -93,6 +100,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="userid"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("DeleteAsync")]
         public async Task<bool> DeleteAsync([FromBody]UserDeleteDTO dto)
         {
             return await _userService.DeleteAsync(dto.Ids, dto.UserId);
@@ -104,6 +112,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetPrivilegesAsync")]
         public async Task<DataPrivilegesViewModel> GetPrivilegesAsync([FromQuery]DataPrivilegesViewModel model)
         {
             return await _userService.GetPrivilegesAsync(model);
@@ -115,6 +124,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("SaveDataPrivilegesAsync")]
         public async Task<bool> SaveDataPrivilegesAsync([FromBody]DataPrivilegesDto model)
         {
             return await _userService.SaveDataPrivilegesAsync(model);
@@ -126,6 +136,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="userid">用户ID</param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetUserDeptAsync")]
         public async Task<UserDeptViewModel> GetUserDeptAsync(long userid)
         {
             return await _userService.GetUserDeptAsync(userid);
@@ -137,6 +148,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("SaveUserDeptAsync")]
         public async Task<bool> SaveUserDeptAsync([FromBody]UserDeptDto dto)
         {
             return await _userService.SaveUserDeptAsync(dto);
@@ -149,6 +161,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="imgUrl">头像地址</param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("ModifyUserHeadImgAsync")]
         public async Task<bool> ModifyUserHeadImgAsync([FromBody]ModifyUserHeadImgDTO dto)
         {
             return await _userService.ModifyUserHeadImgAsync(dto.UserId, dto.ImgUrl);
@@ -156,6 +169,7 @@ namespace MsSystem.Sys.API.Controllers
 
 
         [HttpPost]
+        [ActionName("GetUserTreeAsync")]
         public async Task<List<ZTree>> GetUserTreeAsync([FromBody]List<long> ids)
         {
             return await _userService.GetUserTreeAsync(ids);
@@ -167,6 +181,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="roleids"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("GetUserIdsByRoleIdsAsync")]
         public async Task<List<long>> GetUserIdsByRoleIdsAsync([FromBody]List<long> roleids)
         {
             return await _userService.GetUserIdsByRoleIdsAsync(roleids);
@@ -177,6 +192,7 @@ namespace MsSystem.Sys.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetAllUserAsync")]
         public async Task<List<SysUser>> GetAllUserAsync()
         {
             return await _userService.GetAllUserAsync();

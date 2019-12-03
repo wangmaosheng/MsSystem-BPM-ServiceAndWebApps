@@ -24,18 +24,21 @@ namespace MsSystem.Sys.API.Controllers
         }
 
         [HttpGet]
+        [ActionName("GetPageAsync")]
         public async Task<Page<SysLog>> GetPageAsync([FromQuery]LogSearchDto model)
         {
             return await logService.GetPageAsync(model);
         }
 
         [HttpGet]
+        [ActionName("GetChartsAsync")]
         public async Task<Dictionary<object, object>> GetChartsAsync(LogLevel level)
         {
             return await logService.GetChartsAsync(level);
         }
 
         [HttpGet]
+        [ActionName("GetLasterDataAsync")]
         public async Task<HeartBeatData> GetLasterDataAsync([FromQuery]int recentMinutes, [FromQuery]Application application)
         {
             return await logService.GetLasterDataAsync(recentMinutes, application);

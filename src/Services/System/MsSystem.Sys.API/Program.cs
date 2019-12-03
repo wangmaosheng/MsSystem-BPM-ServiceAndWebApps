@@ -9,14 +9,7 @@ namespace MsSystem.Sys.API
     {
         public static void Main(string[] args)
         {
-            try
-            {
-                BuildWebHost(args).Run();
-            }
-            catch (System.Exception ex)
-            {
-                throw new System.Exception(ex.Message);
-            }
+            BuildWebHost(args).Run();
         }
 
 
@@ -27,15 +20,5 @@ namespace MsSystem.Sys.API
                 .UseUrls("http://*:5002")
                 .UseKestrel()
                 .Build();
-        //public static IHostBuilder CreateHostBuilder(string[] args) =>
-        //    Host.CreateDefaultBuilder(args)
-        //        //.UseServiceProviderFactory(new AutofacServiceProviderFactory())
-        //        .ConfigureWebHostDefaults(webBuilder =>
-        //        {
-        //            webBuilder.UseStartup<Startup>()
-        //            .UseNLog()
-        //            .UseUrls("http://*:5002")
-        //            .UseKestrel();
-        //        });
     }
 }

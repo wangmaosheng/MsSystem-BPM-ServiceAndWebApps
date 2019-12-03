@@ -98,15 +98,6 @@ namespace MsSystem.Sys.API
                     .AllowCredentials());
             });
 
-            services.AddOptions();
-
-            //var container = new ContainerBuilder();
-            //container.Populate(services);
-
-            ////container.RegisterModule(new MediatorModule());
-            ////container.RegisterModule(new ApplicationModule(Configuration["ConnectionString"]));
-
-            //return new AutofacServiceProvider(container.Build());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -131,8 +122,11 @@ namespace MsSystem.Sys.API
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
+
             app.UseRouting();
+
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseStaticFiles();
             //string apiName = Assembly.GetExecutingAssembly().GetName().Name;
@@ -148,15 +142,8 @@ namespace MsSystem.Sys.API
             //});
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "api/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllers();
             });
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapDefaultControllerRoute();
-            //    endpoints.MapControllers();
-            //});
             //app.UseServiceRegistration(new ServiceCheckOptions
             //{
             //    HealthCheckUrl = "api/HealthCheck/Ping"

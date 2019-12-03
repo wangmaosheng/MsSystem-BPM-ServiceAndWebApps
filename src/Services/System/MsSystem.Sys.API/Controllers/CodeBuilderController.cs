@@ -22,14 +22,15 @@ namespace MsSystem.Sys.API.Controllers
         }
 
         [HttpGet]
+        [ActionName("GetTablesAsync")]
         public async Task<List<Table>> GetTablesAsync([FromQuery]TableSearch search)
         {
             var res = await _codeBuilderService.GetTablesAsync(search);
             return res;
         }
 
-
         [HttpGet]
+        [ActionName("GetTableColumnsAsync")]
         public async Task<List<TableColumn>> GetTableColumnsAsync([FromQuery]TableSearch search)
         {
             var res = await _codeBuilderService.GetTableColumnsAsync(search);

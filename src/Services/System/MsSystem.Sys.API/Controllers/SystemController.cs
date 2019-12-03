@@ -27,6 +27,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetByIdAsync")]
         public async Task<SysSystem> GetByIdAsync(long id)
         {
             return await _systemService.GetByIdAsync(id);
@@ -38,6 +39,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="system"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("InsertAsync")]
         public async Task<bool> InsertAsync([FromBody]SysSystem system)
         {
             return await _systemService.InsertAsync(system);
@@ -49,6 +51,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="system"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("UpdateAsync")]
         public async Task<bool> UpdateAsync([FromBody]SysSystem system)
         {
             return await _systemService.UpdateAsync(system);
@@ -61,18 +64,21 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="userid"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("DeleteAsync")]
         public async Task<bool> DeleteAsync([FromBody]SystemDeleteDTO dto)
         {
             return await _systemService.DeleteAsync(dto.Ids, dto.UserId);
         }
 
         [HttpGet]
+        [ActionName("ListAsync")]
         public async Task<List<SysSystem>> ListAsync()
         {
             return await _systemService.ListAsync();
         }
 
         [HttpGet]
+        [ActionName("GetPageAsync")]
         public async Task<Page<SysSystem>> GetPageAsync(int pageIndex, int pageSize)
         {
             return await _systemService.GetPageAsync(pageIndex, pageSize);

@@ -26,6 +26,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="search"></param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetListAsync")]
         public async Task<RoleIndexViewModel> GetListAsync([FromQuery]RoleIndexSearch search)
         {
             return await _roleService.GetListAsync(search);
@@ -36,6 +37,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="roleid">角色ID</param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetAsync")]
         public async Task<SysRole> GetAsync(long roleid)
         {
             return await _roleService.GetAsync(roleid);
@@ -47,6 +49,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="role"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("AddAsync")]
         public async Task<bool> AddAsync([FromBody]SysRole role)
         {
             return await _roleService.AddAsync(role);
@@ -58,6 +61,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="role"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("UpdateAsync")]
         public async Task<bool> UpdateAsync([FromBody]SysRole role)
         {
             return await _roleService.UpdateAsync(role);
@@ -71,6 +75,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="pageSize">每页大小</param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetRoleUserAsync")]
         public async Task<Page<SysUser>> GetRoleUserAsync(long roleid, int pageIndex, int pageSize)
         {
             return await _roleService.GetRoleUserAsync(roleid, pageIndex, pageSize);
@@ -83,6 +88,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="userid"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("DeleteAsync")]
         public async Task<bool> DeleteAsync([FromBody]RoleDeleteDTO dto)
         {
             return await _roleService.DeleteAsync(dto.Ids, dto.UserId);
@@ -94,6 +100,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="userid">用户ID</param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetTreeAsync")]
         public async Task<List<ZTree>> GetTreeAsync(long userid)
         {
             return await _roleService.GetTreeAsync(userid);
@@ -105,6 +112,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("DeleteUserAsync")]
         public async Task<bool> DeleteUserAsync([FromBody]RoleToUserDto dto)
         {
             return await _roleService.DeleteUserAsync(dto);
@@ -116,6 +124,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("AddUserAsync")]
         public async Task<bool> AddUserAsync([FromBody]RoleToUserDto dto)
         {
             return await _roleService.AddUserAsync(dto);
@@ -127,6 +136,7 @@ namespace MsSystem.Sys.API.Controllers
         /// <param name="ids"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("GetRoleTreesAsync")]
         public async Task<List<ZTree>> GetRoleTreesAsync([FromBody]List<long> ids)
         {
             return await _roleService.GetRoleTreesAsync(ids);
