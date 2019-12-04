@@ -45,6 +45,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpGet]
         [Permission("/Sys/Dept/Index", ButtonType.View, false)]
+        [ActionName("Get")]
         public async Task<IActionResult> Get([FromQuery]long id)
         {
             DeptShowViewModel domain = await _deptService.GetDeptAsync(id);
@@ -57,6 +58,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Permission("/Sys/Dept/Index", ButtonType.Add, false)]
+        [ActionName("Add")]
         public async Task<IActionResult> Add([FromBody]DeptShowDto dto)
         {
             dto.SysDept.CreateUserId = UserIdentity.UserId;
@@ -70,6 +72,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Permission("/Sys/Dept/Index", ButtonType.Edit, false)]
+        [ActionName("Edit")]
         public async Task<IActionResult> Edit([FromBody]DeptShowDto dto)
         {
             dto.SysDept.CreateUserId = UserIdentity.UserId;
@@ -84,6 +87,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Permission("/Sys/Dept/Index", ButtonType.Delete, false)]
+        [ActionName("Delete")]
         public async Task<IActionResult> Delete([FromBody]long[] ids)
         {
             long userid = UserIdentity.UserId;

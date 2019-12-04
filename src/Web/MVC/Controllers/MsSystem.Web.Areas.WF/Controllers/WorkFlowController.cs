@@ -42,6 +42,7 @@ namespace MsSystem.Web.Areas.WF.Controllers
 
         [HttpPost]
         [Permission("/WF/WorkFlow/Index", ButtonType.Add, false)]
+        [ActionName("InsertAsync")]
         public async Task<bool> InsertAsync(WorkFlowDetailDto workflow)
         {
             workflow.CreateUserId = UserIdentity.UserId.ToString();
@@ -50,6 +51,7 @@ namespace MsSystem.Web.Areas.WF.Controllers
 
         [HttpPost]
         [Permission("/WF/WorkFlow/Index", ButtonType.Edit, false)]
+        [ActionName("UpdateAsync")]
         public async Task<bool> UpdateAsync(WorkFlowDetailDto workflow)
         {
             workflow.CreateUserId = UserIdentity.UserId.ToString();
@@ -64,6 +66,7 @@ namespace MsSystem.Web.Areas.WF.Controllers
         /// <returns></returns>
         [HttpPost]
         [Permission("/WF/WorkFlow/Index", ButtonType.Delete, false)]
+        [ActionName("DeleteAsync")]
         public async Task<bool> DeleteAsync([FromBody]FlowDeleteDTO dto)
         {
             dto.UserId = UserIdentity.UserId;
@@ -71,12 +74,14 @@ namespace MsSystem.Web.Areas.WF.Controllers
         }
 
         [HttpGet]
+        [ActionName("GetWorkFlowStartAsync")]
         public async Task<List<WorkFlowStartDto>> GetWorkFlowStartAsync(Guid? categoryid)
         {
             return await workFlowService.GetWorkFlowStartAsync(categoryid ?? default(Guid));
         }
 
         [HttpGet]
+        [ActionName("GetAllLinesAsync")]
         public async Task<List<ZTree>> GetAllLinesAsync()
         {
             var list = await workFlowService.GetAllLinesAsync();
@@ -88,6 +93,7 @@ namespace MsSystem.Web.Areas.WF.Controllers
         }
 
         [HttpGet]
+        [ActionName("GetLineAsync")]
         public async Task<WorkFlowLineDto> GetLineAsync(Guid lineid)
         {
             return await workFlowService.GetLineAsync(lineid);

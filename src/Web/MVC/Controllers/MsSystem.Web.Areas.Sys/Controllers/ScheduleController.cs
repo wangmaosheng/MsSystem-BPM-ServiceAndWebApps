@@ -43,6 +43,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <param name="data"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("SaveAsync")]
         public async Task<bool> SaveAsync(ScheduleDto data)
         {
             return await scheduleService.AddOrUpdateAsync(data);
@@ -54,6 +55,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("StartAsync")]
         public async Task<bool> StartAsync(long id)
         {
             return await scheduleService.StartAsync(id);
@@ -65,6 +67,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <param name="id">任务ID</param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("StopAsync")]
         public async Task<bool> StopAsync(long id)
         {
             return await scheduleService.StopAsync(id);
@@ -76,6 +79,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("ExecuteJobAsync")]
         public async Task<bool> ExecuteJobAsync(long id)
         {
             return await scheduleService.ExecuteJobAsync(id);
@@ -87,6 +91,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("SuspendAsync")]
         public async Task<bool> SuspendAsync(long id)
         {
             return await scheduleService.SuspendAsync(id);

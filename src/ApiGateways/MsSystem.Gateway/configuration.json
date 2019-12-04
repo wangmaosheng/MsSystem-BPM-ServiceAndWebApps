@@ -12,7 +12,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "identity",
+          "Host": "192.168.178.81",
           "Port": 5200
         }
       ]
@@ -24,7 +24,7 @@
       "UpstreamHttpMethod": [ "get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "identity",
+          "Host": "192.168.178.81",
           "Port": 5200
         }
       ]
@@ -41,7 +41,7 @@
       },
       "DownstreamHostAndPorts": [
         {
-          "Host": "oaapi",
+          "Host": "192.168.178.81",
           "Port": 5006
         }
       ]
@@ -58,7 +58,7 @@
       },
       "DownstreamHostAndPorts": [
         {
-          "Host": "sysapi",
+          "Host": "192.168.178.81",
           "Port": 5002
         }
       ]
@@ -70,7 +70,7 @@
       "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "sysapi",
+          "Host": "192.168.178.81",
           "Port": 5002
         }
       ]
@@ -83,7 +83,7 @@
       "UpstreamHttpMethod": [ "Get", "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "weixinapi",
+          "Host": "192.168.178.81",
           "Port": 5004
         }
       ]
@@ -95,7 +95,7 @@
       "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "weixinapi",
+          "Host": "192.168.178.81",
           "Port": 5004
         }
       ]
@@ -111,7 +111,7 @@
       },
       "DownstreamHostAndPorts": [
         {
-          "Host": "weixinapi",
+          "Host": "192.168.178.81",
           "Port": 5004
         }
       ]
@@ -127,7 +127,7 @@
       },
       "DownstreamHostAndPorts": [
         {
-          "Host": "weixinapi",
+          "Host": "192.168.178.81",
           "Port": 5004
         }
       ]
@@ -144,7 +144,7 @@
       },
       "DownstreamHostAndPorts": [
         {
-          "Host": "wfapi",
+          "Host": "192.168.178.81",
           "Port": 5003
         }
       ]
@@ -156,7 +156,7 @@
       "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "wfapi",
+          "Host": "192.168.178.81",
           "Port": 5003
         }
       ]
@@ -173,7 +173,7 @@
       },
       "DownstreamHostAndPorts": [
         {
-          "Host": "oaapi",
+          "Host": "192.168.178.81",
           "Port": 5006
         }
       ]
@@ -185,7 +185,7 @@
       "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "oaapi",
+          "Host": "192.168.178.81",
           "Port": 5006
         }
       ]

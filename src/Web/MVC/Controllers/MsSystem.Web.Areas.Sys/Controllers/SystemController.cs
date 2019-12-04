@@ -54,6 +54,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
 
         [HttpGet]
         [Permission("/Sys/System/Index", ButtonType.View, false)]
+        [ActionName("Get")]
         public async Task<IActionResult> Get([Bind("Id"), FromQuery]long id)
         {
             if (id > 0)
@@ -72,6 +73,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Permission("/Sys/System/Index", ButtonType.Add, false)]
+        [ActionName("Add")]
         public async Task<IActionResult> Add([FromBody]SysSystem system)
         {
             system.CreateUserId = UserIdentity.UserId;
@@ -85,6 +87,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Permission("/Sys/System/Index", ButtonType.Edit, false)]
+        [ActionName("Update")]
         public async Task<IActionResult> Update([FromBody]SysSystem system)
         {
             system.UpdateUserId = UserIdentity.UserId;
@@ -99,6 +102,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Permission("/Sys/System/Index", ButtonType.Delete, false)]
+        [ActionName("Delete")]
         public async Task<IActionResult> Delete([FromBody]List<long> ids)
         {
             long userid = UserIdentity.UserId;

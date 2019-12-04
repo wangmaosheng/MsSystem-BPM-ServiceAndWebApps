@@ -159,19 +159,7 @@
 .w500 {
     width: 500px !important;
 }
-/**================padding START====================*/
-.p5 {
-    padding: 5px !important;
-}
-.p10 {
-    padding: 10px !important;
-}
-.p20 {
-    padding: 20px !important;
-}
-.pl20 {
-    padding-left: 20px !important;
-}
+
 /*===============================================
   D. Padding Helpers
 ================================================= */
@@ -962,6 +950,9 @@
 .h-50 {
     min-height: 50px;
 }
+.h-60 {
+    min-height: 60px;
+}
 .h-100 {
     min-height: 100px;
 }
@@ -1157,4 +1148,38 @@
     .flowstatus{
         display:none;
     }
+}
+.no-condition{
+    display:none;
+}
+.extend{
+    display:flex;
+}
+.extend .no-condition{
+    display:block;
+}
+.conditionbtn {
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    border-width: 20px 20px 20px;
+    border-style: solid;
+    left: -19px;
+    border-color: transparent transparent #0e9aef;
+    transform: rotate(-45deg);
+    top: -5px;
+    cursor: pointer;
+}
+.conditionbtn i.fa-plus {
+    transform: rotate(-45deg);
+    top: 4px;
+    position: relative;
+    left: -5px;
+    color: #fff;
+}
+.extend .conditionbtn i.fa-plus {
+    transform: rotate(45deg);
+}
+.extend .conditionbtn i.fa-plus:before {
+    content: "\f068";
 }

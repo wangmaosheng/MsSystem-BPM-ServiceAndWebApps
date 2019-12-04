@@ -19,12 +19,14 @@ namespace MsSystem.Web.Areas.WF.Controllers
         }
 
         [HttpPost]
+        [ActionName("GetRoleTreesAsync")]
         public async Task<List<ZTree>> GetRoleTreesAsync(List<long> ids)
         {
             return await configService.GetRoleTreesAsync(ids);
         }
 
         [HttpPost]
+        [ActionName("GetUserTreeAsync")]
         public async Task<List<ZTree>> GetUserTreeAsync(List<long> ids)
         {
             return await configService.GetUserTreeAsync(ids);

@@ -45,6 +45,7 @@ namespace MsSystem.Web.Areas.Weixin.Controllers
 
         [HttpPost]
         [Permission("/Weixin/Rule/Index", ButtonType.Add, false)]
+        [ActionName("Add")]
         public async Task<IActionResult> Add([FromBody]RuleReplyDto model)
         {
             var res = await ruleService.AddAsync(model);
@@ -53,6 +54,7 @@ namespace MsSystem.Web.Areas.Weixin.Controllers
 
         [HttpPost]
         [Permission("/Weixin/Rule/Index", ButtonType.Edit, false)]
+        [ActionName("Update")]
         public async Task<IActionResult> Update([FromBody]RuleReplyDto model)
         {
             var res = await ruleService.UpdateAsync(model);

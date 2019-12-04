@@ -39,7 +39,7 @@ namespace MsSystem.Web.Areas.WF.Controllers
         /// <returns></returns>
         [HttpGet]
         [Permission("/WF/WorkFlowInstance/MyApprovalHistory", ButtonType.View)]
-        public async Task<IActionResult> MyApprovalHistory(int pageIndex = 1, int pageSize=10)
+        public async Task<IActionResult> MyApprovalHistory(int pageIndex = 1, int pageSize = 10)
         {
             var page = await _workFlowInstanceService.GetMyApprovalHistoryAsync(pageIndex, pageSize, UserIdentity.UserId.ToString());
             return View(page);
@@ -76,6 +76,7 @@ namespace MsSystem.Web.Areas.WF.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("CreateInstanceAsync")]
         public async Task<WorkFlowResult> CreateInstanceAsync([FromBody]WorkFlowProcessTransition model)
         {
             model.UserId = UserIdentity.UserId.ToString();
@@ -98,6 +99,7 @@ namespace MsSystem.Web.Areas.WF.Controllers
         }
 
         [HttpPost]
+        [ActionName("ProcessTransitionFlowAsync")]
         public async Task<WorkFlowResult> ProcessTransitionFlowAsync([FromBody]WorkFlowProcessTransition model)
         {
             model.UserId = UserIdentity.UserId.ToString();
@@ -111,6 +113,7 @@ namespace MsSystem.Web.Areas.WF.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpGet]
+        [ActionName("GetFlowApprovalAsync")]
         public async Task<WorkFlowResult> GetFlowApprovalAsync([FromQuery]WorkFlowProcessTransition model)
         {
             model.UserId = UserIdentity.UserId.ToString();
@@ -124,6 +127,7 @@ namespace MsSystem.Web.Areas.WF.Controllers
         /// <param name="addProcess"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("AddOrUpdateCustomFlowFormAsync")]
         public async Task<WorkFlowResult> AddOrUpdateCustomFlowFormAsync([FromBody]WorkFlowProcess addProcess)
         {
             addProcess.UserId = UserIdentity.UserId.ToString();
@@ -204,7 +208,7 @@ namespace MsSystem.Web.Areas.WF.Controllers
         /// </summary>
         /// <param name="instanceId">实例ID</param>
         /// <returns></returns>
-        public async Task<IActionResult> FlowImage(Guid flowid,Guid? instanceId)
+        public async Task<IActionResult> FlowImage(Guid flowid, Guid? instanceId)
         {
             var instance = await _workFlowInstanceService.GetFlowImageAsync(flowid, instanceId);
             return View(instance);
@@ -215,6 +219,8 @@ namespace MsSystem.Web.Areas.WF.Controllers
         /// </summary>
         /// <param name="urge"></param>
         /// <returns></returns>
+        [HttpPost]
+        [ActionName("UrgeAsync")]
         public async Task<WorkFlowResult> UrgeAsync([FromBody]UrgeDto urge)
         {
             urge.Sender = UserIdentity.UserId.ToString();

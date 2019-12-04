@@ -91,6 +91,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpGet]
         [Permission("/Sys/Role/Index", ButtonType.View, false)]
+        [ActionName("Get")]
         public async Task<IActionResult> Get([FromQuery]long id)
         {
             var res = await _roleService.GetAsync(id);
@@ -103,6 +104,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Permission("/Sys/Role/Index", ButtonType.Add, false)]
+        [ActionName("Add")]
         public async Task<IActionResult> Add([FromBody]SysRole role)
         {
             role.CreateUserId = UserIdentity.UserId;
@@ -116,6 +118,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Permission("/Sys/Role/Index", ButtonType.Edit, false)]
+        [ActionName("Update")]
         public async Task<IActionResult> Update([FromBody]SysRole role)
         {
             role.UpdateUserId = UserIdentity.UserId;
@@ -130,6 +133,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Permission("/Sys/Role/Index", ButtonType.Delete, false)]
+        [ActionName("Delete")]
         public async Task<IActionResult> Delete([FromBody]List<long> ids)
         {
             long userid = UserIdentity.UserId;
@@ -147,6 +151,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpGet]
         [Authorize]
+        [ActionName("Box")]
         public async Task<IActionResult> Box([FromQuery]long roleid)
         {
             if (roleid <= 0)
@@ -164,6 +169,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
+        [ActionName("BoxSave")]
         public async Task<IActionResult> BoxSave([FromBody]RoleTreeDto dto)
         {
             if (dto.RoleId <= 0)
@@ -186,6 +192,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
+        [ActionName("DeleteUser")]
         public async Task<IActionResult> DeleteUser([FromBody]RoleToUserDto dto)
         {
             dto.CurrentUserId = UserIdentity.UserId;
@@ -200,6 +207,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
+        [ActionName("AddUser")]
         public async Task<IActionResult> AddUser([FromBody]RoleToUserDto dto)
         {
             dto.CurrentUserId = UserIdentity.UserId;

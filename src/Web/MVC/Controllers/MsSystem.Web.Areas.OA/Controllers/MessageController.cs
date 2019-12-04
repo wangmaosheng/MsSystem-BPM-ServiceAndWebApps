@@ -37,6 +37,7 @@ namespace MsSystem.Web.Areas.OA.Controllers
 
         [HttpGet]
         [Permission("/OA/Message/Index", ButtonType.View, false)]
+        [ActionName("Get")]
         public async Task<IActionResult> Get([Bind("Id"), FromQuery]long id)
         {
             if (id > 0)
@@ -59,6 +60,7 @@ namespace MsSystem.Web.Areas.OA.Controllers
         /// <returns></returns>
         [HttpPost]
         [Permission("/OA/Message/Index", ButtonType.Add, false)]
+        [ActionName("Add")]
         public async Task<IActionResult> Add([FromBody]MessageShowDTO model)
         {
             model.CreateUserId = UserIdentity.UserId;
@@ -72,6 +74,7 @@ namespace MsSystem.Web.Areas.OA.Controllers
         /// <returns></returns>
         [HttpPost]
         [Permission("/OA/Message/Index", ButtonType.Edit, false)]
+        [ActionName("Update")]
         public async Task<IActionResult> Update([FromBody]MessageShowDTO model)
         {
             bool res = await _messageService.UpdateAsync(model);
@@ -85,6 +88,7 @@ namespace MsSystem.Web.Areas.OA.Controllers
         /// <returns></returns>
         [HttpPost]
         [Permission("/OA/Message/Index", ButtonType.Delete, false)]
+        [ActionName("Delete")]
         public async Task<IActionResult> Delete([FromBody]List<long> ids)
         {
             var res = await _messageService.DeleteAsync(new MessageDeleteDTO
@@ -97,6 +101,7 @@ namespace MsSystem.Web.Areas.OA.Controllers
 
 
         [HttpPost]
+        [ActionName("EnableMessage")]
         public async Task<IActionResult> EnableMessage([FromBody]List<long> ids)
         {
             var res = await _messageService.EnableMessageAsync(new MessageEnableDTO
@@ -169,6 +174,7 @@ namespace MsSystem.Web.Areas.OA.Controllers
         /// <param name="message"></param>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("ReadMessageAsync")]
         public async Task<bool> ReadMessageAsync([FromBody]OaMessageReadDto message)
         {
             message.UserId = UserIdentity.UserId;

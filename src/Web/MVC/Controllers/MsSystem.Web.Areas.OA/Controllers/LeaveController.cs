@@ -59,6 +59,7 @@ namespace MsSystem.Web.Areas.OA.Controllers
 
         [HttpPost]
         [Permission("/OA/Leave/Index", ButtonType.Add, false)]
+        [ActionName("InsertAsync")]
         public async Task<AjaxResult> InsertAsync([FromBody]OaLeaveShowDto entity)
         {
             entity.CreateUserId = (int)UserIdentity.UserId;
@@ -67,6 +68,7 @@ namespace MsSystem.Web.Areas.OA.Controllers
 
         [HttpPost]
         [Permission("/OA/Leave/Index", ButtonType.Edit, false)]
+        [ActionName("UpdateAsync")]
         public async Task<AjaxResult> UpdateAsync([FromBody]OaLeaveShowDto entity)
         {
             return await leaveService.UpdateAsync(entity);

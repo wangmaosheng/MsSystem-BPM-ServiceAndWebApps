@@ -126,6 +126,17 @@ const page = {
             layer.close(layerindex);
             return config;
         });
+
+        //菜单区展开与缩放
+        $('.conditionbtn').click(function () {
+            var ibox = $(this).parents('.ibox-title');
+            if (ibox.hasClass('extend')) {
+                ibox.removeClass('extend');
+            } else {
+                ibox.addClass('extend');
+            }
+        });
+
     }
 };
 //键盘事件

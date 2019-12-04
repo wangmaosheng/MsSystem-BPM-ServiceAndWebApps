@@ -67,6 +67,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpGet]
         [Permission("/Sys/Resource/Index", ButtonType.View, false)]
+        [ActionName("Get")]
         public async Task<IActionResult> Get([FromQuery]long id, [FromQuery]long systemid)
         {
             ResourceShowViewModel domain = await _resourceService.GetResourceAsync(id, systemid);
@@ -79,6 +80,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Permission("/Sys/Resource/Index", ButtonType.Add, false)]
+        [ActionName("Add")]
         public async Task<IActionResult> Add([FromBody]ResourceShowDto dto)
         {
             dto.SysResource.CreateUserId = UserIdentity.UserId;
@@ -92,6 +94,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Permission("/Sys/Resource/Index", ButtonType.Edit, false)]
+        [ActionName("Edit")]
         public async Task<IActionResult> Edit([FromBody]ResourceShowDto dto)
         {
             dto.SysResource.CreateUserId = UserIdentity.UserId;
@@ -106,6 +109,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Permission("/Sys/Resource/Index", ButtonType.Delete, false)]
+        [ActionName("Delete")]
         public async Task<IActionResult> Delete([FromBody]long[] ids)
         {
             long userid = UserIdentity.UserId;

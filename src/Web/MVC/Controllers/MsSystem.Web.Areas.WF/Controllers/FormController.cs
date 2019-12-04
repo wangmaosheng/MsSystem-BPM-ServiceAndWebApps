@@ -48,6 +48,7 @@ namespace MsSystem.Web.Areas.WF.Controllers
 
         [HttpPost]
         [Permission("/WF/Form/Index", ButtonType.Add, false)]
+        [ActionName("InsertAsync")]
         public async Task<bool> InsertAsync(FormDetailDto model)
         {
             model.CreateUserId = UserIdentity.UserId.ToString();
@@ -56,12 +57,14 @@ namespace MsSystem.Web.Areas.WF.Controllers
 
         [HttpPost]
         [Permission("/WF/Form/Index", ButtonType.Edit, false)]
+        [ActionName("UpdateAsync")]
         public async Task<bool> UpdateAsync(FormDetailDto model)
         {
             return await formService.UpdateAsync(model);
         }
 
         [HttpGet]
+        [ActionName("GetFormTreeAsync")]
         public async Task<List<ZTree>> GetFormTreeAsync()
         {
             return await formService.GetFormTreeAsync();

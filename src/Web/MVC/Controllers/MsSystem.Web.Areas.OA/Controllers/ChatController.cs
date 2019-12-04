@@ -30,6 +30,7 @@ namespace MsSystem.Web.Areas.OA.Controllers
         }
 
         [HttpPost]
+        [ActionName("GetChatUserAsync")]
         public async Task<List<ChatUserViewModel>> GetChatUserAsync([FromBody]List<long> chattinguserids)
         {
             var res = await _chatService.GetChatUserAsync(chattinguserids);
@@ -38,6 +39,7 @@ namespace MsSystem.Web.Areas.OA.Controllers
         }
 
         [HttpGet]
+        [ActionName("GetChatListAsync")]
         public async Task<List<ChatUserListDto>> GetChatListAsync(long receiver,int pageindex)
         {
             ChatUserListSearchDto model = new ChatUserListSearchDto();

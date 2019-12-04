@@ -49,6 +49,7 @@ namespace MsSystem.Web.Areas.WF.Controllers
         }
 
         [HttpGet]
+        [ActionName("GetCategoryTreeAsync")]
         public async Task<List<ZTree>> GetCategoryTreeAsync(Guid? id)
         {
             if (id != null && id != default(Guid))
@@ -80,6 +81,7 @@ namespace MsSystem.Web.Areas.WF.Controllers
 
         [HttpPost]
         [Permission("/WF/Category/Index", ButtonType.Add, false)]
+        [ActionName("InsertAsync")]
         public async Task<bool> InsertAsync([FromBody]CategoryDetailDto model)
         {
             model.UserId = UserIdentity.UserId.ToString();
@@ -88,6 +90,7 @@ namespace MsSystem.Web.Areas.WF.Controllers
 
         [HttpPost]
         [Permission("/WF/Category/Index", ButtonType.Edit, false)]
+        [ActionName("UpdateAsync")]
         public async Task<bool> UpdateAsync([FromBody]CategoryDetailDto model)
         {
             model.UserId = UserIdentity.UserId.ToString();
@@ -96,6 +99,7 @@ namespace MsSystem.Web.Areas.WF.Controllers
 
         [HttpPost]
         [Permission("/WF/Category/Index", ButtonType.Delete, false)]
+        [ActionName("DeleteAsync")]
         public async Task<bool> DeleteAsync([FromBody]CategoryDeleteDto model)
         {
             model.UserId = UserIdentity.UserId.ToString();

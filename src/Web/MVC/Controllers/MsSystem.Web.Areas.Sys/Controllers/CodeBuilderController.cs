@@ -30,6 +30,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         }
 
         [HttpGet]
+        [ActionName("GetTablesAsync")]
         public async Task<IActionResult> GetTablesAsync([FromQuery]TableSearch search)
         {
             var tables = await _codeBuilderService.GetTablesAsync(search);
@@ -43,6 +44,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
 
 
         [HttpGet]
+        [ActionName("GetTableColumnsAsync")]
         public async Task<IActionResult> GetTableColumnsAsync([FromQuery]TableSearch search)
         {
             var list = await _codeBuilderService.GetTableColumnsAsync(search);
@@ -51,6 +53,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
 
 
         [HttpGet]
+        [ActionName("CreateFileAsync")]
         public async Task<IActionResult> CreateFileAsync([FromQuery]TableSearch search)
         {
             search.CreateUser = UserIdentity.UserName;

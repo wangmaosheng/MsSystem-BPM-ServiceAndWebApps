@@ -277,6 +277,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         #region CURD
         [HttpGet]
         [Permission("/Sys/User/Index", ButtonType.View, false)]
+        [ActionName("Get")]
         public async Task<IActionResult> Get([FromQuery]long id)
         {
             var res = await _userService.GetAsync(id);
@@ -290,6 +291,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Permission("/Sys/User/Index", ButtonType.Add, false)]
+        [ActionName("Add")]
         public async Task<IActionResult> Add([FromBody]UserShowDto dto)
         {
             dto.User.CreateUserId = UserIdentity.UserId;
@@ -304,6 +306,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Permission("/Sys/User/Index", ButtonType.Edit, false)]
+        [ActionName("Update")]
         public async Task<IActionResult> Update([FromBody]UserShowDto dto)
         {
             dto.User.UpdateUserId = UserIdentity.UserId;
@@ -318,6 +321,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Permission("/Sys/User/Index", ButtonType.Delete, false)]
+        [ActionName("Delete")]
         public async Task<IActionResult> Delete([FromBody]List<long> ids)
         {
             long userid = UserIdentity.UserId;
@@ -330,6 +334,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
 
         [HttpGet]
         [Authorize]
+        [ActionName("RoleBox")]
         public async Task<IActionResult> RoleBox([Bind("userid"), FromQuery]int userid)
         {
             var res = await _roleService.GetTreeAsync(userid);
@@ -338,6 +343,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
 
         [HttpPost]
         [Authorize]
+        [ActionName("RoleBoxSave")]
         public async Task<IActionResult> RoleBoxSave([FromBody]RoleBoxDto dto)
         {
             dto.CreateUserId = UserIdentity.UserId;
@@ -351,6 +357,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
 
         [HttpGet]
         [Authorize]
+        [ActionName("GetDataPrivileges")]
         public async Task<IActionResult> GetDataPrivileges([FromQuery]DataPrivilegesViewModel model)
         {
             var res = await _userService.GetPrivilegesAsync(model);
@@ -364,6 +371,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
+        [ActionName("SaveDataPrivileges")]
         public async Task<IActionResult> SaveDataPrivileges([FromBody]DataPrivilegesDto model)
         {
             var res = await _userService.SaveDataPrivilegesAsync(model);
@@ -381,6 +389,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpGet]
         [Authorize]
+        [ActionName("GetUserDept")]
         public async Task<IActionResult> GetUserDept([FromQuery]long userid)
         {
             var res = await _userService.GetUserDeptAsync(userid);
@@ -394,6 +403,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
+        [ActionName("SaveUserDept")]
         public async Task<IActionResult> SaveUserDept([FromBody]UserDeptDto dto)
         {
             var res = await _userService.SaveUserDeptAsync(dto);
@@ -427,6 +437,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpPost]
+        [ActionName("ModifyUserHeadImgAsync")]
         public async Task<bool> ModifyUserHeadImgAsync(string imgurl)
         {
             if (imgurl.IsNullOrEmpty())

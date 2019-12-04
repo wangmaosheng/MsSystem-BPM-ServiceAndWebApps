@@ -47,8 +47,70 @@
 <div class="wrapper-content">
     <div class="row">
         <div class="ibox">
-            <div class="ibox-title text-right">
-                @await Component.InvokeAsync("Menu")
+            <div class="ibox-title text-right h-60">
+                <span class="conditionbtn"><i class="fa fa-plus"></i></span>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                    <form method="get">
+                        <div class="col-lg-4 col-md-4 col-sm-4 mb5">
+                            <label class="col-lg-4 col-md-4 col-sm-4 ms-label">实例编号</label>
+                            <div class="col-lg-8 col-md-8 col-sm-8 ms-input">
+                                <input type="text" class="form-control" value="">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 mb5">
+                            <label class="col-lg-4 col-md-4 col-sm-4 ms-label">流程名称</label>
+                            <div class="col-lg-8 col-md-8 col-sm-8 ms-input">
+                                <input type="text" class="form-control" value="">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 mb5">
+                            <label class="col-lg-4 col-md-4 col-sm-4 ms-label">表单名称</label>
+                            <div class="col-lg-8 col-md-8 col-sm-8 ms-input">
+                                <input type="text" class="form-control" value="">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 mb5 no-condition">
+                            <label class="col-lg-4 col-md-4 col-sm-4 ms-label">实例编号</label>
+                            <div class="col-lg-8 col-md-8 col-sm-8 ms-input">
+                                <input type="text" class="form-control" value="">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 mb5 no-condition">
+                            <label class="col-lg-4 col-md-4 col-sm-4 ms-label">流程名称</label>
+                            <div class="col-lg-8 col-md-8 col-sm-8 ms-input">
+                                <input type="text" class="form-control" value="">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 mb5 no-condition">
+                            <label class="col-lg-4 col-md-4 col-sm-4 ms-label">表单名称</label>
+                            <div class="col-lg-8 col-md-8 col-sm-8 ms-input">
+                                <input type="text" class="form-control" value="">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 mb5 no-condition">
+                            <label class="col-lg-4 col-md-4 col-sm-4 ms-label">实例编号</label>
+                            <div class="col-lg-8 col-md-8 col-sm-8 ms-input">
+                                <input type="text" class="form-control" value="">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 mb5 no-condition">
+                            <label class="col-lg-4 col-md-4 col-sm-4 ms-label">流程名称</label>
+                            <div class="col-lg-8 col-md-8 col-sm-8 ms-input">
+                                <input type="text" class="form-control" value="">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 mb5 no-condition">
+                            <label class="col-lg-4 col-md-4 col-sm-4 ms-label">表单名称</label>
+                            <div class="col-lg-8 col-md-8 col-sm-8 ms-input">
+                                <input type="text" class="form-control" value="">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    @await Component.InvokeAsync("Menu")
+                </div>
             </div>
             <div class="ibox-content">
                 <div class="full-height-scroll">
