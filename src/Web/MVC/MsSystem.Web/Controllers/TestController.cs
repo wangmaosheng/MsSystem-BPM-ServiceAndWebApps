@@ -3,7 +3,7 @@ using MsSystem.Web.Areas.Sys.Service;
 using System;
 using System.Threading.Tasks;
 
-namespace MsSystem.We.Controllers
+namespace MsSystem.Web.Controllers
 {
     public class TestController:Controller
     {

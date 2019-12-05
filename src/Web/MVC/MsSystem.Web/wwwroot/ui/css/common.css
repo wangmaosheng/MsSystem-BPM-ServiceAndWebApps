@@ -956,6 +956,9 @@
 .h-100 {
     min-height: 100px;
 }
+.h-140 {
+    min-height: 140px;
+}
 
 /**================treegrid START====================*/
 .treegrid-indent {
