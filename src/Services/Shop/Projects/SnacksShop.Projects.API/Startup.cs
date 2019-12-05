@@ -59,8 +59,8 @@ namespace SnacksShop.Projects.API
 
             #endregion
 
-            services.AddMvc(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
-                    .AddJsonOptions(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
+            services.AddMvc(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)));
+                    //.AddJsonOptions(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
             services.AddAuthorization();
 
             services.AddCors(options =>
