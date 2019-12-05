@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
@@ -8,22 +9,41 @@ namespace MsSystem.Gateway
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            BuildWebHost(args).Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+
+        private static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((hostingContext, builder) =>
                 {
                     builder.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
                     .AddJsonFile("configuration.json", false, true);
                 })
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>()
-                    .UseUrls("http://*:5000")
-                    .UseKestrel();
-                });
+                .UseStartup<Startup>()
+                .UseUrls("http://*:5000")
+                .UseKestrel()
+                .Build();
+
+
+        //public static void Main(string[] args)
+        //{
+        //    CreateHostBuilder(args).Build().Run();
+        //}
+
+        //public static IHostBuilder CreateHostBuilder(string[] args) =>
+        //    Host.CreateDefaultBuilder(args)
+        //        .ConfigureAppConfiguration((hostingContext, builder) =>
+        //        {
+        //            builder.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
+        //            .AddJsonFile("configuration.json", false, true);
+        //        })
+        //        .ConfigureWebHostDefaults(webBuilder =>
+        //        {
+        //            webBuilder.UseStartup<Startup>()
+        //            .UseUrls("http://*:5000")
+        //            .UseKestrel();
+        //        });
 
         //public static void Main(string[] args)
         //{

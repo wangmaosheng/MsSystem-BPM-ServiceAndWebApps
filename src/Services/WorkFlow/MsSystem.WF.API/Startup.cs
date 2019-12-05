@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using MsSystem.WF.API.Filters;
 using MsSystem.WF.API.Infrastructure;
 using MsSystem.WF.IRepository;
@@ -20,7 +21,9 @@ using NLog.Web;
 using Polly;
 using Polly.Extensions.Http;
 using System;
+using System.IO;
 using System.Net.Http;
+using System.Reflection;
 
 namespace MsSystem.WF.API
 {
@@ -68,17 +71,17 @@ namespace MsSystem.WF.API
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
             app.UseStaticFiles();
-            //string apiName = Assembly.GetExecutingAssembly().GetName().Name;
-            //app.UseSwagger(options =>
-            //{
-            //    options.RouteTemplate = "{documentName}/swagger.json";
-            //})
-            //.UseSwaggerUI(options =>
-            //{
-            //    options.ShowExtensions();
-            //    options.EnableValidator(null);
-            //    options.SwaggerEndpoint($"/{apiName}/swagger.json", $"{apiName} V1");
-            //});
+            string apiName = Assembly.GetExecutingAssembly().GetName().Name;
+            app.UseSwagger(options =>
+            {
+                options.RouteTemplate = "{documentName}/swagger.json";
+            })
+            .UseSwaggerUI(options =>
+            {
+                options.ShowExtensions();
+                options.EnableValidator(null);
+                options.SwaggerEndpoint($"/{apiName}/swagger.json", $"{apiName} V1");
+            });
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -129,15 +132,15 @@ namespace MsSystem.WF.API
             services.AddControllers(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
                 .AddNewtonsoftJson(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
 
-            //services.AddSwaggerGen(options =>
-            //{
-            //    string apiName = Assembly.GetExecutingAssembly().GetName().Name;
-            //    options.SwaggerDoc(apiName, new Info { Title = "工作流接口", Version = "v1" });
-            //    var xmlFile = $"{apiName}.xml";
-            //    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            //    options.IncludeXmlComments(xmlPath);
-            //    options.OperationFilter<AddAuthTokenHeaderParameter>();
-            //});
+            services.AddSwaggerGen(options =>
+            {
+                string apiName = Assembly.GetExecutingAssembly().GetName().Name;
+                options.SwaggerDoc(apiName, new OpenApiInfo { Title = "工作流接口", Version = "v1" });
+                var xmlFile = $"{apiName}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
+                //options.OperationFilter<AddAuthTokenHeaderParameter>();
+            });
 
             services.AddCors(options =>
             {

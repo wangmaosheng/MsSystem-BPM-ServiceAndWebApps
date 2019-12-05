@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using MsSystem.OA.API.Filters;
 using MsSystem.OA.API.Hubs;
 using MsSystem.OA.API.Infrastructure;
@@ -20,8 +21,11 @@ using MsSystem.OA.ViewModel;
 using NLog.Web;
 using Polly;
 using Polly.Extensions.Http;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.IO;
 using System.Net.Http;
+using System.Reflection;
 
 namespace MsSystem.OA.API
 {
@@ -42,9 +46,7 @@ namespace MsSystem.OA.API
             IOptions<AppSettings> appSettings = services.BuildServiceProvider().GetService<IOptions<AppSettings>>();
 
             services.AddCustomMvc(appSettings).AddHttpClientServices();
-            //var container = new ContainerBuilder();
-            //container.Populate(services);
-            //return new AutofacServiceProvider(container.Build());
+
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -67,24 +69,21 @@ namespace MsSystem.OA.API
             });
 
             app.UseStaticFiles();
-            //string apiName = Assembly.GetExecutingAssembly().GetName().Name;
-            //app.UseSwagger(options=> 
-            //{
-            //    options.RouteTemplate = "{documentName}/swagger.json";
-            //})
-            //.UseSwaggerUI(options =>
-            //{
-            //    options.ShowExtensions();
-            //    options.EnableValidator(null);
-            //    options.SwaggerEndpoint($"/{apiName}/swagger.json", $"{apiName} V1");
-            //});
+            string apiName = Assembly.GetExecutingAssembly().GetName().Name;
+            app.UseSwagger(options =>
+            {
+                options.RouteTemplate = "{documentName}/swagger.json";
+            })
+            .UseSwaggerUI(options =>
+            {
+                options.ShowExtensions();
+                options.EnableValidator(null);
+                options.SwaggerEndpoint($"/{apiName}/swagger.json", $"{apiName} V1");
+            });
 
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            //app.UseEndpoints(endpoints =>
-            //{
-            //});
             app.UseEndpoints(routes =>
             {
                 routes.MapControllers();
@@ -123,15 +122,14 @@ namespace MsSystem.OA.API
             services.AddControllers(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
                 .AddNewtonsoftJson(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
 
-            //services.AddSwaggerGen(options =>
-            //{
-            //    string apiName = Assembly.GetExecutingAssembly().GetName().Name;
-            //    options.SwaggerDoc(apiName, new Info { Title = "行政办公接口", Version = "v1" });
-            //    var xmlFile = $"{apiName}.xml";
-            //    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            //    options.IncludeXmlComments(xmlPath);
-            //    options.OperationFilter<AddAuthTokenHeaderParameter>();
-            //});
+            services.AddSwaggerGen(options =>
+            {
+                string apiName = Assembly.GetExecutingAssembly().GetName().Name;
+                options.SwaggerDoc(apiName, new OpenApiInfo { Title = "行政办公接口", Version = "v1" });
+                var xmlFile = $"{apiName}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
+            });
 
 
             services.AddCors(options =>

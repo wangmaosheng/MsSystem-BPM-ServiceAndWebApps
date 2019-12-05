@@ -7,13 +7,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>bin\Debug\netcoreapp2.2\</OutputPath>
-    <DocumentationFile>bin\Debug\netcoreapp2.2\MsSystem.Weixin.API.xml</DocumentationFile>
+    <OutputPath>bin\Debug\netcoreapp3.0\</OutputPath>
+    <DocumentationFile>bin\Debug\netcoreapp3.0\MsSystem.Weixin.API.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>bin\Release\netcoreapp2.2\</OutputPath>
-    <DocumentationFile>bin\Release\netcoreapp2.2\MsSystem.Weixin.API.xml</DocumentationFile>
+    <OutputPath>bin\Release\netcoreapp3.0\</OutputPath>
+    <DocumentationFile>bin\Release\netcoreapp3.0\MsSystem.Weixin.API.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,7 +36,7 @@
     <PackageReference Include="NLog" Version="4.6.7" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
   </ItemGroup>
 
   <ItemGroup>
