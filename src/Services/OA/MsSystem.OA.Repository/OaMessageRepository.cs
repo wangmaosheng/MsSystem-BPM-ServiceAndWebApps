@@ -5,6 +5,7 @@ using JadeFramework.Dapper.SqlGenerator;
 using MsSystem.OA.IRepository;
 using MsSystem.OA.Model;
 using MsSystem.OA.ViewModel;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 
@@ -75,5 +76,18 @@ LIMIT @offset,@pageSize
 
             return page;
         }
+
+        /// <summary>
+        /// 根据id集合获取可用消息
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<OaMessage>> GetByIds(List<long> ids)
+        {
+            string str = string.Join(",", ids);
+            string sql = $"SELECT * FROM oa_message WHERE isdel=0 AND id in(" + str + ")";
+            return await this.QueryAsync(sql);
+        }
+
     }
 }

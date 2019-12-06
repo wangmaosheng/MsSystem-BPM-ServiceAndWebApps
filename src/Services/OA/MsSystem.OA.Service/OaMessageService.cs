@@ -26,7 +26,7 @@ namespace MsSystem.OA.Service
             {
                 try
                 {
-                    var list = await _databaseFixture.Db.OaMessage.FindAllAsync(m => m.IsDel == 0 && dto.Ids.Contains(m.Id));
+                    var list = await _databaseFixture.Db.OaMessage.GetByIds(dto.Ids);
                     foreach (var item in list)
                     {
                         item.IsDel = 1;
