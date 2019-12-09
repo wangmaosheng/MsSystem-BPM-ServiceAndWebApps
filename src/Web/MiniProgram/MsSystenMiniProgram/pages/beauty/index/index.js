@@ -75,8 +75,6 @@ function requestData(that, targetPage) {
         res.data == null ||
         res.data.results == null ||
         res.data.results.length <= 0) {
-
-        console.error("god bless you...");
         return;
       }
 

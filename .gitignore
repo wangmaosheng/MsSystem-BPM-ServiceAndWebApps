@@ -246,3 +246,4 @@ ModelManifest.xml
 /dockermysql
 /docker/mysql/db
 *.pubxml
+/docker/elasticsearch-data/nodes/0

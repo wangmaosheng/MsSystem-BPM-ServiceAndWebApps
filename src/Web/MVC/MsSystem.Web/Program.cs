@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using NLog.Web;
 
 namespace MsSystem.Web
 {
@@ -17,7 +16,6 @@ namespace MsSystem.Web
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>()
-                    .UseNLog()
                     .UseUrls("http://*:8000")
                     .UseKestrel();
                 });

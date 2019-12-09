@@ -20,6 +20,22 @@ services:
       - "15672:15672"
       - "5672:5672"
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
+    container_name: elasticsearch
+    ports:
+      - "9200:9200"
+    volumes:
+      - ./docker/elasticsearch-data:/usr/share/elasticsearch/data
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.2.4
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
   gateway:
     container_name: gateway
     ports:

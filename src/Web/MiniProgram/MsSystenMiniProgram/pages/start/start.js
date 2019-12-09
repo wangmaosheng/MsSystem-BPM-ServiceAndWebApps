@@ -98,9 +98,21 @@ Page({
 
   },
   goToIndex(){
-    wx.switchTab({
-      url: '/pages/main/index'
-    })
+    const isauth = TOKEN.isAuthenticated();
+    if(!isauth){
+      wx.showLoading({
+        title:'正在离线浏览...',
+        success:function(){
+          wx.switchTab({
+            url: '/pages/main/index'
+          })
+        }
+      });
+    }else{
+      wx.switchTab({
+        url: '/pages/main/index'
+      })
+    }
   },
   bindGetUserInfo: function (e) {
     if (!e.detail.userInfo) {
@@ -124,35 +136,50 @@ Page({
         that.setData({
           btnClass:'hidden'
         });
-        wx.showLoading({
-          title: '登录中...',
-        })
-        HTTP.login({ code: res.code }, function (response) {
-          if (response.code == 10000) {
-            // 去注册
-            that.registerUser();
-            return;
-          }
-          if (response.code != 0) {
-            wx.showModal({
-              title: '提示',
-              content: '无法登录，是否重试？',
-              showCancel: true,
-              success(){
-                that.login();
-              },
-              fail(){
-                that.onLoad();
-              }
-            })
-            return;
-          }
-          wx.setStorageSync('userid', response.Data.Id)
-          app.navigateToLogin = false
-          wx.switchTab({
-            url: '/pages/main/index'
+        const isauth =TOKEN.isAuthenticated();
+        if(isauth){
+          wx.showLoading({
+            title: '登录中...',
           })
-        });
+          HTTP.login({ code: res.code }, function (response) {
+            if (response.code == 10000) {
+              // 去注册
+              that.registerUser();
+              return;
+            }
+            if (response.code != 0) {
+              wx.showModal({
+                title: '提示',
+                content: '无法登录，是否重试？',
+                showCancel: true,
+                success(){
+                  that.login();
+                },
+                fail(){
+                  that.onLoad();
+                }
+              })
+              return;
+            }
+            wx.setStorageSync('userid', response.Data.Id)
+            app.navigateToLogin = false
+            wx.switchTab({
+              url: '/pages/main/index'
+            })
+          });
+        } else {
+          wx.showLoading({
+            title: '正在离线浏览...',
+            success:function(){
+              wx.setStorageSync('userid', 1)
+              app.navigateToLogin = false
+              wx.switchTab({
+                url: '/pages/main/index'
+              });
+            }
+          });
+
+        }
       }
     })
   },

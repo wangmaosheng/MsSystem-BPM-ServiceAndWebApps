@@ -1,5 +1,4 @@
 /* @import 'weui/weui.wxss'; */
-@import "/dist/packages/@zanui/index.wxss";
 .container {
   height: 100%;
   display: flex;

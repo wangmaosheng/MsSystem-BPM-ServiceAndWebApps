@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.WebEncoders;
 using MsSystem.Utility;
 using MsSystem.Web.Areas.OA.Service;
@@ -17,9 +17,10 @@ using MsSystem.Web.Areas.Sys.Service;
 using MsSystem.Web.Areas.Weixin.Service;
 using MsSystem.Web.Areas.WF.Service;
 using MsSystem.Web.Infrastructure;
-using NLog.Web;
 using Polly;
 using Polly.Extensions.Http;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
 using System;
 using System.Net.Http;
 using System.Text.Encodings.Web;
@@ -33,6 +34,15 @@ namespace MsSystem.Web
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            var elasticUri = Configuration["ElasticConfiguration:Uri"];
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elasticUri))
+                {
+                    AutoRegisterTemplate = true,
+                })
+            .CreateLogger();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -60,24 +70,13 @@ namespace MsSystem.Web
             //验证码
             services.AddScoped<IVerificationCode, VerificationCode>();
             services.AddScoped<IPermissionStorageContainer, PermissionStorageService>();
-            //var container = new ContainerBuilder();
-            //container.Populate(services);
-            //return new AutofacServiceProvider(container.Build());
         }
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                NLogBuilder.ConfigureNLog("NLog.Development.config");
-            }
-            else
-            {
-                NLogBuilder.ConfigureNLog("NLog.config");
-            }
+            loggerFactory.AddSerilog();
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto

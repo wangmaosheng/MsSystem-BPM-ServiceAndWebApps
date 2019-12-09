@@ -93,6 +93,9 @@ const requestGateWayAccessToken = function(cb) {
         //回调
         cb(response.data.access_token);
       }
+    },
+    fail:function(){
+      console.error("网络不通！！！");
     }
   })
 }
