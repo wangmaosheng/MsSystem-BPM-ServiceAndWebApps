@@ -4,14 +4,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MsSystem.Sys.API.Filters;
 using MsSystem.Sys.IRepository;
 using MsSystem.Sys.IService;
 using MsSystem.Sys.Repository;
 using MsSystem.Sys.Service;
-using NLog.Web;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
 using System;
 using System.IO;
 using System.Reflection;
@@ -23,6 +24,14 @@ namespace MsSystem.Sys.API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.MySQL(Configuration["LogConfig:MySQL"], tableName: "syslog")
+                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(Configuration["LogConfig:ElasticsearchUri"]))
+                {
+                    AutoRegisterTemplate = true,
+                })
+            .CreateLogger();
         }
 
         public IConfiguration Configuration { get; }
@@ -104,20 +113,10 @@ namespace MsSystem.Sys.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             //app.UseZipkin();
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                NLogBuilder.ConfigureNLog("NLog.Development.config");
-            }
-            else
-            {
-                NLogBuilder.ConfigureNLog("NLog.config");
-            }
-
+            loggerFactory.AddSerilog();
             app.UseCors("CorsPolicy");
 
             app.UseResponseCompression();

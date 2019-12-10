@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NLog;
 
 namespace MsSystem.Identity.Controllers
 {
@@ -13,9 +12,6 @@ namespace MsSystem.Identity.Controllers
         [HttpGet]
         public IActionResult Ping()
         {
-            Logger nlog = LogManager.GetCurrentClassLogger();
-            LogEventInfo logEvent = new LogEventInfo(LogLevel.Info, "consul", "心跳检测");
-            nlog.Log(logEvent);
             return Ok();
         }
     }

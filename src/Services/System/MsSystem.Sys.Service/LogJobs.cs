@@ -1,7 +1,7 @@
 ﻿using JadeFramework.Core.Extensions;
+using Microsoft.Extensions.Logging;
 using MsSystem.Sys.IRepository;
 using MsSystem.Sys.IService;
-using NLog;
 using System;
 
 namespace MsSystem.Sys.Service
@@ -11,12 +11,13 @@ namespace MsSystem.Sys.Service
     /// </summary>
     public class LogJobs : ILogJobs
     {
-        private readonly Logger nlog = LogManager.GetCurrentClassLogger(); //获得日志实;
         private readonly ISysDatabaseFixture databaseFixture;
+        private readonly ILogger<LogJobs> logger;
 
-        public LogJobs(ISysDatabaseFixture databaseFixture)
+        public LogJobs(ISysDatabaseFixture databaseFixture,ILogger<LogJobs> logger)
         {
             this.databaseFixture = databaseFixture;
+            this.logger = logger;
         }
 
         /// <summary>
@@ -45,7 +46,8 @@ namespace MsSystem.Sys.Service
         public void ExceptionLog(long userid, Exception exception)
         {
             string message = "【系统主动记录】" + exception.ToLogMessage();
-            nlog.Log(LogLevel.Error, exception, message);
+            //nlog.Log(LogLevel.Error, exception, message);
+            logger.LogError(message);
         }
 
     }

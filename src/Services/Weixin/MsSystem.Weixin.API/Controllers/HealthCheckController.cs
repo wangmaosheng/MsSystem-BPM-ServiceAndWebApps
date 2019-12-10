@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NLog;
+using Microsoft.Extensions.Logging;
 
 namespace MsSystem.Weixin.API.Controllers
 {
@@ -10,12 +10,17 @@ namespace MsSystem.Weixin.API.Controllers
     [Route("api/HealthCheck/[action]")]
     public class HealthCheckController : Controller
     {
+        private readonly ILogger<HealthCheckController> logger;
+
+        public HealthCheckController(ILogger<HealthCheckController> logger)
+        {
+            this.logger = logger;
+        }
+
         [HttpGet]
         public IActionResult Ping()
         {
-            Logger nlog = LogManager.GetCurrentClassLogger();
-            LogEventInfo logEvent = new LogEventInfo(LogLevel.Info, "consul", "心跳检测");
-            nlog.Log(logEvent);
+            logger.LogInformation("心跳检测");
             return Ok();
         }
     }

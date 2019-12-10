@@ -35,10 +35,10 @@ namespace MsSystem.Web
         {
             Configuration = configuration;
 
-            var elasticUri = Configuration["ElasticConfiguration:Uri"];
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
-                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elasticUri))
+                .WriteTo.MySQL(Configuration["LogConfig:MySQL"],tableName:"weblog")
+                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(Configuration["LogConfig:ElasticsearchUri"]))
                 {
                     AutoRegisterTemplate = true,
                 })

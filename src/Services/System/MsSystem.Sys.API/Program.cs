@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using NLog.Web;
 
 namespace MsSystem.Sys.API
 {
@@ -16,7 +15,6 @@ namespace MsSystem.Sys.API
         private static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseNLog()
                 .UseUrls("http://*:5002")
                 .UseKestrel()
                 .Build();

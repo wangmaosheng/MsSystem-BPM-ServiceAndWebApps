@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
-using NLog;
+using Microsoft.Extensions.Logging;
 
 namespace MsSystem.OA.API.Filters
 {
@@ -8,8 +8,11 @@ namespace MsSystem.OA.API.Filters
     /// </summary>
     public class HttpGlobalExceptionFilter : IExceptionFilter
     {
-        private readonly Logger nlog = LogManager.GetCurrentClassLogger(); //获得日志实;
-
+        private ILogger<HttpGlobalExceptionFilter> _logger;
+        public HttpGlobalExceptionFilter(ILogger<HttpGlobalExceptionFilter> logger)
+        {
+            _logger = logger;
+        }
         public void OnException(ExceptionContext context)
         {
             if (!context.ExceptionHandled)
@@ -19,7 +22,7 @@ namespace MsSystem.OA.API.Filters
                 var actionName = context.RouteData.Values["action"];
                 string errorMsg = $"在请求controller[{controllerName}] 的 action[{actionName}] 时产生异常[{excep.Message}]";
 
-                nlog.Log(LogLevel.Error, context.Exception, errorMsg);
+                _logger.LogError(errorMsg);
                 context.ExceptionHandled = true;//Tag it is handled.
             }
         }

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Hosting;
-using NLog;
+using Microsoft.Extensions.Logging;
 
 namespace MsSystem.Weixin.API.Filters
 {
@@ -12,12 +12,13 @@ namespace MsSystem.Weixin.API.Filters
     /// </summary>
     public class HttpGlobalExceptionFilter : IExceptionFilter
     {
-        private readonly Logger nlog = LogManager.GetCurrentClassLogger(); //获得日志实例;
         private readonly IWebHostEnvironment _env;
+        private ILogger<HttpGlobalExceptionFilter> _logger;
 
-        public HttpGlobalExceptionFilter(IWebHostEnvironment env)
+        public HttpGlobalExceptionFilter(IWebHostEnvironment env, ILogger<HttpGlobalExceptionFilter> logger)
         {
-            this._env = env;
+            _env = env;
+            _logger = logger;
         }
         public void OnException(ExceptionContext context)
         {
@@ -28,7 +29,7 @@ namespace MsSystem.Weixin.API.Filters
                 var actionName = context.RouteData.Values["action"];
                 string errorMsg = $"在请求controller[{controllerName}] 的 action[{actionName}] 时产生异常[{excep.Message}]";
 
-                nlog.Log(LogLevel.Error, context.Exception, errorMsg);
+                _logger.LogError(errorMsg);
 
                 var json = new ErrorResponse("未知错误,请重试");
 

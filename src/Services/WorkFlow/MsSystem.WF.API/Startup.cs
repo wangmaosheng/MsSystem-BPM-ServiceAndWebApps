@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using MsSystem.WF.API.Filters;
@@ -17,9 +17,10 @@ using MsSystem.WF.IService;
 using MsSystem.WF.Repository;
 using MsSystem.WF.Service;
 using MsSystem.WF.ViewModel;
-using NLog.Web;
 using Polly;
 using Polly.Extensions.Http;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -32,6 +33,14 @@ namespace MsSystem.WF.API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.MySQL(Configuration["LogConfig:MySQL"], tableName: "wflog")
+                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(Configuration["LogConfig:ElasticsearchUri"]))
+                {
+                    AutoRegisterTemplate = true,
+                })
+            .CreateLogger();
         }
 
         public IConfiguration Configuration { get; }
@@ -49,20 +58,10 @@ namespace MsSystem.WF.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             //app.UseZipkin();
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                NLogBuilder.ConfigureNLog("NLog.Development.config");
-            }
-            else
-            {
-                NLogBuilder.ConfigureNLog("NLog.config");
-            }
-
+            loggerFactory.AddSerilog();
             app.UseCors("CorsPolicy");
 
             app.UseResponseCompression();

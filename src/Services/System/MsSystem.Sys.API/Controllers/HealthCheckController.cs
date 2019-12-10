@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NLog;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace MsSystem.Sys.API.Controllers
 {
@@ -13,12 +11,17 @@ namespace MsSystem.Sys.API.Controllers
     [ApiController]
     public class HealthCheckController : ControllerBase
     {
+        private readonly ILogger<HealthCheckController> logger;
+
+        public HealthCheckController(ILogger<HealthCheckController> logger)
+        {
+            this.logger = logger;
+        }
+
         [HttpGet]
         public IActionResult Ping()
         {
-            Logger nlog = LogManager.GetCurrentClassLogger();
-            LogEventInfo logEvent = new LogEventInfo(LogLevel.Info, "consul", "心跳检测");
-            nlog.Log(logEvent);
+            logger.LogInformation("心跳检测");
             return Ok();
         }
     }

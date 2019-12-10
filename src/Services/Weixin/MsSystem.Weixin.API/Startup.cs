@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MsSystem.Weixin.API.Filters;
 using MsSystem.Weixin.API.Hubs;
@@ -13,7 +13,8 @@ using MsSystem.Weixin.IRepository;
 using MsSystem.Weixin.IService;
 using MsSystem.Weixin.Repository;
 using MsSystem.Weixin.Service;
-using NLog.Web;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
 using System;
 using System.IO;
 using System.Reflection;
@@ -25,6 +26,14 @@ namespace MsSystem.Weixin.API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.MySQL(Configuration["LogConfig:MySQL"], tableName: "weixinlog")
+                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(Configuration["LogConfig:ElasticsearchUri"]))
+                {
+                    AutoRegisterTemplate = true,
+                })
+            .CreateLogger();
         }
 
         public IConfiguration Configuration { get; }
@@ -95,19 +104,10 @@ namespace MsSystem.Weixin.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             //app.UseZipkin();
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                NLogBuilder.ConfigureNLog("NLog.Development.config");
-            }
-            else
-            {
-                NLogBuilder.ConfigureNLog("NLog.config");
-            }
+            loggerFactory.AddSerilog();
             app.UseCors("CorsPolicy");
             app.UseResponseCompression();
             app.UseForwardedHeaders(new ForwardedHeadersOptions
