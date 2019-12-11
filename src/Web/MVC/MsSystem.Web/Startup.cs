@@ -116,6 +116,7 @@ namespace MsSystem.Web
             services.Configure<WebEncoderOptions>(options => options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs));
 
             services.AddControllersWithViews(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
+                .AddRazorRuntimeCompilation()
                 .AddNewtonsoftJson(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());//修改默认首字母为大写
             services.AddMemoryCache();
 

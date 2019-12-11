@@ -9,9 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="JadeFramework.Core" Version="1.0.2.3" />
     <PackageReference Include="JadeFramework.Dapper" Version="1.0.1.6" />
-    <PackageReference Include="JadeFramework.WorkFlow" Version="1.0.3.4" />
+    <PackageReference Include="JadeFramework.WorkFlow" Version="1.0.3.5" />
   </ItemGroup>
 
 </Project>

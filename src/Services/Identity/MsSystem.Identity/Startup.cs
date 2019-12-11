@@ -31,18 +31,9 @@ namespace MsSystem.Identity
 
             services.AddControllers();
         }
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app)
         {
             //app.UseZipkin();
-            //loggerFactory.AddNLog();
-            //if (env.IsDevelopment())
-            //{
-            //    env.ConfigureNLog("NLog.Development.config");
-            //}
-            //else
-            //{
-            //    env.ConfigureNLog("NLog.config");
-            //}
             app.UseRouting();
             app.UseIdentityServer();
             //app.UseServiceRegistration(new ServiceCheckOptions

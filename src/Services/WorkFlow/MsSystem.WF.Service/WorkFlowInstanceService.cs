@@ -440,7 +440,7 @@ namespace MsSystem.WF.Service
                     };
                     return model;
                 }
-                if (flowinstance.IsFinish == (int)WorkFlowInstanceStatus.Finish)
+                if (flowinstance.IsFinish == (int)WorkFlowInstanceStatus.Finish) //流程结束情况
                 {
                     model.Menus = new List<int>();
                     //流程打印按钮显示判断
@@ -459,6 +459,9 @@ namespace MsSystem.WF.Service
                     model.Menus.Add((int)WorkFlowMenu.Return);
                     return model;
                 }
+
+                //============= 流程运行中情况判断 =============//
+
                 //根据当前人获取可操作的按钮
                 //获取下一步的执行人
                 MsWorkFlowContext context = new MsWorkFlowContext(new JadeFramework.WorkFlow.WorkFlow
@@ -532,6 +535,12 @@ namespace MsSystem.WF.Service
                             model.Menus.Add((int)WorkFlowMenu.View);
                         }
 
+                        //委托按钮显示判断
+                        if (CanAssign(model))
+                        {
+                            model.Menus.Add((int)WorkFlowMenu.Assign);
+                        }
+
                         //终止按钮显示判断
                         var prenode = context.GetLinesForFrom(flowinstance.ActivityId);
                         if (prenode.Count == 1)
@@ -558,6 +567,16 @@ namespace MsSystem.WF.Service
                 }
             }
             return model;
+        }
+
+        /// <summary>
+        /// 判断当前用户是否能显示委托操作按钮
+        /// </summary>
+        /// <param name="process"></param>
+        /// <returns></returns>
+        private bool CanAssign(WorkFlowProcess process)
+        {
+            return true;   
         }
 
         /// <summary>

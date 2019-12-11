@@ -26,7 +26,6 @@ namespace MsSystem.Sys.Service
         public void LoginLog(long userid,string username)
         {
             string message = $"用户名：【{username}】,用户ID:【{userid}】登录成功";
-            //nlog.Log(LogLevel.Info, message);
             databaseFixture.LogDb.SysLog.InsertAsync(new Model.SysLog()
             {
                 Application = "MsSystem.Sys.API",
@@ -46,7 +45,6 @@ namespace MsSystem.Sys.Service
         public void ExceptionLog(long userid, Exception exception)
         {
             string message = "【系统主动记录】" + exception.ToLogMessage();
-            //nlog.Log(LogLevel.Error, exception, message);
             logger.LogError(message);
         }
 

@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
-    <PackageReference Include="JadeFramework.Core" Version="1.0.2.3" />
     <PackageReference Include="JadeFramework.Dapper" Version="1.0.1.6" />
   </ItemGroup>
 
