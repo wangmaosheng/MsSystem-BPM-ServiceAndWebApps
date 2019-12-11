@@ -14,5 +14,6 @@ namespace MsSystem.WF.IRepository
         IWfWorkflowsqlRepository WfWorkflowsql { get; }
         IWfWorkflowNoticeRepository WfWorkflowNotice { get; }
         IWfWorkflowUrgeRepository WfWorkflowUrge { get; }
+        IWfWorkflowAssignRepository WfWorkflowAssign { get; }
     }
 }

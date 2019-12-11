@@ -53,5 +53,8 @@ namespace MsSystem.WF.Repository
         private IWfWorkflowUrgeRepository _wfWorkflowUrge;
         public IWfWorkflowUrgeRepository WfWorkflowUrge => _wfWorkflowUrge ?? (_wfWorkflowUrge = new WfWorkflowUrgeRepository(Connection, _config));
 
+
+        private IWfWorkflowAssignRepository _wfWorkflowAssign;
+        public IWfWorkflowAssignRepository WfWorkflowAssign => _wfWorkflowAssign ?? (_wfWorkflowAssign = new WfWorkflowAssignRepository(Connection, _config));
     }
 }

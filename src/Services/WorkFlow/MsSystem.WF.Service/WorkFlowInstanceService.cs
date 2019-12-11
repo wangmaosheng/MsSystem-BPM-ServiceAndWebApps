@@ -623,6 +623,7 @@ namespace MsSystem.WF.Service
                 case WorkFlowMenu.Throgh:
                     break;
                 case WorkFlowMenu.Assign:
+                    result = await ProcessTransitionAssignAsync(model);
                     break;
                 case WorkFlowMenu.CC:
                     break;
@@ -1516,6 +1517,77 @@ namespace MsSystem.WF.Service
                 {
                     tran.Rollback();
                     return WorkFlowResult.Error("已阅操作失败");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 流程委托操作
+        /// 将自己审批某个流程的权限赋予其他人，让其他用户代审批流程;
+        /// 规则：A委托给B，A不能再审批且不能多次委托，B可再次委托给C，同理A
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        protected async Task<WorkFlowResult> ProcessTransitionAssignAsync(WorkFlowProcessTransition model)
+        {
+            using (var tran = databaseFixture.Db.BeginTransaction())
+            {
+                try
+                {
+                    //1、修改流程实例makerlist，替换人
+                    var dbflowinstance = await databaseFixture.Db.WorkflowInstance.FindByIdAsync(model.InstanceId);
+                    string oldreplaceStr = model.UserId + ",";
+                    string newreplaceStr = model.Assign.AssignUserId + ",";
+                    var newmakerList = dbflowinstance.MakerList.Replace(oldreplaceStr, newreplaceStr);
+                    dbflowinstance.MakerList = newmakerList;
+                    await databaseFixture.Db.WorkflowInstance.UpdateAsync(dbflowinstance, tran);
+
+                    MsWorkFlowContext context = new MsWorkFlowContext(new JadeFramework.WorkFlow.WorkFlow
+                    {
+                        FlowId = model.FlowId,
+                        FlowJSON = dbflowinstance.FlowContent,
+                        ActivityNodeId = dbflowinstance.ActivityId,
+                        PreviousId = dbflowinstance.PreviousId
+                    });
+
+                    //2、添加委托记录
+                    WfWorkflowAssign workflowAssign = new WfWorkflowAssign
+                    {
+                        UserId = model.UserId,
+                        UserName = model.UserName,
+                        FlowId = model.FlowId,
+                        NodeId = context.WorkFlow.ActivityNodeId,
+                        NodeName = context.WorkFlow.ActivityNode.Name,
+                        InstanceId = model.InstanceId,
+                        CreateUserId = model.UserId,
+                        AssignUserId = model.Assign.AssignUserId,
+                        AssignUserName = model.Assign.AssignUserName,
+                        Content = model.Assign.AssignContent
+                    };
+                    await databaseFixture.Db.WfWorkflowAssign.InsertAsync(workflowAssign, tran);
+
+                    //3、添加操作记录（不添加流转，因为实际情况流程并没有运行到下一个节点）
+                    WfWorkflowOperationHistory operationHistory = new WfWorkflowOperationHistory
+                    {
+                        OperationId = Guid.NewGuid(),
+                        InstanceId = dbflowinstance.InstanceId,
+                        CreateUserId = model.UserId,
+                        CreateUserName = model.UserName,
+                        Content = model.ProcessContent,
+                        NodeId = context.WorkFlow.ActivityNodeId,
+                        NodeName = context.WorkFlow.ActivityNode.Name,
+                        TransitionType = (int)WorkFlowMenu.Agree
+                    };
+                    await databaseFixture.Db.WorkflowOperationHistory.InsertAsync(operationHistory, tran);
+
+                    tran.Commit();
+
+                    return WorkFlowResult.Success();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    return WorkFlowResult.Error("委托操作失败");
                 }
             }
         }
