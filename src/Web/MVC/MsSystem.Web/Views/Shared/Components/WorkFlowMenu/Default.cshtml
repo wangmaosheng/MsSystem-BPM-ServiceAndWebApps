@@ -1,4 +1,5 @@
-﻿@using JadeFramework.WorkFlow
+﻿@*自定义流程*@
+@using JadeFramework.WorkFlow
 @using JadeFramework.Core
 @using JadeFramework.Core.Extensions
 @model WorkFlowProcess
@@ -491,13 +492,13 @@ else
                 if (response.data.Result) {
                     html = '<div id="vertical-timeline" class="vertical-container light-timeline">';
                     $.each(response.data.Data, function (index, item) {
-                        var icon = getApprovalIcon(item.TransitionType);
+                        var obj = getApprovalIcon(item.TransitionType);
                         html += '<div class="vertical-timeline-block">';
-                        html += '<div class="vertical-timeline-icon white-bg"><i class="' + icon + '"></i></div>';
+                        html += '<div class="vertical-timeline-icon white-bg" title="' + obj.title + '"><i class="' + obj.icon + '"></i></div>';
                         html += '<div class="vertical-timeline-content" style="padding: 0.4em;">';
                         html += '<p style="margin:0px;border-bottom: 1px solid #f1f1f1;">';
                         html += '<strong>【' + item.NodeName + '】</strong>&nbsp;&nbsp;' + item.CreateUserName;
-                        if (item.TransitionType != null) {
+                        if (item.TransitionType != null || item.NodeName == '结束') {
                             html += '<span class="vertical-date" style="float:right"><small style="color:#0e9aef;">' + $.unixToDate(item.CreateTime, true) + '</small></span>';
                         }
                         html += '</p>'
@@ -515,22 +516,40 @@ else
             }
         });
         function getApprovalIcon(type) {
+            var obj = {
+                "icon": null,
+                "title": null
+            };
             switch (type) {
                 case 1:
-                    return "fa fa-play green";
+                    obj.icon = "fa fa-play green";
+                    obj.title = "开始";
+                    break;
                 case 2:
-                    return "fa fa-check green";
+                    obj.icon = "fa fa-check green";
+                    obj.title = "同意";
+                    break;
                 case 3:
-                    return "fa fa-mail-reply red";
+                    obj.icon = "fa fa-mail-reply red";
+                    obj.title = "再次提交";
+                    break;
                 case 5:
-                    return "fa fa-reply-all red";
+                    obj.icon = "fa fa-reply-all red";
+                    obj.title = "撤回";
+                    break;
                 case 7:
-                    return "fa fa-rotate-left red";
+                    obj.icon = "fa fa-rotate-left red";
+                    obj.title = "退回";
+                    break;
                 case 9:
-                    return "fa fa-eye green";
+                    obj.icon = "fa fa-eye green";
+                    obj.title = "已阅";
+                    break;
                 default:
-                    return "fa fa-stop red";
+                    obj.icon = "fa fa-stop red";
+                    obj.title = "结束";
             }
+            return obj;
         }
     });
     </text>
