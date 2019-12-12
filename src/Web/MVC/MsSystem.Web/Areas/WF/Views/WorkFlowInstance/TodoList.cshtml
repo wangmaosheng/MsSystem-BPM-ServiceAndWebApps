@@ -62,7 +62,7 @@
                                     <th class="w150">发起人</th>
                                     <th class="w150">流程类型</th>
                                     <th class="w100 text-center">状态</th>
-                                    <th class="w150">创建时间</th>
+                                    <th class="w150">接收时间</th>
                                     <th class="w100 text-center">操作</th>
                                 </tr>
                             </thead>
@@ -81,7 +81,7 @@
                                         <td class="text-center">
                                             @Html.Raw(HtmlExtensions.ToWorkFlowInstanceStatusIcon(item.IsFinish,item.Status))
                                         </td>
-                                        <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd hh:mm:ss")</td>
+                                        <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd HH:mm:ss")</td>
                                         <td class="text-center">
                                             @switch ((WorkFlowFormType)item.FormType)
                                             {

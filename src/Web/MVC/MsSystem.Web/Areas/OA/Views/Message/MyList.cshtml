@@ -49,7 +49,7 @@
                                         </td>
                                         <td>@(((OaMessageType)item.MsgType).GetDescription())</td>
                                         <td>@item.Title</td>
-                                        <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd hh:mm:ss")</td>
+                                        <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd HH:mm:ss")</td>
                                         <td class="text-center">
                                             @if (item.IsRead > 0)
                                             {

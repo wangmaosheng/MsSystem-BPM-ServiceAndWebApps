@@ -419,7 +419,7 @@ $(function () {
 
     // 关闭选项卡菜单
     function closeTab() {
-        refreshPage();
+        //refreshPage();
         var closeTabId = $(this).parents('.J_menuTab').data('id');
         var currentWidth = $(this).parents('.J_menuTab').width();
 

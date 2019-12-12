@@ -255,7 +255,7 @@ else
     }
     @if (Model.Menus.Contains((int)WorkFlowMenu.Agree)|| Model.Menus.Contains((int)WorkFlowMenu.Deprecate)
         || Model.Menus.Contains((int)WorkFlowMenu.ReSubmit) || Model.Menus.Contains((int)WorkFlowMenu.Withdraw)
-        || Model.Menus.Contains((int)WorkFlowMenu.View))
+        || Model.Menus.Contains((int)WorkFlowMenu.View) || Model.Menus.Contains((int)WorkFlowMenu.Assign))
     {
     <text>
     var get_modal = function (menutype, content, tipmsg) {
@@ -511,6 +511,10 @@ else
                     obj.icon = "fa fa-reply-all red";
                     obj.title = "撤回";
                     break;
+                case 6:
+                    obj.icon = "fa fa-hand-pointer-o red";
+                    obj.title = "委托";
+                    break;
                 case 7:
                     obj.icon = "fa fa-rotate-left red";
                     obj.title = "退回";
@@ -572,6 +576,55 @@ else
     $('button[name=WorkFlowBtn][data-typename=@WorkFlowMenu.Print]').on('click', function () {
         $("body").print();
     });
+    </text>
+    }
+    @if (Model.Menus.Contains((int)WorkFlowMenu.Assign))
+    {
+    <text>
+
+    $('button[name=WorkFlowBtn][data-typename=@WorkFlowMenu.Assign]').on('click', function () {
+        layer.open({
+            type: 2,
+            title: '选择委托用户',
+            maxmin: false,
+            area: ['700px', '500px'],
+            content: '/Sys/Plugin/User?more=0',
+            success: function (layero, index) {
+                layero.find('iframe').focus();
+            }
+        });
+    });
+    window.getUsers = function (index, ids, obj) {
+        layer.close(index);
+        var $modal = get_modal('请求委托内容(可空)',"").modal({ backdrop: 'static', keyboard: false, show: true });
+        $modal.find(":input:first").select().focus();
+        $modal.find("#saveModal").click(function () {
+            var ProcessContent = $modal.find("textarea").val();
+            var model = {
+                FlowId: $('#FlowId').val(),
+                InstanceId: $('#InstanceId').val(),
+                MenuType: '@WorkFlowMenu.Assign',
+                ProcessContent: ProcessContent,
+                Assign: {
+                    AssignUserId: obj[0].userid,
+                    AssignUserName: obj[0].username,
+                    AssignContent: ProcessContent
+                },
+                StatusChange: {
+                    KeyName: $('input[name=PageId]').attr('data-name'),
+                    KeyValue: $('input[name=PageId]').val(),
+                    TableName: $('input[name=TableName]').val(),
+                    TargetName: $('#TargetName').val()
+                },
+                OptionParams: optionParams == undefined ? null : optionParams
+            };
+            transition(model, function () {
+                $modal.modal("hide");
+            });
+            return false;
+        });
+
+    };
     </text>
     }
 </script>

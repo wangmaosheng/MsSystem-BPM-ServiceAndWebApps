@@ -15,8 +15,14 @@
             });
             $('#saveuser').on('click', function () {
                 var ids = [];
-                $('.ibox-content table tbody tr td input[type=checkbox]:checked').each(function () {
+                var objs = [];
+                $('.ibox-content table tbody tr td input:checked').each(function () {
                     ids.push($(this).val());
+                    var obj = {
+                        'userid': $(this).val(),
+                        'username': $(this).attr('data-username')
+                    };
+                    objs.push(obj);
                 });
                 if (ids.length <= 0) {
                     layer.msg('请至少选择一条数据！', { icon: 5, time: 1500 });
@@ -24,7 +30,7 @@
                 }
                 var index = parent.layer.getFrameIndex(window.name);
                 if (parent.getUsers) {
-                    parent.getUsers(index, ids);
+                    parent.getUsers(index, ids, objs);
                 }
             });
         }

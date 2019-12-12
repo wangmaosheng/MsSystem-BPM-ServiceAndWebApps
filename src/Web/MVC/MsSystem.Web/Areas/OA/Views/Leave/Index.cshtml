@@ -60,7 +60,7 @@
                                         <td>@item.LeaveCode</td>
                                         <td>@item.Title</td>
                                         <td>@item.UserName</td>
-                                        <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd hh:mm:ss")</td>
+                                        <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd HH:mm:ss")</td>
                                         <td class="text-center">@Html.Raw(((WorkFlowStatus)item.FlowStatus).ToWorkFlowStatusIcon())</td>
                                         <td class="text-center"><a name="editform" data-id="@item.Id">@((WorkFlowStatus)item.FlowStatus == WorkFlowStatus.UnSubmit ? "编辑" : "查看")</a></td>
                                     </tr>

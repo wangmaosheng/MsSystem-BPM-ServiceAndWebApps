@@ -34,6 +34,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
                 search.PageSize = 5;
             }
             var res = await _userService.GetUserPageAsync(search);
+            ViewBag.More = search.More;
             return View(res);
         }
     }

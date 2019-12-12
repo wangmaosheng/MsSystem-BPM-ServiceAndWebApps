@@ -117,7 +117,7 @@
                                         <td>@item.UserName</td>
                                         <td>@(((WorkFlowFormType)item.FormType).GetDescription())</td>
                                         <td class="text-center">@Html.Raw(HtmlExtensions.ToWorkFlowInstanceStatusIcon(item.IsFinish,item.Status))</td>
-                                        <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd hh:mm:ss")</td>
+                                        <td>@item.CreateTime.ToDateTime().ToString("yyyy-MM-dd HH:mm:ss")</td>
                                         <td class="text-center">
                                             @if (item.IsFinish == 0 && (WorkFlowStatus)item.Status == WorkFlowStatus.Running)
                                             {

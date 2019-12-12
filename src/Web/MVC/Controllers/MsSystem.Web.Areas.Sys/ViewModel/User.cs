@@ -26,6 +26,10 @@ namespace MsSystem.Web.Areas.Sys.ViewModel
 
     public class UserIndexSearch : BaseSearch
     {
+        /// <summary>
+        /// 是否多选
+        /// </summary>
+        public byte More { get; set; } = 1;
         public string UserName { get; set; }
         public override string ToString()
         {
