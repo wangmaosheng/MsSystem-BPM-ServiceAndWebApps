@@ -27,6 +27,7 @@ services:
       - "9200:9200"
     volumes:
       - ./docker/elasticsearch-data:/usr/share/elasticsearch/data
+    restart: always
 
   kibana:
     image: docker.elastic.co/kibana/kibana:6.2.4
@@ -35,6 +36,7 @@ services:
       - "5601:5601"
     depends_on:
       - elasticsearch
+    restart: always
 
   gateway:
     container_name: gateway
