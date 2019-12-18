@@ -21,7 +21,8 @@ namespace MsSystem.OA.Service
         public async Task<bool> InsertAsync(OaChat chat)
         {
             chat.CreateTime = DateTime.Now.ToTimeStamp();
-            return await _databaseFixture.Db.OaChat.InsertAsync(chat);
+            bool res = await _databaseFixture.Db.OaChat.InsertAsync(chat);
+            return res;
         }
 
         public async Task<List<ChatUserListDto>> GetChatListAsync(ChatUserListSearchDto model)

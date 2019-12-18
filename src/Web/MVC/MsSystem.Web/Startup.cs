@@ -64,7 +64,7 @@ namespace MsSystem.Web
                     .SetIsOriginAllowed((host) => true)
                     .AllowCredentials());
             });
-            services.AddSignalR();
+            services.AddSignalR().AddNewtonsoftJsonProtocol();
             //缓存
             services.AddScoped<ICachingProvider, MemoryCachingProvider>();
             //验证码
