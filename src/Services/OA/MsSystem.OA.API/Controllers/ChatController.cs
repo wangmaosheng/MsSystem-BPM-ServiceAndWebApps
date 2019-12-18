@@ -1,9 +1,6 @@
 ﻿using JadeFramework.Core.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.DependencyInjection;
-using MsSystem.OA.API.Hubs;
 using MsSystem.OA.IService;
 using MsSystem.OA.ViewModel;
 using System;
@@ -20,12 +17,10 @@ namespace MsSystem.OA.API.Controllers
     public class ChatController : ControllerBase
     {
         private ISystemService _systemService;
-        private readonly IOaChatService _chatService;
-        private IHubContext<ChatHub> _hubContext;
-
-        public ChatController(IServiceProvider serviceProvider, ISystemService systemService,IOaChatService chatService)
+        private IOaChatService _chatService;
+        ////private IHubContext<ChatHub> _hubContext;
+        public ChatController(ISystemService systemService, IOaChatService chatService)
         {
-            _hubContext = serviceProvider.GetService<IHubContext<ChatHub>>();
             this._systemService = systemService;
             this._chatService = chatService;
         }
@@ -62,7 +57,7 @@ namespace MsSystem.OA.API.Controllers
                     item.IsChatting = 1;
                 }
             }
-            return chatUsers.OrderByDescending(m => m.IsChatting).ThenByDescending(m => m.IsOnline).ThenBy(m => m.CreateTime).ToList(); ;
+            return chatUsers.OrderByDescending(m => m.IsChatting).ThenByDescending(m => m.IsOnline).ThenBy(m => m.CreateTime).ToList();
         }
 
 

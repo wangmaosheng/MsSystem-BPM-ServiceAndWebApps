@@ -246,7 +246,7 @@
     <script>
         $(function () {
             $('.pace.pace-active').remove();
-            var chattinguserids = [];
+            var chattinguserids = [];//正在聊天的人
             var currentUserid = "@user.UserId";
             const connection = new signalR.HubConnectionBuilder()
                 .withUrl("@(configuration.GetSection("MsApplication").GetValue<string>("url") + "/hub/oa/chatHub")", {
@@ -302,7 +302,7 @@
                 srcollBottom(relBox);
             });
             //获取在线人列表
-            connection.on("RefreshOnliner", data => {
+            connection.on("RefreshOnliner", currentuserid => {
                 axios.post('/OA/Chat/GetChatUserAsync', chattinguserids).then(function (response) {
                     var data = response.data;
                     $('.chatim-userbox ul').empty();

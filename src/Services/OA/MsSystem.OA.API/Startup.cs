@@ -99,7 +99,7 @@ namespace MsSystem.OA.API
     {
         public static IServiceCollection AddCustomMvc(this IServiceCollection services, IOptions<AppSettings> appSettings)
         {
-            services.AddScoped<ICachingProvider, MemoryCachingProvider>();
+            services.AddMemoryCache();
             //services.AddServiceRegistration();
             services.AddResponseCompression();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -110,12 +110,15 @@ namespace MsSystem.OA.API
                 opt.RequireHttpsMetadata = false;
                 opt.SaveToken = true;
             });
+            services.AddScoped<ICachingProvider, MemoryCachingProvider>();
+
             services.AddScoped<IOaDbContext, OaDbContext>();
             services.AddScoped<IOaDatabaseFixture, OaDatabaseFixture>();
             services.AddScoped<IWorkFlowService, WorkFlowService>();
             services.AddScoped<IOaLeaveService, OaLeaveService>();
             services.AddScoped<IOaMessageService, OaMessageService>();
             services.AddScoped<IOaChatService, OaChatService>();
+
             services.AddAutoMapper();
 
             services.AddControllers(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
@@ -141,7 +144,7 @@ namespace MsSystem.OA.API
                     .AllowCredentials());
             });
 
-            services.AddSignalR();
+            services.AddSignalR().AddNewtonsoftJsonProtocol();
 
             services.AddCap(x =>
             {

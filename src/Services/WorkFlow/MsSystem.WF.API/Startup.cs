@@ -100,8 +100,8 @@ namespace MsSystem.WF.API
         public static IServiceCollection AddCustomMvc(this IServiceCollection services, IOptions<AppSettings> appSettings)
         {
             //缓存
-            services.AddScoped<ICachingProvider, MemoryCachingProvider>();
             services.AddMemoryCache();
+            services.AddScoped<ICachingProvider, MemoryCachingProvider>();
             //services.AddServiceRegistration();
             services.AddResponseCompression();
 
