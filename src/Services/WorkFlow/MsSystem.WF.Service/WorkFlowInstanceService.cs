@@ -66,6 +66,10 @@ namespace MsSystem.WF.Service
                                 param = optionParams,
                                 UserId = userid
                             });
+                            if (!resids.HasItems())
+                            {
+                                return null;
+                            }
                             string res = string.Join(",", resids);
                             return res.IsNullOrEmpty() ? res : res + ",";
                         }
@@ -536,7 +540,7 @@ namespace MsSystem.WF.Service
                         }
 
                         //委托按钮显示判断
-                        if (await CanAssign(process))
+                        if (await CanAssign(process, flowinstance.MakerList))
                         {
                             model.Menus.Add((int)WorkFlowMenu.Assign);
                         }
@@ -574,11 +578,15 @@ namespace MsSystem.WF.Service
         /// </summary>
         /// <param name="process"></param>
         /// <returns></returns>
-        private async Task<bool> CanAssign(WorkFlowProcess process)
+        private async Task<bool> CanAssign(WorkFlowProcess process,string makerlist)
         {
+            string str = process.UserId + ",";
+            if (!makerlist.Contains(str))//当前人非执行人员
+            {
+                return false;
+            }
             /// 将自己审批某个流程的权限赋予其他人，让其他用户代审批流程;
             /// 规则：A委托给B，A不能再审批且不能多次委托，B可再次委托给C，同理A
-
             var dbassigns = await databaseFixture.Db.WfWorkflowAssign.FindAllAsync(m => m.InstanceId == process.InstanceId && m.FlowId == process.FlowId);
             if (dbassigns.Any(m => m.UserId == process.UserId))
             {

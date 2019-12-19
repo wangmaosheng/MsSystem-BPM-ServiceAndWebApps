@@ -164,10 +164,9 @@ else
     {
     <text>
         var form = document.forms[0];
-        for (var item in form) {
-            if ( /^\d+$/.test(item)) {
-                form[item].disabled = true;
-            }
+        var legs = form.length;
+        for (var i = legs - 1; i >= 0 ; i--) {
+            $(form[i]).prop("disabled", true);
         }
     </text>
     }

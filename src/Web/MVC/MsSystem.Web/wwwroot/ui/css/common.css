@@ -1186,3 +1186,8 @@
 .extend .conditionbtn i.fa-plus:before {
     content: "\f068";
 }
+:disabled {
+    background-color: #eee;
+    opacity: 1;
+    cursor:not-allowed;
+}

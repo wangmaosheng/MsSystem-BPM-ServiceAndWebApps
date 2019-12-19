@@ -142,26 +142,26 @@ WHERE  wfin.`CreateUserId`={userId} ORDER BY wfin.`CreateTime` DESC LIMIT {(page
             };
             string sql = $@"SELECT DISTINCT wf.`FlowId`,wf.`FlowName`,ins.`InstanceId`,ins.`Code` AS InstanceCode,ins.`IsFinish`,ins.`Status` ,a.`CreateTime`,ins.`CreateUserName` AS UserName,
 ff.`FormName`,ff.`FormType`,ff.`FormUrl`,wif.`FormData`
-FROM wf_workflow_transition_history a 
+FROM wf_workflow_operation_history a 
 INNER JOIN `wf_workflow_instance` ins ON ins.`InstanceId`=a.`InstanceId`
 INNER JOIN `wf_workflow` wf ON wf.`FlowId`=ins.`FlowId`
 INNER JOIN `wf_workflow_form` ff ON ff.`FormId`=wf.`FormId`
 INNER JOIN `wf_workflow_instance_form` wif ON wif.`InstanceId`=ins.`InstanceId`
 INNER JOIN (
-SELECT MAX(b.`CreateTime`) AS CreateTime FROM `wf_workflow_transition_history` b  WHERE b.`CreateUserId` = {userId} GROUP BY b.`InstanceId`
+SELECT MAX(b.`CreateTime`) AS CreateTime FROM `wf_workflow_operation_history` b  WHERE b.`CreateUserId` = {userId} GROUP BY b.`InstanceId`
 )c ON c.CreateTime=a.`CreateTime` 
 WHERE  a.`CreateUserId`= {userId} ORDER BY a.`CreateTime` DESC 
 LIMIT  {(pageIndex - 1) * pageSize} , {pageSize}" ;
             page.Items = await this.Connection.QueryAsync<UserWorkFlowDto>(sql);
 
             string sqlcount = $@"SELECT COUNT(1) FROM ( SELECT DISTINCT wf.`FlowId`,wf.`FlowName`,ins.`InstanceId`,ins.`Code` AS InstanceCode,ins.`IsFinish` ,ins.`Status`,a.`CreateTime`,ins.`CreateUserName` AS UserName,ff.`FormName`,ff.`FormType`,ff.`FormUrl`,wif.`FormData`
-FROM wf_workflow_transition_history a 
+FROM wf_workflow_operation_history a 
 INNER JOIN `wf_workflow_instance` ins ON ins.`InstanceId`=a.`InstanceId`
 INNER JOIN `wf_workflow` wf ON wf.`FlowId`=ins.`FlowId`
 INNER JOIN `wf_workflow_form` ff ON ff.`FormId`=wf.`FormId`
 INNER JOIN `wf_workflow_instance_form` wif ON wif.`InstanceId`=ins.`InstanceId`
 INNER JOIN (
-SELECT MAX(b.`CreateTime`) AS CreateTime FROM `wf_workflow_transition_history` b  WHERE b.`CreateUserId` = {userId} GROUP BY b.`InstanceId`
+SELECT MAX(b.`CreateTime`) AS CreateTime FROM `wf_workflow_operation_history` b  WHERE b.`CreateUserId` = {userId} GROUP BY b.`InstanceId`
 )c ON c.CreateTime=a.`CreateTime` 
 WHERE  a.`CreateUserId`= {userId} ORDER BY a.`CreateTime` DESC ) A";
             page.TotalItems = await this.Connection.ExecuteScalarAsync<int>(sqlcount);
