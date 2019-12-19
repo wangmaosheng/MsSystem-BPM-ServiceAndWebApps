@@ -162,13 +162,7 @@ else
     }
     @if (!Model.Menus.Contains((int)WorkFlowMenu.Submit) && !Model.Menus.Contains((int)WorkFlowMenu.Save))
     {
-    <text>
-        var form = document.forms[0];
-        var legs = form.length;
-        for (var i = legs - 1; i >= 0 ; i--) {
-            $(form[i]).prop("disabled", true);
-        }
-    </text>
+    <text> $.setFormDisabled(); </text>
     }
     else
     {
