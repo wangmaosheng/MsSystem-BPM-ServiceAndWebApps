@@ -21,7 +21,7 @@
           进入系统 
           <wxc-icon style='margin-left:20rpx;' color="#fff" type="arrow-right"></wxc-icon>
         </wxc-button>
-        <text class="copyright">© 2019 JadeFramework 倾情巨献</text>
+        <text class="copyright">© {{copyTime}} Jade 倾情巨献</text>
       </view>
     </view>
   </block>

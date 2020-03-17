@@ -1,0 +1,72 @@
+<!--pages/oa/leave/show/show.wxml-->
+
+<view class="container">
+  <view class="content">
+    <view class="section__group">
+      <view class="section__title">编号</view>
+      <view class="section__content">
+        <input placeholder="系统自动生成" disabled="disabled" />
+      </view>
+    </view>
+    <view class="hr"></view>
+    <view class="section__group">
+      <view class="section__title">请假标题</view>
+      <view class="section__content">
+        <input type="text" id="Title" auto-focus value="{{Title}}" bindinput="bindInput" placeholder="标题"  />
+      </view>
+    </view>
+    <view class="hr"></view>
+    <view class="section__group">
+      <view class="section__title">请假类型</view>
+      <view class="section__content">
+        <picker bindchange="bindLeaveChange" value="{{leaveReasonIndex}}" range="{{leaveReason}}">
+          <view class="picker">{{leaveReason[leaveReasonIndex]}}</view>
+        </picker>
+      </view>
+    </view>
+    <view class="hr"></view>
+
+    <view class="section__group">
+      <view class="section__title">请假时间</view>
+      <picker mode="date" value="{{StartTime}}" bindchange="bindStartTimeChange">
+        <view class="picker__date">
+          开始: {{StartTime}}
+        </view>
+      </picker>
+      <picker mode="date" value="{{EndTime}}" bindchange="bindEndTimeChange">
+        <view class="picker__date">
+          结束: {{EndTime}}
+        </view>
+      </picker>
+    </view>
+
+    <view class="section__group">
+      <view class="section__title">请假原因</view>
+      <view class="section__content">
+        <textarea auto-height placeholder="请输入请假原因" id="Reason" value="{{Reason}}" bindinput="bindInput"></textarea>
+      </view>
+    </view>
+
+    <view class="section__btn__group">
+      <view class="section__btn">
+        <wxc-button type="primary">
+          <wxc-icon style='margin-right:20rpx;' color="#fff" type="yes"></wxc-icon>提交
+        </wxc-button>
+      </view>
+      <view class="section__btn">
+        <wxc-button type="primary" bind:click="formSave">
+          <wxc-icon style='margin-right:20rpx;' color="#fff" type="right"></wxc-icon>保存
+        </wxc-button>
+      </view>
+      <view class="section__btn">
+        <wxc-button type="primary">
+          <wxc-icon style='margin-right:20rpx;' color="#fff" type="coupon"></wxc-icon>流程图
+        </wxc-button>
+      </view>
+
+    </view>
+
+  </view>
+
+</view>
+

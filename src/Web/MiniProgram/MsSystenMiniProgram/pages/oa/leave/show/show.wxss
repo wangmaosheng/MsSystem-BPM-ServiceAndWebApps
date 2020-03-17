@@ -1,0 +1,39 @@
+/* pages/oa/leave/show/show.wxss */
+@import "/pages/common/common.wxss";
+.section__content textarea{
+  min-height: 160rpx;
+  border: 1rpx solid #ccc;
+  padding: 10rpx;
+  width: 212px;
+  border-radius: 3rpx;
+}
+.picker__date{
+  background-color: #fff;
+  min-width: 200rpx;
+  margin-right: 20rpx;
+  padding: 0 2rpx;
+}
+.section__content input:placeholder{
+  color:#999;
+}
+.hr{
+  border: 1rpx solid #ccc;
+  opacity: 0.2;
+  width: 90%;
+  margin: 0 auto;
+  height: 0;
+}
+
+.section__btn__group{
+display:flex;
+justify-content: center;
+align-items: center;
+margin: 20rpx auto;
+}
+.section__btn{
+  margin: 0 20rpx;
+}
+.section__btn__group button{
+  background: #0e9aef;
+  border-radius: 28rpx;
+}

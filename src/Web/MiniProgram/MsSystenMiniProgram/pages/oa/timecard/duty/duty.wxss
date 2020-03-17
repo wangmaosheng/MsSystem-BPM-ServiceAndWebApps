@@ -1,0 +1,11 @@
+/* pages/oa/timecard/duty/duty.wxss */
+@import "/pages/common/common.wxss";
+.shownowtime{
+text-align: center;
+font-size: 2rem;
+margin-top: 40rpx;
+}
+.content{
+flex-grow: 1;
+width: 100%;
+}

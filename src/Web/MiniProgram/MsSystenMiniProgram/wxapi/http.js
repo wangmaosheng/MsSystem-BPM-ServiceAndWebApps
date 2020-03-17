@@ -45,9 +45,21 @@ const sys = {
     request('/sys/Log/GetLasterDataAsync', 'GET', true, data, successCallback, failCallback);
   }
 };
+/**
+ * oa 系统下的接口
+ */
+const oa = {
+  /**
+   * 请假保存
+   */
+  leaveSave: function (data, successCallback, failCallback){
+    request('/oa/Leave/InsertAsync', 'POST', true, data, successCallback, failCallback);
+  }
+};
 module.exports = {
   request,
   login,
   register,
-  sys
+  sys,
+  oa
 }

@@ -428,6 +428,7 @@ namespace MsSystem.Web.Areas.Sys.Controllers
         [Authorize]
         public IActionResult Image()
         {
+            ViewBag.HeadImg = UserIdentity.HeadImg;
             return View();
         }
         /// <summary>

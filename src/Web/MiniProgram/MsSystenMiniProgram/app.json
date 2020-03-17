@@ -6,11 +6,16 @@
     "pages/sys/heartbeat/heartbeat",
     "pages/oa/main/index",
     "pages/beauty/index/index",
-    "pages/beauty/image/image"
+    "pages/beauty/image/image",
+    "pages/common/setting/setting",
+    "pages/common/account/account",
+    "pages/oa/leave/show/show",
+    "pages/oa/leave/list/list",
+    "pages/oa/timecard/duty/duty"
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarTitleText": "MS BPM",
+    "navigationBarTitleText": "业务流程管理系统",
     "navigationBarTextStyle": "white",
     "navigationBarBackgroundColor": "#0e9aef",
     "backgroundColor": "#0e9aef"
@@ -29,17 +34,16 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/main/index",
-        "iconPath": "images/oa.png",
-        "selectedIconPath": "images/oa.png",
-        "text": "消息"
-      },
-      {
-        "pagePath": "pages/main/index",
+        "pagePath": "pages/common/account/account",
         "iconPath": "images/public/my-off.png",
         "selectedIconPath": "images/public/my-on.png",
         "text": "我的"
       }
     ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "需要记录打卡时的位置信息"
+    }
   }
 }

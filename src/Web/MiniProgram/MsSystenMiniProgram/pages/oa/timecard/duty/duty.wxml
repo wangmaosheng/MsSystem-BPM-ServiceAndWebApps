@@ -1,0 +1,43 @@
+<!--pages/oa/timecard/duty/duty.wxml-->
+
+<view class="container">
+
+  <view class="shownowtime">{{nowTime}}</view>
+
+  <view class="content">
+    <view class="section__group">
+        <view class="section__title">打卡目的</view>
+        <view class="section__content">
+          <picker value="{{timecardTypeIndex}}" bindchange="bindTypeChange" range="{{timecardType}}">
+            {{timecardType[timecardTypeIndex]}}
+          </picker>
+        </view>
+    </view>
+    <view class="section__group">
+      <view class="section__title">位置名称</view>
+      <view class="section__content">
+        <text>{{locationName}}</text>
+      </view>
+    </view> 
+    <view class="section__group">
+      <view class="section__title">详细位置</view>
+      <view class="section__content">
+        <text>{{locationInfo}}</text>
+      </view>
+    </view>
+
+    <view class="section__group" style="justify-content:center;align-items:center;">
+      <wxc-button bindtap="reLocate" type="disabled">
+        <wxc-icon style='margin-right:20rpx;' color="#fff" type="location"></wxc-icon>重新定位
+      </wxc-button>
+    </view>
+
+    <view class="section__group" style="justify-content:center;align-items:center;">
+      <wxc-button type="primary">
+        <wxc-icon style='margin-right:20rpx;' color="#fff" type="right"></wxc-icon>提交
+      </wxc-button>
+    </view>
+
+    <wxc-loading is-show="{{isLoading}}" image="/images/more/loading.gif" slip="/images/more/loading.gif"></wxc-loading>
+  </view>
+</view>

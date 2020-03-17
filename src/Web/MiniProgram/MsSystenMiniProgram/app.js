@@ -92,8 +92,12 @@ App({
     bgRed: 14,
     bgGreen: 154,
     bgBlue: 239,
-    userInfo: null,
+    userInfo: null,//微信端用户信息
     isConnected: true,
-    launchOption: undefined
+    launchOption: undefined,
+    UserIdentity: { //BPM端用户信息
+      UserId: 1,
+      UserName: 'wms'
+    }
   }
 })

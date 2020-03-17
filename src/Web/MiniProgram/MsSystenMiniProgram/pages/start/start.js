@@ -10,7 +10,8 @@ Page({
     remind: '加载中',
     angle: 0,
     needLogin:false,
-    btnClass:null
+    btnClass: null,
+    copyTime: new Date().getFullYear(),
   },
 
   /**
@@ -109,6 +110,7 @@ Page({
         }
       });
     }else{
+      app.globalData.userInfo = wx.getStorageSync('userInfo')
       wx.switchTab({
         url: '/pages/main/index'
       })
@@ -120,7 +122,8 @@ Page({
     }
     var that = this;
     if (app.globalData.isConnected) {
-      wx.setStorageSync('userInfo', e.detail.userInfo)
+      wx.setStorageSync('userInfo', e.detail.userInfo);
+      app.globalData.userInfo = e.detail.userInfo;
       that.login();
     } else {
       wx.showToast({
@@ -133,6 +136,13 @@ Page({
     const that = this;
     wx.login({
       success: function (res) {
+
+        wx.getUserInfo({
+          success:function(infores){
+            app.globalData.userInfo = infores.userInfo;
+          }
+        });
+
         that.setData({
           btnClass:'hidden'
         });
@@ -148,17 +158,28 @@ Page({
               return;
             }
             if (response.code != 0) {
+
               wx.showModal({
                 title: '提示',
-                content: '无法登录，是否重试？',
-                showCancel: true,
+                content: '系统未知错误',
+                showCancel: false,
                 success(){
-                  that.login();
-                },
-                fail(){
-                  that.onLoad();
+                  wx.switchTab({
+                    url: '/pages/main/index'
+                  })
                 }
               })
+              // wx.showModal({
+              //   title: '提示',
+              //   content: '无法登录，是否重试？',
+              //   showCancel: true,
+              //   success(){
+              //     that.login();
+              //   },
+              //   fail(){
+              //     that.onLoad();
+              //   }
+              // })
               return;
             }
             wx.setStorageSync('userid', response.Data.Id)
@@ -186,10 +207,11 @@ Page({
   registerUser: function () {
     var that = this;
     wx.login({
-      success: function (res) {
-        var code = res.code; // 微信登录接口返回的 code 参数，下面注册接口需要用到
+      success: function (fres) {
+        var code = fres.code; // 微信登录接口返回的 code 参数，下面注册接口需要用到
         wx.getUserInfo({
           success: function (res) {
+            app.globalData.userInfo = res.userInfo;
             HTTP.register({ code: code, rawData: res.rawData }, function (response) {
               wx.setStorageSync('userid', response.Data.Id)
               wx.hideLoading();

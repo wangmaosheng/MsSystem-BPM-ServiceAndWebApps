@@ -6,39 +6,12 @@
     </swiper-item>
   </block>
 </swiper>
-<view class="weui-search-bar">
-    <view class="weui-search-bar__form">
-        <view class="weui-search-bar__box">
-            <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
-            <input type="text" class="weui-search-bar__input" placeholder="搜索" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" bindblur="hideInput" />
-            <view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput">
-                <icon type="clear" size="14"></icon>
-            </view>
-        </view>
-        <!--未输入时候显示-->
-        <label class="weui-search-bar__label" hidden="{{inputShowed}}" bindtap="showInput">
-            <icon class="weui-icon-search" type="search" size="12"></icon>
-            <view class="weui-search-bar__text">搜索</view>
-        </label>
-    </view>
-        <!--取消按钮-->
-        <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="hideInput">取消</view>
-</view>
 <view class='grid'>
     <view class='itemgrids'>
 
-        <navigator url='../beauty/index/index' class='itemgrid' hovor-class='itemgrid_active'>
-            <image class='itemgrid_icon' src='../../images/public/heartbeat.png'></image>
-            <view class='itemgrid_label'>美女图片</view>
-        </navigator>
-
         <navigator url='../oa/main/index' class='itemgrid' hovor-class='itemgrid_active'>
             <image class='itemgrid_icon' src='../../images/oa.png'></image>
-            <view class='itemgrid_label'>OA系统</view>
-        </navigator>
-        <navigator url='../sys/heartbeat/heartbeat' class='itemgrid' hovor-class='itemgrid_active'>
-            <image class='itemgrid_icon' src='../../images/public/heartbeat.png'></image>
-            <view class='itemgrid_label'>系统心跳检查</view>
+            <view class='itemgrid_label'>行政办公</view>
         </navigator>
 
         <view class='itemgrid' hovor-class='itemgrid_active'  bindtap='scanCode'>
@@ -48,25 +21,73 @@
             </view>
         </view>
 
+        <navigator url='../beauty/index/index' class='itemgrid' hovor-class='itemgrid_active'>
+            <image class='itemgrid_icon' src='../../images/public/heartbeat.png'></image>
+            <view class='itemgrid_label'>爬虫图片</view>
+        </navigator>
+
+        <navigator url='../sys/heartbeat/heartbeat' class='itemgrid' hovor-class='itemgrid_active'>
+            <image class='itemgrid_icon' src='../../images/public/heartbeat.png'></image>
+            <view class='itemgrid_label'>系统心跳检查</view>
+        </navigator>
+
+
+
+
+
+
+
         <navigator url='' class='itemgrid' hovor-class='itemgrid_active'>
             <image class='itemgrid_icon' src='../../images/oa.png'></image>
-            <view class='itemgrid_label'>闲置服饰</view>
+            <view class='itemgrid_label'>TEST</view>
         </navigator>
         <navigator url='' class='itemgrid' hovor-class='itemgrid_active'>
             <image class='itemgrid_icon' src='../../images/oa.png'></image>
-            <view class='itemgrid_label'>网站会员</view>
+            <view class='itemgrid_label'>TEST</view>
         </navigator>
         <navigator url='' class='itemgrid' hovor-class='itemgrid_active'>
             <image class='itemgrid_icon' src='../../images/oa.png'></image>
-            <view class='itemgrid_label'>我要赞助</view>
+            <view class='itemgrid_label'>TEST</view>
         </navigator>
         <navigator url='' class='itemgrid' hovor-class='itemgrid_active'>
             <image class='itemgrid_icon' src='../../images/oa.png'></image>
-            <view class='itemgrid_label'>我能提供</view>
+            <view class='itemgrid_label'>TEST</view>
         </navigator>
         <navigator url='' class='itemgrid' hovor-class='itemgrid_active'>
             <image class='itemgrid_icon' src='../../images/oa.png'></image>
-            <view class='itemgrid_label'>我要求购</view>
+            <view class='itemgrid_label'>TEST</view>
+        </navigator>
+                <navigator url='' class='itemgrid' hovor-class='itemgrid_active'>
+            <image class='itemgrid_icon' src='../../images/oa.png'></image>
+            <view class='itemgrid_label'>TEST</view>
+        </navigator>
+        <navigator url='' class='itemgrid' hovor-class='itemgrid_active'>
+            <image class='itemgrid_icon' src='../../images/oa.png'></image>
+            <view class='itemgrid_label'>TEST</view>
+        </navigator>
+        <navigator url='' class='itemgrid' hovor-class='itemgrid_active'>
+            <image class='itemgrid_icon' src='../../images/oa.png'></image>
+            <view class='itemgrid_label'>TEST</view>
+        </navigator>
+        <navigator url='' class='itemgrid' hovor-class='itemgrid_active'>
+            <image class='itemgrid_icon' src='../../images/oa.png'></image>
+            <view class='itemgrid_label'>TEST</view>
+        </navigator>
+                <navigator url='' class='itemgrid' hovor-class='itemgrid_active'>
+            <image class='itemgrid_icon' src='../../images/oa.png'></image>
+            <view class='itemgrid_label'>TEST</view>
+        </navigator>
+        <navigator url='' class='itemgrid' hovor-class='itemgrid_active'>
+            <image class='itemgrid_icon' src='../../images/oa.png'></image>
+            <view class='itemgrid_label'>TEST</view>
+        </navigator>
+        <navigator url='' class='itemgrid' hovor-class='itemgrid_active'>
+            <image class='itemgrid_icon' src='../../images/oa.png'></image>
+            <view class='itemgrid_label'>TEST</view>
+        </navigator>
+        <navigator url='' class='itemgrid' hovor-class='itemgrid_active'>
+            <image class='itemgrid_icon' src='../../images/oa.png'></image>
+            <view class='itemgrid_label'>TEST</view>
         </navigator>
     </view>
 </view>

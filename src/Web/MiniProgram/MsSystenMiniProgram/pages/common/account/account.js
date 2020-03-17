@@ -1,4 +1,4 @@
-// pages/oa/main/index.js
+// pages/common/account/account.js
 
 const app = getApp();
 
@@ -15,22 +15,23 @@ Page({
         name: '打卡',
         open: false,
         pages: [
-          { path: "/pages/oa/timecard/duty/duty", title: '正常出勤' },
-          { path: "/pages/oa/timecard/duty/duty", title: '打卡记录' }
+          { path: "normal", title: '正常出勤' },
+          { path: "history", title: '打卡记录' }
         ]
       }, {
         id: 'overwork',
         name: '各类申请',
         open: false,
         pages: [
-          { path: "../leave/show/show", title: '请假申请' }
+          { path: "create", title: '加班申请' },
+          { path: "list", title: '休假申请' }
         ]
       }, {
         id: 'sample',
-        name: '工作流程',
+        name: '申请审批',
         open: false,
         pages: [
-          { path: "index", title: '我的待办' }
+          { path: "index", title:'子菜单'  }
         ]
       }
     ]
@@ -49,7 +50,6 @@ Page({
       list: list
     });
   },
-
   /**
    * 生命周期函数--监听页面加载
    */
@@ -70,11 +70,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    // wx.scanCode({
-    //   success(res) {
-    //     console.log(res)
-    //   }
-    // })
+
   },
 
   /**
