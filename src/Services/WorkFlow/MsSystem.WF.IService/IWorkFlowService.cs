@@ -17,5 +17,6 @@ namespace MsSystem.WF.IService
         Task<List<WorkFlowStartDto>> GetWorkFlowStartAsync(Guid categoryid);
         //Task<List<WorkFlowLineDto>> GetAllLinesAsync();
         //Task<WorkFlowLineDto> GetLineAsync(Guid lineid);
+        Task<bool> NewVersionAsync(WorkFlowDetailDto dto);
     }
 }

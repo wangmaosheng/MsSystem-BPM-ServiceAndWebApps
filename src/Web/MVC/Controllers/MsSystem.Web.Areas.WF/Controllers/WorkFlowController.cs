@@ -98,5 +98,18 @@ namespace MsSystem.Web.Areas.WF.Controllers
         {
             return await workFlowService.GetLineAsync(lineid);
         }
+        /// <summary>
+        /// new workflow version
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("NewVersionAsync")]
+        public async Task<bool> NewVersionAsync([FromBody]WorkFlowDetailDto dto)
+        {
+            dto.CreateUserId = UserIdentity.UserId.ToString();
+            return await workFlowService.NewVersionAsync(dto);
+        }
+        
     }
 }

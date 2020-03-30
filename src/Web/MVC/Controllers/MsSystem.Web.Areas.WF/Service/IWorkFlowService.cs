@@ -22,6 +22,12 @@ namespace MsSystem.Web.Areas.WF.Service
         Task<List<WorkFlowStartDto>> GetWorkFlowStartAsync(Guid categoryid);
         Task<List<WorkFlowLineDto>> GetAllLinesAsync();
         Task<WorkFlowLineDto> GetLineAsync(Guid lineid);
+        /// <summary>
+        /// new workflow version
+        /// </summary>
+        /// <param name="id">flowid</param>
+        /// <returns></returns>
+        Task<bool> NewVersionAsync(WorkFlowDetailDto dto);
     }
 
     public class WorkFlowService : IWorkFlowService
@@ -96,6 +102,11 @@ namespace MsSystem.Web.Areas.WF.Service
             var uri = API.WorkFlow.GetLineAsync(_baseUrl, lineid);
             var responseString = await _apiClient.GetStringAsync(uri);
             return responseString.ToObject<WorkFlowLineDto>();
+        }
+        public async Task<bool> NewVersionAsync(WorkFlowDetailDto dto)
+        {
+            var uri = API.WorkFlow.NewVersionAsync(_baseUrl);
+            return await _apiClient.PostBooleanAsync(uri, dto);
         }
     }
 }

@@ -83,6 +83,11 @@ namespace MsSystem.WF.Model
         #endregion
 
         /// <summary>
+        /// 流程版本
+        /// </summary>
+        public int FlowVersion { get; set; } = 1;
+
+        /// <summary>
         /// 创建人姓名
         /// </summary>
         public string CreateUserName { get; set; }

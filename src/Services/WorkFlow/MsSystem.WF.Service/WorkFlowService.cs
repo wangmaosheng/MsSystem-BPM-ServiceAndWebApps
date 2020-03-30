@@ -7,7 +7,6 @@ using MsSystem.WF.Model;
 using MsSystem.WF.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MsSystem.WF.Service
@@ -116,6 +115,46 @@ namespace MsSystem.WF.Service
         //        Name = line.Name
         //    };
         //}
+
+        /// <summary>
+        /// new workflow version
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        public async Task<bool> NewVersionAsync(WorkFlowDetailDto dto)
+        {
+            using (var tran = databaseFixture.Db.BeginTransaction())
+            {
+                try
+                {
+                    //取出Enable==1 and FlowId=dto.FlowId 肯定存在，并且只能为一条，如果没有情况可能是新的版本正在修改中
+                    WfWorkflow dbworkflow = await databaseFixture.Db.Workflow.FindAsync(m => m.Enable == 1 && m.FlowId == dto.FlowId);
+                    WfWorkflow newworkflow = dbworkflow;
+                    
+                    dbworkflow.Enable = 0;
+                    await databaseFixture.Db.Workflow.UpdateAsync(dbworkflow);
+
+                    //new workflow
+                    newworkflow.FlowName = newworkflow.FlowName + "-NEW";
+                    newworkflow.Enable = 0;
+                    newworkflow.CreateTime = DateTime.Now.ToTimeStamp();
+                    newworkflow.CreateUserId = dto.CreateUserId;
+                    newworkflow.FlowVersion++;
+                    newworkflow.FlowId = Guid.NewGuid();//重新创建FlowId 使用FlowCode判断流程几个版本
+
+                    await databaseFixture.Db.Workflow.InsertAsync(newworkflow);
+                    tran.Commit();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    return false;
+                }
+            }
+
+        }
+
 
     }
 }

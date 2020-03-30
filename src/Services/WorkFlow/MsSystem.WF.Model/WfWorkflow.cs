@@ -44,9 +44,9 @@ namespace MsSystem.WF.Model
         public string FlowContent { get; set; }
 
         /// <summary>
-        /// 流程版本
+        /// 流程版本 默认值为1
         /// </summary>
-        public int FlowVersion { get; set; }
+        public int FlowVersion { get; set; } = 1;
 
         /// <summary>
         /// 备注

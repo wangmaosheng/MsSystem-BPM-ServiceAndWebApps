@@ -70,6 +70,8 @@ namespace MsSystem.Web.Areas.WF.Infrastructure
             public static string DeleteAsync(string baseUri) => $"{baseUri}/WorkFlow/DeleteAsync";
             public static string GetAllLinesAsync(string baseUri) => $"{baseUri}/WorkFlow/GetAllLinesAsync";
             public static string GetLineAsync(string baseUri, Guid lineid) => $"{baseUri}/WorkFlow/GetLineAsync?lineid={lineid.ToString()}";
+            public static string NewVersionAsync(string baseUri) => $"{baseUri}/WorkFlow/NewVersionAsync";
+
         }
     }
 }

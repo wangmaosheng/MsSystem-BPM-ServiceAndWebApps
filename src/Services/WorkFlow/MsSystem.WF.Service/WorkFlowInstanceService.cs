@@ -226,7 +226,7 @@ namespace MsSystem.WF.Service
             {
                 try
                 {
-                    var dbflow = await databaseFixture.Db.Workflow.FindByIdAsync(model.FlowId);
+                    WfWorkflow dbflow = await databaseFixture.Db.Workflow.FindByIdAsync(model.FlowId);
                     MsWorkFlowContext context = new MsWorkFlowContext(new JadeFramework.WorkFlow.WorkFlow
                     {
                         FlowId = dbflow.FlowId,
@@ -253,7 +253,8 @@ namespace MsSystem.WF.Service
                             FlowContent = dbflow.FlowContent,
                             IsFinish = context.WorkFlow.NextNodeType.ToIsFinish(),
                             Status = (int)WorkFlowStatus.Running,
-                            UpdateTime = DateTime.Now.ToTimeStamp()
+                            UpdateTime = DateTime.Now.ToTimeStamp(),
+                            FlowVersion= dbflow.FlowVersion
                         };
                         await databaseFixture.Db.WorkflowInstance.InsertAsync(workflowInstance, tran);
                     }

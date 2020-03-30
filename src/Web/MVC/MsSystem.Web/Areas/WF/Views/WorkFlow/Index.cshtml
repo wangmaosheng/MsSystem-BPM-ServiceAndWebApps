@@ -57,6 +57,28 @@
                     window.location.reload(true);
                 });
             });
+            $('#WorkFlow_Index_9').on('click', function () {
+                var ids = [];
+                $('.ibox-content table tbody tr td input[type=checkbox]:checked').each(function () {
+                    ids.push($(this).val());
+                });
+                if (ids.length != 1) {
+                    layer.msg('请选择一条数据！', { icon: 5, time: 1500 });
+                    return;
+                }
+
+                layer.confirm('确认要创建新的版本吗？新的版本将覆盖之前版本，但正在运行中的流程不受影响', { icon: 3, title: '提示' }, function (index) {
+                    var dto = {
+                        'FlowId' : ids[0]
+                    };
+                    axios.post('/WF/WorkFlow/NewVersionAsync', dto).then(function (response) {
+                        utils.permission.authResponse(response);
+                    });
+                    window.location.reload(true);
+                });
+
+            })
+
         });
     </script>
 }

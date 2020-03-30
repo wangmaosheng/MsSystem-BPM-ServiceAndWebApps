@@ -54,8 +54,7 @@ namespace MsSystem.WF.API.Controllers
         /// <summary>
         /// 逻辑删除
         /// </summary>
-        /// <param name="ids"></param>
-        /// <param name="userid"></param>
+        /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost]
         [ActionName("DeleteAsync")]
@@ -82,5 +81,17 @@ namespace MsSystem.WF.API.Controllers
         //{
         //    return await workFlowService.GetLineAsync(lineid);
         //}
+
+        /// <summary>
+        /// new workflow version
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("NewVersionAsync")]
+        public async Task<bool> NewVersionAsync([FromBody]WorkFlowDetailDto dto)
+        {
+            return await workFlowService.NewVersionAsync(dto);
+        }
     }
 }
