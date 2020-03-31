@@ -3,6 +3,26 @@
     ViewData["Title"] = "流程列表";
     Layout = "~/Views/Shared/_LayoutJQ.cshtml";
 }
+@section css{ 
+<style>
+    .hot{
+        font-style:normal;
+        position:relative;
+    }
+    .hot:after{
+        background-color: red;
+        border-radius: 3px;
+        color: #fff;
+        content: "hot";
+        font-size: 10px;
+        line-height: 1;
+        padding: 1px 3px;
+        position: absolute;
+        right: 0px;
+        top: 2px;
+    }
+</style>
+}
 @section scripts{
     <script>
         $(function(){
@@ -111,17 +131,29 @@
                                 {
                                     <tr>
                                         <td>
-                                            <input type="checkbox" class="i-checks" value="@item.FlowId" />
+                                            @if (item.IsOld == 0)
+                                            {
+                                                <input type="checkbox" class="i-checks" value="@item.FlowId" />
+                                            }
                                         </td>
                                         <td>@item.FlowId</td>
                                         <td>@item.FlowCode</td>
                                         <td>@item.FlowName</td>
                                         <td>@item.Memo</td>
-                                        <td class="text-center">@item.FlowVersion</td>
+                                        <td class="text-center">
+                                            @if (item.IsOld == 1)
+                                            {
+                                                <span class="gray"><i class="fa fa-ban"></i>旧版：@item.FlowVersion</span>
+                                            }
+                                            else
+                                            {
+                                                <span><i class="hot"></i>最新版</span>
+                                            }
+                                        </td>
                                         <td class="text-center">
                                             @if (item.Enable == 0)
                                             {
-                                                <span><i title="不可用" class="fa fa-trash red"></i>不可用</span>
+                                                <span class="gray"><i title="不可用" class="fa fa-ban"></i>不可用</span>
                                             }
                                             else
                                             {

@@ -54,5 +54,9 @@ namespace MsSystem.Web.Areas.WF.Model
         /// 是否启用 1：是 0: 否
         /// </summary>
         public int Enable { get; set; }
+        /// <summary>
+        /// 是否是旧版本
+        /// </summary>
+        public int IsOld { get; set; }
     }
 }

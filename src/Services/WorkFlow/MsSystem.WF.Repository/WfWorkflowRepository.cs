@@ -27,7 +27,7 @@ namespace MsSystem.WF.Repository
                 PageSize = pageSize
             };
             int offset = pageSize * (pageIndex - 1);
-            string sql = "SELECT * FROM `wf_workflow` LIMIT @offset,@pageSize";
+            string sql = "SELECT * FROM `wf_workflow` ORDER BY FlowCode DESC,IsOld ASC LIMIT @offset,@pageSize ";
             page.Items = await this.QueryAsync(sql, new { offset = offset, pageSize = pageSize });
             page.TotalItems = await this.Connection.ExecuteScalarAsync<int>("SELECT COUNT(1) FROM wf_workflow");
             return page;

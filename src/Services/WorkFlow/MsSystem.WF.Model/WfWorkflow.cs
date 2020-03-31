@@ -19,6 +19,11 @@ namespace MsSystem.WF.Model
         public Guid FlowId { get; set; }
 
         /// <summary>
+        /// 编码
+        /// </summary>
+        public string FlowCode { get; set; }
+
+        /// <summary>
         /// 分类ID
         /// </summary>
         public Guid CategoryId { get; set; }
@@ -28,10 +33,6 @@ namespace MsSystem.WF.Model
         /// </summary>
         public Guid FormId { get; set; }
 
-        /// <summary>
-        /// 编码
-        /// </summary>
-        public string FlowCode { get; set; }
 
         /// <summary>
         /// 流程名称
@@ -57,6 +58,11 @@ namespace MsSystem.WF.Model
         /// 是否启用 1：是 0: 否
         /// </summary>
         public int Enable { get; set; }
+
+        /// <summary>
+        /// 是否是旧版本
+        /// </summary>
+        public int IsOld { get; set; } = 0;
     }
 
     internal sealed class WfWorkflowMapper : ClassMapper<WfWorkflow>

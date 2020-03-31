@@ -132,6 +132,7 @@ namespace MsSystem.WF.Service
                     WfWorkflow newworkflow = dbworkflow;
                     
                     dbworkflow.Enable = 0;
+                    dbworkflow.IsOld = 1;
                     await databaseFixture.Db.Workflow.UpdateAsync(dbworkflow);
 
                     //new workflow
@@ -141,7 +142,7 @@ namespace MsSystem.WF.Service
                     newworkflow.CreateUserId = dto.CreateUserId;
                     newworkflow.FlowVersion++;
                     newworkflow.FlowId = Guid.NewGuid();//重新创建FlowId 使用FlowCode判断流程几个版本
-
+                    newworkflow.IsOld = 0;
                     await databaseFixture.Db.Workflow.InsertAsync(newworkflow);
                     tran.Commit();
                     return true;

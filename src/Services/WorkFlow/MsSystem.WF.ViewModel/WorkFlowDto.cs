@@ -76,6 +76,10 @@ namespace MsSystem.WF.ViewModel
         /// </summary>
         public int Enable { get; set; }
 
+        /// <summary>
+        /// 是否是旧版本
+        /// </summary>
+        public int IsOld { get; set; }
         public string CreateUserId { get; set; }
     }
 
