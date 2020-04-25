@@ -33,14 +33,14 @@ namespace MsSystem.WF.API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            Log.Logger = new LoggerConfiguration()
-                .Enrich.FromLogContext()
-                .WriteTo.MySQL(Configuration["LogConfig:MySQL"], tableName: "wflog")
-                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(Configuration["LogConfig:ElasticsearchUri"]))
-                {
-                    AutoRegisterTemplate = true,
-                })
-            .CreateLogger();
+            //Log.Logger = new LoggerConfiguration()
+            //    .Enrich.FromLogContext()
+            //    .WriteTo.MySQL(Configuration["LogConfig:MySQL"], tableName: "wflog")
+            //    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(Configuration["LogConfig:ElasticsearchUri"]))
+            //    {
+            //        AutoRegisterTemplate = true,
+            //    })
+            //.CreateLogger();
         }
 
         public IConfiguration Configuration { get; }
@@ -61,7 +61,7 @@ namespace MsSystem.WF.API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             //app.UseZipkin();
-            loggerFactory.AddSerilog();
+            //loggerFactory.AddSerilog();
             app.UseCors("CorsPolicy");
 
             app.UseResponseCompression();

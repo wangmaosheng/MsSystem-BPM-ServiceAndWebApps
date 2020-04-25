@@ -24,44 +24,5 @@ namespace MsSystem.Gateway
                 .UseUrls("http://*:5000")
                 .UseKestrel()
                 .Build();
-
-
-        //public static void Main(string[] args)
-        //{
-        //    CreateHostBuilder(args).Build().Run();
-        //}
-
-        //public static IHostBuilder CreateHostBuilder(string[] args) =>
-        //    Host.CreateDefaultBuilder(args)
-        //        .ConfigureAppConfiguration((hostingContext, builder) =>
-        //        {
-        //            builder.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
-        //            .AddJsonFile("configuration.json", false, true);
-        //        })
-        //        .ConfigureWebHostDefaults(webBuilder =>
-        //        {
-        //            webBuilder.UseStartup<Startup>()
-        //            .UseUrls("http://*:5000")
-        //            .UseKestrel();
-        //        });
-
-        //public static void Main(string[] args)
-        //{
-        //    BuildWebHost(args).Run();
-        //}
-        //public static IWebHost BuildWebHost(string[] args)
-        //{
-        //    return Microsoft.AspNetCore.WebHost.CreateDefaultBuilder(args)
-        //            .ConfigureAppConfiguration((hostingContext, builder) =>
-        //            {
-        //                builder.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
-        //                .AddJsonFile("configuration.json", false, true);
-        //            })
-        //            .UseStartup<Startup>()
-        //            .UseUrls("http://*:5000")
-        //            .UseKestrel()
-        //            .Build();
-
-        //}
     }
 }

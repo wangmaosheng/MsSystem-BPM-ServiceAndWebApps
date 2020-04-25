@@ -35,14 +35,14 @@ namespace MsSystem.Web
         {
             Configuration = configuration;
 
-            Log.Logger = new LoggerConfiguration()
-                .Enrich.FromLogContext()
-                .WriteTo.MySQL(Configuration["LogConfig:MySQL"],tableName:"weblog")
-                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(Configuration["LogConfig:ElasticsearchUri"]))
-                {
-                    AutoRegisterTemplate = true,
-                })
-            .CreateLogger();
+            //Log.Logger = new LoggerConfiguration()
+            //    .Enrich.FromLogContext()
+            //    .WriteTo.MySQL(Configuration["LogConfig:MySQL"],tableName:"weblog")
+            //    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(Configuration["LogConfig:ElasticsearchUri"]))
+            //    {
+            //        AutoRegisterTemplate = true,
+            //    })
+            //.CreateLogger();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -76,7 +76,7 @@ namespace MsSystem.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddSerilog();
+            //loggerFactory.AddSerilog();
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
