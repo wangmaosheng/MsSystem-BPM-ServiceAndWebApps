@@ -12,7 +12,6 @@ namespace MsSystem.Web.Areas.WF.Model
         /// <summary>
         /// 工作流ID
         /// </summary>
-        [Key]
         public Guid FlowId { get; set; }
 
         /// <summary>
