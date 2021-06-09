@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,8 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="JadeFramework.Dapper" Version="1.0.1.6" />
-    <PackageReference Include="JadeFramework.WorkFlow" Version="1.0.3.5" />
+    <PackageReference Include="JadeFramework.Dapper" Version="2.0.0.0" />
+    <PackageReference Include="JadeFramework.WorkFlow" Version="2.0.0.0" />
   </ItemGroup>
 
 </Project>

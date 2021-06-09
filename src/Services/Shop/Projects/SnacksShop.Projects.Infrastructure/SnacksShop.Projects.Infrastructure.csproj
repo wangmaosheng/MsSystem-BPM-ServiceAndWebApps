@@ -9,9 +9,5 @@
     <PackageReference Include="MediatR" Version="6.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.1" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\SnacksShop.Projects.Domain\SnacksShop.Projects.Domain.csproj" />
-  </ItemGroup>
 
 </Project>

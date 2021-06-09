@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JadeFramework.WorkFlow" Version="1.0.3.5" />
+    <PackageReference Include="JadeFramework.WorkFlow" Version="2.0.0.0" />
   </ItemGroup>
 
 </Project>
