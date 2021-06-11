@@ -10,10 +10,7 @@ using MsSystem.Web.Areas.WF.Service;
 using Polly;
 using Polly.Extensions.Http;
 using System;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 
@@ -24,29 +21,6 @@ namespace MsSystem.Web.Infrastructure
 
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddAutoDIPolicyHttpClient(this IServiceCollection services)
-        {
-            string path = AppContext.BaseDirectory;
-            var referencedAssemblies = Directory.GetFiles(path, "*.dll").Select(Assembly.LoadFrom).ToArray();
-            var types = referencedAssemblies.SelectMany(a => a.DefinedTypes).Select(type => type.AsType())
-                .Where(x => x != typeof(IAutoDIPolicyHttpClient) && typeof(IAutoDIPolicyHttpClient).IsAssignableFrom(x)).ToArray();
-
-            var implementTypes = types.Where(x => x.IsClass).ToArray();
-            var interfaceTypes = types.Where(x => x.IsInterface).ToArray();
-            foreach (var implementType in implementTypes)
-            {
-                Type interfaceType = interfaceTypes.FirstOrDefault(x => x.IsAssignableFrom(implementType));
-                if (interfaceType != null)
-                {
-                    //TODO ERROR PARAMS!!!20210610
-                    //services.AddPolicyHttpClient<interfaceType, implementType >();
-                    services.AddScoped(interfaceType, implementType);
-                }
-            }
-
-            return services;
-        }
-
         public static IServiceCollection AddCustomMvc(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions();
