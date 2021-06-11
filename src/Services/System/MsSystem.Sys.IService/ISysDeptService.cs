@@ -1,9 +1,10 @@
-﻿using MsSystem.Sys.ViewModel;
+﻿using JadeFramework.Core.Extensions;
+using MsSystem.Sys.ViewModel;
 using System.Threading.Tasks;
 
 namespace MsSystem.Sys.IService
 {
-    public interface ISysDeptService
+    public interface ISysDeptService: IAutoDenpendencyScoped
     {
         Task<DeptIndexViewModel> GetTreeAsync();
         Task<DeptShowViewModel> GetDeptAsync(long deptid);

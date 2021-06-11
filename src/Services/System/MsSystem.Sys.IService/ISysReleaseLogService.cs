@@ -1,4 +1,5 @@
 ﻿using JadeFramework.Core.Domain.Entities;
+using JadeFramework.Core.Extensions;
 using MsSystem.Sys.Model;
 using System.Threading.Tasks;
 
@@ -7,7 +8,7 @@ namespace MsSystem.Sys.IService
     /// <summary>
     /// 发布日志服务接口
     /// </summary>
-    public interface ISysReleaseLogService
+    public interface ISysReleaseLogService: IAutoDenpendencyScoped
     {
         /// <summary>
         /// 发布日志分页获取

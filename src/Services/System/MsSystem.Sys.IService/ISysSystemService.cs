@@ -1,4 +1,5 @@
 ﻿using JadeFramework.Core.Domain.Entities;
+using JadeFramework.Core.Extensions;
 using MsSystem.Sys.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace MsSystem.Sys.IService
     /// <summary>
     /// 系统
     /// </summary>
-    public interface ISysSystemService
+    public interface ISysSystemService: IAutoDenpendencyScoped
     {
         /// <summary>
         /// 根据ID获取

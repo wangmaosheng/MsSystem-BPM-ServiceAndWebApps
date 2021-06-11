@@ -1,4 +1,5 @@
 ﻿using JadeFramework.Core.Domain.Entities;
+using JadeFramework.Core.Extensions;
 using JadeFramework.WorkFlow;
 using MsSystem.WF.ViewModel;
 using System;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MsSystem.WF.IService
 {
-    public interface IWorkFlowInstanceService
+    public interface IWorkFlowInstanceService: IAutoDenpendencyScoped
     {
         /// <summary>
         /// 创建实例

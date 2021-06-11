@@ -16,6 +16,7 @@ using Serilog.Sinks.Elasticsearch;
 using System;
 using System.IO;
 using System.Reflection;
+using JadeFramework.Core.Extensions;
 
 namespace MsSystem.Sys.API
 {
@@ -62,27 +63,7 @@ namespace MsSystem.Sys.API
 
             #endregion
 
-
-            #region BLL
-
-            services.AddScoped<ISysDbContext, SysDbContext>();
-            services.AddScoped<ISysLogDbContext, SysLogDbContext>();
-            services.AddScoped<ISysDatabaseFixture, SysDatabaseFixture>();
-
-            services.AddScoped<ILogJobs, LogJobs>();
-            services.AddScoped<ISysLogService, SysLogService>();
-            services.AddScoped<ISysReleaseLogService, SysReleaseLogService>();
-            services.AddScoped<ISysResourceService, SysResourceService>();
-            services.AddScoped<ISysRoleService, SysRoleService>();
-            services.AddScoped<ISysUserService, SysUserService>();
-            services.AddScoped<ISysSystemService, SysSystemService>();
-            services.AddScoped<ISysDeptService, SysDeptService>();
-
-            services.AddScoped<IWorkFlowService, WorkFlowService>();
-            services.AddScoped<ICodeBuilderService, CodeBuilderService>();
-            services.AddScoped<ISysScheduleService, SysScheduleService>();
-
-            #endregion
+            services.AddAutoDIService();
 
             services.AddControllers(option => option.Filters.Add(typeof(HttpGlobalExceptionFilter)))
                 .AddNewtonsoftJson(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver())//修改默认首字母为大写

@@ -1,4 +1,5 @@
 ﻿using JadeFramework.Core.Domain.Entities;
+using JadeFramework.Core.Extensions;
 using MsSystem.Sys.Models;
 using MsSystem.Sys.Schedule.Infrastructure;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MsSystem.Sys.IService
 {
-    public interface ISysScheduleService
+    public interface ISysScheduleService: IAutoDenpendencyScoped
     {
         /// <summary>
         /// 根据id获取调度

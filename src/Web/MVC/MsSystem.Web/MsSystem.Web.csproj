@@ -9,6 +9,7 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <DockerfileContext>..\..\..\..</DockerfileContext>
+    <UserSecretsId>bfb4142d-c949-4b45-87c7-c3932e2104b9</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

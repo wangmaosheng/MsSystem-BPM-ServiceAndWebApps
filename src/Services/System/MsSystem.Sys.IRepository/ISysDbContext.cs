@@ -1,8 +1,9 @@
 ﻿using JadeFramework.Dapper.DbContext;
+using JadeFramework.Core.Extensions;
 
 namespace MsSystem.Sys.IRepository
 {
-    public interface ISysDbContext : IDapperDbContext
+    public interface ISysDbContext : IDapperDbContext, IAutoDenpendencyScoped
     {
         ISysButtonRepository SysButton { get; }
         ISysSystemRepository SysSystem { get; }
@@ -20,7 +21,7 @@ namespace MsSystem.Sys.IRepository
         ISysWorkflowsqlRepository SysWorkflowsql { get; }
         ISysScheduleRepository SysSchedule { get; }
     }
-    public interface ISysLogDbContext : IDapperDbContext
+    public interface ISysLogDbContext : IDapperDbContext, IAutoDenpendencyScoped
     {
         ISysLogRepository SysLog { get; }
     }

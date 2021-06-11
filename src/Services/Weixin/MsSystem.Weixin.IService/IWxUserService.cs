@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using JadeFramework.Core.Extensions;
+using System.Threading.Tasks;
 
 namespace MsSystem.Weixin.IService
 {
-    public interface IWxUserService
+    public interface IWxUserService : IAutoDenpendencyScoped
     {
         /// <summary>
         /// 同步微信用户基本信息

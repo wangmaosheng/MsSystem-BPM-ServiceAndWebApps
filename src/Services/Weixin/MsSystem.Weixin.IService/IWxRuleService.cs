@@ -1,4 +1,5 @@
 ﻿using JadeFramework.Core.Domain.Entities;
+using JadeFramework.Core.Extensions;
 using JadeFramework.Weixin.Models.RequestMsg;
 using JadeFramework.Weixin.Models.RequestMsg.Events;
 using JadeFramework.Weixin.Models.ResponseMsg;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MsSystem.Weixin.IService
 {
-    public interface IWxRuleService
+    public interface IWxRuleService: IAutoDenpendencyScoped
     {
         #region Weixin
         /// <summary>

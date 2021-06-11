@@ -1,8 +1,9 @@
 ﻿using JadeFramework.Dapper.DbContext;
+using JadeFramework.Core.Extensions;
 
 namespace MsSystem.Weixin.IRepository
 {
-    public interface IWeixinDbContext : IDapperDbContext
+    public interface IWeixinDbContext : IDapperDbContext, IAutoDenpendencyScoped
     {
         IWxAccountRepository WxAccount { get; }
         IWxRuleRepository WxRule { get; }

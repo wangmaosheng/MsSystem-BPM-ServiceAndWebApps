@@ -1,11 +1,12 @@
 ﻿using JadeFramework.Core.Domain.Entities;
+using JadeFramework.Core.Extensions;
 using MsSystem.Weixin.Model;
 using MsSystem.Weixin.ViewModel;
 using System.Threading.Tasks;
 
 namespace MsSystem.Weixin.IService
 {
-    public interface IWxAccountService
+    public interface IWxAccountService : IAutoDenpendencyScoped
     {
         Task<Page<WxAccountListDto>> GetPageAsync(int pageIndex, int pageSize);
 

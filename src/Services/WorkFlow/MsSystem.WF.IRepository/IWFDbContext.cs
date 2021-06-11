@@ -1,8 +1,9 @@
-﻿using JadeFramework.Dapper.DbContext;
+﻿using JadeFramework.Core.Extensions;
+using JadeFramework.Dapper.DbContext;
 
 namespace MsSystem.WF.IRepository
 {
-    public interface IWFDbContext : IDapperDbContext
+    public interface IWFDbContext : IDapperDbContext, IAutoDenpendencyScoped
     {
         IWfWorkflowRepository Workflow { get; }
         IWfWorkflowFormRepository WorkflowForm { get; }

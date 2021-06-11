@@ -13,11 +13,10 @@ using MsSystem.Weixin.IRepository;
 using MsSystem.Weixin.IService;
 using MsSystem.Weixin.Repository;
 using MsSystem.Weixin.Service;
-using Serilog;
-using Serilog.Sinks.Elasticsearch;
 using System;
 using System.IO;
 using System.Reflection;
+using JadeFramework.Core.Extensions;
 
 namespace MsSystem.Weixin.API
 {
@@ -64,18 +63,7 @@ namespace MsSystem.Weixin.API
 
             #endregion
 
-            #region Service
-
-            services.AddScoped<IWeixinDbContext, WeixinDbContext>();
-            services.AddScoped<IWeixinDatabaseFixture, WeixinDatabaseFixture>();
-
-            services.AddScoped<IWxAccountService, WxAccountService>();
-            services.AddScoped<IWxRuleService, WxRuleService>();
-            services.AddScoped<IWxMenuService, WxMenuService>();
-            services.AddScoped<IWxUserService, WxUserService>();
-            services.AddScoped<IWxMiniprogramUserService, WxMiniprogramUserService>();
-
-            #endregion
+            services.AddAutoDIService();
 
             services.AddCors(options =>
             {

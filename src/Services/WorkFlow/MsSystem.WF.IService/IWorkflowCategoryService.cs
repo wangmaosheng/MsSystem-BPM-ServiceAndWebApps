@@ -1,4 +1,5 @@
 ﻿using JadeFramework.Core.Domain.Entities;
+using JadeFramework.Core.Extensions;
 using MsSystem.WF.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MsSystem.WF.IService
 {
-    public interface IWorkflowCategoryService
+    public interface IWorkflowCategoryService: IAutoDenpendencyScoped
     {
         /// <summary>
         /// 获取树状列表

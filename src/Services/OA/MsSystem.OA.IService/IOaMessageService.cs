@@ -1,4 +1,5 @@
 ﻿using JadeFramework.Core.Domain.Entities;
+using JadeFramework.Core.Extensions;
 using MsSystem.OA.Model;
 using MsSystem.OA.ViewModel;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MsSystem.OA.IService
 {
-    public interface IOaMessageService
+    public interface IOaMessageService: IAutoDenpendencyScoped
     {
         Task<Page<OaMessage>> GetPageAsync(int pageIndex, int pageSize);
         Task<MessageShowDTO> GetByIdAsync(long id);

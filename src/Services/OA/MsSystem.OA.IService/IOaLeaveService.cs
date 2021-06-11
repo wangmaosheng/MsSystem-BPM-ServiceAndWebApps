@@ -1,11 +1,12 @@
 ﻿using JadeFramework.Core.Domain.Entities;
 using JadeFramework.Core.Domain.Result;
+using JadeFramework.Core.Extensions;
 using MsSystem.OA.ViewModel;
 using System.Threading.Tasks;
 
 namespace MsSystem.OA.IService
 {
-    public interface IOaLeaveService
+    public interface IOaLeaveService: IAutoDenpendencyScoped
     {
         Task<Page<OaLeaveDto>> GetPageAsync(int pageIndex, int pageSize, long userid);
         Task<OaLeaveShowDto> GetAsync(long id);

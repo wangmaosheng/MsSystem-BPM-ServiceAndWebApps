@@ -1,4 +1,5 @@
 ﻿using JadeFramework.Core.Domain.Entities;
+using JadeFramework.Core.Extensions;
 using MsSystem.WF.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace MsSystem.WF.IService
     /// <summary>
     /// 服务之间调用
     /// </summary>
-    public interface IConfigService
+    public interface IConfigService : IAutoDenpendencyScoped
     {
         Task<List<ZTree>> GetRoleTreesAsync(List<long> ids);
         Task<List<ZTree>> GetUserTreeAsync(List<long> ids);

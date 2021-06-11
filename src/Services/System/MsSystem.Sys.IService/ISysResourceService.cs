@@ -1,5 +1,6 @@
 ﻿using JadeFramework.Core.Domain.Entities;
 using JadeFramework.Core.Domain.Permission;
+using JadeFramework.Core.Extensions;
 using MsSystem.Sys.ViewModel;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace MsSystem.Sys.IService
     /// <summary>
     /// 资源服务接口
     /// </summary>
-    public interface ISysResourceService
+    public interface ISysResourceService: IAutoDenpendencyScoped
     {
         /// <summary>
         /// 获取树形菜单

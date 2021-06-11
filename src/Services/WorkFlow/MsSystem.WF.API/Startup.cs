@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JadeFramework.Cache;
+using JadeFramework.Core.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,15 +13,11 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using MsSystem.WF.API.Filters;
 using MsSystem.WF.API.Infrastructure;
-using MsSystem.WF.IRepository;
 using MsSystem.WF.IService;
-using MsSystem.WF.Repository;
 using MsSystem.WF.Service;
 using MsSystem.WF.ViewModel;
 using Polly;
 using Polly.Extensions.Http;
-using Serilog;
-using Serilog.Sinks.Elasticsearch;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -114,17 +111,7 @@ namespace MsSystem.WF.API
                 opt.SaveToken = true;
             });
 
-
-            services.AddScoped<IConfigService, ConfigService>();
-
-            services.AddScoped<IWFDbContext, WFDbContext>();
-            services.AddScoped<IWFDatabaseFixture, WFDatabaseFixture>();
-
-            services.AddScoped<IWorkFlowService, WorkFlowService>();
-            services.AddScoped<IFormService, FormService>();
-            services.AddScoped<IWorkFlowInstanceService, WorkFlowInstanceService>();
-            services.AddScoped<IWorkflowCategoryService, WorkflowCategoryService>();
-
+            services.AddAutoDIService();
             services.AddScoped<ICachingProvider, MemoryCachingProvider>();
             services.AddAutoMapper();
 

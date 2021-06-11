@@ -1,4 +1,5 @@
 ﻿using JadeFramework.Core.Domain.Entities;
+using JadeFramework.Core.Extensions;
 using MsSystem.Sys.Model;
 using MsSystem.Sys.ViewModel;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace MsSystem.Sys.IService
     /// <summary>
     /// 角色
     /// </summary>
-    public interface ISysRoleService
+    public interface ISysRoleService: IAutoDenpendencyScoped
     {
         /// <summary>
         /// 获取角色列表

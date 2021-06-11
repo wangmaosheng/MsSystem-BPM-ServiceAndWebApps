@@ -1,8 +1,9 @@
-﻿using System;
+﻿using JadeFramework.Core.Extensions;
+using System;
 
 namespace MsSystem.Sys.IService
 {
-    public interface ILogJobs
+    public interface ILogJobs: IAutoDenpendencyScoped
     {
         /// <summary>
         /// 登录日志

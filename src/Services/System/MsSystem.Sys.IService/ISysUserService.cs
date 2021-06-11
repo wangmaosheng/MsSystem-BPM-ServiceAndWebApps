@@ -1,5 +1,6 @@
 ﻿using JadeFramework.Core.Domain.Entities;
 using JadeFramework.Core.Domain.Result;
+using JadeFramework.Core.Extensions;
 using MsSystem.Sys.Model;
 using MsSystem.Sys.ViewModel;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace MsSystem.Sys.IService
     /// <summary>
     /// 用户表接口
     /// </summary>
-    public interface ISysUserService
+    public interface ISysUserService: IAutoDenpendencyScoped
     {
         /// <summary>
         /// 登录

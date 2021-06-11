@@ -1,4 +1,5 @@
 ﻿using JadeFramework.Core.Domain.Entities;
+using JadeFramework.Core.Extensions;
 using MsSystem.WF.Model;
 using MsSystem.WF.ViewModel;
 using System;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MsSystem.WF.IService
 {
-    public interface IWorkFlowService
+    public interface IWorkFlowService: IAutoDenpendencyScoped
     {
         Task<Page<WfWorkflow>> GetPageAsync(int pageIndex, int pageSize);
         Task<WorkFlowDetailDto> GetByIdAsync(Guid id);

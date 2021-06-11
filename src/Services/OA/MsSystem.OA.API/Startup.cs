@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JadeFramework.Cache;
+using JadeFramework.Core.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,15 +14,11 @@ using Microsoft.OpenApi.Models;
 using MsSystem.OA.API.Filters;
 using MsSystem.OA.API.Hubs;
 using MsSystem.OA.API.Infrastructure;
-using MsSystem.OA.IRepository;
 using MsSystem.OA.IService;
-using MsSystem.OA.Repository;
 using MsSystem.OA.Service;
 using MsSystem.OA.ViewModel;
 using Polly;
 using Polly.Extensions.Http;
-using Serilog;
-using Serilog.Sinks.Elasticsearch;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -111,13 +108,7 @@ namespace MsSystem.OA.API
                 opt.SaveToken = true;
             });
             services.AddScoped<ICachingProvider, MemoryCachingProvider>();
-
-            services.AddScoped<IOaDbContext, OaDbContext>();
-            services.AddScoped<IOaDatabaseFixture, OaDatabaseFixture>();
-            services.AddScoped<IWorkFlowService, WorkFlowService>();
-            services.AddScoped<IOaLeaveService, OaLeaveService>();
-            services.AddScoped<IOaMessageService, OaMessageService>();
-            services.AddScoped<IOaChatService, OaChatService>();
+            services.AddAutoDIService();
 
             services.AddAutoMapper();
 
