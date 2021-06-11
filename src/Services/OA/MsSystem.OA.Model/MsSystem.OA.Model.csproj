@@ -5,12 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="JadeFramework.Dapper" Version="2.0.0.0" />
-    <PackageReference Include="JadeFramework.WorkFlow" Version="2.0.0.0" />
+    <PackageReference Include="JadeFramework.WorkFlow" Version="2.0.0.1" />
   </ItemGroup>
 
 </Project>

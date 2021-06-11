@@ -31,14 +31,6 @@ namespace MsSystem.OA.API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            //Log.Logger = new LoggerConfiguration()
-            //    .Enrich.FromLogContext()
-            //    .WriteTo.MySQL(Configuration["LogConfig:MySQL"], tableName: "oalog")
-            //    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(Configuration["LogConfig:ElasticsearchUri"]))
-            //    {
-            //        AutoRegisterTemplate = true,
-            //    })
-            //.CreateLogger();
         }
 
         public IConfiguration Configuration { get; }
@@ -55,7 +47,6 @@ namespace MsSystem.OA.API
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            //loggerFactory.AddSerilog();
             app.UseCors("CorsPolicy");
 
             app.UseResponseCompression();

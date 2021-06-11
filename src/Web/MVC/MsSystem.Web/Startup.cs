@@ -20,15 +20,6 @@ namespace MsSystem.Web
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
-            //Log.Logger = new LoggerConfiguration()
-            //    .Enrich.FromLogContext()
-            //    .WriteTo.MySQL(Configuration["LogConfig:MySQL"],tableName:"weblog")
-            //    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(Configuration["LogConfig:ElasticsearchUri"]))
-            //    {
-            //        AutoRegisterTemplate = true,
-            //    })
-            //.CreateLogger();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

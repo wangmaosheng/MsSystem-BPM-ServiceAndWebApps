@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DnsClient" Version="1.2.0" />
+    <PackageReference Include="DnsClient" Version="1.4.0" />
     <PackageReference Include="AutoMapper" Version="8.0.0" />
-    <PackageReference Include="DotNetCore.CAP.MySql" Version="2.5.0" />
+    <PackageReference Include="DotNetCore.CAP.MySql" Version="5.1.0" />
   </ItemGroup>
 
   <ItemGroup>
