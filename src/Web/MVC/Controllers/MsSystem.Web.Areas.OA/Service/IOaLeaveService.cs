@@ -7,10 +7,11 @@ using MsSystem.Web.Areas.OA.Infrastructure;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
+using MsSystem.Utility;
 
 namespace MsSystem.Web.Areas.OA.Service
 {
-    public interface IOaLeaveService
+    public interface IOaLeaveService : IAutoDIPolicyHttpClient
     {
         Task<Page<OaLeaveDto>> GetPageAsync(int pageIndex, int pageSize, long userid);
         Task<OaLeaveShowDto> GetAsync(long id);

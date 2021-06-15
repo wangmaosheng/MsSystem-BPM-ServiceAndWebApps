@@ -1,6 +1,7 @@
 ﻿using JadeFramework.Core.Domain.Entities;
 using JadeFramework.Core.Extensions;
 using Microsoft.Extensions.Configuration;
+using MsSystem.Utility;
 using MsSystem.Web.Areas.Sys.Infrastructure;
 using MsSystem.Web.Areas.Sys.Model;
 using System.Net.Http;
@@ -11,7 +12,7 @@ namespace MsSystem.Web.Areas.Sys.Service
     /// <summary>
     /// 发布日志服务接口
     /// </summary>
-    public interface ISysReleaseLogService
+    public interface ISysReleaseLogService : IAutoDIPolicyHttpClient
     {
         /// <summary>
         /// 发布日志分页获取

@@ -1,6 +1,7 @@
 ﻿using JadeFramework.Core.Domain.Entities;
 using JadeFramework.Core.Extensions;
 using Microsoft.Extensions.Configuration;
+using MsSystem.Utility;
 using MsSystem.Web.Areas.OA.Infrastructure;
 using MsSystem.Web.Areas.OA.Model;
 using MsSystem.Web.Areas.OA.ViewModel;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MsSystem.Web.Areas.OA.Service
 {
-    public interface IOaMessageService
+    public interface IOaMessageService : IAutoDIPolicyHttpClient
     {
         Task<Page<OaMessage>> GetPageAsync(int pageIndex, int pageSize);
         Task<MessageShowDTO> GetByIdAsync(long id);

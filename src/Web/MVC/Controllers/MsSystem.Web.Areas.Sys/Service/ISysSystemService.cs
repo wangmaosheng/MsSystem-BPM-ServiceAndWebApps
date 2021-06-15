@@ -1,6 +1,7 @@
 ﻿using JadeFramework.Core.Domain.Entities;
 using JadeFramework.Core.Extensions;
 using Microsoft.Extensions.Configuration;
+using MsSystem.Utility;
 using MsSystem.Web.Areas.Sys.Infrastructure;
 using MsSystem.Web.Areas.Sys.Model;
 using MsSystem.Web.Areas.Sys.ViewModel;
@@ -14,7 +15,7 @@ namespace MsSystem.Web.Areas.Sys.Service
     /// <summary>
     /// 系统
     /// </summary>
-    public interface ISysSystemService
+    public interface ISysSystemService : IAutoDIPolicyHttpClient
     {
         /// <summary>
         /// 根据ID获取

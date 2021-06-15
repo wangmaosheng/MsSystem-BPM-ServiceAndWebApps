@@ -16,9 +16,6 @@ using System.Text.Unicode;
 
 namespace MsSystem.Web.Infrastructure
 {
-    public interface IAutoDIPolicyHttpClient
-    { }
-
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddCustomMvc(this IServiceCollection services, IConfiguration configuration)
@@ -59,41 +56,130 @@ namespace MsSystem.Web.Infrastructure
         public static IServiceCollection AddSysHttpClientServices(this IServiceCollection services)
         {
             //add http client services
+            services.AddHttpClient<ISysDeptService, SysDeptService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))  //Sample. Default lifetime is 2 minutes
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
+            services.AddHttpClient<ISysLogService, SysLogService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
+            services.AddHttpClient<ISysReleaseLogService, SysReleaseLogService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
+            services.AddHttpClient<ISysResourceService, SysResourceService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
+            services.AddHttpClient<ISysRoleService, SysRoleService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
+            services.AddHttpClient<ISysSystemService, SysSystemService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
+            services.AddHttpClient<ISysUserService, SysUserService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-            services.AddPolicyHttpClient<ISysDeptService, SysDeptService>();
-            services.AddPolicyHttpClient<ISysLogService, SysLogService>();
-            services.AddPolicyHttpClient<ISysReleaseLogService, SysReleaseLogService>();
-            services.AddPolicyHttpClient<ISysResourceService, SysResourceService>();
-            services.AddPolicyHttpClient<ISysRoleService, SysRoleService>();
-            services.AddPolicyHttpClient<ISysSystemService, SysSystemService>();
-            services.AddPolicyHttpClient<ISysUserService, SysUserService>();
-            services.AddPolicyHttpClient<ICodeBuilderService, CodeBuilderService>();
-            services.AddPolicyHttpClient<IScheduleService, ScheduleService>();
-            services.AddPolicyHttpClient<IScanningLoginService, ScanningLoginService>();
+            services.AddHttpClient<ICodeBuilderService, CodeBuilderService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
+
+
+            services.AddHttpClient<IScheduleService, ScheduleService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
+
+            //services.AddScoped<IScanningLoginService, ScanningLoginService>();
+
+            services.AddHttpClient<IScanningLoginService, ScanningLoginService>()
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
 
             return services;
         }
         public static IServiceCollection AddOaHttpClientServices(this IServiceCollection services)
         {
-            services.AddPolicyHttpClient<IOaLeaveService, OaLeaveService>();
-            services.AddPolicyHttpClient<IOaMessageService, OaMessageService>();
-            services.AddPolicyHttpClient<IOaChatService, OaChatService>();
+            services.AddHttpClient<IOaLeaveService, OaLeaveService>()
+                    .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                    .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                    .AddPolicyHandler(GetRetryPolicy())
+                    .AddPolicyHandler(GetCircuitBreakerPolicy());
+            services.AddHttpClient<IOaMessageService, OaMessageService>()
+                    .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                    .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                    .AddPolicyHandler(GetRetryPolicy())
+                    .AddPolicyHandler(GetCircuitBreakerPolicy());
+            services.AddHttpClient<IOaChatService, OaChatService>()
+                    .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                    .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                    .AddPolicyHandler(GetRetryPolicy())
+                    .AddPolicyHandler(GetCircuitBreakerPolicy());
             return services;
         }
         public static IServiceCollection AddWeixinHttpClientServices(this IServiceCollection services)
         {
-            services.AddPolicyHttpClient<IAccountService, AccountService>();
-            services.AddPolicyHttpClient<IRuleService, RuleService>();
-            services.AddPolicyHttpClient<IWxMenuService, WxMenuService>();
+            services.AddHttpClient<IAccountService, AccountService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
+            services.AddHttpClient<IRuleService, RuleService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
+            services.AddHttpClient<IWxMenuService, WxMenuService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
             return services;
         }
         public static IServiceCollection AddWfHttpClientServices(this IServiceCollection services)
         {
-            services.AddPolicyHttpClient<IConfigService, ConfigService>();
-            services.AddPolicyHttpClient<IFormService, FormService>();
-            services.AddPolicyHttpClient<IWorkflowCategoryService, WorkflowCategoryService>();
-            services.AddPolicyHttpClient<IWorkFlowInstanceService, WorkFlowInstanceService>();
-            services.AddPolicyHttpClient<IWorkFlowService, WorkFlowService>();
+            services.AddHttpClient<IConfigService, ConfigService>()
+                    .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                    .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                    .AddPolicyHandler(GetRetryPolicy())
+                    .AddPolicyHandler(GetCircuitBreakerPolicy());
+            services.AddHttpClient<IFormService, FormService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
+            services.AddHttpClient<IWorkflowCategoryService, WorkflowCategoryService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
+            services.AddHttpClient<IWorkFlowInstanceService, WorkFlowInstanceService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
+            services.AddHttpClient<IWorkFlowService, WorkFlowService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
             return services;
         }
         public static IServiceCollection AddHttpClientServices(this IServiceCollection services, IConfiguration configuration)

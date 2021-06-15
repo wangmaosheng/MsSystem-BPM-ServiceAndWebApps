@@ -1,5 +1,6 @@
 ﻿using JadeFramework.Core.Extensions;
 using Microsoft.Extensions.Configuration;
+using MsSystem.Utility;
 using MsSystem.Web.Areas.OA.Infrastructure;
 using MsSystem.Web.Areas.OA.ViewModel;
 using Newtonsoft.Json;
@@ -9,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace MsSystem.Web.Areas.OA.Service
 {
-    public interface IOaChatService
+    public interface IOaChatService : IAutoDIPolicyHttpClient
     {
         Task<List<ChatUserViewModel>> GetChatUserAsync(List<long> chattinguserids);
         Task<List<ChatUserListDto>> GetChatListAsync(ChatUserListSearchDto model);
     }
 
-    public class OaChatService: IOaChatService
+    public class OaChatService : IOaChatService
     {
         private readonly HttpClient _apiClient;
         private readonly IConfiguration _configuration;

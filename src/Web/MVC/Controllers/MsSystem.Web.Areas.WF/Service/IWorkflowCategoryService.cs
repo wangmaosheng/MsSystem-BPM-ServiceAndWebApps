@@ -1,6 +1,7 @@
 ﻿using JadeFramework.Core.Domain.Entities;
 using JadeFramework.Core.Extensions;
 using Microsoft.Extensions.Configuration;
+using MsSystem.Utility;
 using MsSystem.Web.Areas.WF.Infrastructure;
 using MsSystem.Web.Areas.WF.ViewModel;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MsSystem.Web.Areas.WF.Service
 {
-    public interface IWorkflowCategoryService
+    public interface IWorkflowCategoryService : IAutoDIPolicyHttpClient
     {
         /// <summary>
         /// 获取树状列表

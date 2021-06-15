@@ -1,6 +1,7 @@
 ﻿using JadeFramework.Core.Domain.Entities;
 using JadeFramework.Core.Extensions;
 using Microsoft.Extensions.Configuration;
+using MsSystem.Utility;
 using MsSystem.Web.Areas.Weixin.Infrastructure;
 using MsSystem.Web.Areas.Weixin.ViewModel;
 using Newtonsoft.Json;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MsSystem.Web.Areas.Weixin.Service
 {
-    public interface IRuleService
+    public interface IRuleService : IAutoDIPolicyHttpClient
     {
         Task<Page<RuleListDto>> GetRulePageAsync(int pageIndex, int pageSize);
         Task<RuleReplyDto> GetRuleReplyAsync(int id);

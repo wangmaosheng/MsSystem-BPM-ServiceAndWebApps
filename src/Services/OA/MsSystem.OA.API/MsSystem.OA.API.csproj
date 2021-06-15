@@ -5,6 +5,7 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..\..</DockerfileContext>
+    <UserSecretsId>5e1daf4d-57ec-4a98-a670-6838bd3c62bd</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -18,21 +19,34 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="appsettings.docker.json" />
+    <Content Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="appsettings.docker.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="IdentityModel" Version="5.1.0" />
-    <PackageReference Include="DotNetCore.CAP.MySql" Version="5.1.0" />
-    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="5.1.0" />
+	<PackageReference Include="DotNetCore.CAP.MySql" Version="2.5.0" />
+	<PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="2.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Connections.Abstractions" Version="5.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson " Version="3.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="5.0.1" />
     <PackageReference Include="JadeFramework.Cache" Version="2.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
+	<PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="5.0.7" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,18 +54,10 @@
     <ProjectReference Include="..\MsSystem.OA.Repository\MsSystem.OA.Repository.csproj" />
     <ProjectReference Include="..\MsSystem.OA.Service\MsSystem.OA.Service.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="appsettings.docker.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="5.0.7" />
-  </ItemGroup>
+	<ProjectExtensions>
+		<VisualStudio>
+			<UserProperties appsettings_1json__JSONSchema="" />
+		</VisualStudio>
+	</ProjectExtensions>
 
 </Project>

@@ -2,6 +2,7 @@
 using JadeFramework.Core.Domain.Enum;
 using JadeFramework.Core.Extensions;
 using Microsoft.Extensions.Configuration;
+using MsSystem.Utility;
 using MsSystem.Web.Areas.Sys.Infrastructure;
 using MsSystem.Web.Areas.Sys.Model;
 using MsSystem.Web.Areas.Sys.ViewModel;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MsSystem.Web.Areas.Sys.Service
 {
-    public interface ISysLogService
+    public interface ISysLogService : IAutoDIPolicyHttpClient
     {
         Task<Page<SysLog>> GetPageAsync(LogSearchDto model);
         Task<Dictionary<object, object>> GetChartsAsync(LogLevel level);

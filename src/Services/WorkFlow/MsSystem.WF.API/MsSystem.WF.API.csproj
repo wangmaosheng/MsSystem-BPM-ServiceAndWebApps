@@ -18,6 +18,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="appsettings.docker.json" />
+    <Content Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="appsettings.docker.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="IdentityModel" Version="5.1.0" />
     <PackageReference Include="DotNetCore.CAP.MySql" Version="5.1.0" />
@@ -25,7 +39,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Connections.Abstractions" Version="5.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.2.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.7" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
@@ -41,14 +54,9 @@
     <ProjectReference Include="..\MsSystem.WF.Service\MsSystem.WF.Service.csproj" />
     <ProjectReference Include="..\MsSystem.WF.ViewModel\MsSystem.WF.ViewModel.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="appsettings.docker.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
+	<ProjectExtensions>
+		<VisualStudio>
+			<UserProperties appsettings_1json__JSONSchema="" />
+		</VisualStudio>
+	</ProjectExtensions>
 </Project>

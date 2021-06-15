@@ -1,16 +1,15 @@
 ﻿using JadeFramework.Core.Domain.CodeBuilder.MySQL;
-using JadeFramework.Core.Domain.Entities;
 using JadeFramework.Core.Extensions;
 using Microsoft.Extensions.Configuration;
+using MsSystem.Utility;
 using MsSystem.Web.Areas.Sys.Infrastructure;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace MsSystem.Web.Areas.Sys.Service
 {
-    public interface ICodeBuilderService
+    public interface ICodeBuilderService : IAutoDIPolicyHttpClient
     {
         Task<List<Table>> GetTablesAsync(TableSearch search);
         Task<List<TableColumn>> GetTableColumnsAsync(TableSearch search);

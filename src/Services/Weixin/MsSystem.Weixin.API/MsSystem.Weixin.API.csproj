@@ -4,6 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..\..</DockerfileContext>
+    <UserSecretsId>f41a06bc-61db-462a-aad6-6cbaf0e0a4bd</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -15,6 +16,20 @@
     <OutputPath>bin\Release\net5.0\</OutputPath>
     <DocumentationFile>bin\Release\net5.0\MsSystem.Weixin.API.xml</DocumentationFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="appsettings.docker.json" />
+    <Content Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="appsettings.docker.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
@@ -33,15 +48,6 @@
     <ProjectReference Include="..\MsSystem.Weixin.Repository\MsSystem.Weixin.Repository.csproj" />
     <ProjectReference Include="..\MsSystem.Weixin.Service\MsSystem.Weixin.Service.csproj" />
     <ProjectReference Include="..\MsSystem.Weixin.ViewModel\MsSystem.Weixin.ViewModel.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="appsettings.docker.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
 </Project>

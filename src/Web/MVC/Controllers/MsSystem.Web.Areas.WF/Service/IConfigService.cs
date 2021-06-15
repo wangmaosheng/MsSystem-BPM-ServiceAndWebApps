@@ -1,5 +1,6 @@
 ﻿using JadeFramework.Core.Domain.Entities;
 using Microsoft.Extensions.Configuration;
+using MsSystem.Utility;
 using MsSystem.Web.Areas.WF.Infrastructure;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MsSystem.Web.Areas.WF.Service
 {
-    public interface IConfigService
+    public interface IConfigService : IAutoDIPolicyHttpClient
     {
         Task<List<ZTree>> GetRoleTreesAsync(List<long> ids);
         Task<List<ZTree>> GetUserTreeAsync(List<long> ids);

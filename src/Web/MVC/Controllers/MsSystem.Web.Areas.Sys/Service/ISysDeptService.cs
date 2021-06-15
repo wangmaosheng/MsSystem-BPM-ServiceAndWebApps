@@ -1,5 +1,6 @@
 ﻿using JadeFramework.Core.Extensions;
 using Microsoft.Extensions.Configuration;
+using MsSystem.Utility;
 using MsSystem.Web.Areas.Sys.Infrastructure;
 using MsSystem.Web.Areas.Sys.ViewModel;
 using Newtonsoft.Json;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MsSystem.Web.Areas.Sys.Service
 {
-    public interface ISysDeptService
+    public interface ISysDeptService : IAutoDIPolicyHttpClient
     {
         Task<DeptIndexViewModel> GetTreeAsync();
         Task<DeptShowViewModel> GetDeptAsync(long deptid);

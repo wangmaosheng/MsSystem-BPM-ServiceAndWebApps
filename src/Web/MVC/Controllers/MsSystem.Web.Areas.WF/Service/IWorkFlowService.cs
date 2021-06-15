@@ -1,6 +1,7 @@
 ﻿using JadeFramework.Core.Domain.Entities;
 using JadeFramework.Core.Extensions;
 using Microsoft.Extensions.Configuration;
+using MsSystem.Utility;
 using MsSystem.Web.Areas.WF.Infrastructure;
 using MsSystem.Web.Areas.WF.Model;
 using MsSystem.Web.Areas.WF.ViewModel;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace MsSystem.Web.Areas.WF.Service
 {
-    public interface IWorkFlowService
+    public interface IWorkFlowService : IAutoDIPolicyHttpClient
     {
         Task<Page<WfWorkflow>> GetPageAsync(int pageIndex, int pageSize);
         Task<bool> InsertAsync(WorkFlowDetailDto workflow);

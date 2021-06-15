@@ -1,20 +1,21 @@
 ﻿using JadeFramework.Core.Domain.Entities;
+using JadeFramework.Core.Extensions;
 using Microsoft.Extensions.Configuration;
+using MsSystem.Utility;
+using MsSystem.Web.Areas.Sys.Infrastructure;
 using MsSystem.Web.Areas.Sys.Model;
 using MsSystem.Web.Areas.Sys.ViewModel;
-using MsSystem.Web.Areas.Sys.Infrastructure;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using JadeFramework.Core.Extensions;
 
 namespace MsSystem.Web.Areas.Sys.Service
 {
     /// <summary>
     /// 角色
     /// </summary>
-    public interface ISysRoleService
+    public interface ISysRoleService : IAutoDIPolicyHttpClient
     {
         /// <summary>
         /// 获取角色列表

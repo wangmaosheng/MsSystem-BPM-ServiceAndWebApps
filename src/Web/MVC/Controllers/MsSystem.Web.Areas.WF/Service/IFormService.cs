@@ -1,6 +1,7 @@
 ﻿using JadeFramework.Core.Domain.Entities;
 using JadeFramework.Core.Extensions;
 using Microsoft.Extensions.Configuration;
+using MsSystem.Utility;
 using MsSystem.Web.Areas.WF.Infrastructure;
 using MsSystem.Web.Areas.WF.ViewModel;
 using Newtonsoft.Json;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MsSystem.Web.Areas.WF.Service
 {
-    public interface IFormService
+    public interface IFormService : IAutoDIPolicyHttpClient
     {
         Task<Page<FormPageDto>> GetPageAsync(int pageIndex, int pageSize);
         Task<FormDetailDto> GetFormDetailAsync(Guid id);

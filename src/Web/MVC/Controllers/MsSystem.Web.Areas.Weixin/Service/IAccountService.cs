@@ -1,6 +1,7 @@
 ﻿using JadeFramework.Core.Domain.Entities;
 using JadeFramework.Core.Extensions;
 using Microsoft.Extensions.Configuration;
+using MsSystem.Utility;
 using MsSystem.Web.Areas.Weixin.Infrastructure;
 using MsSystem.Web.Areas.Weixin.ViewModel;
 using System.Net.Http;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MsSystem.Web.Areas.Weixin.Service
 {
-    public interface IAccountService
+    public interface IAccountService : IAutoDIPolicyHttpClient
     {
         Task<Page<WxAccountListDto>> GetPageAsync(int pageIndex, int pageSize);
     }

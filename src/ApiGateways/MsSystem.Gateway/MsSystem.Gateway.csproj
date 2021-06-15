@@ -9,12 +9,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
-    <PackageReference Include="JadeFramework.Core" Version="2.0.0.0" />
-    <PackageReference Include="Ocelot" Version="17.0.0" />
-    <PackageReference Include="Ocelot.Cache.CacheManager" Version="17.0.0" />
-    <PackageReference Include="Ocelot.Provider.Polly" Version="17.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
+    <Content Remove="configuration.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="configuration.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+	<PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
+	<PackageReference Include="JadeFramework.Core" Version="2.0.0.0" />
+	<PackageReference Include="Ocelot" Version="17.0.0" />
+	<PackageReference Include="Ocelot.Cache.CacheManager" Version="17.0.0" />
+	<PackageReference Include="Ocelot.Provider.Polly" Version="17.0.0" />
+	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,9 +37,11 @@
     <Content Update="configuration.Development.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="configuration.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
+    <ProjectExtensions>
+	    <VisualStudio>
+		    <UserProperties appsettings_1json__JSONSchema="" __JSONSchema="http://json.schemastore.org/appsettings" configuration_1json__JSONSchema="http://json.schemastore.org/appsettings" />
+	    </VisualStudio>
+    </ProjectExtensions>
 
 </Project>

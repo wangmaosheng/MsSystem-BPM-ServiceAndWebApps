@@ -2,6 +2,7 @@
 using JadeFramework.Core.Domain.Permission;
 using JadeFramework.Core.Extensions;
 using Microsoft.Extensions.Configuration;
+using MsSystem.Utility;
 using MsSystem.Web.Areas.Sys.Infrastructure;
 using MsSystem.Web.Areas.Sys.ViewModel;
 using Newtonsoft.Json;
@@ -14,7 +15,7 @@ namespace MsSystem.Web.Areas.Sys.Service
     /// <summary>
     /// 资源服务接口
     /// </summary>
-    public interface ISysResourceService
+    public interface ISysResourceService : IAutoDIPolicyHttpClient
     {
         /// <summary>
         /// 根据用户获取左侧菜单列表

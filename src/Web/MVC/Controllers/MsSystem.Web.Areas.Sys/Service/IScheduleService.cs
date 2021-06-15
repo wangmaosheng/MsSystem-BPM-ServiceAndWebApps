@@ -1,6 +1,7 @@
 ﻿using JadeFramework.Core.Domain.Entities;
 using JadeFramework.Core.Extensions;
 using Microsoft.Extensions.Configuration;
+using MsSystem.Utility;
 using MsSystem.Web.Areas.Sys.Infrastructure;
 using MsSystem.Web.Areas.Sys.ViewModel;
 using Newtonsoft.Json;
@@ -12,7 +13,7 @@ namespace MsSystem.Web.Areas.Sys.Service
     /// <summary>
     /// 调度服务
     /// </summary>
-    public interface IScheduleService
+    public interface IScheduleService : IAutoDIPolicyHttpClient
     {
         Task<Page<ScheduleDto>> GetPageListAsync(int pageIndex, int pageSize);
         Task<bool> AddOrUpdateAsync(ScheduleDto schedule);

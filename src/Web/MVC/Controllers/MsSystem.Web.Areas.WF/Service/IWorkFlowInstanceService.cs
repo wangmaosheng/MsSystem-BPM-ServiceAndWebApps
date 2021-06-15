@@ -2,6 +2,7 @@
 using JadeFramework.Core.Extensions;
 using JadeFramework.WorkFlow;
 using Microsoft.Extensions.Configuration;
+using MsSystem.Utility;
 using MsSystem.Web.Areas.WF.Infrastructure;
 using MsSystem.Web.Areas.WF.ViewModel;
 using Newtonsoft.Json;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MsSystem.Web.Areas.WF.Service
 {
-    public interface IWorkFlowInstanceService
+    public interface IWorkFlowInstanceService : IAutoDIPolicyHttpClient
     {
         /// <summary>
         /// 开始用户流程实例
