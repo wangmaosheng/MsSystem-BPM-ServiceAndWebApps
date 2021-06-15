@@ -21,9 +21,9 @@
   <ItemGroup>
 	<PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
 	<PackageReference Include="JadeFramework.Core" Version="2.0.0.0" />
-	<PackageReference Include="Ocelot" Version="17.0.0" />
-	<PackageReference Include="Ocelot.Cache.CacheManager" Version="17.0.0" />
-	<PackageReference Include="Ocelot.Provider.Polly" Version="17.0.0" />
+	<PackageReference Include="Ocelot" Version="13.8.0" />
+	<PackageReference Include="Ocelot.Cache.CacheManager" Version="13.8.0" />
+	<PackageReference Include="Ocelot.Provider.Polly" Version="13.8.0" />
 	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
   </ItemGroup>
 
