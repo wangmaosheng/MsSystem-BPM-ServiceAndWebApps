@@ -1,0 +1,16 @@
+[Unit]
+Description=MsSystem WorkFlow
+
+[Service]
+WorkingDirectory=/webroot/mssystem/api/workflow/linux-x64/publish
+ExecStart=/usr/bin/dotnet /webroot/mssystem/api/workflow/linux-x64/publish/MsSystem.WF.API.dll
+Restart=always
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=mssystem-workflow-log
+User=root
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+[Install]
+WantedBy=multi-user.target
+clear

@@ -1,0 +1,15 @@
+[Unit]
+Description=MsSystem System
+
+[Service]
+WorkingDirectory=/webroot/mssystem/api/sys/linux-x64/publish
+ExecStart=/usr/bin/dotnet /webroot/mssystem/api/sys/linux-x64/publish/MsSystem.Sys.dll
+Restart=always
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=mssystem-sys-log
+User=root
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+[Install]
+WantedBy=multi-user.target

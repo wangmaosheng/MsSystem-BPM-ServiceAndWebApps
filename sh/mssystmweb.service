@@ -2,13 +2,12 @@
 Description=MsSystem Web
 
 [Service]
-WorkingDirectory=/webroot/mssystem/web/publish
-ExecStart=/usr/bin/dotnet /webroot/mssystem/web/publish/MsSystem.Web.dll
+WorkingDirectory=/webroot/mssystem/web/mssystem/linux-x64/publish
+ExecStart=/usr/bin/dotnet /webroot/mssystem/web/mssystem/linux-x64/publish/MsSystem.Web.dll
 Restart=always
-
 RestartSec=10
 KillSignal=SIGINT
-SyslogIdentifier=MsSystem-Web
+SyslogIdentifier=MsSystem-Web-log
 User=root
 Environment=ASPNETCORE_ENVIRONMENT=Production
 Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false

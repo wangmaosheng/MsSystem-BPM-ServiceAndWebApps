@@ -1,0 +1,50 @@
+
+cd /var/lib/jenkins/workspace/MsSystem-BPM-ServiceAndWebApps/src/Services/Identity/MsSystem.Identity/
+dotnet publish -c:Release -r linux-x64 --self-contained false
+sudo mkdir -p /webroot/mssystem/api/identity/linux-x64/publish/
+cp -r /var/lib/jenkins/workspace/MsSystem-BPM-ServiceAndWebApps/src/Services/Identity/MsSystem.Identity/bin/Release/net5.0/linux-x64/publish/* /webroot/mssystem/api/identity/linux-x64/publish/
+
+
+cd /var/lib/jenkins/workspace/MsSystem-BPM-ServiceAndWebApps/src/ApiGateways/MsSystem.Gateway/
+dotnet publish -c:Release -r linux-x64 --self-contained false
+sudo mkdir -p /webroot/mssystem/api/gateway/linux-x64/publish/
+cp -r /var/lib/jenkins/workspace/MsSystem-BPM-ServiceAndWebApps/src/ApiGateways/MsSystem.Gateway/bin/Release/net5.0/linux-x64/publish/* /webroot/mssystem/api/gateway/linux-x64/publish/
+
+
+cd /var/lib/jenkins/workspace/MsSystem-BPM-ServiceAndWebApps/src/Services/OA/MsSystem.OA.API/
+dotnet publish -c:Release -r linux-x64 --self-contained false
+sudo mkdir -p /webroot/mssystem/api/oa/linux-x64/publish/
+cp -r /var/lib/jenkins/workspace/MsSystem-BPM-ServiceAndWebApps/src/Services/OA/MsSystem.OA.API/bin/Release/net5.0/net5.0/linux-x64/publish/* /webroot/mssystem/api/oa/linux-x64/publish/
+
+
+cd /var/lib/jenkins/workspace/MsSystem-BPM-ServiceAndWebApps/src/Services/System/MsSystem.Sys.API/
+dotnet publish -c:Release -r linux-x64 --self-contained false
+sudo mkdir -p /webroot/mssystem/api/sys/linux-x64/publish/
+cp -r /var/lib/jenkins/workspace/MsSystem-BPM-ServiceAndWebApps/src/Services/System/MsSystem.Sys.API/bin/Release/net5.0/net5.0/linux-x64/publish/* /webroot/mssystem/api/sys/linux-x64/publish/
+
+
+cd /var/lib/jenkins/workspace/MsSystem-BPM-ServiceAndWebApps/src/Services/Weixin/MsSystem.Weixin.API/
+dotnet publish -c:Release -r linux-x64 --self-contained false
+sudo mkdir -p /webroot/mssystem/api/weixin/linux-x64/publish/
+cp -r /var/lib/jenkins/workspace/MsSystem-BPM-ServiceAndWebApps/src/Services/Weixin/MsSystem.Weixin.API/bin/Release/net5.0/net5.0/linux-x64/publish/* /webroot/mssystem/api/weixin/linux-x64/publish/
+
+
+cd /var/lib/jenkins/workspace/MsSystem-BPM-ServiceAndWebApps/src/Services/WorkFlow/MsSystem.WF.API/
+dotnet publish -c:Release -r linux-x64 --self-contained false
+sudo mkdir -p /webroot/mssystem/api/workflow/linux-x64/publish/
+cp -r /var/lib/jenkins/workspace/MsSystem-BPM-ServiceAndWebApps/src/Services/WorkFlow/MsSystem.WF.API/bin/Release/net5.0/net5.0/linux-x64/publish/* /webroot/mssystem/api/workflow/linux-x64/publish/
+
+
+cd /var/lib/jenkins/workspace/MsSystem-BPM-ServiceAndWebApps/src/Web/MVC/MsSystem.Web/
+dotnet publish -c:Release -r linux-x64 --self-contained false
+sudo mkdir -p /webroot/mssystem/web/mssystem/linux-x64/publish/
+cp -r /var/lib/jenkins/workspace/MsSystem-BPM-ServiceAndWebApps/src/Web/MVC/MsSystem.Web/bin/Release/net5.0/linux-x64/publish/* /webroot/mssystem/web/mssystem/linux-x64/publish/
+
+systemctl daemon-reload
+sudo systemctl restart identity.service 
+sudo systemctl restart gateway.service 
+sudo systemctl restart oa.service 
+sudo systemctl restart system.service 
+sudo systemctl restart weixin.service 
+#sudo systemctl restart workflow.service 
+sudo systemctl restart mssystemweb.service 
