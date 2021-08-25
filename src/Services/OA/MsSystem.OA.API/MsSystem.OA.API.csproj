@@ -22,7 +22,7 @@
     <PackageReference Include="IdentityModel" Version="3.10.6" />
     <PackageReference Include="DotNetCore.CAP.MySql" Version="2.5.0" />
     <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="2.5.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.18" />
     <PackageReference Include="Microsoft.AspNetCore.Connections.Abstractions" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.2.0" />
